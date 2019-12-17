@@ -13,7 +13,7 @@
 		7B5038B123A8CD5800F18840 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7B5038B023A8CD5800F18840 /* Preview Assets.xcassets */; };
 		7B5038BF23A8CD5800F18840 /* Disaster_MonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5038BE23A8CD5800F18840 /* Disaster_MonitorTests.swift */; };
 		7B5038CA23A8CD5800F18840 /* Disaster_MonitorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5038C923A8CD5800F18840 /* Disaster_MonitorUITests.swift */; };
-		7B564A1A23A927C700DD178C /* AttractionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B564A1923A927C700DD178C /* AttractionCell.swift */; };
+		7B564A1A23A927C700DD178C /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B564A1923A927C700DD178C /* EventCell.swift */; };
 		7B564A1C23A92B7100DD178C /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B564A1B23A92B7100DD178C /* ListView.swift */; };
 		7B564A2123A92FD100DD178C /* CGRect+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B564A2023A92FD100DD178C /* CGRect+Utils.swift */; };
 		7B564A2323A92FEB00DD178C /* String+Height.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B564A2223A92FEB00DD178C /* String+Height.swift */; };
@@ -24,6 +24,7 @@
 		7B564A2F23A9306D00DD178C /* ConfigurableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B564A2E23A9306D00DD178C /* ConfigurableCell.swift */; };
 		7B564A3123A9308700DD178C /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B564A3023A9308700DD178C /* DataSource.swift */; };
 		7B564A3323A9309C00DD178C /* Source.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B564A3223A9309C00DD178C /* Source.swift */; };
+		7B564A3523A9325D00DD178C /* EventsFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B564A3423A9325D00DD178C /* EventsFlowLayout.swift */; };
 		7BE4173323A8D3AD0096F8EA /* ItemActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE4173223A8D3AD0096F8EA /* ItemActions.swift */; };
 		7BE4173523A8D4130096F8EA /* DependenciesContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE4173423A8D4130096F8EA /* DependenciesContainer.swift */; };
 		7BE4173723A8D42F0096F8EA /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE4173623A8D42F0096F8EA /* Models.swift */; };
@@ -68,7 +69,7 @@
 		7B5038C523A8CD5800F18840 /* Disaster MonitorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Disaster MonitorUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B5038C923A8CD5800F18840 /* Disaster_MonitorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Disaster_MonitorUITests.swift; sourceTree = "<group>"; };
 		7B5038CB23A8CD5800F18840 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7B564A1923A927C700DD178C /* AttractionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AttractionCell.swift; path = ../../../../Desktop/AttractionCell.swift; sourceTree = "<group>"; };
+		7B564A1923A927C700DD178C /* EventCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EventCell.swift; path = ../../../../Desktop/EventCell.swift; sourceTree = "<group>"; };
 		7B564A1B23A92B7100DD178C /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		7B564A2023A92FD100DD178C /* CGRect+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGRect+Utils.swift"; sourceTree = "<group>"; };
 		7B564A2223A92FEB00DD178C /* String+Height.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Height.swift"; sourceTree = "<group>"; };
@@ -79,6 +80,7 @@
 		7B564A2E23A9306D00DD178C /* ConfigurableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurableCell.swift; sourceTree = "<group>"; };
 		7B564A3023A9308700DD178C /* DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
 		7B564A3223A9309C00DD178C /* Source.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Source.swift; sourceTree = "<group>"; };
+		7B564A3423A9325D00DD178C /* EventsFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsFlowLayout.swift; sourceTree = "<group>"; };
 		7BE4173223A8D3AD0096F8EA /* ItemActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemActions.swift; sourceTree = "<group>"; };
 		7BE4173423A8D4130096F8EA /* DependenciesContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependenciesContainer.swift; sourceTree = "<group>"; };
 		7BE4173623A8D42F0096F8EA /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
@@ -216,10 +218,11 @@
 		7BE4172A23A8D2E00096F8EA /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				7B564A1923A927C700DD178C /* AttractionCell.swift */,
+				7B564A1923A927C700DD178C /* EventCell.swift */,
 				7BE4173A23A8D49C0096F8EA /* MainView.swift */,
 				7BE4173C23A8D4AC0096F8EA /* MainViewController.swift */,
 				7B564A1B23A92B7100DD178C /* ListView.swift */,
+				7B564A3423A9325D00DD178C /* EventsFlowLayout.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -508,7 +511,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7B564A1A23A927C700DD178C /* AttractionCell.swift in Sources */,
+				7B564A1A23A927C700DD178C /* EventCell.swift in Sources */,
 				7B564A2A23A9302E00DD178C /* UIView+Blink.swift in Sources */,
 				7B564A2823A9301800DD178C /* UIControl+TargetActionable.swift in Sources */,
 				7BE4173323A8D3AD0096F8EA /* ItemActions.swift in Sources */,
@@ -522,6 +525,7 @@
 				7B564A2D23A9305000DD178C /* CollectionView.swift in Sources */,
 				7B5038AA23A8CD5700F18840 /* SceneDelegate.swift in Sources */,
 				7BE4173723A8D42F0096F8EA /* Models.swift in Sources */,
+				7B564A3523A9325D00DD178C /* EventsFlowLayout.swift in Sources */,
 				7B564A2F23A9306D00DD178C /* ConfigurableCell.swift in Sources */,
 				7B564A2623A9300300DD178C /* String+Random.swift in Sources */,
 				7B564A1C23A92B7100DD178C /* ListView.swift in Sources */,

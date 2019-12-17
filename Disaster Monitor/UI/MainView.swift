@@ -15,7 +15,7 @@ struct MainViewModel: ViewModelWithState {
     // Per ogni schermo c'è una sola view con un ViewModelWithState
     var descr: String
     init?(state: AppState) {
-        self.descr = "Bella"
+        self.descr = "\(state.num)"
     }
 
 }
@@ -27,7 +27,7 @@ class MainView: UIView, ViewControllerModellableView {   //
     let title = UILabel()
     let container = UIView()
     
-    let event = AttractionCell()
+    let events = ListView()
     
     
     // setup
@@ -35,8 +35,7 @@ class MainView: UIView, ViewControllerModellableView {   //
         backgroundColor = .white
         addSubview(title)
         addSubview(container)
-        addSubview(event)
-        
+        addSubview(events)
     }
 
     // style
@@ -47,13 +46,15 @@ class MainView: UIView, ViewControllerModellableView {   //
 
     // update
     func update(oldModel: MainViewModel?) {  // Chiamato ad ogni aggiornamento di stato
-
+        guard let model = self.model else { return }
+        self.title.text = model.descr
+        events.model = ListViewModel()
     }
 
     // layout
     override func layoutSubviews() {
         title.pin.top(pin.safeArea).left(pin.safeArea).width(100).aspectRatio().margin(20).sizeToFit()
-        
+        events.pin.below(of: title)
     }
 }
 
