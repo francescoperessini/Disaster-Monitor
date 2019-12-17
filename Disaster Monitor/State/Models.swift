@@ -8,6 +8,6 @@
 
 import Foundation
 
-struct Counter {
-    var value : Int = 0
+struct Event {
+    var num : Int = 0
 }

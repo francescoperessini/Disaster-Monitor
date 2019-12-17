@@ -1,9 +1,9 @@
 ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/HydraAsync" "${PODS_CONFIGURATION_BUILD_DIR}/Katana" "${PODS_CONFIGURATION_BUILD_DIR}/PinLayout" "${PODS_CONFIGURATION_BUILD_DIR}/Tempura"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/DeepDiff" "${PODS_CONFIGURATION_BUILD_DIR}/HydraAsync" "${PODS_CONFIGURATION_BUILD_DIR}/Katana" "${PODS_CONFIGURATION_BUILD_DIR}/PinLayout" "${PODS_CONFIGURATION_BUILD_DIR}/Tempura"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/HydraAsync/Hydra.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/Katana/Katana.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/PinLayout/PinLayout.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/Tempura/Tempura.framework/Headers"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/DeepDiff/DeepDiff.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/HydraAsync/Hydra.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/Katana/Katana.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/PinLayout/PinLayout.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/Tempura/Tempura.framework/Headers"
 LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
-OTHER_LDFLAGS = $(inherited) -framework "CoreGraphics" -framework "Foundation" -framework "Hydra" -framework "Katana" -framework "PinLayout" -framework "Tempura" -framework "UIKit"
+OTHER_LDFLAGS = $(inherited) -framework "CoreGraphics" -framework "DeepDiff" -framework "Foundation" -framework "Hydra" -framework "Katana" -framework "PinLayout" -framework "Tempura" -framework "UIKit"
 OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)

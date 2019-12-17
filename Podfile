@@ -7,6 +7,7 @@ target 'Disaster Monitor' do
   pod 'Katana'
   pod 'Tempura'
   pod 'PinLayout'
+  pod 'DeepDiff'
   # Pods for Disaster Monitor
 
   target 'Disaster MonitorTests' do

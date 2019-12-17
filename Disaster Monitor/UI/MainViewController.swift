@@ -18,9 +18,6 @@ import PinLayout
 // Ha la responsabilità di passare alla view un nuovo viewmodel a ogni update
 class MainViewController: ViewController<MainView> {  // Extension of UIViewController
     
-    let child = EventsController()
-
-    
     override func viewWillAppear(_ animated: Bool) {
     }
     

@@ -1,4 +1,5 @@
 PODS:
+  - DeepDiff (2.3.1)
   - HydraAsync (1.2.1)
   - Katana (3.0.2):
     - HydraAsync (~> 1.2)
@@ -7,23 +8,26 @@ PODS:
     - Katana (< 4, >= 3.0)
 
 DEPENDENCIES:
+  - DeepDiff
   - Katana
   - PinLayout
   - Tempura
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - DeepDiff
     - HydraAsync
     - Katana
     - PinLayout
     - Tempura
 
 SPEC CHECKSUMS:
+  DeepDiff: e5ae6c50d0321568e4508cec5930b9f10bb293fc
   HydraAsync: 8f2ab62d57e140b4ca587ae0f66e1eb04e8e6965
   Katana: e22d5b5da00f593cc7ca5bd16a091278356ebb3d
   PinLayout: e41a50260a76508b7a7fcee8955c76639adc69bc
   Tempura: 134037b86b529cc4a0360fb191799b0cf0463b54
 
-PODFILE CHECKSUM: c62100e9e5c80eb2b93163555920837fa84c396c
+PODFILE CHECKSUM: 2177f88bfdcfb1240f62ca5431225a04d84cc2e5
 
 COCOAPODS: 1.7.5
