@@ -1,17 +1,19 @@
 //
 //  AppDelegate.swift
-//  Disaster Monitor
+//  Test
 //
-//  Created by Stefano Martina on 17/12/2019.
+//  Created by Stefano Martina on 21/11/2019.
 //  Copyright © 2019 Stefano Martina. All rights reserved.
 //
 
 import UIKit
+import Tempura
+import Katana
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    var store: Store<AppState, DependenciesContainer>!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.

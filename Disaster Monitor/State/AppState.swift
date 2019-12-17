@@ -7,3 +7,9 @@
 //
 
 import Foundation
+import Katana
+
+struct AppState : State {
+    var num : Int = 0
+}
+

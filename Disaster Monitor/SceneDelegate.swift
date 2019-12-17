@@ -1,36 +1,45 @@
 //
 //  SceneDelegate.swift
-//  Disaster Monitor
+//  Test
 //
-//  Created by Stefano Martina on 17/12/2019.
+//  Created by Stefano Martina on 21/11/2019.
 //  Copyright © 2019 Stefano Martina. All rights reserved.
 //
 
 import UIKit
-import SwiftUI
+import Katana
+import Tempura
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+class SceneDelegate: UIResponder, UIWindowSceneDelegate, RootInstaller {
 
     var window: UIWindow?
-
+    var store: Store<AppState, DependenciesContainer>!
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-
-        // Create the SwiftUI view that provides the window contents.
-        let contentView = ContentView()
-
-        // Use a UIHostingController as window root view controller.
-        if let windowScene = scene as? UIWindowScene {
-            let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = UIHostingController(rootView: contentView)
-            self.window = window
-            window.makeKeyAndVisible()
-        }
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        store = Store<AppState, DependenciesContainer>()
+        window = UIWindow(frame: UIScreen.main.bounds)
+        let navigator: Navigator! = self.store!.dependencies.navigator
+        navigator.start(using: self, in: self.window!, at: Screen.home)
+        window?.windowScene = windowScene
     }
-
+        
+    func installRoot(identifier: RouteElementIdentifier, context: Any?, completion: () -> ()) -> Bool {
+      if identifier == Screen.home.rawValue {
+        // let viewController = MainViewController(store: self.store)
+        // self.window?.rootViewController = viewController
+        let tabBarController = MainTabbar(store: self.store)
+        self.window?.rootViewController = tabBarController
+        self.window?.makeKeyAndVisible()
+        completion()
+        return true
+      }
+      return false
+    }
+    
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.

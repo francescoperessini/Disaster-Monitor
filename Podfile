@@ -6,6 +6,7 @@ target 'Disaster Monitor' do
   use_frameworks!
   pod 'Katana'
   pod 'Tempura'
+  pod 'PinLayout'
   # Pods for Disaster Monitor
 
   target 'Disaster MonitorTests' do
