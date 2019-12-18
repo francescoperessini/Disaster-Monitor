@@ -3,7 +3,7 @@ import Katana
 import Tempura
 import Hydra
 import Alamofire
-
+import SwiftyJSON 
 
 final class DependenciesContainer: NavigationProvider {
     let promisableDispatch: PromisableStoreDispatch
@@ -32,19 +32,19 @@ final class DependenciesContainer: NavigationProvider {
 }
 
 final class APIManager{
-    func download() -> Promise<String> {
+    func getEvent() -> Promise<String> {
         return Promise { fulfill, reject in
             asyncTask { result, error in
                 if result != nil {
                     fulfill(result)
                 } else {
-                    reject(Error.invalidResult)
+                    reject(error.invalidResult)
                 }
             }
         }
     }
     
-    func asyncTask(){
+    func asyncTask(fulfill, reject){
         Alamofire.request("http://jsonplaceholder.typicode.com/posts").responseData().then { data -> Void in
 
             let json = try JSON(data: data)

@@ -104,14 +104,6 @@ class EventCell: UICollectionViewCell, ConfigurableCell, SizeableCell {
 class MapView : UIView, ViewControllerModellableView{
     var mapView : GMSMapView!
     func setup() {
-        /*let camera = GMSCameraPosition.camera(withLatitude: 1, longitude: 103, zoom: 12)
-        self.mapView = GMSMapView.map(withFrame: .zero, camera: camera)
-        self.mapView.settings.compassButton = true
-        self.mapView.settings.tiltGestures = false*/
-        
-        
-        
-        
         let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6.0)
         self.mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         self.mapView.settings.tiltGestures = true
@@ -138,7 +130,7 @@ class MapView : UIView, ViewControllerModellableView{
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.mapView.pin.height(200).width(400)
+        self.mapView.pin.height(200).width(414)
     }
 }
 

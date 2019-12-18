@@ -11,7 +11,7 @@ import PinLayout
 
 struct ListViewModel: ViewModel, Equatable {
     let num = 0
-    let list = [["Terremoto Scaninvia", "Magnitudo: 9 AreeColpite: A B C", "map"],["Terremoto Scaninvia", "Magnitudo: 9 AreeColpite: A B C", "map"],["Terremoto Scaninvia", "Magnitudo: 9 AreeColpite: A B C", "map"],]
+    let list = [["Terremoto Scandinavia", "Magnitudo: 9 AreeColpite: A B C", "map"],["Terremoto Bresso", "Magnitudo: 9 AreeColpite: A B C", "map"],["Terremoto Puglia", "Magnitudo: 9 AreeColpite: A B C", "map"],]
 }
 
 

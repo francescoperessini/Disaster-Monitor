@@ -35,7 +35,7 @@ struct TestStateUpdater: StateUpdater {
 struct GetEvent: SideEffect {
     func sideEffect(_ context: SideEffectContext<AppState, DependenciesContainer>) throws{
         context.dependencies.ApiManager
-            .download()
+            .getEvent()
             .thenDispatch({ newValue in TestStateUpdater(newValue: newValue) })
     }
 }

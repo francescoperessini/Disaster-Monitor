@@ -24,6 +24,7 @@ struct MainViewModel: ViewModelWithState {
 class MainView: UIView, ViewControllerModellableView {   //
    
     let title = UILabel()
+    let filter = UIImageView()
     let container = UIView()
     
     let events = ListView()
@@ -34,6 +35,7 @@ class MainView: UIView, ViewControllerModellableView {   //
         self.addSubview(self.title)
         self.addSubview(self.container)
         self.addSubview(self.events)
+        self.addSubview(self.filter)
         self.events.setup()
         self.events.style()
     }
@@ -42,6 +44,7 @@ class MainView: UIView, ViewControllerModellableView {   //
     func style() {      // 2. Cosmetics, chiamata una sola volta
         self.title.text = "Home Page"
         self.title.font = UIFont(name: "Futura-Bold", size: 25)
+        
     }
 
     // update
@@ -56,6 +59,8 @@ class MainView: UIView, ViewControllerModellableView {   //
     override func layoutSubviews() {
         super.layoutSubviews()
         title.pin.top(pin.safeArea).left(pin.safeArea).width(100).aspectRatio().margin(20).sizeToFit()
+        filter.pin.after(of: title).top(pin.safeArea).marginLeft(190).marginTop(20).width(30).height(30)
+        filter.image = UIImage(systemName: "line.horizontal.3.decrease.circle.fill")!
         events.pin.below(of: title).left().right().bottom().marginTop(15)
     }
 }
