@@ -11,7 +11,7 @@ import PinLayout
 
 struct ListViewModel: ViewModel, Equatable {
     let num = 0
-    let list = ["ciao1","ciao2","ciao3","ciao4","ciao5"]
+    let list = [["Terremoto Scaninvia", "Magnitudo: 9 AreeColpite: A B C", "map"],["Terremoto Scaninvia", "Magnitudo: 9 AreeColpite: A B C", "map"],["Terremoto Scaninvia", "Magnitudo: 9 AreeColpite: A B C", "map"],]
 }
 
 
@@ -41,14 +41,15 @@ class ListView: UIView, ModellableView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.scrollView.pin.top(pin.safeArea).left(pin.safeArea).width(100)
+        self.scrollView.pin.all()
         self.eventsListView.frame = self.scrollView.frame.bounds
     }
     
     func update(oldModel: ListViewModel?) {
         guard let model = self.model else { return }
-        let attractions = model.list.map { EventCellViewModel(identifier: $0) }
-        self.eventsListView.source = SimpleSource<EventCellViewModel>(attractions)
+        let events = model.list.map { EventCellViewModel(identifier: $0[0], description: $0[1], map: $0[2]) }
+        self.eventsListView.source = SimpleSource<EventCellViewModel>(events)
+        
         self.setNeedsLayout()
     }
         

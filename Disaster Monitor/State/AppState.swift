@@ -8,6 +8,7 @@
 
 import Foundation
 import Katana
+import GoogleMaps
 
 struct AppState : State {
     var num : Int = 0

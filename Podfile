@@ -8,6 +8,8 @@ target 'Disaster Monitor' do
   pod 'Tempura'
   pod 'PinLayout'
   pod 'DeepDiff'
+  pod 'GoogleMaps'
+  pod 'GooglePlaces'
   # Pods for Disaster Monitor
 
   target 'Disaster MonitorTests' do

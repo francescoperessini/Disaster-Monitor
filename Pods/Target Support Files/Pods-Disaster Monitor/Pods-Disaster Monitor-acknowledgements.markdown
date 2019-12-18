@@ -27,6 +27,14 @@ Licensed under the **MIT** license
 > SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
+## GoogleMaps
+
+Copyright 2019 Google
+
+## GooglePlaces
+
+Copyright 2019 Google
+
 ## HydraAsync
 
 Copyright (c) 2015 daniele margutti <me@danielemargutti.com>

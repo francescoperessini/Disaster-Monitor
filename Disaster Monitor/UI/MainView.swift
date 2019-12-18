@@ -17,7 +17,6 @@ struct MainViewModel: ViewModelWithState {
     init?(state: AppState) {
         self.descr = "\(state.num)"
     }
-
 }
 
 
@@ -29,13 +28,14 @@ class MainView: UIView, ViewControllerModellableView {   //
     
     let events = ListView()
     
-    
     // setup
     func setup() {      // 1. Assemblaggio della view, chiamata una volta sola
         backgroundColor = .white
-        addSubview(title)
-        addSubview(container)
-        addSubview(events)
+        self.addSubview(self.title)
+        self.addSubview(self.container)
+        self.addSubview(self.events)
+        self.events.setup()
+        self.events.style()
     }
 
     // style
@@ -47,14 +47,16 @@ class MainView: UIView, ViewControllerModellableView {   //
     // update
     func update(oldModel: MainViewModel?) {  // Chiamato ad ogni aggiornamento di stato
         guard let model = self.model else { return }
-        self.title.text = model.descr
-        events.model = ListViewModel()
+        let eventListViewModel = ListViewModel()
+        self.events.model = eventListViewModel
+        self.setNeedsLayout()
     }
 
     // layout
     override func layoutSubviews() {
+        super.layoutSubviews()
         title.pin.top(pin.safeArea).left(pin.safeArea).width(100).aspectRatio().margin(20).sizeToFit()
-        events.pin.below(of: title)
+        events.pin.below(of: title).left().right().bottom().marginTop(15)
     }
 }
 
@@ -80,7 +82,7 @@ final class MainTabbar : UITabBarController{
     lazy var home3ViewController: UIViewController = {
         let v = UIViewController()
         v.view.backgroundColor = .purple
-        v.tabBarItem.title = "My Profile"
+        v.tabBarItem.title = "Settings"
         v.tabBarItem.image = UIImage(systemName: "gear")
         return v
     }()

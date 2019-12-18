@@ -33,6 +33,7 @@ class MainViewController: ViewController<MainView> {  // Extension of UIViewCont
         super.viewDidLoad()
         self.store.dispatch(DummyStateUpdater())
     }
+    
 }
 
 
