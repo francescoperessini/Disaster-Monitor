@@ -10,6 +10,7 @@ target 'Disaster Monitor' do
   pod 'DeepDiff'
   pod 'GoogleMaps'
   pod 'GooglePlaces'
+  pod 'Alamofire'
   # Pods for Disaster Monitor
 
   target 'Disaster MonitorTests' do

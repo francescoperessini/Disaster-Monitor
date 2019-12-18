@@ -8,10 +8,12 @@
 
 import Foundation
 import Katana
+import Hydra
 import GoogleMaps
 
 struct AppState : State {
     var num : Int = 0
+    var resp : String = ""
 }
 
 
@@ -20,3 +22,23 @@ struct DummyStateUpdater: StateUpdater {
         state.num += 1
     }
 }
+
+
+struct TestStateUpdater: StateUpdater {
+  let newValue: String
+  
+  func updateState(_ state: inout AppState) {
+    state.resp = self.newValue
+  }
+}
+
+struct GetEvent: SideEffect {
+    func sideEffect(_ context: SideEffectContext<AppState, DependenciesContainer>) throws{
+        context.dependencies.ApiManager
+            .download()
+            .thenDispatch({ newValue in TestStateUpdater(newValue: newValue) })
+    }
+}
+
+
+

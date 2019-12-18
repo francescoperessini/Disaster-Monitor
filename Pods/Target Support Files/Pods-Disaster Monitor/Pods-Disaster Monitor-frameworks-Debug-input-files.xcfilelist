@@ -1,4 +1,5 @@
 ${PODS_ROOT}/Target Support Files/Pods-Disaster Monitor/Pods-Disaster Monitor-frameworks.sh
+${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
 ${BUILT_PRODUCTS_DIR}/DeepDiff/DeepDiff.framework
 ${BUILT_PRODUCTS_DIR}/HydraAsync/Hydra.framework
 ${BUILT_PRODUCTS_DIR}/Katana/Katana.framework

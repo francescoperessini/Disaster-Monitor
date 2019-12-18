@@ -2,12 +2,14 @@ import Foundation
 import Katana
 import Tempura
 import Hydra
+import Alamofire
 
 
 final class DependenciesContainer: NavigationProvider {
     let promisableDispatch: PromisableStoreDispatch
     var getAppState: () -> AppState
     var navigator: Navigator = Navigator()
+    let ApiManager = APIManager()
     
     var getState: () -> State {
         return self.getAppState
@@ -26,5 +28,30 @@ final class DependenciesContainer: NavigationProvider {
             return state
         }
         self.init(dispatch: dispatch, getAppState: getAppState)
+    }
+}
+
+final class APIManager{
+    func download() -> Promise<String> {
+        return Promise { fulfill, reject in
+            asyncTask { result, error in
+                if result != nil {
+                    fulfill(result)
+                } else {
+                    reject(Error.invalidResult)
+                }
+            }
+        }
+    }
+    
+    func asyncTask(){
+        Alamofire.request("http://jsonplaceholder.typicode.com/posts").responseData().then { data -> Void in
+
+            let json = try JSON(data: data)
+            print(json)
+            
+        }.catch { error -> Void in
+            print("Error: \(error)")
+        }
     }
 }
