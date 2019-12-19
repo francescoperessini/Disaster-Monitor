@@ -11,6 +11,8 @@ target 'Disaster Monitor' do
   pod 'GoogleMaps'
   pod 'GooglePlaces'
   pod 'Alamofire'
+  pod 'PromiseKit'
+  pod 'SwiftyJSON'
   # Pods for Disaster Monitor
 
   target 'Disaster MonitorTests' do
