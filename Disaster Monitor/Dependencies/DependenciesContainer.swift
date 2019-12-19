@@ -32,26 +32,31 @@ final class DependenciesContainer: NavigationProvider {
 }
 
 final class APIManager{
-    func getEvent() -> Promise<String> {
-        return Promise { fulfill, reject in
-            asyncTask { result, error in
-                if result != nil {
-                    fulfill(result)
-                } else {
-                    reject(error.invalidResult)
+    func getEvent() -> Promise<JSON> {
+        return Promise<JSON>(in: .background) { resolve, reject, status in
+            Alamofire.request("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson").responseJSON { response in
+                if let data = response.data{
+                    if let json = try? JSON(data: data){
+                        resolve(json)
+                    }
                 }
             }
         }
     }
-    
-    func asyncTask(fulfill, reject){
-        Alamofire.request("http://jsonplaceholder.typicode.com/posts").responseData().then { data -> Void in
 
-            let json = try JSON(data: data)
-            print(json)
-            
-        }.catch { error -> Void in
-            print("Error: \(error)")
-        }
-    }
+
+/*Alamofire.request(url).responseJSON { response in
+        if let data = response.data {
+            if let json = try? JSON(data: data) {
+                for item in json["books"].arrayValue {
+                    var outputString: String
+                    //print(item["author"])
+                    outputString = item["author"].stringValue
+                    //urlOfProjectAsset.append(outputString)
+                    self.authors.append(outputString)
+                    //print("authors.count: \(self.authors.count)")
+                }
+            self.getAuthorsCount() // I added this line of code.
+            }
+        }*/
 }

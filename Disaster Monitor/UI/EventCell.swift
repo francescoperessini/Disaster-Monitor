@@ -21,7 +21,7 @@ public protocol SizeableCell: ModellableView {
 struct EventCellViewModel: ViewModel {
     let identifier: String
     let description: String
-    let map : String
+    let magnitudo : String
     
     static func == (l: EventCellViewModel, r: EventCellViewModel) -> Bool {
         if l.identifier != r.identifier {return false}
@@ -35,7 +35,7 @@ class EventCell: UICollectionViewCell, ConfigurableCell, SizeableCell {
     static func size(for model: EventCellViewModel) -> CGSize { //MAGIC FUNCTION
         //let textWidth = UIScreen.main.bounds.width * AttractionCell.maxTextWidth
         //let textHeight = model.attractionName.height(constraintedWidth: textWidth, font: font)
-        let textHeight: CGFloat = 250
+        let textHeight: CGFloat = 260
         return CGSize(width: UIScreen.main.bounds.width,
                       height: textHeight + 2)
     }
@@ -45,6 +45,7 @@ class EventCell: UICollectionViewCell, ConfigurableCell, SizeableCell {
     //MARK: Subviews
     var nameLabel = UILabel()
     var descriptionLabel = UILabel()
+    var magnitudoLabel = UILabel()
     var map = MapView()
     var test_view = UIView()
     
@@ -64,6 +65,7 @@ class EventCell: UICollectionViewCell, ConfigurableCell, SizeableCell {
         self.addSubview(self.nameLabel)
         self.addSubview(self.descriptionLabel)
         self.addSubview(self.test_view)
+        self.addSubview(self.magnitudoLabel)
         self.map.setup()
         self.map.style()
         self.addSubview(self.map)
@@ -90,6 +92,10 @@ class EventCell: UICollectionViewCell, ConfigurableCell, SizeableCell {
         //self.test_view.pin.height(10).width(20)
         self.map.pin.below(of: descriptionLabel)
         self.test_view.pin.below(of: descriptionLabel)
+        //self.magnitudoLabel.pin.after(of: nameLabel).sizeToFit().marginRight(0)
+        self.magnitudoLabel.pin.right(pin.safeArea).sizeToFit().marginRight(10)
+        self.magnitudoLabel.font = UIFont(name: "Futura", size: 12)
+        self.magnitudoLabel.textColor = .systemGray
     }
     
     //MARK: Update
@@ -97,6 +103,7 @@ class EventCell: UICollectionViewCell, ConfigurableCell, SizeableCell {
         guard let model = self.model else {return}
         nameLabel.text = model.identifier
         descriptionLabel.text = model.description
+        magnitudoLabel.text = model.magnitudo
         self.setNeedsLayout()
     }
 }

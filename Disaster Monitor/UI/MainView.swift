@@ -24,10 +24,16 @@ struct MainViewModel: ViewModelWithState {
 class MainView: UIView, ViewControllerModellableView {   //
    
     let title = UILabel()
-    let filter = UIImageView()
+    let filter = UIButton()
     let container = UIView()
-    
     let events = ListView()
+    
+    var didTapFilter: Interaction?
+    
+    @objc func didTapFilterFunc() {
+        didTapFilter?()
+    }
+    
     
     // setup
     func setup() {      // 1. Assemblaggio della view, chiamata una volta sola
@@ -38,6 +44,7 @@ class MainView: UIView, ViewControllerModellableView {   //
         self.addSubview(self.filter)
         self.events.setup()
         self.events.style()
+        filter.addTarget(self, action: #selector(didTapFilterFunc), for: .touchUpInside)
     }
 
     // style
@@ -59,8 +66,9 @@ class MainView: UIView, ViewControllerModellableView {   //
     override func layoutSubviews() {
         super.layoutSubviews()
         title.pin.top(pin.safeArea).left(pin.safeArea).width(100).aspectRatio().margin(20).sizeToFit()
-        filter.pin.after(of: title).top(pin.safeArea).marginLeft(190).marginTop(20).width(30).height(30)
-        filter.image = UIImage(systemName: "line.horizontal.3.decrease.circle.fill")!
+        filter.pin.after(of: title).top(pin.safeArea).marginLeft(190).marginTop(20).width(50).height(50)
+        filter.setImage(UIImage(systemName: "line.horizontal.3.decrease.circle")!, for: .normal)
+        filter.tintColor = .systemGray2
         events.pin.below(of: title).left().right().bottom().marginTop(15)
     }
 }
@@ -77,8 +85,7 @@ final class MainTabbar : UITabBarController{
     }()
     
     lazy var home2ViewController: UIViewController = {
-        let v = UIViewController()
-        v.view.backgroundColor = .green
+        let v = ProfileViewController(store: store)
         v.tabBarItem.title = "My Profile"
         v.tabBarItem.image = UIImage(systemName: "person.fill")
         return v

@@ -10,24 +10,26 @@ import Foundation
 import Katana
 import Hydra
 import GoogleMaps
+import SwiftyJSON
 
 struct AppState : State {
     var num : Int = 0
-    var resp : String = ""
+    var resp : JSON = ""
 }
 
 
 struct DummyStateUpdater: StateUpdater {
     func updateState(_ state: inout AppState) {
-        state.num += 1
+        print("CLICK")
     }
 }
 
 
 struct TestStateUpdater: StateUpdater {
-  let newValue: String
-  
+  let newValue: JSON
+
   func updateState(_ state: inout AppState) {
+    print(self.newValue)
     state.resp = self.newValue
   }
 }
@@ -36,7 +38,10 @@ struct GetEvent: SideEffect {
     func sideEffect(_ context: SideEffectContext<AppState, DependenciesContainer>) throws{
         context.dependencies.ApiManager
             .getEvent()
-            .thenDispatch({ newValue in TestStateUpdater(newValue: newValue) })
+            .then{
+                //newValue in TestStateUpdater(newValue: newValue)
+                newValue in context.dispatch(TestStateUpdater(newValue: newValue))
+        }
     }
 }
 

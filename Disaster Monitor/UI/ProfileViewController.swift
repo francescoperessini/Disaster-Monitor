@@ -16,7 +16,7 @@ import PinLayout
 
 // MARK: - View Controller
 // Ha la responsabilità di passare alla view un nuovo viewmodel a ogni update
-class MainViewController: ViewController<MainView> {  // Extension of UIViewController
+class ProfileViewController: ViewController<ProfileView> {  // Extension of UIViewController
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -30,18 +30,4 @@ class MainViewController: ViewController<MainView> {  // Extension of UIViewCont
         super.viewDidLoad()
         self.store.dispatch(DummyStateUpdater())
     }
-    
-    override func setupInteraction() {
-        rootView.didTapFilter = { [unowned self] in
-            self.dispatch(GetEvent())
-        }
-    }
-    
-}
-
-
-
-
-enum Screen: String {
-    case home
 }
