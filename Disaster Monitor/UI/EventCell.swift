@@ -22,6 +22,7 @@ struct EventCellViewModel: ViewModel {
     let identifier: String
     let magnitudo: String
     let description: String
+    let coord: String
     
     static func == (l: EventCellViewModel, r: EventCellViewModel) -> Bool {
         if l.identifier != r.identifier {return false}
@@ -47,7 +48,6 @@ class EventCell: UICollectionViewCell, ConfigurableCell, SizeableCell {
     var descriptionLabel = UILabel()
     var magnitudoLabel = UILabel()
     var map = MapView()
-    var test_view = UIView()
     
     //MARK: Init
     override init(frame: CGRect) {
@@ -64,21 +64,16 @@ class EventCell: UICollectionViewCell, ConfigurableCell, SizeableCell {
     func setup() {
         self.addSubview(self.nameLabel)
         self.addSubview(self.descriptionLabel)
-        self.addSubview(self.test_view)
         self.addSubview(self.magnitudoLabel)
         self.map.setup()
         self.map.style()
         self.addSubview(self.map)
-        
-        
     }
     
     //MARK: Style
     func style() {
         //layoutSubviews()
         self.backgroundColor = .systemBackground
-        test_view.backgroundColor = .systemRed
-        
     }
     
     // MARK: Layout
@@ -89,10 +84,7 @@ class EventCell: UICollectionViewCell, ConfigurableCell, SizeableCell {
         self.descriptionLabel.textColor = .systemGray
         self.descriptionLabel.pin.below(of: nameLabel).left(30).sizeToFit()
         self.descriptionLabel.font = UIFont(name: "Futura", size: 15)
-        //self.test_view.pin.height(10).width(20)
         self.map.pin.below(of: descriptionLabel)
-        self.test_view.pin.below(of: descriptionLabel)
-        //self.magnitudoLabel.pin.after(of: nameLabel).sizeToFit().marginRight(0)
         self.magnitudoLabel.pin.right(pin.safeArea).sizeToFit().marginRight(10)
         self.magnitudoLabel.font = UIFont(name: "Futura", size: 12)
         self.magnitudoLabel.textColor = .systemGray
@@ -101,29 +93,37 @@ class EventCell: UICollectionViewCell, ConfigurableCell, SizeableCell {
     //MARK: Update
     func update(oldModel: EventCellViewModel?) {
         guard let model = self.model else {return}
-        nameLabel.text = model.identifier
-        descriptionLabel.text = model.description
-        magnitudoLabel.text = model.magnitudo
-        self.setNeedsLayout()
+        if model.identifier != ""{
+            nameLabel.text = model.identifier
+            descriptionLabel.text = model.description
+            magnitudoLabel.text = model.magnitudo
+            var coord1 = Double(model.coord.split(separator: " ")[0]) ?? 0
+            var coord2 = Double(model.coord.split(separator: " ")[1]) ?? 0
+            var coordinate1: CLLocationDegrees = coord1
+            var coordinate2: CLLocationDegrees = coord2
+            map.mapView.camera = GMSCameraPosition.camera(withLatitude: coord2, longitude: coord1, zoom: 10)
+            map.mapView.animate(to: map.mapView.camera)
+            let marker = GMSMarker()
+            marker.position = CLLocationCoordinate2D(latitude: coord2, longitude: coord1)
+            marker.map = map.mapView
+            self.setNeedsLayout()
+        }
     }
 }
 
+struct MapViewModel: ViewModel, Equatable {
+    var coordList : [[String]]
+}
 
-
-class MapView : UIView, ViewControllerModellableView{
+class MapView : UIView, ModellableView{
     var mapView : GMSMapView!
     func setup() {
         let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6.0)
         self.mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
-        self.mapView.settings.tiltGestures = true
-        self.mapView.settings.compassButton = true
         self.mapView.animate(to: camera)
         let marker = GMSMarker()
         marker.position = CLLocationCoordinate2D(latitude: -33.86, longitude: 151.20)
-        marker.title = "Sydney"
-        marker.snippet = "Australia"
         marker.map = mapView
-        
         self.addSubview(self.mapView)
         
     }
@@ -133,6 +133,7 @@ class MapView : UIView, ViewControllerModellableView{
     }
     
     func update(oldModel: MainViewModel?) {
+        guard let model = self.model else { return }
         self.setNeedsLayout()
         
     }

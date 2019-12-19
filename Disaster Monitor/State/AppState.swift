@@ -17,8 +17,7 @@ struct AppState : State {
     var resp : JSON = ""
     var name : String = ""
     var surname : String = ""
-    var eventsList : [[String]] = [["","", ""]]
-    var coordList: [[Int]] = [[0,0,0]]
+    var eventsList : [[String]] = [["","","","","a a"]]
     
     //var eventsList : [[String]] = [["a", "b"]]
 }
@@ -44,11 +43,13 @@ struct EventsStateUpdater: StateUpdater {
   let newValue: JSON
 
   func updateState(_ state: inout AppState) {
-    let arrayNames =  newValue["features"].arrayValue.map {$0["properties"]["title"].stringValue}
+    let arrayNames =  newValue["features"].arrayValue.map {$0["properties"]["place"].stringValue}
     let magnitudo = newValue["features"].arrayValue.map {$0["properties"]["mag"].stringValue}
     let description = newValue["features"].arrayValue.map {$0["properties"]["type"].stringValue}
+    let coord = newValue["features"].arrayValue.map {"\($0["geometry"]["coordinates"][0].stringValue) \($0["geometry"]["coordinates"][1].stringValue)"}
     
-    let result = zip(arrayNames, magnitudo, description).map {[$0, $1, $2] }
+    //let result = zip(arrayNames, magnitudo, description, coord).map {[$0, $1, $2, $3] }
+    let result = zip(arrayNames, magnitudo, description, coord).map {[$0, $1, $2, $3] }
     state.eventsList = result
 
   }
