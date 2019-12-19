@@ -10,8 +10,14 @@ import Tempura
 import PinLayout
 
 struct ListViewModel: ViewModel, Equatable {
+    
     let num = 0
-    let list = [["Terremoto Scandinavia", "Magnitudo: 9 AreeColpite: A B C", "1.2"],["Terremoto Bresso", "Magnitudo: 9 AreeColpite: A B C", "1.4"],["Terremoto Puglia", "Magnitudo: 9 AreeColpite: A B C", "0.9"],["Terremoto Puglia", "Magnitudo: 9 AreeColpite: A B C", "0.9"],["Terremoto Puglia", "Magnitudo: 9 AreeColpite: A B C", "0.9"],["Terremoto Puglia", "Magnitudo: 9 AreeColpite: A B C", "0.9"],["Terremoto Puglia", "Magnitudo: 9 AreeColpite: A B C", "0.9"],]
+    /*let list = [["Terremoto Scandinavia", "Magnitudo: 9 AreeColpite: A B C", "1.2"],["Terremoto Bresso", "Magnitudo: 9 AreeColpite: A B C", "1.4"],["Terremoto Puglia", "Magnitudo: 9 AreeColpite: A B C", "0.9"],["Terremoto Puglia", "Magnitudo: 9 AreeColpite: A B C", "0.9"],["Terremoto Puglia", "Magnitudo: 9 AreeColpite: A B C", "0.9"],["Terremoto Puglia", "Magnitudo: 9 AreeColpite: A B C", "0.9"],["Terremoto Puglia", "Magnitudo: 9 AreeColpite: A B C", "0.9"],]*/
+    var list : [[String]]
+    
+    init(state: AppState) {
+        self.list = state.eventsList
+    }
 }
 
 
@@ -47,7 +53,8 @@ class ListView: UIView, ModellableView {
     
     func update(oldModel: ListViewModel?) {
         guard let model = self.model else { return }
-        let events = model.list.map { EventCellViewModel(identifier: $0[0], description: $0[1], magnitudo: $0[2]) }
+        //let events = model.list.map { EventCellViewModel(identifier: $0[0], description: $0[1], magnitudo: $0[2]) }
+        let events = model.list.map { EventCellViewModel(identifier: $0[0], magnitudo:$0[1], description: $0[2] ) }
         self.eventsListView.source = SimpleSource<EventCellViewModel>(events)
         
         self.setNeedsLayout()

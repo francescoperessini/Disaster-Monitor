@@ -14,8 +14,10 @@ import Tempura
 struct MainViewModel: ViewModelWithState {
     // Per ogni schermo c'è una sola view con un ViewModelWithState
     var descr: String
+    var state: AppState
     init?(state: AppState) {
         self.descr = "\(state.num)"
+        self.state = state
     }
 }
 
@@ -57,7 +59,7 @@ class MainView: UIView, ViewControllerModellableView {   //
     // update
     func update(oldModel: MainViewModel?) {  // Chiamato ad ogni aggiornamento di stato
         guard let model = self.model else { return }
-        let eventListViewModel = ListViewModel()
+        let eventListViewModel = ListViewModel(state: model.state)
         self.events.model = eventListViewModel
         self.setNeedsLayout()
     }

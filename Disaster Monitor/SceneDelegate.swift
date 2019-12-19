@@ -34,6 +34,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, RootInstaller {
         let tabBarController = MainTabbar(store: self.store)
         self.window?.rootViewController = tabBarController
         self.window?.makeKeyAndVisible()
+        
         completion()
         return true
       }

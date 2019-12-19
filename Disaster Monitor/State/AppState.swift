@@ -17,6 +17,10 @@ struct AppState : State {
     var resp : JSON = ""
     var name : String = ""
     var surname : String = ""
+    var eventsList : [[String]] = [["","", ""]]
+    var coordList: [[Int]] = [[0,0,0]]
+    
+    //var eventsList : [[String]] = [["a", "b"]]
 }
 
 
@@ -36,13 +40,27 @@ struct TestStateUpdater: StateUpdater {
   }
 }
 
+struct EventsStateUpdater: StateUpdater {
+  let newValue: JSON
+
+  func updateState(_ state: inout AppState) {
+    let arrayNames =  newValue["features"].arrayValue.map {$0["properties"]["title"].stringValue}
+    let magnitudo = newValue["features"].arrayValue.map {$0["properties"]["mag"].stringValue}
+    let description = newValue["features"].arrayValue.map {$0["properties"]["type"].stringValue}
+    
+    let result = zip(arrayNames, magnitudo, description).map {[$0, $1, $2] }
+    state.eventsList = result
+
+  }
+}
+
 struct GetEvent: SideEffect {
     func sideEffect(_ context: SideEffectContext<AppState, DependenciesContainer>) throws{
         context.dependencies.ApiManager
             .getEvent()
             .then{
-                //newValue in TestStateUpdater(newValue: newValue)
-                newValue in context.dispatch(TestStateUpdater(newValue: newValue))
+                newValue in context.dispatch(EventsStateUpdater(newValue: newValue))
+                
         }
     }
 }

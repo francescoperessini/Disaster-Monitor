@@ -20,8 +20,8 @@ public protocol SizeableCell: ModellableView {
 // MARK: View Model
 struct EventCellViewModel: ViewModel {
     let identifier: String
+    let magnitudo: String
     let description: String
-    let magnitudo : String
     
     static func == (l: EventCellViewModel, r: EventCellViewModel) -> Bool {
         if l.identifier != r.identifier {return false}
@@ -107,6 +107,8 @@ class EventCell: UICollectionViewCell, ConfigurableCell, SizeableCell {
         self.setNeedsLayout()
     }
 }
+
+
 
 class MapView : UIView, ViewControllerModellableView{
     var mapView : GMSMapView!

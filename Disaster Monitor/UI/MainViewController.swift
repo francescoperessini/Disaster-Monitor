@@ -19,6 +19,7 @@ import PinLayout
 class MainViewController: ViewController<MainView> {  // Extension of UIViewController
     
     override func viewWillAppear(_ animated: Bool) {
+        self.dispatch(GetEvent())
         super.viewWillAppear(animated)
     }
     
@@ -28,6 +29,7 @@ class MainViewController: ViewController<MainView> {  // Extension of UIViewCont
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.dispatch(GetEvent())
         self.store.dispatch(DummyStateUpdater())
     }
     
@@ -38,9 +40,6 @@ class MainViewController: ViewController<MainView> {  // Extension of UIViewCont
     }
     
 }
-
-
-
 
 enum Screen: String {
     case home
