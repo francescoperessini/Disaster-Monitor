@@ -15,6 +15,8 @@ import SwiftyJSON
 struct AppState : State {
     var num : Int = 0
     var resp : JSON = ""
+    var name : String = ""
+    var surname : String = ""
 }
 
 

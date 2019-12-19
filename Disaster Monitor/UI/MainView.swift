@@ -92,8 +92,7 @@ final class MainTabbar : UITabBarController{
     }()
     
     lazy var home3ViewController: UIViewController = {
-        let v = UIViewController()
-        v.view.backgroundColor = .purple
+        let v = SettingsViewController(store: store)
         v.tabBarItem.title = "Settings"
         v.tabBarItem.image = UIImage(systemName: "gear")
         return v
