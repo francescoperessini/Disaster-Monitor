@@ -30,7 +30,6 @@ class MainViewController: ViewController<MainView> {  // Extension of UIViewCont
     override func viewDidLoad() {
         super.viewDidLoad()
         self.dispatch(GetEvent())
-        self.store.dispatch(DummyStateUpdater())
     }
     
     override func setupInteraction() {

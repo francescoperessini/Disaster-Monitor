@@ -97,10 +97,8 @@ class EventCell: UICollectionViewCell, ConfigurableCell, SizeableCell {
             nameLabel.text = model.identifier
             descriptionLabel.text = model.description
             magnitudoLabel.text = model.magnitudo
-            var coord1 = Double(model.coord.split(separator: " ")[0]) ?? 0
-            var coord2 = Double(model.coord.split(separator: " ")[1]) ?? 0
-            var coordinate1: CLLocationDegrees = coord1
-            var coordinate2: CLLocationDegrees = coord2
+            let coord1 = Double(model.coord.split(separator: " ")[0]) ?? 0
+            let coord2 = Double(model.coord.split(separator: " ")[1]) ?? 0
             map.mapView.camera = GMSCameraPosition.camera(withLatitude: coord2, longitude: coord1, zoom: 10)
             map.mapView.animate(to: map.mapView.camera)
             let marker = GMSMarker()
@@ -118,12 +116,8 @@ struct MapViewModel: ViewModel, Equatable {
 class MapView : UIView, ModellableView{
     var mapView : GMSMapView!
     func setup() {
-        let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6.0)
+        let camera = GMSCameraPosition.camera(withLatitude: 999, longitude: 999, zoom: 0)
         self.mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
-        self.mapView.animate(to: camera)
-        let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: -33.86, longitude: 151.20)
-        marker.map = mapView
         self.addSubview(self.mapView)
         
     }

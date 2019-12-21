@@ -13,31 +13,17 @@ import GoogleMaps
 import SwiftyJSON
 
 struct AppState : State {
-    var num : Int = 0
-    var resp : JSON = ""
     var name : String = ""
     var surname : String = ""
     var eventsList : [[String]] = [["","","","","a a"]]
+    var events: [Event] = []
+    var user: Profile = Profile(name: "", surname: "")
     
-    //var eventsList : [[String]] = [["a", "b"]]
-}
-
-
-struct DummyStateUpdater: StateUpdater {
-    func updateState(_ state: inout AppState) {
-        print("CLICK")
+    var greaterOneList: [Event]{
+        return self.events.filter { $0.greaterOne }
     }
 }
 
-
-struct TestStateUpdater: StateUpdater {
-  let newValue: JSON
-
-  func updateState(_ state: inout AppState) {
-    print(self.newValue)
-    state.resp = self.newValue
-  }
-}
 
 struct EventsStateUpdater: StateUpdater {
   let newValue: JSON
@@ -48,10 +34,10 @@ struct EventsStateUpdater: StateUpdater {
     let description = newValue["features"].arrayValue.map {$0["properties"]["type"].stringValue}
     let coord = newValue["features"].arrayValue.map {"\($0["geometry"]["coordinates"][0].stringValue) \($0["geometry"]["coordinates"][1].stringValue)"}
     
-    //let result = zip(arrayNames, magnitudo, description, coord).map {[$0, $1, $2, $3] }
     let result = zip(arrayNames, magnitudo, description, coord).map {[$0, $1, $2, $3] }
     state.eventsList = result
-
+    
+    state.events = result.map{Event(name: $0[0], descr: $0[1], magnitudo: $0[2], coordinates: $0[3])}
   }
 }
 
@@ -61,7 +47,6 @@ struct GetEvent: SideEffect {
             .getEvent()
             .then{
                 newValue in context.dispatch(EventsStateUpdater(newValue: newValue))
-                
         }
     }
 }

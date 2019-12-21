@@ -16,10 +16,8 @@ import GooglePlaces
 struct ProfileViewModel: ViewModelWithState {
     // Per ogni schermo c'è una sola view con un ViewModelWithState
     var name: String
-    var surname: String
     init?(state: AppState) {
-        self.name = "\(state.num)"
-        self.surname = "\(state.num)"
+        self.name = state.name
     }
 }
 

@@ -28,6 +28,5 @@ class ProfileViewController: ViewController<ProfileView> {  // Extension of UIVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.store.dispatch(DummyStateUpdater())
     }
 }

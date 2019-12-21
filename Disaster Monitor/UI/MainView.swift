@@ -13,10 +13,8 @@ import Tempura
 // MARK: - ViewModel
 struct MainViewModel: ViewModelWithState {
     // Per ogni schermo c'è una sola view con un ViewModelWithState
-    var descr: String
     var state: AppState
     init?(state: AppState) {
-        self.descr = "\(state.num)"
         self.state = state
     }
 }
