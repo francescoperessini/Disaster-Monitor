@@ -10,6 +10,7 @@ import Foundation
 import Katana
 import Tempura
 
+
 // MARK: - ViewModel
 struct SettingsViewModel: ViewModelWithState {
     // Per ogni schermo c'è una sola view con un ViewModelWithState
@@ -25,21 +26,18 @@ struct SettingsViewModel: ViewModelWithState {
 // MARK: - View
 class SettingsView: UIView, ViewControllerModellableView {   //
    
-    let title = UILabel()
     let settingsTableView = UITableView()
     
     
     // setup
     func setup() {      // 1. Assemblaggio della view, chiamata una volta sola
         backgroundColor = .systemBackground
-        self.addSubview(self.title)
         
     }
 
     // style
     func style() {      // 2. Cosmetics, chiamata una sola volta
-        self.title.text = "Home Page"
-        self.title.font = UIFont(name: "Futura-Bold", size: 25)
+        
     }
 
     // update
@@ -50,7 +48,5 @@ class SettingsView: UIView, ViewControllerModellableView {   //
     // layout
     override func layoutSubviews() {
         super.layoutSubviews()
-        title.pin.top(pin.safeArea).left(pin.safeArea).width(100).aspectRatio().margin(20).sizeToFit()
     }
 }
-

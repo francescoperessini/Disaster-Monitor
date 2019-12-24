@@ -12,14 +12,14 @@ import Tempura
 import PinLayout
 
 
-
-
 // MARK: - View Controller
 // Ha la responsabilità di passare alla view un nuovo viewmodel a ogni update
 class ProfileViewController: ViewController<ProfileView> {  // Extension of UIViewController
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationItem.title = "My Profile"
+        self.navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -28,5 +28,6 @@ class ProfileViewController: ViewController<ProfileView> {  // Extension of UIVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: nil)
     }
 }

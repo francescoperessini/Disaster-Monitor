@@ -25,13 +25,11 @@ struct ProfileViewModel: ViewModelWithState {
 // MARK: - View
 class ProfileView: UIView, ViewControllerModellableView {   //
    
-    let name = UILabel()
     let maps = BigMapView()
     
     // setup
     func setup() {      // 1. Assemblaggio della view, chiamata una volta sola
         backgroundColor = .white
-        self.addSubview(self.name)
         maps.setup()
         maps.style()
         self.addSubview(self.maps)
@@ -39,8 +37,6 @@ class ProfileView: UIView, ViewControllerModellableView {   //
 
     // style
     func style() {      // 2. Cosmetics, chiamata una sola volta
-        self.name.text = "Francesco Peressini"
-        self.name.font = UIFont(name: "Futura-Bold", size: 25)
         
     }
 
@@ -53,8 +49,7 @@ class ProfileView: UIView, ViewControllerModellableView {   //
     // layout
     override func layoutSubviews() {
         super.layoutSubviews()
-        name.pin.top(pin.safeArea).left(pin.safeArea).width(100).aspectRatio().margin(20).sizeToFit()
-        maps.pin.below(of: name)
+        maps.pin.top(pin.safeArea).width(100).aspectRatio().sizeToFit()
     }
 }
 

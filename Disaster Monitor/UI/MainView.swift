@@ -23,9 +23,9 @@ struct MainViewModel: ViewModelWithState {
 // MARK: - View
 class MainView: UIView, ViewControllerModellableView {   //
    
-    let title = UILabel()
-    let filter = UIButton()
-    let container = UIView()
+    //let title = UILabel()
+    //let filter = UIButton()
+    //let container = UIView()
     let events = ListView()
     
     var didTapFilter: Interaction?
@@ -38,19 +38,19 @@ class MainView: UIView, ViewControllerModellableView {   //
     // setup
     func setup() {      // 1. Assemblaggio della view, chiamata una volta sola
         backgroundColor = .white
-        self.addSubview(self.title)
-        self.addSubview(self.container)
+        //self.addSubview(self.title)
+        //self.addSubview(self.container)
         self.addSubview(self.events)
-        self.addSubview(self.filter)
+        //self.addSubview(self.filter)
         self.events.setup()
         self.events.style()
-        filter.addTarget(self, action: #selector(didTapFilterFunc), for: .touchUpInside)
+        //filter.addTarget(self, action: #selector(didTapFilterFunc), for: .touchUpInside)
     }
 
     // style
     func style() {      // 2. Cosmetics, chiamata una sola volta
-        self.title.text = "Home Page"
-        self.title.font = UIFont(name: "Futura-Bold", size: 25)
+        //self.title.text = "Home Page"
+        //self.title.font = UIFont(name: "Futura-Bold", size: 25)
         
     }
 
@@ -65,11 +65,11 @@ class MainView: UIView, ViewControllerModellableView {   //
     // layout
     override func layoutSubviews() {
         super.layoutSubviews()
-        title.pin.top(pin.safeArea).left(pin.safeArea).width(100).aspectRatio().margin(20).sizeToFit()
-        filter.pin.after(of: title).top(pin.safeArea).marginLeft(190).marginTop(20).width(50).height(50)
-        filter.setImage(UIImage(systemName: "line.horizontal.3.decrease.circle")!, for: .normal)
-        filter.tintColor = .systemGray2
-        events.pin.below(of: title).left().right().bottom().marginTop(15)
+        events.pin.top(pin.safeArea).left().right().bottom().marginTop(15)
+        //filter.pin.after(of: title).top(pin.safeArea).marginLeft(190).marginTop(20).width(50).height(50)
+        //filter.setImage(UIImage(systemName: "line.horizontal.3.decrease.circle")!, for: .normal)
+        //filter.tintColor = .systemGray2
+        //events.pin.below(of: title).left().right().bottom().marginTop(15)
     }
 }
 
@@ -79,15 +79,15 @@ final class MainTabbar : UITabBarController{
     
     lazy var home1ViewController: UIViewController = {
         let v = MainViewController(store: store)
-        v.tabBarItem.title = "Home"
-        v.tabBarItem.image = UIImage(systemName: "house.fill")
+        v.tabBarItem.title = "Events"
+        v.tabBarItem.image = UIImage(systemName: "globe")
         return v
     }()
     
     lazy var home2ViewController: UIViewController = {
         let v = ProfileViewController(store: store)
-        v.tabBarItem.title = "My Profile"
-        v.tabBarItem.image = UIImage(systemName: "person.fill")
+        v.tabBarItem.title = "Profile"
+        v.tabBarItem.image = UIImage(systemName: "person")
         return v
     }()
     
