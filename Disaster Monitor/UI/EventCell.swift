@@ -20,9 +20,9 @@ public protocol SizeableCell: ModellableView {
 // MARK: View Model
 struct EventCellViewModel: ViewModel {
     let identifier: String
-    let magnitudo: String
+    let magnitudo: Float
     let description: String
-    let coord: String
+    let coord: [Double]
     
     static func == (l: EventCellViewModel, r: EventCellViewModel) -> Bool {
         if l.identifier != r.identifier {return false}
@@ -96,9 +96,11 @@ class EventCell: UICollectionViewCell, ConfigurableCell, SizeableCell {
         if model.identifier != ""{
             nameLabel.text = model.identifier
             descriptionLabel.text = model.description
-            magnitudoLabel.text = model.magnitudo
-            let coord1 = Double(model.coord.split(separator: " ")[0]) ?? 0
-            let coord2 = Double(model.coord.split(separator: " ")[1]) ?? 0
+            magnitudoLabel.text = String(model.magnitudo)
+            //let coord1 = Double(model.coord.split(separator: " ")[0]) ?? 0
+            let coord1 = model.coord[0]
+            //let coord2 = Double(model.coord.split(separator: " ")[1]) ?? 0
+            let coord2 = model.coord[1]
             map.mapView.camera = GMSCameraPosition.camera(withLatitude: coord2, longitude: coord1, zoom: 10)
             map.mapView.animate(to: map.mapView.camera)
             let marker = GMSMarker()

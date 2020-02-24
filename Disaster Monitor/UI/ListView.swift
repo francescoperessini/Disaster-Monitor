@@ -11,11 +11,10 @@ import PinLayout
 import GoogleMaps
 import GooglePlaces
 
-struct ListViewModel: ViewModel, Equatable {
-    let num = 0
-    var list : [[String]]
+struct ListViewModel: ViewModel {
+    var list : [Event]
     init(state: AppState) {
-        self.list = state.eventsList
+        self.list = state.events
     }
 }
 
@@ -52,7 +51,8 @@ class ListView: UIView, ModellableView {
     
     func update(oldModel: ListViewModel?) {
         guard let model = self.model else { return }
-        let events = model.list.map { EventCellViewModel(identifier: $0[0], magnitudo:$0[1], description: $0[2], coord:$0[3] ) }
+        print(model.list)
+        let events = model.list.map { EventCellViewModel(identifier: $0.name, magnitudo:$0.magnitudo, description: $0.description, coord:$0.coordinates ) }
         self.eventsListView.source = SimpleSource<EventCellViewModel>(events)
         
         self.setNeedsLayout()

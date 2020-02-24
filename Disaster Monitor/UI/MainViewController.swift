@@ -46,7 +46,8 @@ class MainViewController: ViewController<MainView> {  // Extension of UIViewCont
     }
     
     @objc override func setupInteraction() {
-        self.dispatch(GetEvent())
+        // self.dispatch(GetEvent())
+        self.dispatch(FilterEvent())
     }
     
 }

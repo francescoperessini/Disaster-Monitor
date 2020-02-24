@@ -18,9 +18,10 @@ struct Event {
     init(name: String, descr: String, magnitudo: String, coordinates: String) {
         self.name = name
         self.description = descr
+        print(magnitudo)
         self.magnitudo = Float(magnitudo) ?? 0
         
-        if self.magnitudo > 1 {
+        if self.magnitudo > 1.0 {
             self.greaterOne = true
         }
         
