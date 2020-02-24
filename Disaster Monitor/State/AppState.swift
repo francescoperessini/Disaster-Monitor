@@ -17,10 +17,7 @@ struct AppState : State {
     var surname : String = ""
     var events: [Event] = []        // Actual list containing Events correctly formatted, others for displaying pourposes
     var user: Profile = Profile(name: "", surname: "")
-    
-    var greaterOneList: [Event]{
-        return self.events.filter { $0.greaterOne }
-    }
+    var filteringValue : Float = 0
 }
 
 
@@ -53,8 +50,10 @@ struct GetEvent: SideEffect {
 struct FilterEvent: StateUpdater {
     
     func updateState(_ state: inout AppState) {
-        //state.eventsList = [["","","","","a a"]]
-        print("tap")
+        state.filteringValue = state.filteringValue + 1
+        if state.filteringValue > 3 {
+            state.filteringValue = 0
+        }
     }
 }
 

@@ -24,29 +24,29 @@ struct SettingsViewModel: ViewModelWithState {
 
 
 // MARK: - View
-class SettingsView: UIView, ViewControllerModellableView {   //
-   
-    let settingsTableView = UITableView()
-    
-    
-    // setup
-    func setup() {      // 1. Assemblaggio della view, chiamata una volta sola
+class SettingsView: UIView, ViewControllerModellableView {
+    let settingsLabel = UILabel()
+
+    func setup() {
         backgroundColor = .systemBackground
+        self.addSubview(self.settingsLabel)
         
     }
 
     // style
-    func style() {      // 2. Cosmetics, chiamata una sola volta
+    func style() {
         
     }
 
     // update
-    func update(oldModel: MainViewModel?) {  // Chiamato ad ogni aggiornamento di stato
+    func update(oldModel: MainViewModel?) {
        
     }
 
     // layout
     override func layoutSubviews() {
         super.layoutSubviews()
+        self.settingsLabel.pin.top(0).left(20).sizeToFit()
+        self.settingsLabel.text = "SETTINGS"
     }
 }

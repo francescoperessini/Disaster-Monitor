@@ -13,8 +13,10 @@ import GooglePlaces
 
 struct ListViewModel: ViewModel {
     var list : [Event]
+    var filteringValue : Float
     init(state: AppState) {
         self.list = state.events
+        self.filteringValue = state.filteringValue
     }
 }
 
@@ -51,8 +53,10 @@ class ListView: UIView, ModellableView {
     
     func update(oldModel: ListViewModel?) {
         guard let model = self.model else { return }
-        print(model.list)
-        let events = model.list.map { EventCellViewModel(identifier: $0.name, magnitudo:$0.magnitudo, description: $0.description, coord:$0.coordinates ) }
+        // Filtering elements DEFAULT: 0
+        let events = model.list.filter{$0.magnitudo > model.filteringValue}.map{EventCellViewModel(identifier: $0.name, magnitudo:$0.magnitudo, description: $0.description, coord:$0.coordinates )
+        }
+            
         self.eventsListView.source = SimpleSource<EventCellViewModel>(events)
         
         self.setNeedsLayout()

@@ -12,7 +12,6 @@ import Tempura
 
 // MARK: - ViewModel
 struct MainViewModel: ViewModelWithState {
-    // Per ogni schermo c'è una sola view con un ViewModelWithState
     var state: AppState
     init?(state: AppState) {
         self.state = state
@@ -22,40 +21,25 @@ struct MainViewModel: ViewModelWithState {
 
 // MARK: - View
 class MainView: UIView, ViewControllerModellableView {   //
-   
-    //let title = UILabel()
-    //let filter = UIButton()
-    //let container = UIView()
+
     let events = ListView()
-    
     var didTapFilter: Interaction?
     
     @objc func didTapFilterFunc() {
         didTapFilter?()
     }
     
-    
-    // setup
-    func setup() {      // 1. Assemblaggio della view, chiamata una volta sola
+    func setup() {
         backgroundColor = .white
-        //self.addSubview(self.title)
-        //self.addSubview(self.container)
         self.addSubview(self.events)
-        //self.addSubview(self.filter)
         self.events.setup()
         self.events.style()
-        //filter.addTarget(self, action: #selector(didTapFilterFunc), for: .touchUpInside)
     }
 
-    // style
-    func style() {      // 2. Cosmetics, chiamata una sola volta
-        //self.title.text = "Home Page"
-        //self.title.font = UIFont(name: "Futura-Bold", size: 25)
-        
+    func style() {
     }
 
-    // update
-    func update(oldModel: MainViewModel?) {  // Chiamato ad ogni aggiornamento di stato
+    func update(oldModel: MainViewModel?) {
         guard let model = self.model else { return }
         let eventListViewModel = ListViewModel(state: model.state)
         self.events.model = eventListViewModel
@@ -66,10 +50,6 @@ class MainView: UIView, ViewControllerModellableView {   //
     override func layoutSubviews() {
         super.layoutSubviews()
         events.pin.top(pin.safeArea).left().right().bottom().marginTop(15)
-        //filter.pin.after(of: title).top(pin.safeArea).marginLeft(190).marginTop(20).width(50).height(50)
-        //filter.setImage(UIImage(systemName: "line.horizontal.3.decrease.circle")!, for: .normal)
-        //filter.tintColor = .systemGray2
-        //events.pin.below(of: title).left().right().bottom().marginTop(15)
     }
 }
 

@@ -14,7 +14,7 @@ import PinLayout
 
 // MARK: - View Controller
 // Ha la responsabilità di passare alla view un nuovo viewmodel a ogni update
-class MainViewController: ViewController<MainView> {  // Extension of UIViewController
+class MainViewController: ViewController<MainView> {
     
     override func viewWillAppear(_ animated: Bool) {
         self.dispatch(GetEvent())
@@ -29,7 +29,18 @@ class MainViewController: ViewController<MainView> {  // Extension of UIViewCont
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(setupInteraction))
+        let rightButtonView = UIView.init(frame: CGRect(x: 0, y: 0, width: 70, height: 50))
+        let rightButton = UIButton.init(type: .system)
+        rightButton.backgroundColor = .clear
+        rightButton.frame = rightButtonView.frame
+        rightButton.setTitle("Filter++", for: .normal)
+        rightButton.tintColor = .black //Your desired color.
+        rightButton.autoresizesSubviews = true
+        rightButton.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        rightButton.addTarget(self, action: #selector(setupInteraction), for: .touchUpInside)
+        rightButtonView.addSubview(rightButton)
+        let leftBarButton = UIBarButtonItem.init(customView: rightButtonView)
+        self.navigationItem.rightBarButtonItem = leftBarButton
         
         // TODO: Rivedere questo pezzo di codice perché molto dubbio
         
@@ -38,7 +49,7 @@ class MainViewController: ViewController<MainView> {  // Extension of UIViewCont
         coloredAppearance.backgroundColor = .systemGray6
         coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.black]
         coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black]
-               
+
         UINavigationBar.appearance().standardAppearance = coloredAppearance
         UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
         
@@ -46,7 +57,7 @@ class MainViewController: ViewController<MainView> {  // Extension of UIViewCont
     }
     
     @objc override func setupInteraction() {
-        // self.dispatch(GetEvent())
+        //self.dispatch(GetEvent())
         self.dispatch(FilterEvent())
     }
     
