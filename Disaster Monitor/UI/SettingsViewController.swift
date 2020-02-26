@@ -19,20 +19,16 @@ class SettingsViewController: ViewController<SettingsView> {  // Extension of UI
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "Settings"
-        self.navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
     
-    override func setupInteraction() {
-        
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = "Settings"
     }
     
 }

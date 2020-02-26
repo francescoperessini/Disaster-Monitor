@@ -17,10 +17,7 @@ import PinLayout
 class MainViewController: ViewController<MainView> {
     
     override func viewWillAppear(_ animated: Bool) {
-        self.dispatch(GetEvent())
         super.viewWillAppear(animated)
-        self.navigationItem.title = "Main Events"
-        self.navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -29,6 +26,11 @@ class MainViewController: ViewController<MainView> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.dispatch(GetEvent())
+
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = "Main Events"
+
         let rightButtonView = UIView.init(frame: CGRect(x: 0, y: 0, width: 70, height: 50))
         let rightButton = UIButton.init(type: .system)
         rightButton.backgroundColor = .clear
@@ -54,7 +56,7 @@ class MainViewController: ViewController<MainView> {
         UINavigationBar.appearance().standardAppearance = coloredAppearance
         UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
         
-        self.dispatch(GetEvent())
+        //self.dispatch(GetEvent()) c'è già sopra
     }
     
     @objc override func setupInteraction() {

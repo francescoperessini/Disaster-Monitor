@@ -31,14 +31,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, RootInstaller {
       if identifier == Screen.home.rawValue {
         // let viewController = MainViewController(store: self.store)
         // self.window?.rootViewController = viewController
-        let tabBarController = MainTabbar(store: self.store)
-        let home1NavigationController = UINavigationController(rootViewController: tabBarController.home1ViewController)
-        let home2NavigationController = UINavigationController(rootViewController: tabBarController.home2ViewController)
-        let home3NavigationController = UINavigationController(rootViewController: tabBarController.home3ViewController)
-        tabBarController.viewControllers = [home1NavigationController, home2NavigationController, home3NavigationController]
+        let tabBarController = MainTabBarController(store: self.store)
         self.window?.rootViewController = tabBarController
         self.window?.makeKeyAndVisible()
-        
         completion()
         return true
       }
@@ -75,4 +70,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, RootInstaller {
 
 
 }
-

@@ -18,8 +18,6 @@ class ProfileViewController: ViewController<ProfileView> {  // Extension of UIVi
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "My Profile"
-        self.navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -28,7 +26,9 @@ class ProfileViewController: ViewController<ProfileView> {  // Extension of UIVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(sharingInteraction))
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = "My Profile"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(sharingInteraction))
     }
     
     @objc func sharingInteraction() {
