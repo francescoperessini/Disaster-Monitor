@@ -25,6 +25,10 @@ class FilterViewController: ViewController<FilterView> {  // Extension of UIView
         rootView.didTapSlider = { [unowned self] v in
             self.dispatch(SetThreshold(value: v))
         }
+        
+        rootView.didTapClose = { [unowned self] in
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     override func viewDidLoad() {

@@ -9,12 +9,14 @@
 import Foundation
 
 struct Event {
+    var id : String
     var name: String
     var description: String
     var magnitudo: Float
     var coordinates: [Double]
     
-    init(name: String, descr: String, magnitudo: String, coordinates: String) {
+    init(id: String, name: String, descr: String, magnitudo: String, coordinates: String) {
+        self.id = id
         self.name = name
         self.description = descr
         self.magnitudo = Float(magnitudo) ?? 0

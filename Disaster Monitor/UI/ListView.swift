@@ -34,7 +34,6 @@ class ListView: UIView, ModellableView {
         let eventsLayout = EventsFlowLayout()
         self.eventsListView = CollectionView<EventCell, SimpleSource<EventCellViewModel>>(frame: .zero, layout: eventsLayout)
         self.eventsListView.useDiffs = true
-
         self.scrollView.addSubview(self.eventsListView)
         self.addSubview(self.scrollView)
     }
@@ -53,8 +52,7 @@ class ListView: UIView, ModellableView {
     
     func update(oldModel: ListViewModel?) {
         guard let model = self.model else { return }
-        // Filtering elements DEFAULT: 0
-        //print(model.filteringValue)
+
         let events = model.list.filter{$0.magnitudo > model.filteringValue}.map{EventCellViewModel(identifier: $0.name, magnitudo:$0.magnitudo, description: $0.description, coord:$0.coordinates )}
         
         if events.count != 0{

@@ -34,10 +34,11 @@ class MainViewController: ViewController<MainView> {
         rightButton.backgroundColor = .clear
         rightButton.frame = rightButtonView.frame
         rightButton.setTitle("Filters", for: .normal)
+        rightButton.titleLabel?.font = UIFont(name: "Futura", size: 20)
         rightButton.tintColor = .black
         rightButton.autoresizesSubviews = true
         rightButton.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        rightButton.addTarget(self, action: #selector(foo), for: .touchUpInside)
+        rightButton.addTarget(self, action: #selector(openFilter), for: .touchUpInside)
         rightButtonView.addSubview(rightButton)
         let leftBarButton = UIBarButtonItem.init(customView: rightButtonView)
         self.navigationItem.rightBarButtonItem = leftBarButton
@@ -63,7 +64,7 @@ class MainViewController: ViewController<MainView> {
         
     }
     
-    @objc func foo(){
+    @objc func openFilter(){
         let vc = FilterViewController(store: store)
         self.present(vc, animated: true, completion: nil)
     }
