@@ -48,15 +48,21 @@ struct GetEvent: SideEffect {
 
 
 struct FilterEvent: StateUpdater {
-    
     func updateState(_ state: inout AppState) {
-        state.filteringValue = state.filteringValue + 1
-        if state.filteringValue > 3 {
+        state.filteringValue = state.filteringValue + 0.5
+        if state.filteringValue > 4 {
             state.filteringValue = 0
         }
     }
 }
 
+
+struct SetThreshold: StateUpdater{
+    var value: Float
+    func updateState(_ state: inout AppState) {
+        state.filteringValue = value
+    }
+}
 
 
 

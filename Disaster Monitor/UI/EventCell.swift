@@ -82,7 +82,7 @@ class EventCell: UICollectionViewCell, ConfigurableCell, SizeableCell {
         self.nameLabel.pin.top(0).left(20).sizeToFit()
         self.descriptionLabel.font = UIFont(name: "Futura", size: 20)
         self.descriptionLabel.textColor = .systemGray
-        self.descriptionLabel.pin.below(of: nameLabel).left(30).sizeToFit()
+        self.descriptionLabel.pin.below(of: nameLabel).left(20).sizeToFit()
         self.descriptionLabel.font = UIFont(name: "Futura", size: 15)
         self.map.pin.below(of: descriptionLabel)
         self.magnitudoLabel.pin.right(pin.safeArea).sizeToFit().marginRight(10)
@@ -97,9 +97,7 @@ class EventCell: UICollectionViewCell, ConfigurableCell, SizeableCell {
             nameLabel.text = model.identifier
             descriptionLabel.text = model.description
             magnitudoLabel.text = String(model.magnitudo)
-            //let coord1 = Double(model.coord.split(separator: " ")[0]) ?? 0
             let coord1 = model.coord[0]
-            //let coord2 = Double(model.coord.split(separator: " ")[1]) ?? 0
             let coord2 = model.coord[1]
             map.mapView.camera = GMSCameraPosition.camera(withLatitude: coord2, longitude: coord1, zoom: 10)
             map.mapView.animate(to: map.mapView.camera)
