@@ -18,6 +18,7 @@ struct AppState : State {
     var events: [Event] = []        // Actual list containing Events correctly formatted, others for displaying pourposes
     var user: Profile = Profile(name: "", surname: "")
     var filteringValue : Float = 0
+    var message : String = "Message to be shared\nSent from Disaster Monitor App"
 }
 
 
