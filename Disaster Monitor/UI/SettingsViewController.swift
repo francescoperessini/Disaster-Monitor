@@ -32,7 +32,3 @@ class SettingsViewController: ViewController<SettingsView> {  // Extension of UI
     }
     
 }
-
-enum Settings: String {
-    case home
-}

@@ -41,6 +41,7 @@
 		7BE4174123A8D56D0096F8EA /* AppNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE4174023A8D56D0096F8EA /* AppNavigation.swift */; };
 		BA312F5C824539761202BC92 /* Pods_Disaster_MonitorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DED2C185958EF922F2C4C351 /* Pods_Disaster_MonitorTests.framework */; };
 		C44A0D789BB99E45F293A346 /* Pods_Disaster_Monitor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F155C62AFE5B3EF4E48B1083 /* Pods_Disaster_Monitor.framework */; };
+		C677E59A2407CA540079344A /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C677E5992407CA540079344A /* SettingsSection.swift */; };
 		C6B0E86C24068AC9005CEE09 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0E86B24068AC9005CEE09 /* SettingsTableViewCell.swift */; };
 		C6B0E86E2406DCE4005CEE09 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0E86D2406DCE4005CEE09 /* MainTabBarController.swift */; };
 		FE1F6A0D25F19BA9D29FC2EC /* Pods_Disaster_MonitorUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C100DDEA741AB48464729DD /* Pods_Disaster_MonitorUITests.framework */; };
@@ -107,6 +108,7 @@
 		8C100DDEA741AB48464729DD /* Pods_Disaster_MonitorUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Disaster_MonitorUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F6A4890087B0E1A7288AB18 /* Pods-Disaster Monitor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disaster Monitor.debug.xcconfig"; path = "Target Support Files/Pods-Disaster Monitor/Pods-Disaster Monitor.debug.xcconfig"; sourceTree = "<group>"; };
 		BB502D60C134875ED664D9A7 /* Pods-Disaster MonitorUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disaster MonitorUITests.debug.xcconfig"; path = "Target Support Files/Pods-Disaster MonitorUITests/Pods-Disaster MonitorUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		C677E5992407CA540079344A /* SettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsSection.swift; path = "Disaster Monitor/State/SettingsSection.swift"; sourceTree = SOURCE_ROOT; };
 		C6B0E86B24068AC9005CEE09 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		C6B0E86D2406DCE4005CEE09 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainTabBarController.swift; path = "Disaster Monitor/MainTabBarController.swift"; sourceTree = SOURCE_ROOT; };
 		DED2C185958EF922F2C4C351 /* Pods_Disaster_MonitorTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Disaster_MonitorTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -237,6 +239,7 @@
 		7BE4172A23A8D2E00096F8EA /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				C677E5992407CA540079344A /* SettingsSection.swift */,
 				C6B0E86D2406DCE4005CEE09 /* MainTabBarController.swift */,
 				7B1DF43523ABA5EB004C952A /* SettingsView.swift */,
 				C6B0E86B24068AC9005CEE09 /* SettingsTableViewCell.swift */,
@@ -567,6 +570,7 @@
 				7B564A3123A9308700DD178C /* DataSource.swift in Sources */,
 				7B5038A823A8CD5700F18840 /* AppDelegate.swift in Sources */,
 				7B564A3323A9309C00DD178C /* Source.swift in Sources */,
+				C677E59A2407CA540079344A /* SettingsSection.swift in Sources */,
 				7B1DF43823ABA5EB004C952A /* SettingsViewController.swift in Sources */,
 				7BE4173923A8D4390096F8EA /* AppState.swift in Sources */,
 				7B1DF43723ABA5EB004C952A /* SettingsView.swift in Sources */,
