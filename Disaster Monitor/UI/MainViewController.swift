@@ -32,8 +32,10 @@ class MainViewController: ViewController<MainView> {
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
-            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.black] // cambia il colore del titolo
-            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black] // cambia il colore del titolo
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.black, .font: UIFont(name: "FuturaStd-Bold", size: 30) ??
+            UIFont.boldSystemFont(ofSize: 30)] // cambia aspetto del titolo
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black, .font: UIFont(name: "FuturaStd-Bold", size: 30) ??
+            UIFont.boldSystemFont(ofSize: 30)] // cambia aspetto del titolo (con prefersLargeTitles = true)
             navigationController?.navigationBar.tintColor = .black // tintColor changes the color of the UIBarButtonItem
             navBarAppearance.backgroundColor = .systemGray6 // cambia il colore dello sfondo della navigation bar
             // navigationController?.navigationBar.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
