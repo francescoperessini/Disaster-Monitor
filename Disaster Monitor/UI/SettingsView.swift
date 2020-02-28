@@ -52,7 +52,7 @@ class SettingsView: UIView, ViewControllerModellableView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        settingsTableView.pin.top().left().right().bottom().marginTop(0)
+        settingsTableView.pin.top().left().right().bottom()
     }
     
 }

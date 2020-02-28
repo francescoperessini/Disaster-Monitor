@@ -41,7 +41,7 @@ class ProfileView: UIView, ViewControllerModellableView {
 
     override func layoutSubviews() {
         self.addSubview(mapView)
-        mapView.pin.height(815).width(415)
+        mapView.pin.top(pin.safeArea).left().right().bottom()
     }
     
     private func setupLocation() {

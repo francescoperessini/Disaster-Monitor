@@ -49,6 +49,6 @@ class MainView: UIView, ViewControllerModellableView {   //
     // layout
     override func layoutSubviews() {
         super.layoutSubviews()
-        events.pin.top(pin.safeArea).left().right().bottom().marginTop(15)
+        events.pin.top(pin.safeArea).left().right().bottom().marginTop(5)
     }
 }

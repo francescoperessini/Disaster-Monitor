@@ -11,7 +11,6 @@ import Katana
 import Tempura
 import PinLayout
 
-
 // MARK: - View Controller
 // Ha la responsabilità di passare alla view un nuovo viewmodel a ogni update
 class MainViewController: ViewController<MainView> {
@@ -26,37 +25,27 @@ class MainViewController: ViewController<MainView> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.dispatch(GetEvent())
-
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.title = "Main Events"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "slider.horizontal.3"), style: .plain, target: self, action: #selector(openFilter))
 
-        let rightButtonView = UIView.init(frame: CGRect(x: 0, y: 0, width: 70, height: 50))
-        let rightButton = UIButton.init(type: .system)
-        rightButton.backgroundColor = .clear
-        rightButton.frame = rightButtonView.frame
-        rightButton.setTitle("Filters", for: .normal)
-        rightButton.titleLabel?.font = UIFont(name: "Futura", size: 20)
-        rightButton.tintColor = .black
-        rightButton.autoresizesSubviews = true
-        rightButton.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        rightButton.addTarget(self, action: #selector(openFilter), for: .touchUpInside)
-        rightButtonView.addSubview(rightButton)
-        let leftBarButton = UIBarButtonItem.init(customView: rightButtonView)
-        self.navigationItem.rightBarButtonItem = leftBarButton
+        if #available(iOS 13.0, *) {
+            let navBarAppearance = UINavigationBarAppearance()
+            navBarAppearance.configureWithOpaqueBackground()
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.black] // cambia il colore del titolo
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black] // cambia il colore del titolo
+            navigationController?.navigationBar.tintColor = .black // tintColor changes the color of the UIBarButtonItem
+            navBarAppearance.backgroundColor = .systemGray6 // cambia il colore dello sfondo della navigation bar
+            // navigationController?.navigationBar.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
+            navigationController?.navigationBar.standardAppearance = navBarAppearance
+            navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+        } else {
+            navigationController?.navigationBar.tintColor = .black
+            navigationController?.navigationBar.barTintColor = .systemGray6
+            // navigationController?.navigationBar.isTranslucent = false
+        }
         
-        // TODO: Rivedere questo pezzo di codice perché molto dubbio
-        
-        let coloredAppearance = UINavigationBarAppearance()
-        coloredAppearance.configureWithOpaqueBackground()
-        coloredAppearance.backgroundColor = .systemGray6
-        coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.black]
-        coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black]
-
-        UINavigationBar.appearance().standardAppearance = coloredAppearance
-        UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
-        
-        //self.dispatch(GetEvent()) c'è già sopra
+        self.dispatch(GetEvent())
     }
     
     @objc override func setupInteraction() {
