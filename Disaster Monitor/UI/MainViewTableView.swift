@@ -21,15 +21,12 @@ struct MainViewTableViewModel: ViewModelWithState {
 // MARK: - View
 class MainViewTableView: UIView, ViewControllerModellableView {
     
-    var didTapEvent: ((String) -> ())?
-    
-    @objc func didTapEventFunc(id: String){
-        didTapEvent?(id)
-    }
-    
     var mainViewTableView = UITableView()
     var events: [Event] = []
     var filteringValue: Float = 0
+    
+    var didTapFilter: (() -> ())?
+    var didTapEvent: ((String) -> ())?
     
     struct Cells {
         static let mainViewTableViewCell = "mainCell"
@@ -52,7 +49,31 @@ class MainViewTableView: UIView, ViewControllerModellableView {
     }
 
     func style() {
-        self.backgroundColor = .systemGray
+        backgroundColor = .systemBackground
+        navigationBar?.prefersLargeTitles = true
+        navigationItem?.title = "Main Events"
+        navigationItem?.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "slider.horizontal.3"), style: .plain, target: self, action: #selector(didTapFilterFunc))
+        if #available(iOS 13.0, *) {
+            let navBarAppearance = UINavigationBarAppearance()
+            navBarAppearance.configureWithOpaqueBackground()
+            /*
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.black, .font: UIFont(name: "FuturaStd-Bold", size: 30) ??
+            UIFont.boldSystemFont(ofSize: 30)] // cambia aspetto del titolo
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black, .font: UIFont(name: "FuturaStd-Bold", size: 30) ??
+            UIFont.boldSystemFont(ofSize: 30)] // cambia aspetto del titolo (con prefersLargeTitles = true)
+            */
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.black] // cambia aspetto del titolo
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black] // cambia aspetto del titolo (con prefersLargeTitles = true)
+            navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
+            navBarAppearance.backgroundColor = .systemGray6 // cambia il colore dello sfondo della navigation bar
+            // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
+            navigationBar?.standardAppearance = navBarAppearance
+            navigationBar?.scrollEdgeAppearance = navBarAppearance
+        } else {
+            navigationBar?.tintColor = .systemBlue
+            navigationBar?.barTintColor = .systemGray6
+            // navigationBar?.isTranslucent = false
+        }
     }
 
     func update(oldModel: MainViewModel?) {
@@ -70,6 +91,14 @@ class MainViewTableView: UIView, ViewControllerModellableView {
         mainViewTableView.pin.top().left().right().bottom()
     }
     
+    @objc func didTapFilterFunc() {
+           didTapFilter?()
+    }
+       
+    @objc func didTapEventFunc(id: String) {
+           didTapEvent?(id)
+    }
+       
 }
 
 extension MainViewTableView: UITableViewDelegate, UITableViewDataSource {

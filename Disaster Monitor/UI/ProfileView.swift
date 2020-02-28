@@ -26,13 +26,38 @@ class ProfileView: UIView, ViewControllerModellableView {
    
     let locationManager = CLLocationManager()
     let mapView = GMSMapView()
+    var didTapActionButton: (() -> ())?
 
     func setup() {
         setupLocation()
     }
 
     func style() {
-        backgroundColor = .white
+        backgroundColor = .systemBackground
+        navigationBar?.prefersLargeTitles = true
+        navigationItem?.title = "My Profile"
+        navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapActionButtonFunc))
+        if #available(iOS 13.0, *) {
+            let navBarAppearance = UINavigationBarAppearance()
+            navBarAppearance.configureWithOpaqueBackground()
+            /*
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.black, .font: UIFont(name: "FuturaStd-Bold", size: 30) ??
+            UIFont.boldSystemFont(ofSize: 30)] // cambia aspetto del titolo
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black, .font: UIFont(name: "FuturaStd-Bold", size: 30) ??
+            UIFont.boldSystemFont(ofSize: 30)] // cambia aspetto del titolo (con prefersLargeTitles = true)
+            */
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.black] // cambia aspetto del titolo
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black] // cambia aspetto del titolo (con prefersLargeTitles = true)
+            navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
+            navBarAppearance.backgroundColor = .systemGray6 // cambia il colore dello sfondo della navigation bar
+            // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
+            navigationBar?.standardAppearance = navBarAppearance
+            navigationBar?.scrollEdgeAppearance = navBarAppearance
+        } else {
+            navigationBar?.tintColor = .systemBlue
+            navigationBar?.barTintColor = .systemGray6
+            // navigationBar?.isTranslucent = false
+        }
         mapViewStyle()
     }
 
@@ -85,6 +110,10 @@ class ProfileView: UIView, ViewControllerModellableView {
         circ.strokeWidth = 2
         circ.map = mapView
         */
+    }
+    
+    @objc func didTapActionButtonFunc() {
+       didTapActionButton?()
     }
     
 }

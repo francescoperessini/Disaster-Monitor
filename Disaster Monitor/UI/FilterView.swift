@@ -19,10 +19,9 @@ struct FilterViewModel: ViewModelWithState {
     }
 }
 
-
 // MARK: - View
-class FilterView: UIView, ViewControllerModellableView {   //
-    var mainLabel = UILabel()
+class FilterView: UIView, ViewControllerModellableView {
+    
     var slider = UISlider()
     var sliderLabel = UILabel()
     var sliderLabelComment = UILabel()
@@ -30,30 +29,24 @@ class FilterView: UIView, ViewControllerModellableView {   //
     var sortingLabel = UILabel()
     var sortingLabelComment = UILabel()
     
-    var closeButton = UIButton(frame: CGRect(x: 100, y: 100, width: 100, height: 50))
     var didTapSlider: ((Float) -> ())?
     var didTapClose: (() -> ())?
-    @objc func didTapSliderFunc(sender: UISlider){
+    @objc func didTapSliderFunc(sender: UISlider) {
         didTapSlider?(sender.value)
     }
     
-    @objc func didTapCloseFunc(){
+    @objc func didTapCloseFunc() {
         didTapClose?()
     }
     
     func setup() {
         backgroundColor = .white
-        self.addSubview(mainLabel)
         self.addSubview(slider)
         self.addSubview(sliderLabel)
         self.addSubview(sliderLabelComment)
         self.addSubview(sortingLabel)
         self.addSubview(sortingLabelComment)
-        self.addSubview(closeButton)
         
-        self.closeButton.setTitle("Apply", for: .normal)
-        self.closeButton.addTarget(self, action: #selector(didTapCloseFunc), for: .touchUpInside)
-        self.mainLabel.text = "Filters"
         self.sliderLabel.text = "Magnitudo"
         self.sliderLabelComment.text = "You can set here the desidered threshold"
         
@@ -69,18 +62,37 @@ class FilterView: UIView, ViewControllerModellableView {   //
         
         self.sortingLabel.text = "Sorting Preferences"
         self.sortingLabelComment.text = "You can set here the desidered ordering"
-        
-    
     }
     
     func style() {
-        let h1title = UIFont(name: "Futura", size: 30)
+        backgroundColor = .systemBackground
+        navigationItem?.title = "Filters"
+        navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapCloseFunc))
+        if #available(iOS 13.0, *) {
+            let navBarAppearance = UINavigationBarAppearance()
+            navBarAppearance.configureWithOpaqueBackground()
+            /*
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.black, .font: UIFont(name: "FuturaStd-Bold", size: 30) ??
+            UIFont.boldSystemFont(ofSize: 30)] // cambia aspetto del titolo
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black, .font: UIFont(name: "FuturaStd-Bold", size: 30) ??
+            UIFont.boldSystemFont(ofSize: 30)] // cambia aspetto del titolo (con prefersLargeTitles = true)
+            */
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.black] // cambia aspetto del titolo
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black] // cambia aspetto del titolo (con prefersLargeTitles = true)
+            navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
+            navBarAppearance.backgroundColor = .systemGray6 // cambia il colore dello sfondo della navigation bar
+            // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
+            navigationBar?.standardAppearance = navBarAppearance
+            navigationBar?.scrollEdgeAppearance = navBarAppearance
+        } else {
+            navigationBar?.tintColor = .systemBlue
+            navigationBar?.barTintColor = .systemGray6
+            // navigationBar?.isTranslucent = false
+        }
+        
         let h2title = UIFont(name: "Futura", size: 20)
         let h3title = UIFont(name: "Futura", size: 15)
-        
-        self.backgroundColor = .systemBackground
-        self.mainLabel.font = h1title
-        
+                
         self.sliderLabel.font = h2title
         self.sliderLabelComment.font = h3title
         self.sliderLabelComment.textColor = .systemGray
@@ -88,9 +100,6 @@ class FilterView: UIView, ViewControllerModellableView {   //
         self.sortingLabel.font = h2title
         self.sortingLabelComment.font = h3title
         self.sortingLabelComment.textColor = .systemGray
-        
-        self.closeButton.titleLabel?.font = h2title
-        self.closeButton.backgroundColor = .systemBlue
     }
 
     func update(oldModel: FilterViewModel?) {
@@ -103,22 +112,13 @@ class FilterView: UIView, ViewControllerModellableView {   //
     // layout
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        self.mainLabel.pin.top(20).left(20).sizeToFit()
-        
-        self.sliderLabel.pin.below(of: mainLabel).sizeToFit().marginTop(CGFloat(10)).left(30)
+                
+        self.sliderLabel.pin.top(55).sizeToFit().marginTop(CGFloat(10)).left(30)
         self.sliderLabelComment.pin.below(of: sliderLabel).left(30).sizeToFit()
         self.slider.pin.below(of: sliderLabelComment).right(30).left(30).marginTop(10)
         
         self.sortingLabel.pin.below(of: slider).sizeToFit().marginTop(CGFloat(10)).left(30)
         self.sortingLabelComment.pin.below(of: sortingLabel).left(30).sizeToFit()
-        
-        self.closeButton.pin.top(0).right(0)
-    
     }
-    
-    func close(){
-        
-        
-    }
+  
 }

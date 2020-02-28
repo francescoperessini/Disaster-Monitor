@@ -6,20 +6,14 @@
 //  Copyright © 2020 Stefano Martina. All rights reserved.
 //
 
-import UIKit
-import Katana
 import Tempura
 
-class FilterViewController: ViewController<FilterView> {  // Extension of UIViewController
+// MARK: - ViewController
+class FilterViewController: ViewController<FilterView> {
     
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-    }
+    override func viewDidLoad() {
+           super.viewDidLoad()
+       }
     
     override func setupInteraction() {
         rootView.didTapSlider = { [unowned self] v in
@@ -31,10 +25,4 @@ class FilterViewController: ViewController<FilterView> {  // Extension of UIView
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
-    
-
 }
