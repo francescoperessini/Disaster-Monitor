@@ -71,7 +71,7 @@ class MainTableViewController: ViewController<MainViewTableView> {  // Extension
     
     override func setupInteraction() {
         rootView.didTapEvent = { [unowned self] v in
-            let vc = EventViewController(store: self.store)
+            let vc = UINavigationController(rootViewController: EventViewController(store: self.store, id: v))
             self.present(vc, animated: true, completion: nil)
         }
     }

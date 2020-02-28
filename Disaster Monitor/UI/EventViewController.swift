@@ -10,8 +10,18 @@ import UIKit
 import Katana
 import Tempura
 
-class EventViewController: ViewController<EventView> {  // Extension of UIViewController
+
+
+class EventViewController: ViewControllerWithLocalState<EventView> {  // Extension of UIViewController
     
+    init(store: PartialStore<AppState>, id: String?=nil){
+        super.init(store: store, localState: EventControllerLocalState(), connected: false)
+        self.localState.id = id
+    }
+        
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -21,15 +31,18 @@ class EventViewController: ViewController<EventView> {  // Extension of UIViewCo
         super.viewWillDisappear(animated)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+      super.viewDidAppear(animated)
+    }
+    
     override func setupInteraction() {
-
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
-    
-
 }
 
+struct EventControllerLocalState: LocalState{
+    var id: String? = nil
+}
