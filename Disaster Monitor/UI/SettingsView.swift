@@ -10,7 +10,6 @@ import Foundation
 import Katana
 import Tempura
 
-
 // MARK: - ViewModel
 struct SettingsViewModel: ViewModelWithState {
     var state: AppState
@@ -23,6 +22,11 @@ struct SettingsViewModel: ViewModelWithState {
 class SettingsView: UIView, ViewControllerModellableView {
 
     var settingsTableView = UITableView()
+    var didTapEditMessage: (() -> ())?
+    
+    @objc func didTapEditMessageFunc() {
+        didTapEditMessage?()
+    }
     
     struct Cells {
         static let settingsTableViewCell = "settingsCell"
@@ -33,18 +37,31 @@ class SettingsView: UIView, ViewControllerModellableView {
         configureSettingsTableView()
     }
     
-    func configureSettingsTableView() {
-        setSettingsTableViewDelegates()
-        settingsTableView.rowHeight = 60
-        settingsTableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: Cells.settingsTableViewCell)
-    }
-    
-    func setSettingsTableViewDelegates() {
-        settingsTableView.delegate = self
-        settingsTableView.dataSource = self
-    }
-
     func style() {
+        backgroundColor = .white
+        navigationBar?.prefersLargeTitles = true
+        navigationItem?.title = "Settings"
+        if #available(iOS 13.0, *) {
+            let navBarAppearance = UINavigationBarAppearance()
+            navBarAppearance.configureWithOpaqueBackground()
+            /*
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.black, .font: UIFont(name: "FuturaStd-Bold", size: 30) ??
+            UIFont.boldSystemFont(ofSize: 30)] // cambia aspetto del titolo
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black, .font: UIFont(name: "FuturaStd-Bold", size: 30) ??
+            UIFont.boldSystemFont(ofSize: 30)] // cambia aspetto del titolo (con prefersLargeTitles = true)
+            */
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.black] // cambia aspetto del titolo
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black] // cambia aspetto del titolo (con prefersLargeTitles = true)
+            navigationBar?.tintColor = .black // tintColor changes the color of the UIBarButtonItem
+            navBarAppearance.backgroundColor = .systemGray6 // cambia il colore dello sfondo della navigation bar
+            // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
+            navigationBar?.standardAppearance = navBarAppearance
+            navigationBar?.scrollEdgeAppearance = navBarAppearance
+        } else {
+            navigationBar?.tintColor = .black
+            navigationBar?.barTintColor = .systemGray6
+            // navigationBar?.isTranslucent = false
+        }
     }
 
     func update(oldModel: MainViewModel?) {
@@ -53,6 +70,17 @@ class SettingsView: UIView, ViewControllerModellableView {
     override func layoutSubviews() {
         super.layoutSubviews()
         settingsTableView.pin.top().left().right().bottom()
+    }
+    
+    private func configureSettingsTableView() {
+           setSettingsTableViewDelegates()
+           settingsTableView.rowHeight = 60
+           settingsTableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: Cells.settingsTableViewCell)
+       }
+       
+    private func setSettingsTableViewDelegates() {
+       settingsTableView.delegate = self
+       settingsTableView.dataSource = self
     }
     
 }
@@ -124,7 +152,7 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         switch section {
         case .Message:
             if indexPath.row == 0 {
-                print("riga 0 della sezione Message")
+                didTapEditMessageFunc()
             }
         case .Privacy:
             if indexPath.row == 0 {

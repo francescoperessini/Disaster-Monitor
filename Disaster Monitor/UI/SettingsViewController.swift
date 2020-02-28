@@ -7,45 +7,19 @@
 //
 
 import UIKit
-import Katana
 import Tempura
-import PinLayout
 
-
-// MARK: - View Controller
-// Ha la responsabilità di passare alla view un nuovo viewmodel a ogni update
-class SettingsViewController: ViewController<SettingsView> {  // Extension of UIViewController
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-    }
+// MARK: - ViewController
+class SettingsViewController: ViewController<SettingsView> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.title = "Settings"
-        
-        if #available(iOS 13.0, *) {
-            let navBarAppearance = UINavigationBarAppearance()
-            navBarAppearance.configureWithOpaqueBackground()
-            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.black, .font: UIFont(name: "FuturaStd-Bold", size: 30) ??
-            UIFont.boldSystemFont(ofSize: 30)] // cambia aspetto del titolo
-            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black, .font: UIFont(name: "FuturaStd-Bold", size: 30) ??
-            UIFont.boldSystemFont(ofSize: 30)] // cambia aspetto del titolo (con prefersLargeTitles = true)
-            navigationController?.navigationBar.tintColor = .black // tintColor changes the color of the UIBarButtonItem
-            navBarAppearance.backgroundColor = .systemGray6 // cambia il colore dello sfondo della navigation bar
-            // navigationController?.navigationBar.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
-            navigationController?.navigationBar.standardAppearance = navBarAppearance
-            navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-        } else {
-            navigationController?.navigationBar.tintColor = .black
-            navigationController?.navigationBar.barTintColor = .systemGray6
-            // navigationController?.navigationBar.isTranslucent = false
+    }
+   
+    override func setupInteraction() {
+        rootView.didTapEditMessage = {
+            let vc = UINavigationController(rootViewController: EventViewController(store: self.store))
+            self.present(vc, animated: true, completion: nil)
         }
     }
     
