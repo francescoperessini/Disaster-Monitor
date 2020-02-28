@@ -110,51 +110,6 @@ class EventCell: UICollectionViewCell, ConfigurableCell, SizeableCell {
     }
 }
 
-struct MapViewModel: ViewModel, Equatable {
-    var coordList : [[String]]
-}
-
-class MapView : UIView, ModellableView{
-    var mapView : GMSMapView!
-    func setup() {
-        let camera = GMSCameraPosition.camera(withLatitude: 999, longitude: 999, zoom: 0)
-        self.mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
-        self.addSubview(self.mapView)
-        do {
-            if traitCollection.userInterfaceStyle == .light {
-                print("Light mode")
-            } else {
-                print("Dark mode")
-                // Set the map style by passing the URL of the local file.
-                if let styleURL = Bundle.main.url(forResource: "style", withExtension: "json") {
-                  mapView.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
-                } else {
-                  NSLog("Unable to find style.json")
-                }
-            }
-        } catch {
-          NSLog("One or more of the map styles failed to load. \(error)")
-        }
-        
-    }
-    func style(){
-        backgroundColor = .systemGray
-        
-    }
-    
-    func update(oldModel: MainViewModel?) {
-        guard let model = self.model else { return }
-        self.setNeedsLayout()
-        
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.mapView.pin.height(200).width(414)
-    }
-}
-
-
 // MARK: - DiffAware conformance
 extension EventCellViewModel: DiffAware {
     var diffId: Int { return self.id.hashValue }

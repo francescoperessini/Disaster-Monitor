@@ -26,7 +26,7 @@ class MainTabBarController: UITabBarController {
     
     func setupTabBar() {
         
-        let mainViewController = UINavigationController(rootViewController: MainViewController(store: store))
+        let mainViewController = UINavigationController(rootViewController: MainTableViewController(store: store))
         mainViewController.tabBarItem.title = "Events"
         mainViewController.tabBarItem.image = UIImage(systemName: "globe")
         

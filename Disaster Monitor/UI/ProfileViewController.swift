@@ -43,7 +43,7 @@ class ProfileViewController: ViewController<ProfileView> {  // Extension of UIVi
             navigationController?.navigationBar.standardAppearance = navBarAppearance
             navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
         } else {
-            navigationController?.navigationBar.tintColor = .black
+            navigationController?.navigationBar.tintColor = .systemBlue
             navigationController?.navigationBar.barTintColor = .systemGray6
             // navigationController?.navigationBar.isTranslucent = false
         }

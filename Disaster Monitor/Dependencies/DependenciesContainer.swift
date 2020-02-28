@@ -34,7 +34,7 @@ final class DependenciesContainer: NavigationProvider {
 final class APIManager{
     func getEvent() -> Promise<JSON> {
         return Promise<JSON>(in: .background) { resolve, reject, status in
-            Alamofire.request("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson").responseJSON { response in
+            Alamofire.request("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson").responseJSON { response in
                 if let data = response.data{
                     if let json = try? JSON(data: data){
                         resolve(json)
