@@ -12,7 +12,7 @@ import Hydra
 import GoogleMaps
 import SwiftyJSON
 
-struct AppState : State {
+struct AppState : State, Codable{
     var name : String = ""
     var surname : String = ""
     var events: [Event] = []        // Actual list containing Events correctly formatted, others for displaying pourposes
@@ -35,10 +35,6 @@ struct EventsStateUpdater: StateUpdater {
     for i in 0...arrayNames.count-1{
         state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i]))
     }
-    
-    //let result = zip(arrayNames, description, magnitudo, coord).map {[$0, $1, $2, $3] }
-    //state.events = result.map{Event(name: $0[0], descr: $0[1], magnitudo: $0[2], coordinates: $0[3])}
-    
   }
 }
 

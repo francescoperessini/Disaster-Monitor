@@ -28,7 +28,7 @@ class ListView: UIView, ModellableView {
     // MARK: - Interactions
     var animate: Interaction?
         
-    func setup() {
+    func setup(){
         self.scrollView.isPagingEnabled = true
         self.scrollView.isScrollEnabled = false
         let eventsLayout = EventsFlowLayout()
@@ -60,14 +60,7 @@ class ListView: UIView, ModellableView {
         }else{
             self.eventsListView.source = SimpleSource<EventCellViewModel>([EventCellViewModel(identifier: "Nothing to show", magnitudo: 0, description: "Change filters", coord:[0, 0] )])
         }
-            
-        
         self.setNeedsLayout()
-    }
-        
-    @objc func segmentedValueChanged(_ sender:UISegmentedControl!) {
-        // TODO: change source of attractionListView
-        print("Selected Segment Index is : \(sender.selectedSegmentIndex)")
     }
 }
 

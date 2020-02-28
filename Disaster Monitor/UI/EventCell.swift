@@ -119,6 +119,21 @@ class MapView : UIView, ModellableView{
         let camera = GMSCameraPosition.camera(withLatitude: 999, longitude: 999, zoom: 0)
         self.mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         self.addSubview(self.mapView)
+        do {
+            if traitCollection.userInterfaceStyle == .light {
+                print("Light mode")
+            } else {
+                print("Dark mode")
+                // Set the map style by passing the URL of the local file.
+                if let styleURL = Bundle.main.url(forResource: "style", withExtension: "json") {
+                  mapView.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
+                } else {
+                  NSLog("Unable to find style.json")
+                }
+            }
+        } catch {
+          NSLog("One or more of the map styles failed to load. \(error)")
+        }
         
     }
     func style(){

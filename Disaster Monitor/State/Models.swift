@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Event {
+struct Event : Codable{
     var id : String
     var name: String
     var description: String
@@ -26,7 +26,7 @@ struct Event {
     }
 }
 
-struct Profile{
+struct Profile : Codable{
     var name: String
     var surname: String
 }
