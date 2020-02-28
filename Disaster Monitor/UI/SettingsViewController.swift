@@ -6,7 +6,6 @@
 //  Copyright © 2019 Stefano Martina. All rights reserved.
 //
 
-import UIKit
 import Tempura
 
 // MARK: - ViewController
@@ -18,7 +17,7 @@ class SettingsViewController: ViewController<SettingsView> {
    
     override func setupInteraction() {
         rootView.didTapEditMessage = {
-            let vc = UINavigationController(rootViewController: EventViewController(store: self.store))
+            let vc = UINavigationController(rootViewController: MessageEditorViewController(store: self.store))
             self.present(vc, animated: true, completion: nil)
         }
     }
