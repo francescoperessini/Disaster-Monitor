@@ -53,14 +53,19 @@ class ListView: UIView, ModellableView {
     func update(oldModel: ListViewModel?) {
         guard let model = self.model else { return }
 
-        let events = model.list.filter{$0.magnitudo > model.filteringValue}.map{EventCellViewModel(identifier: $0.name, magnitudo:$0.magnitudo, description: $0.description, coord:$0.coordinates )}
+        let events = model.list.filter{$0.magnitudo > model.filteringValue}.map{EventCellViewModel(id: $0.id, name: $0.name, magnitudo:$0.magnitudo, description: $0.description, coord:$0.coordinates )}
         
         if events.count != 0{
             self.eventsListView.source = SimpleSource<EventCellViewModel>(events)
         }else{
-            self.eventsListView.source = SimpleSource<EventCellViewModel>([EventCellViewModel(identifier: "Nothing to show", magnitudo: 0, description: "Change filters", coord:[0, 0] )])
+            self.eventsListView.source = SimpleSource<EventCellViewModel>([EventCellViewModel(id: "NONE", name: "Nothing to show", magnitudo: 0, description: "Change filters", coord:[0, 0] )])
         }
         self.setNeedsLayout()
+    }
+    
+    @objc func segmentedValueChanged(_ sender:UISegmentedControl!) {
+        // TODO: change source of attractionListView
+        print("Selected Segment Index is : \(sender.selectedSegmentIndex)")
     }
 }
 

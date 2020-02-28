@@ -19,13 +19,14 @@ public protocol SizeableCell: ModellableView {
 
 // MARK: View Model
 struct EventCellViewModel: ViewModel {
-    let identifier: String
+    let id : String
+    let name: String
     let magnitudo: Float
     let description: String
     let coord: [Double]
     
     static func == (l: EventCellViewModel, r: EventCellViewModel) -> Bool {
-        if l.identifier != r.identifier {return false}
+        if l.id != r.id {return false}
         return true
     }
 }
@@ -93,8 +94,8 @@ class EventCell: UICollectionViewCell, ConfigurableCell, SizeableCell {
     //MARK: Update
     func update(oldModel: EventCellViewModel?) {
         guard let model = self.model else {return}
-        if model.identifier != ""{
-            nameLabel.text = model.identifier
+        if model.id != ""{
+            nameLabel.text = model.name
             descriptionLabel.text = model.description
             magnitudoLabel.text = String(model.magnitudo)
             let coord1 = model.coord[0]
@@ -156,9 +157,9 @@ class MapView : UIView, ModellableView{
 
 // MARK: - DiffAware conformance
 extension EventCellViewModel: DiffAware {
-    var diffId: Int { return self.identifier.hashValue }
+    var diffId: Int { return self.id.hashValue }
 
     static func compareContent(_ a: EventCellViewModel, _ b: EventCellViewModel) -> Bool {
-        return a.identifier == b.identifier
+        return a.id == b.id
     }
 }
