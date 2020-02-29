@@ -6,9 +6,7 @@
 //  Copyright © 2020 Stefano Martina. All rights reserved.
 //
 
-import UIKit
 import Katana
-import Tempura
 
 class MainTabBarController: UITabBarController {
 
@@ -25,7 +23,6 @@ class MainTabBarController: UITabBarController {
     }
     
     func setupTabBar() {
-        
         let mainViewController = UINavigationController(rootViewController: MainTableViewController(store: store))
         mainViewController.tabBarItem.title = "Events"
         mainViewController.tabBarItem.image = UIImage(systemName: "globe")

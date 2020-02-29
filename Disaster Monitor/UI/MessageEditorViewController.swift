@@ -19,6 +19,11 @@ class MessageEditorViewController: ViewController<MessageEditorView> {
         rootView.didTapCancelButton = {
             self.dismiss(animated: true, completion: nil)
         }
+        
+        
+        rootView.didTapDoneButton = { [unowned self] message in
+            
+        }
     }
     
 }
