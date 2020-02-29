@@ -6,9 +6,7 @@
 //  Copyright © 2020 Stefano Martina. All rights reserved.
 //
 
-import Katana
 import Tempura
-import PinLayout
 
 // MARK: - ViewModel
 struct MessageEditorViewModel: ViewModelWithState {
@@ -21,16 +19,44 @@ struct MessageEditorViewModel: ViewModelWithState {
 // MARK: - View
 class MessageEditorView: UIView, ViewControllerModellableView {
     
+    var messageTextField = UITextField()
+    var currentMessage = UILabel()
+  
+    let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 45))
+    let usernameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 45))
+    
     var didTapCancelButton: (() -> ())?
+    var didTapDoneButton: ((String) -> ())?
 
     func setup() {
+        addSubview(messageTextField)
+        leftView.addSubview(usernameLabel)
+        addSubview(currentMessage)
     }
     
     func style() {
+        navigationControllerStyle()
+        messageTextFieldStyle()
+        usernameLabelStyle()
+    }
+    
+    func update(oldModel: MessageEditorViewModel?) {
+       
+    }
+    
+    override func layoutSubviews() {
+        messageTextField.translatesAutoresizingMaskIntoConstraints = false
+        messageTextField.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 50).isActive = true
+        messageTextField.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        messageTextField.widthAnchor.constraint(equalToConstant: self.bounds.width).isActive = true
+        messageTextField.heightAnchor.constraint(equalToConstant: 45).isActive = true
+    }
+    
+    private func navigationControllerStyle() {
         backgroundColor = .systemBackground
         navigationItem?.title = "Message Editor"
         navigationItem?.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didTapCancelButtonFunc))
-        navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapCancelButtonFunc))
+        navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapDoneButtonFunc))
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
@@ -54,12 +80,46 @@ class MessageEditorView: UIView, ViewControllerModellableView {
         }
     }
     
-    func update(oldModel: MessageEditorViewModel?) {
-        
+    private func currentMessageStyle() {
+        currentMessage.text = model?.state.message
+        currentMessage.font = UIFont.systemFont(ofSize: 15)
+    }
+    
+    private func messageTextFieldStyle() {
+        messageTextField.placeholder = "Enter your new message here..."
+        messageTextField.font = UIFont.systemFont(ofSize: 18)
+        messageTextField.borderStyle = UITextField.BorderStyle.none
+        messageTextField.backgroundColor = .systemGray6
+        messageTextField.autocorrectionType = UITextAutocorrectionType.yes
+        messageTextField.keyboardType = UIKeyboardType.default
+        messageTextField.returnKeyType = UIReturnKeyType.done
+        messageTextField.clearButtonMode = UITextField.ViewMode.whileEditing
+        messageTextField.delegate = self
+
+        messageTextField.leftView = leftView
+        messageTextField.leftViewMode = .always
+    }
+    
+    private func usernameLabelStyle() {
+        usernameLabel.text = "Message"
+        usernameLabel.font = UIFont.systemFont(ofSize: 18)
+        usernameLabel.textAlignment = .center
     }
     
     @objc func didTapCancelButtonFunc() {
         didTapCancelButton?()
     }
     
+    @objc func didTapDoneButtonFunc() {
+        didTapDoneButton?("ciao")
+    }
+    
+}
+
+extension MessageEditorView: UITextFieldDelegate {
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        messageTextField.resignFirstResponder()
+        return true
+    }
 }
