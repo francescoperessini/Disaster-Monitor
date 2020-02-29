@@ -19,6 +19,7 @@ struct AppState : State, Codable{
     var user: Profile = Profile(name: "", surname: "")
     var filteringValue : Float = 0
     var message : String = "Message to be shared\nSent from Disaster Monitor App"
+    var displayEvent : DetailedEvent = DetailedEvent(id: "", name: "", descr: "", magnitudo: "", coordinates: ". .", time_in: 0)
 }
 
 
@@ -38,31 +39,20 @@ struct EventsStateUpdater: StateUpdater {
   }
 }
 
-struct GetEvent: SideEffect {
-    func sideEffect(_ context: SideEffectContext<AppState, DependenciesContainer>) throws{
-        context.dependencies.ApiManager
-            .getEvent()
-            .then{
-                newValue in context.dispatch(EventsStateUpdater(newValue: newValue))
-        }
-    }
-}
-
-
-struct FilterEvent: StateUpdater {
-    func updateState(_ state: inout AppState) {
-        state.filteringValue = state.filteringValue + 0.5
-        if state.filteringValue > 4 {
-            state.filteringValue = 0
-        }
-    }
-}
-
-
 struct SetThreshold: StateUpdater{
     var value: Float
     func updateState(_ state: inout AppState) {
         state.filteringValue = value
+    }
+}
+
+struct GetEvents: SideEffect {
+    func sideEffect(_ context: SideEffectContext<AppState, DependenciesContainer>) throws{
+        context.dependencies.ApiManager
+            .getEvents()
+            .then{
+                newValue in context.dispatch(EventsStateUpdater(newValue: newValue))
+        }
     }
 }
 
