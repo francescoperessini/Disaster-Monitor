@@ -47,7 +47,7 @@ class MainViewController: ViewController<MainView> {
             // navigationController?.navigationBar.isTranslucent = false
         }
         
-        self.dispatch(GetEvent())
+        self.dispatch(GetEvents())
     }
     
     @objc override func setupInteraction() {

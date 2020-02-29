@@ -10,22 +10,23 @@ import Foundation
 import Katana
 import Tempura
 import PinLayout
+import GooglePlaces
+import GoogleMaps
 
 // MARK: - ViewModel
 struct EventViewModel: ViewModelWithLocalState {
     var id: String?
+    var event: DetailedEvent?
     
-    init(id: String) {
+    init(id: String, event: DetailedEvent) {
         self.id = id
+        self.event = event
     }
     
     init?(state: AppState?, localState: EventControllerLocalState) {
         guard let state = state else {return nil}
         self.id = localState.id
-        if let id = localState.id{
-            let item = state.events.first{$0.id == id}
-            //print(item)
-        }
+        self.event = localState.event
     }
 }
 
@@ -33,41 +34,66 @@ struct EventViewModel: ViewModelWithLocalState {
 // MARK: - View
 class EventView: UIView, ViewControllerModellableView {
     
+    var map = MapView()
+    var coordinate = UILabel()
+    var didTapClose: (() -> ())?
+    
+    @objc func didTapCloseFunc() {
+        didTapClose?()
+    }
+    
     func setup() {
+        self.map.setup()
+        self.map.style()
+        self.addSubview(self.map)
+        self.addSubview(self.coordinate)
     }
     
     func style() {
+        navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapCloseFunc))
         backgroundColor = .white
         navigationBar?.prefersLargeTitles = false
-        //navigationItem?.title = "Event detail"
-        //navigationItem?.title = self.model.id
+        
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
             navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.black] // cambia aspetto del titolo
             navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black] // cambia aspetto del titolo (con prefersLargeTitles = true)
-            navigationBar?.tintColor = .black // tintColor changes the color of the UIBarButtonItem
+            navigationBar?.tintColor = .systemBlue
             navBarAppearance.backgroundColor = .systemGray6 // cambia il colore dello sfondo della navigation bar
-            // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
             navigationBar?.standardAppearance = navBarAppearance
             navigationBar?.scrollEdgeAppearance = navBarAppearance
         } else {
             navigationBar?.tintColor = .black
             navigationBar?.barTintColor = .systemGray6
-            // navigationBar?.isTranslucent = false
         }
     }
 
     func update(oldModel: EventViewModel?) {
         guard let model = self.model else {return}
-        print(model.id)
-        navigationItem?.title = model.id
-
+        self.navigationItem?.title = model.event?.name
+        
+        let coord_str: String = String(format:"%f  %f", model.event?.coordinates[0] ?? "", model.event?.coordinates[1] ?? "")
+        // let coord2_str: String = String(format:"%f", model.event?.coordinates[1] ?? "")
+    
+        let coord1 = model.event?.coordinates[0]
+        let coord2 = model.event?.coordinates[1]
+        
+        self.coordinate.text = "Coordinates: " + coord_str
+        //self.coordinate.text? +=  "  " +  coord2_str
+        
+        map.mapView.camera = GMSCameraPosition.camera(withLatitude: coord2 ?? 0, longitude: coord1 ?? 0, zoom: 10)
+        map.mapView.animate(to: map.mapView.camera)
+        let marker = GMSMarker()
+        marker.position = CLLocationCoordinate2D(latitude: coord2 ?? 0, longitude: coord1 ?? 0)
+        marker.map = map.mapView
+        self.setNeedsLayout()
     }
 
     // layout
     override func layoutSubviews() {
         super.layoutSubviews()
-    
+        self.map.pin.top(33%).height(66%)
+        self.coordinate.pin.top(pin.safeArea.top + 10).sizeToFit().left(30)
     }
 }

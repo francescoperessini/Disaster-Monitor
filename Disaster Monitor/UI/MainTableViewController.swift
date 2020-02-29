@@ -13,7 +13,7 @@ class MainTableViewController: ViewController<MainViewTableView> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.dispatch(GetEvent())
+        self.dispatch(GetEvents())
     }
     
     override func setupInteraction() {
@@ -22,8 +22,8 @@ class MainTableViewController: ViewController<MainViewTableView> {
             self.present(vc, animated: true, completion: nil)
         }
         
-        rootView.didTapEvent = { [unowned self] v in
-            let vc = UINavigationController(rootViewController: EventViewController(store: self.store, id: v))
+        rootView.didTapEvent = { [unowned self] id in
+            let vc = UINavigationController(rootViewController: EventViewController(store: self.store, localState: EventControllerLocalState(id: id)))
             self.present(vc, animated: true, completion: nil)
         }
     }

@@ -32,7 +32,8 @@ final class DependenciesContainer: NavigationProvider {
 }
 
 final class APIManager{
-    func getEvent() -> Promise<JSON> {
+    // Get all the events
+    func getEvents() -> Promise<JSON> {
         return Promise<JSON>(in: .background) { resolve, reject, status in
             Alamofire.request("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson").responseJSON { response in
                 if let data = response.data{
@@ -43,7 +44,22 @@ final class APIManager{
             }
         }
     }
-
+    
+    // Get the event corresponding to passed id
+    static func getEvent(id : String) -> Promise<JSON> {
+        return Promise<JSON>(in: .background) { resolve, reject, status in
+            Alamofire.request("https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventid=" + id).responseJSON { response in
+                if let data = response.data{
+                    if let json = try? JSON(data: data){
+                        resolve(json)
+                    }
+                }
+            }
+        }
+    }
+        
+    
+}
 
 /*Alamofire.request(url).responseJSON { response in
         if let data = response.data {
@@ -58,5 +74,8 @@ final class APIManager{
                 }
             self.getAuthorsCount() // I added this line of code.
             }
-        }*/
-}
+        }
+
+https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventid=ci39087279
+ 
+ */

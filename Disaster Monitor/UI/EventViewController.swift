@@ -13,16 +13,6 @@ import Tempura
 
 
 class EventViewController: ViewControllerWithLocalState<EventView> {  // Extension of UIViewController
-    
-    init(store: PartialStore<AppState>, id: String?=nil){
-        super.init(store: store, localState: EventControllerLocalState(), connected: false)
-        self.localState.id = id
-    }
-        
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
@@ -36,13 +26,30 @@ class EventViewController: ViewControllerWithLocalState<EventView> {  // Extensi
     }
     
     override func setupInteraction() {
+        rootView.didTapClose = { [unowned self] in
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        APIManager.getEvent(id : self.localState.id ?? "")
+            .then{
+                newValue in
+                    let time_in = Double(newValue["properties"]["time"].stringValue) ?? 0
+                    let id = newValue["id"].stringValue
+                    let name = newValue["properties"]["place"].stringValue
+                    let magnitudo = newValue["properties"]["mag"].stringValue
+                    let coordinates = "\(newValue["geometry"]["coordinates"][0].stringValue) \(newValue["geometry"]["coordinates"][1].stringValue)"
+                    self.localState.event = DetailedEvent(id: id, name: name, descr: "No description", magnitudo: magnitudo, coordinates: coordinates, time_in: time_in)
+                    print("dentro getEvent")
+                    print(self.localState.event)
+        }
     }
 }
 
 struct EventControllerLocalState: LocalState{
     var id: String? = nil
+    var event: DetailedEvent?
 }

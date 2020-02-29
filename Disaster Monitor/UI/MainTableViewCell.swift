@@ -110,7 +110,7 @@ class MapView : UIView, ModellableView{
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.mapView.pin.height(200).width(414)
+        self.mapView.pin.width(414).height(550)
     }
 }
 
