@@ -32,9 +32,10 @@ struct DetailedEvent : Codable{
     var description: String
     var magnitudo: Float
     var coordinates: [Double]
-    var time : String
+    var time: String
+    var depth: String
     
-    init(id: String, name: String, descr: String, magnitudo: String, coordinates: String, time_in: Double) {
+    init(id: String, name: String, descr: String, magnitudo: String, coordinates: String, time_in: Double, depth: String) {
         self.id = id
         self.name = name
         self.description = descr
@@ -46,9 +47,11 @@ struct DetailedEvent : Codable{
         let date = NSDate(timeIntervalSince1970: time_in / 1000)
         let formatter = DateFormatter()
         formatter.timeZone = NSTimeZone(name: "UTC") as TimeZone?
-        formatter.dateFormat = "dd-MM-yyyy HH:mm:ss"
+        formatter.dateFormat = "d MMM yyyy HH:mm:ss"
 
         self.time = formatter.string(from: date as Date)
+        
+        self.depth = depth
     }
 }
 
