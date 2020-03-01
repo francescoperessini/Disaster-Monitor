@@ -49,15 +49,15 @@ class MainTableViewCell: UITableViewCell/*, ModellableView*/{
     // MARK: Layout
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.nameLabel.pin.top(0).left(20).sizeToFit()
+        self.nameLabel.pin.top(10).left(20).sizeToFit()
         self.descriptionLabel.font = UIFont(name: "Futura", size: 20)
         self.descriptionLabel.textColor = .systemGray
         self.descriptionLabel.pin.below(of: nameLabel).left(20).sizeToFit()
         self.descriptionLabel.font = UIFont(name: "Futura", size: 15)
         //self.map.pin.below(of: descriptionLabel)//
-        self.magnitudoLabel.pin.right(pin.safeArea).sizeToFit().marginRight(10)
+        self.magnitudoLabel.pin.right(pin.safeArea).sizeToFit().marginRight(10).top(10)
         self.magnitudoLabel.font = UIFont(name: "Futura", size: 20)
-        self.magnitudoLabel.textColor = .systemGray
+        
     }
     
     func setupCell(event: Event){
@@ -65,6 +65,12 @@ class MainTableViewCell: UITableViewCell/*, ModellableView*/{
         descriptionLabel.text = event.description
         magnitudoLabel.text = String(event.magnitudo)
         
+        // Dangerous are those with magnitude over 3 --> they are blue
+        if event.magnitudo > 3 {
+            self.magnitudoLabel.textColor = .systemBlue
+        }else{
+            self.magnitudoLabel.textColor = .systemGray
+        }
         
         /*let coord1 = event.coordinates[0]
         let coord2 = event.coordinates[1]
