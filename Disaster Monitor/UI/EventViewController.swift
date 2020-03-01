@@ -42,9 +42,10 @@ class EventViewController: ViewControllerWithLocalState<EventView> {  // Extensi
                     let name = newValue["properties"]["place"].stringValue
                     let magnitudo = newValue["properties"]["mag"].stringValue
                     let coordinates = "\(newValue["geometry"]["coordinates"][0].stringValue) \(newValue["geometry"]["coordinates"][1].stringValue)"
-                    self.localState.event = DetailedEvent(id: id, name: name, descr: "No description", magnitudo: magnitudo, coordinates: coordinates, time_in: time_in)
-                    print("dentro getEvent")
-                    print(self.localState.event)
+                    let depth = newValue["properties"]["products"]["origin"]["depth"].stringValue
+                    print("Depth")
+                    print(depth)
+                    self.localState.event = DetailedEvent(id: id, name: name, descr: "No description", magnitudo: magnitudo, coordinates: coordinates, time_in: time_in, depth: "")
         }
     }
 }

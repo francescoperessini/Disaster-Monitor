@@ -36,6 +36,9 @@ class EventView: UIView, ViewControllerModellableView {
     
     var map = MapView()
     var coordinate = UILabel()
+    var magnitude = UILabel()
+    var time = UILabel()
+    
     var didTapClose: (() -> ())?
     
     @objc func didTapCloseFunc() {
@@ -47,6 +50,8 @@ class EventView: UIView, ViewControllerModellableView {
         self.map.style()
         self.addSubview(self.map)
         self.addSubview(self.coordinate)
+        self.addSubview(self.magnitude)
+        self.addSubview(self.time)
     }
     
     func style() {
@@ -73,14 +78,18 @@ class EventView: UIView, ViewControllerModellableView {
         guard let model = self.model else {return}
         self.navigationItem?.title = model.event?.name
         
-        let coord_str: String = String(format:"%f  %f", model.event?.coordinates[0] ?? "", model.event?.coordinates[1] ?? "")
-        // let coord2_str: String = String(format:"%f", model.event?.coordinates[1] ?? "")
-    
+        let coord_str: String = String(format:"coordinates: %f  %f", model.event?.coordinates[0] ?? "", model.event?.coordinates[1] ?? "")
+        self.coordinate.text = coord_str
+        
+        let magnitudo_model: String = String(format: "%f", model.event?.magnitudo ?? "")
+        let magnitudo_label: String  = String(magnitudo_model.prefix(through: magnitudo_model.index(magnitudo_model.startIndex, offsetBy: 2)))
+        let magnitude_str = String(format:"magnitude: %@", magnitudo_label)
+        self.magnitude.text = magnitude_str
+        
+        self.time.text = String(format: "origin time: %@", model.event?.time ?? "")
+        
         let coord1 = model.event?.coordinates[0]
         let coord2 = model.event?.coordinates[1]
-        
-        self.coordinate.text = "Coordinates: " + coord_str
-        //self.coordinate.text? +=  "  " +  coord2_str
         
         map.mapView.camera = GMSCameraPosition.camera(withLatitude: coord2 ?? 0, longitude: coord1 ?? 0, zoom: 10)
         map.mapView.animate(to: map.mapView.camera)
@@ -95,5 +104,7 @@ class EventView: UIView, ViewControllerModellableView {
         super.layoutSubviews()
         self.map.pin.top(33%).height(66%)
         self.coordinate.pin.top(pin.safeArea.top + 10).sizeToFit().left(30)
+        self.magnitude.pin.below(of: self.coordinate).sizeToFit().left(30)
+        self.time.pin.below(of: self.magnitude).sizeToFit().left(30)
     }
 }
