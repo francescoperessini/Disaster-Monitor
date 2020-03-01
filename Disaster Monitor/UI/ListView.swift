@@ -16,7 +16,7 @@ struct ListViewModel: ViewModel {
     var filteringValue : Float
     init(state: AppState) {
         self.list = state.events
-        self.filteringValue = state.filteringValue
+        self.filteringValue = state.filteringValue ?? 0
     }
 }
 

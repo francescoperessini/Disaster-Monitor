@@ -99,7 +99,7 @@ class FilterView: UIView, ViewControllerModellableView {
     func update(oldModel: FilterViewModel?) {
         guard let model = self.model else {return}
 
-        self.slider.setValue(model.state.filteringValue, animated: true)
+        self.slider.setValue(model.state.filteringValue ?? 0, animated: true)
         self.setNeedsLayout()
     }
 

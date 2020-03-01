@@ -73,7 +73,7 @@ class MainViewTableView: UIView, ViewControllerModellableView {
     func update(oldModel: MainViewModel?) {
         guard let model = self.model else { return }
         events = model.state.events
-        filteringValue = model.state.filteringValue
+        filteringValue = model.state.filteringValue ?? 0
         events = events.filter{$0.magnitudo > self.filteringValue}
         DispatchQueue.main.async {
            self.mainViewTableView.reloadData()
