@@ -38,6 +38,7 @@ class EventView: UIView, ViewControllerModellableView {
     var coordinate = UILabel()
     var magnitude = UILabel()
     var time = UILabel()
+    var depth = UILabel()
     
     var didTapClose: (() -> ())?
     
@@ -52,6 +53,7 @@ class EventView: UIView, ViewControllerModellableView {
         self.addSubview(self.coordinate)
         self.addSubview(self.magnitude)
         self.addSubview(self.time)
+        self.addSubview(self.depth)
     }
     
     func style() {
@@ -75,18 +77,21 @@ class EventView: UIView, ViewControllerModellableView {
     }
 
     func update(oldModel: EventViewModel?) {
+        let defaultValue: String = "Loading data"
         guard let model = self.model else {return}
         self.navigationItem?.title = model.event?.name
         
-        let coord_str: String = String(format:"coordinates: %f  %f", model.event?.coordinates[0] ?? "", model.event?.coordinates[1] ?? "")
+        let coord_str: String = String(format:"coordinates: %f  %f", model.event?.coordinates[0] ?? defaultValue, model.event?.coordinates[1] ?? defaultValue)
         self.coordinate.text = coord_str
         
-        let magnitudo_model: String = String(format: "%f", model.event?.magnitudo ?? "")
+        let magnitudo_model: String = String(format: "%f", model.event?.magnitudo ?? defaultValue)
         let magnitudo_label: String  = String(magnitudo_model.prefix(through: magnitudo_model.index(magnitudo_model.startIndex, offsetBy: 2)))
         let magnitude_str = String(format:"magnitude: %@", magnitudo_label)
         self.magnitude.text = magnitude_str
         
-        self.time.text = String(format: "origin time: %@", model.event?.time ?? "")
+        self.time.text = String(format: "origin time: %@", model.event?.time ?? defaultValue)
+        
+        self.depth.text = String(format: "depth: %@ km", model.event?.depth ?? defaultValue)
         
         let coord1 = model.event?.coordinates[0]
         let coord2 = model.event?.coordinates[1]
@@ -103,8 +108,9 @@ class EventView: UIView, ViewControllerModellableView {
     override func layoutSubviews() {
         super.layoutSubviews()
         self.map.pin.top(33%).height(66%)
-        self.coordinate.pin.top(pin.safeArea.top + 10).sizeToFit().left(30)
-        self.magnitude.pin.below(of: self.coordinate).sizeToFit().left(30)
-        self.time.pin.below(of: self.magnitude).sizeToFit().left(30)
+        self.coordinate.pin.top(pin.safeArea.top + 10).sizeToFit().left(30).marginTop(10)
+        self.magnitude.pin.below(of: self.coordinate).sizeToFit().left(30).marginTop(10)
+        self.time.pin.below(of: self.magnitude).sizeToFit().left(30).marginTop(10)
+        self.depth.pin.below(of: self.time).sizeToFit().left(30).marginTop(10)
     }
 }
