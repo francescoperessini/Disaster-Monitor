@@ -11,6 +11,7 @@ import Tempura
 import Katana
 import GooglePlaces
 import GoogleMaps
+import PinLayout
 
 class MainTableViewCell: UITableViewCell/*, ModellableView*/{
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -49,13 +50,13 @@ class MainTableViewCell: UITableViewCell/*, ModellableView*/{
     // MARK: Layout
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.nameLabel.pin.top(10).left(20).sizeToFit()
+        self.nameLabel.pin.top(10).right(50%).left(20).sizeToFit()
         self.descriptionLabel.font = UIFont(name: "Futura", size: 20)
         self.descriptionLabel.textColor = .systemGray
         self.descriptionLabel.pin.below(of: nameLabel).left(20).sizeToFit()
         self.descriptionLabel.font = UIFont(name: "Futura", size: 15)
         //self.map.pin.below(of: descriptionLabel)//
-        self.magnitudoLabel.pin.right(pin.safeArea).sizeToFit().marginRight(10).top(10)
+        self.magnitudoLabel.pin.right(pin.safeArea).sizeToFit().marginRight(10).vCenter()
         self.magnitudoLabel.font = UIFont(name: "Futura", size: 20)
         
     }

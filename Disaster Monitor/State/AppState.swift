@@ -31,9 +31,10 @@ struct EventsStateUpdater: StateUpdater {
     let magnitudo = newValue["features"].arrayValue.map {$0["properties"]["mag"].stringValue}
     let coord = newValue["features"].arrayValue.map {"\($0["geometry"]["coordinates"][0].stringValue) \($0["geometry"]["coordinates"][1].stringValue)"}
     let id = newValue["features"].arrayValue.map {$0["id"].stringValue}
+    let time = newValue["features"].arrayValue.map {$0["properties"]["time"].doubleValue}
     
     for i in 0...arrayNames.count-1{
-        state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i]))
+        state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], time: time[i]))
     }
   }
 }
