@@ -24,6 +24,7 @@ class MainViewTableView: UIView, ViewControllerModellableView {
     var mainViewTableView = UITableView()
     var events: [Event] = []
     var filteringValue: Float = 0
+    var filteringDay: Int = 0
     
     var didTapFilter: (() -> ())?
     var didTapEvent: ((String) -> ())?
@@ -74,7 +75,9 @@ class MainViewTableView: UIView, ViewControllerModellableView {
         guard let model = self.model else { return }
         events = model.state.events
         filteringValue = model.state.filteringValue ?? 0
-        events = events.filter{$0.magnitudo > self.filteringValue}
+        filteringDay = model.state.segmentedDays ?? 0
+        print(self.filteringDay)
+        events = events.filter{$0.magnitudo > self.filteringValue && $0.daysAgo < self.filteringDay}
         DispatchQueue.main.async {
            self.mainViewTableView.reloadData()
         }

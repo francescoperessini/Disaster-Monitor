@@ -21,7 +21,6 @@ struct FilterViewModel: ViewModelWithState {
 
 // MARK: - View
 class FilterView: UIView, ViewControllerModellableView {
-    
     var slider = UISlider()
     var sliderLabel = UILabel()
     var sliderLabelComment = UILabel()
@@ -29,14 +28,23 @@ class FilterView: UIView, ViewControllerModellableView {
     var sortingLabel = UILabel()
     var sortingLabelComment = UILabel()
     
+    var segmentedLabel = UILabel()
+    var segmentedLabelComment = UILabel()
+    
+    let segmentedControl = UISegmentedControl(items: ["1", "3", "5", "7"])
+    
     var didTapSlider: ((Float) -> ())?
+    var didTapSegmented: ((Int) -> ())?
     var didTapClose: (() -> ())?
+    
     @objc func didTapSliderFunc(sender: UISlider) {
         didTapSlider?(sender.value)
     }
-    
     @objc func didTapCloseFunc() {
         didTapClose?()
+    }
+    @objc func didTapSegmentedFunc(sender: UISegmentedControl){
+        didTapSegmented?(Int(sender.titleForSegment(at: sender.selectedSegmentIndex) ?? "") ?? 0)
     }
     
     func setup() {
@@ -46,6 +54,9 @@ class FilterView: UIView, ViewControllerModellableView {
         self.addSubview(sliderLabelComment)
         self.addSubview(sortingLabel)
         self.addSubview(sortingLabelComment)
+        self.addSubview(segmentedLabel)
+        self.addSubview(segmentedLabelComment)
+        self.addSubview(segmentedControl)
         
         self.sliderLabel.text = "Magnitudo"
         self.sliderLabelComment.text = "You can set here the desidered threshold"
@@ -62,6 +73,15 @@ class FilterView: UIView, ViewControllerModellableView {
         
         self.sortingLabel.text = "Sorting Preferences"
         self.sortingLabelComment.text = "You can set here the desidered ordering"
+        
+        self.segmentedLabel.text = "Time Period"
+        self.segmentedLabelComment.text = "You can set the time period in days"
+        self.segmentedControl.selectedSegmentIndex = 0
+        self.segmentedControl.addTarget(self, action: #selector(didTapSegmentedFunc), for: .valueChanged)
+
+        segmentedControl.layer.cornerRadius = 5.0
+        segmentedControl.backgroundColor = .lightGray
+        segmentedControl.tintColor = .systemGray6
     }
     
     func style() {
@@ -94,12 +114,17 @@ class FilterView: UIView, ViewControllerModellableView {
         self.sortingLabel.font = h2title
         self.sortingLabelComment.font = h3title
         self.sortingLabelComment.textColor = .systemGray
+        
+        self.segmentedLabel.font = h2title
+        self.segmentedLabelComment.font = h3title
+        self.segmentedLabelComment.textColor = .systemGray
     }
 
     func update(oldModel: FilterViewModel?) {
         guard let model = self.model else {return}
 
         self.slider.setValue(model.state.filteringValue ?? 0, animated: true)
+        self.segmentedControl.selectedSegmentIndex = ["1", "3", "5", "7"].index(of: String(model.state.segmentedDays) ?? "") ?? 0
         self.setNeedsLayout()
     }
 
@@ -109,10 +134,18 @@ class FilterView: UIView, ViewControllerModellableView {
                 
         self.sliderLabel.pin.top(55).sizeToFit().marginTop(CGFloat(10)).left(30)
         self.sliderLabelComment.pin.below(of: sliderLabel).left(30).sizeToFit()
-        self.slider.pin.below(of: sliderLabelComment).right(30).left(30).marginTop(10)
+        self.slider.pin.below(of: sliderLabelComment).hCenter().width(80%).marginTop(10)
         
         self.sortingLabel.pin.below(of: slider).sizeToFit().marginTop(CGFloat(10)).left(30)
         self.sortingLabelComment.pin.below(of: sortingLabel).left(30).sizeToFit()
+        
+        self.segmentedLabel.pin.below(of: sortingLabelComment).left(30).marginTop(CGFloat(40)).sizeToFit()
+        self.segmentedLabelComment.pin.below(of: segmentedLabel).left(30).sizeToFit()
+        self.segmentedControl.pin.below(of: segmentedLabelComment).hCenter().width(80%).marginTop(10)
+    }
+    
+    @objc func appo(){
+        
     }
   
 }

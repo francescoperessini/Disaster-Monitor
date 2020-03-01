@@ -23,6 +23,10 @@ class FilterViewController: ViewController<FilterView> {
         rootView.didTapClose = { [unowned self] in
             self.dismiss(animated: true, completion: nil)
         }
+        
+        rootView.didTapSegmented = { [unowned self] v in
+            self.dispatch(SetSegmented(value: v))
+        }
     }
     
 }

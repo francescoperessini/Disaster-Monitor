@@ -20,6 +20,7 @@ struct AppState : State, Codable{
     var filteringValue : Float?
     var message : String = "Message to be shared\nSent from Disaster Monitor App"
     var displayEvent : DetailedEvent?
+    var segmentedDays: Int = 999
 }
 
 struct EventsStateUpdater: StateUpdater {
@@ -43,6 +44,14 @@ struct SetThreshold: StateUpdater{
     var value: Float
     func updateState(_ state: inout AppState) {
         state.filteringValue = value
+    }
+}
+
+struct SetSegmented: StateUpdater{
+    var value: Int
+    func updateState(_ state: inout AppState) {
+        print(value)
+        state.segmentedDays = value
     }
 }
 
