@@ -13,15 +13,14 @@ import GoogleMaps
 import SwiftyJSON
 
 struct AppState : State, Codable{
-    var name : String = ""
-    var surname : String = ""
-    var events: [Event] = []        // Actual list containing Events correctly formatted, others for displaying pourposes
-    var user: Profile = Profile(name: "", surname: "")
-    var filteringValue : Float = 0
+    var name : String?
+    var surname : String?
+    var events: [Event] = []
+    var user: Profile?
+    var filteringValue : Float?
     var message : String = "Message to be shared\nSent from Disaster Monitor App"
-    var displayEvent : DetailedEvent = DetailedEvent(id: "", name: "", descr: "", magnitudo: "", coordinates: ". .", time_in: 0)
+    var displayEvent : DetailedEvent?
 }
-
 
 struct EventsStateUpdater: StateUpdater {
   let newValue: JSON
@@ -46,6 +45,13 @@ struct SetThreshold: StateUpdater{
     }
 }
 
+struct SetMessage: StateUpdater {
+    var newMessage: String
+    func updateState(_ state: inout AppState) {
+        state.message = newMessage
+    }
+}
+
 struct GetEvents: SideEffect {
     func sideEffect(_ context: SideEffectContext<AppState, DependenciesContainer>) throws{
         context.dependencies.ApiManager
@@ -55,6 +61,3 @@ struct GetEvents: SideEffect {
         }
     }
 }
-
-
-

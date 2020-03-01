@@ -20,9 +20,9 @@ class MessageEditorViewController: ViewController<MessageEditorView> {
             self.dismiss(animated: true, completion: nil)
         }
         
-        
         rootView.didTapDoneButton = { [unowned self] message in
-            
+            self.dispatch(SetMessage(newMessage: message))
+            self.dismiss(animated: true, completion: nil)
         }
     }
     

@@ -35,13 +35,14 @@ class MessageEditorView: UIView, ViewControllerModellableView {
     }
     
     func style() {
+        backgroundColor = .white
         navigationControllerStyle()
         messageTextFieldStyle()
         usernameLabelStyle()
     }
     
     func update(oldModel: MessageEditorViewModel?) {
-       
+        messageTextField.placeholder = model?.state.message
     }
     
     override func layoutSubviews() {
@@ -53,43 +54,37 @@ class MessageEditorView: UIView, ViewControllerModellableView {
     }
     
     private func navigationControllerStyle() {
-        backgroundColor = .systemBackground
         navigationItem?.title = "Message Editor"
         navigationItem?.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didTapCancelButtonFunc))
         navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapDoneButtonFunc))
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
-            /*
-            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.black, .font: UIFont(name: "FuturaStd-Bold", size: 30) ??
-            UIFont.boldSystemFont(ofSize: 30)] // cambia aspetto del titolo
-            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black, .font: UIFont(name: "FuturaStd-Bold", size: 30) ??
-            UIFont.boldSystemFont(ofSize: 30)] // cambia aspetto del titolo (con prefersLargeTitles = true)
-            */
-            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.black] // cambia aspetto del titolo
-            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black] // cambia aspetto del titolo (con prefersLargeTitles = true)
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo (con prefersLargeTitles = true)
             navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
-            navBarAppearance.backgroundColor = .systemGray6 // cambia il colore dello sfondo della navigation bar
+            navBarAppearance.backgroundColor = .secondarySystemBackground // cambia il colore dello sfondo della navigation bar
             // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
             navigationBar?.standardAppearance = navBarAppearance
             navigationBar?.scrollEdgeAppearance = navBarAppearance
         } else {
             navigationBar?.tintColor = .systemBlue
-            navigationBar?.barTintColor = .systemGray6
+            navigationBar?.barTintColor = .secondarySystemBackground
             // navigationBar?.isTranslucent = false
         }
     }
     
     private func currentMessageStyle() {
-        currentMessage.text = model?.state.message
         currentMessage.font = UIFont.systemFont(ofSize: 15)
     }
     
     private func messageTextFieldStyle() {
         messageTextField.placeholder = "Enter your new message here..."
+        messageTextField.textColor = .label
         messageTextField.font = UIFont.systemFont(ofSize: 18)
-        messageTextField.borderStyle = UITextField.BorderStyle.none
-        messageTextField.backgroundColor = .systemGray6
+        messageTextField.layer.borderWidth = 0.5
+        messageTextField.layer.borderColor = UIColor.separator.cgColor
+        messageTextField.backgroundColor = .systemBackground
         messageTextField.autocorrectionType = UITextAutocorrectionType.yes
         messageTextField.keyboardType = UIKeyboardType.default
         messageTextField.returnKeyType = UIReturnKeyType.done
@@ -102,6 +97,7 @@ class MessageEditorView: UIView, ViewControllerModellableView {
     
     private func usernameLabelStyle() {
         usernameLabel.text = "Message"
+        usernameLabel.textColor = .label
         usernameLabel.font = UIFont.systemFont(ofSize: 18)
         usernameLabel.textAlignment = .center
     }
@@ -111,7 +107,7 @@ class MessageEditorView: UIView, ViewControllerModellableView {
     }
     
     @objc func didTapDoneButtonFunc() {
-        didTapDoneButton?("ciao")
+        didTapDoneButton?("test")
     }
     
 }
@@ -122,4 +118,5 @@ extension MessageEditorView: UITextFieldDelegate {
         messageTextField.resignFirstResponder()
         return true
     }
+    
 }
