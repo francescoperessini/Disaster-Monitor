@@ -30,6 +30,8 @@ class ProfileView: UIView, ViewControllerModellableView {
     var searchController: UISearchController?
     var resultView: UITextView?
     var didTapActionButton: (() -> ())?
+    
+    var events: [Event] = []
 
     func setup() {
         setupLocation()
@@ -61,6 +63,9 @@ class ProfileView: UIView, ViewControllerModellableView {
     }
 
     func update(oldModel: MainViewModel?) {
+        guard let model = model else { return }
+        events = model.state.events
+        setupMarkers()
     }
 
     override func layoutSubviews() {
@@ -98,11 +103,6 @@ class ProfileView: UIView, ViewControllerModellableView {
         mapView.settings.tiltGestures = true
         
         /*
-        let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6.0)
-        self.mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
-        
-        self.mapView.animate(to: camera)
-        
         let marker = GMSMarker()
         marker.position = CLLocationCoordinate2D(latitude: -33.86, longitude: 151.20)
         marker.title = "Sydney"
@@ -119,6 +119,9 @@ class ProfileView: UIView, ViewControllerModellableView {
     
     private func setupSearchBar() {
         resultsViewController = GMSAutocompleteResultsViewController()
+        let filter = GMSAutocompleteFilter()
+        filter.type = .city
+        resultsViewController?.autocompleteFilter = filter
         resultsViewController?.delegate = self
 
         searchController = UISearchController(searchResultsController: resultsViewController)
@@ -133,8 +136,20 @@ class ProfileView: UIView, ViewControllerModellableView {
         // this view controller, not one further up the chain.
         // definesPresentationContext = true
 
-        // Prevent the navigation bar from being hidden when searching.
+        // Prevent the navigation bar from being hidden when searching
         searchController?.hidesNavigationBarDuringPresentation = false
+    }
+    
+    private func setupMarkers() {
+        mapView.clear()
+        for event in events {
+            let longitude = event.coordinates[0]
+            let latitude = event.coordinates[1]
+            let position = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            let marker = GMSMarker(position: position)
+            marker.title = event.name
+            marker.map = mapView
+        }
     }
     
     @objc func didTapActionButtonFunc() {
@@ -146,36 +161,33 @@ class ProfileView: UIView, ViewControllerModellableView {
 // MARK: - CLLocationManagerDelegate
 extension ProfileView: CLLocationManagerDelegate, GMSAutocompleteResultsViewControllerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-    guard status == .authorizedWhenInUse else {
-      return
-    }
-    locationManager.startUpdatingLocation()
+        guard status == .authorizedWhenInUse else { return }
+        locationManager.startUpdatingLocation()
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    guard let location = locations.first else {
-      return
-    }
-      
-    // This updates the map’s camera to center around the user’s current location
-    mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
-      
-    // Tell locationManager you’re no longer interested in updates
-    locationManager.stopUpdatingLocation()
+        guard let location = locations.first else { return }
+          
+        // This updates the map’s camera to center around the user’s current location
+        mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
+          
+        // Tell locationManager you’re no longer interested in updates
+        locationManager.stopUpdatingLocation()
     }
 
-    func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
-                           didAutocompleteWith place: GMSPlace) {
+    func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didAutocompleteWith place: GMSPlace) {
         searchController?.isActive = false
+        
         // Do something with the selected place.
         print("Place name: \(String(describing: place.name))")
         print("Place address: \(String(describing: place.formattedAddress))")
         print("Place attributions: \(String(describing: place.attributions))")
+                
+        let newLocation = GMSCameraPosition(target: place.coordinate, zoom: 12, bearing: 0, viewingAngle: 0)
+        mapView.animate(to: newLocation)
     }
 
-    func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
-                           didFailAutocompleteWithError error: Error){
-        // TODO: handle the error.
+    func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didFailAutocompleteWithError error: Error){
         print("Error: ", error.localizedDescription)
     }
     
