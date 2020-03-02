@@ -7,7 +7,7 @@
 //
 
 import Tempura
-
+import PinLayout
 // MARK: - ViewModel
 struct MessageEditorViewModel: ViewModelWithState {
     var state: AppState
@@ -21,17 +21,20 @@ class MessageEditorView: UIView, ViewControllerModellableView {
     
     var messageTextField = UITextField()
     var currentMessage = UILabel()
-  
+    var messageComment = UITextView()
+    var messageFromState: String?
+    
     let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 45))
     let usernameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 45))
     
     var didTapCancelButton: (() -> ())?
     var didTapDoneButton: ((String) -> ())?
-
+    
     func setup() {
-        addSubview(messageTextField)
-        leftView.addSubview(usernameLabel)
-        addSubview(currentMessage)
+        self.addSubview(messageTextField)
+        self.leftView.addSubview(usernameLabel)
+        self.addSubview(currentMessage)
+        self.addSubview(messageComment)
     }
     
     func style() {
@@ -39,10 +42,24 @@ class MessageEditorView: UIView, ViewControllerModellableView {
         navigationControllerStyle()
         messageTextFieldStyle()
         usernameLabelStyle()
+        self.messageComment.font = UIFont.systemFont(ofSize: 20)
+        
     }
     
     func update(oldModel: MessageEditorViewModel?) {
         messageTextField.placeholder = model?.state.message
+        messageFromState = model?.state.message
+        
+        let string = String(format:"This message is the prepared message that you can send to your contacts whenever you are detected near an earthquake, now it is: %@", messageFromState ?? "No message set")
+        
+        let font = UIFont.systemFont(ofSize: 20)
+        let attributedString = NSMutableAttributedString(string: string, attributes: [NSAttributedString.Key.font: font])
+        let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: font.pointSize)]
+        let range = (string as NSString).range(of: messageFromState ?? "")
+        attributedString.addAttributes(boldFontAttribute, range: range)
+        
+        
+        self.messageComment.attributedText = attributedString
     }
     
     override func layoutSubviews() {
@@ -51,6 +68,7 @@ class MessageEditorView: UIView, ViewControllerModellableView {
         messageTextField.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor).isActive = true
         messageTextField.widthAnchor.constraint(equalToConstant: self.bounds.width).isActive = true
         messageTextField.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        self.messageComment.pin.top(160).width(90%).left(5%).right(5%).sizeToFit(FitType.width)
     }
     
     private func navigationControllerStyle() {
@@ -107,7 +125,11 @@ class MessageEditorView: UIView, ViewControllerModellableView {
     }
     
     @objc func didTapDoneButtonFunc() {
-        didTapDoneButton?("test")
+        //print(sender.text ?? "")
+        if (self.messageTextField.text ?? "" != ""){
+            didTapDoneButton?(self.messageTextField.text ?? "")
+        }
+            
     }
     
 }
