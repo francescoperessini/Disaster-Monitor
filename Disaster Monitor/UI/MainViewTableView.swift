@@ -77,7 +77,6 @@ class MainViewTableView: UIView, ViewControllerModellableView {
         events.sorted(by: {$0.daysAgo < $1.daysAgo})
         filteringValue = model.state.filteringValue ?? 0
         filteringDay = model.state.segmentedDays ?? 0
-        print(self.filteringDay)
         events = events.filter{$0.magnitudo > self.filteringValue && $0.daysAgo < self.filteringDay}
         DispatchQueue.main.async {
            self.mainViewTableView.reloadData()
@@ -112,13 +111,13 @@ extension MainViewTableView: UITableViewDelegate, UITableViewDataSource {
         
         switch section {
         case .OneDay:
-            return events.filter{$0.daysAgo == 1}.count
+            return events.filter{$0.daysAgo == 0}.count
         case .TwoDay:
-            return events.filter{$0.daysAgo == 2}.count
+            return events.filter{$0.daysAgo == 1}.count
         case .ThreeDay:
-            return events.filter{$0.daysAgo == 3}.count
+            return events.filter{$0.daysAgo == 2}.count
         case .FourDay:
-            return events.filter{$0.daysAgo == 4}.count
+            return events.filter{$0.daysAgo == 3}.count
         case .OthersDay:
             return events.filter{$0.daysAgo > 4}.count
         }

@@ -37,6 +37,7 @@ struct EventsStateUpdater: StateUpdater {
     for i in 0...arrayNames.count-1{
         state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], time: time[i]))
     }
+    state.events.sort(by: {$0.time > $1.time})
   }
 }
 
@@ -50,7 +51,6 @@ struct SetThreshold: StateUpdater{
 struct SetSegmented: StateUpdater{
     var value: Int
     func updateState(_ state: inout AppState) {
-        print(value)
         state.segmentedDays = value
     }
 }
