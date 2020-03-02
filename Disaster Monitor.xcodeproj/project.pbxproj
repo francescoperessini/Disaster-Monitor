@@ -124,9 +124,9 @@
 		8C100DDEA741AB48464729DD /* Pods_Disaster_MonitorUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Disaster_MonitorUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F6A4890087B0E1A7288AB18 /* Pods-Disaster Monitor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disaster Monitor.debug.xcconfig"; path = "Target Support Files/Pods-Disaster Monitor/Pods-Disaster Monitor.debug.xcconfig"; sourceTree = "<group>"; };
 		BB502D60C134875ED664D9A7 /* Pods-Disaster MonitorUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disaster MonitorUITests.debug.xcconfig"; path = "Target Support Files/Pods-Disaster MonitorUITests/Pods-Disaster MonitorUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		C677E5992407CA540079344A /* SettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsSection.swift; path = "Disaster Monitor/State/SettingsSection.swift"; sourceTree = SOURCE_ROOT; };
+		C677E5992407CA540079344A /* SettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsSection.swift; path = "Disaster Monitor/UI/Settings/Settings Page/SettingsSection.swift"; sourceTree = SOURCE_ROOT; };
 		C6B0E86B24068AC9005CEE09 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
-		C6B0E86D2406DCE4005CEE09 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainTabBarController.swift; path = "Disaster Monitor/MainTabBarController.swift"; sourceTree = SOURCE_ROOT; };
+		C6B0E86D2406DCE4005CEE09 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainTabBarController.swift; path = "Disaster Monitor/UI/MainTabBarController.swift"; sourceTree = SOURCE_ROOT; };
 		C6C625072409AC5A00E994F3 /* MessageEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageEditorView.swift; sourceTree = "<group>"; };
 		C6E81A712409BB6C00CCD23D /* MessageEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageEditorViewController.swift; sourceTree = "<group>"; };
 		DED2C185958EF922F2C4C351 /* Pods_Disaster_MonitorTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Disaster_MonitorTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -195,7 +195,6 @@
 				7BE4172C23A8D3210096F8EA /* Navigation */,
 				7BE4172B23A8D2EC0096F8EA /* State */,
 				7BE4172A23A8D2E00096F8EA /* UI */,
-				7B5038A923A8CD5700F18840 /* SceneDelegate.swift */,
 				7B5038AD23A8CD5800F18840 /* Assets.xcassets */,
 				7B5038B523A8CD5800F18840 /* Info.plist */,
 				7B5038AF23A8CD5800F18840 /* Preview Content */,
@@ -257,29 +256,13 @@
 		7BE4172A23A8D2E00096F8EA /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				7B6E625E240912530047D7AE /* style.json */,
-				C677E5992407CA540079344A /* SettingsSection.swift */,
-				7B1DF43523ABA5EB004C952A /* SettingsView.swift */,
-				C6C625072409AC5A00E994F3 /* MessageEditorView.swift */,
-				C6E81A712409BB6C00CCD23D /* MessageEditorViewController.swift */,
-				C6B0E86B24068AC9005CEE09 /* SettingsTableViewCell.swift */,
-				7B1DF43623ABA5EB004C952A /* SettingsViewController.swift */,
+				7B5038A923A8CD5700F18840 /* SceneDelegate.swift */,
 				C6B0E86D2406DCE4005CEE09 /* MainTabBarController.swift */,
-				7BE4173A23A8D49C0096F8EA /* MainView.swift */,
-				7BE4173C23A8D4AC0096F8EA /* MainViewController.swift */,
-				7B564A1B23A92B7100DD178C /* ListView.swift */,
-				7B564A3423A9325D00DD178C /* EventsFlowLayout.swift */,
-				7B564A3623A9404E00DD178C /* EventCell.swift */,
-				7B82217D23AB8BC6002DAA48 /* ProfileView.swift */,
-				7B82217F23AB8C9B002DAA48 /* ProfileViewController.swift */,
-				7B69AD6C2405827300E040B9 /* FilterViewController.swift */,
-				7B69AD6E240582B400E040B9 /* FilterView.swift */,
-				7B6E62682409629D0047D7AE /* MainViewTableView.swift */,
-				7B6E626E2409674D0047D7AE /* MainTableViewController.swift */,
-				7B6E626C240964AB0047D7AE /* MainSection.swift */,
-				7B6E6270240984830047D7AE /* EventView.swift */,
-				7B6E62722409849B0047D7AE /* EventViewController.swift */,
-				7B6E627424098B5F0047D7AE /* MainTableViewCell.swift */,
+				7B6E625E240912530047D7AE /* style.json */,
+				C635C0BB240DB9A200970769 /* Main */,
+				C635C0BD240DB9C100970769 /* Map */,
+				C635C0BC240DB9B800970769 /* Settings */,
+				C635C0C5240DBB3A00970769 /* Trash */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -336,6 +319,95 @@
 				FBCAFCBF2355DF0E58CD357C /* Pods-Disaster MonitorUITests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		C635C0BB240DB9A200970769 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				C635C0C4240DBAA100970769 /* Event Page */,
+				C635C0C3240DBA8B00970769 /* Filter Page */,
+				C635C0C2240DBA7E00970769 /* Main Page */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		C635C0BC240DB9B800970769 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				C635C0C1240DBA4800970769 /* Settings Page */,
+				C635C0BF240DBA2D00970769 /* Message Editor Page */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		C635C0BD240DB9C100970769 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				7B82217D23AB8BC6002DAA48 /* ProfileView.swift */,
+				7B82217F23AB8C9B002DAA48 /* ProfileViewController.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		C635C0BF240DBA2D00970769 /* Message Editor Page */ = {
+			isa = PBXGroup;
+			children = (
+				C6C625072409AC5A00E994F3 /* MessageEditorView.swift */,
+				C6E81A712409BB6C00CCD23D /* MessageEditorViewController.swift */,
+			);
+			path = "Message Editor Page";
+			sourceTree = "<group>";
+		};
+		C635C0C1240DBA4800970769 /* Settings Page */ = {
+			isa = PBXGroup;
+			children = (
+				7B1DF43523ABA5EB004C952A /* SettingsView.swift */,
+				7B1DF43623ABA5EB004C952A /* SettingsViewController.swift */,
+				C677E5992407CA540079344A /* SettingsSection.swift */,
+				C6B0E86B24068AC9005CEE09 /* SettingsTableViewCell.swift */,
+			);
+			path = "Settings Page";
+			sourceTree = "<group>";
+		};
+		C635C0C2240DBA7E00970769 /* Main Page */ = {
+			isa = PBXGroup;
+			children = (
+				7B6E62682409629D0047D7AE /* MainViewTableView.swift */,
+				7B6E626E2409674D0047D7AE /* MainTableViewController.swift */,
+				7B6E626C240964AB0047D7AE /* MainSection.swift */,
+				7B6E627424098B5F0047D7AE /* MainTableViewCell.swift */,
+			);
+			path = "Main Page";
+			sourceTree = "<group>";
+		};
+		C635C0C3240DBA8B00970769 /* Filter Page */ = {
+			isa = PBXGroup;
+			children = (
+				7B69AD6E240582B400E040B9 /* FilterView.swift */,
+				7B69AD6C2405827300E040B9 /* FilterViewController.swift */,
+			);
+			path = "Filter Page";
+			sourceTree = "<group>";
+		};
+		C635C0C4240DBAA100970769 /* Event Page */ = {
+			isa = PBXGroup;
+			children = (
+				7B6E6270240984830047D7AE /* EventView.swift */,
+				7B6E62722409849B0047D7AE /* EventViewController.swift */,
+			);
+			path = "Event Page";
+			sourceTree = "<group>";
+		};
+		C635C0C5240DBB3A00970769 /* Trash */ = {
+			isa = PBXGroup;
+			children = (
+				7BE4173A23A8D49C0096F8EA /* MainView.swift */,
+				7BE4173C23A8D4AC0096F8EA /* MainViewController.swift */,
+				7B564A1B23A92B7100DD178C /* ListView.swift */,
+				7B564A3623A9404E00DD178C /* EventCell.swift */,
+				7B564A3423A9325D00DD178C /* EventsFlowLayout.swift */,
+			);
+			path = Trash;
 			sourceTree = "<group>";
 		};
 		CDD66515CB1F53AFC9BC5179 /* Frameworks */ = {

@@ -31,7 +31,9 @@ class ProfileView: UIView, ViewControllerModellableView {
     var resultView: UITextView?
     var didTapActionButton: (() -> ())?
     
-    var events: [Event] = []
+    var actualPosition: CLLocation?
+    var nearestLocations_tmp: [Event] = []
+    var nearestLocations: [Event] = []
 
     func setup() {
         setupLocation()
@@ -64,8 +66,19 @@ class ProfileView: UIView, ViewControllerModellableView {
 
     func update(oldModel: MainViewModel?) {
         guard let model = model else { return }
-        events = model.state.events
-        setupMarkers()
+        if model.state.events.count != 0 {
+            setupMarkers()
+            
+            nearestLocations_tmp = model.state.events
+            nearestLocations.removeAll()
+            if actualPosition != nil {
+                for _ in 0...19 {
+                    let tmp = closestLocation(locations: self.nearestLocations_tmp, closestToLocation: self.actualPosition!)
+                    nearestLocations.append(tmp!)
+                }
+                setupGeoFenceRegions()
+            }
+        }
     }
 
     override func layoutSubviews() {
@@ -103,12 +116,6 @@ class ProfileView: UIView, ViewControllerModellableView {
         mapView.settings.tiltGestures = true
         
         /*
-        let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: -33.86, longitude: 151.20)
-        marker.title = "Sydney"
-        marker.snippet = "Australia"
-        marker.map = mapView
-        
         let circ = GMSCircle(position: marker.position, radius: 100000)
         circ.fillColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.10)
         circ.strokeColor = .red
@@ -142,14 +149,45 @@ class ProfileView: UIView, ViewControllerModellableView {
     
     private func setupMarkers() {
         mapView.clear()
-        for event in events {
+        for event in (model?.state.events)! {
             let longitude = event.coordinates[0]
             let latitude = event.coordinates[1]
             let position = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
             let marker = GMSMarker(position: position)
             marker.title = event.name
+            marker.snippet = "Magnitudo: \(String(event.magnitudo))"
+            marker.appearAnimation = GMSMarkerAnimation.pop
             marker.map = mapView
         }
+    }
+    
+    private func closestLocation(locations: [Event], closestToLocation location: CLLocation) -> Event? {
+        if let closestLocation = locations.min(by: { location.distance(from: CLLocation(latitude: $0.coordinates[1], longitude: $0.coordinates[0])) < location.distance(from: CLLocation(latitude: $1.coordinates[1], longitude: $1.coordinates[0])) }) {
+            nearestLocations_tmp = nearestLocations_tmp.filter{$0 != closestLocation}
+            return closestLocation
+        } else {
+            print("coordinates is empty")
+            return nil
+        }
+    }
+    
+    private func setupGeoFenceRegions() {
+        
+        
+        for region in locationManager.monitoredRegions {
+            locationManager.stopMonitoring(for: region)
+        }
+                
+        for event in nearestLocations {
+            let longitude = event.coordinates[0]
+            let latitude = event.coordinates[1]
+            let identifier = event.name
+            let geoFenceRegion: CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), radius: 100, identifier: identifier)
+            // geoFenceRegion.notifyOnEntry = true
+            // geoFenceRegion.notifyOnExit = false
+            locationManager.startMonitoring(for: geoFenceRegion)
+        }
+        print(locationManager.monitoredRegions.count)
     }
     
     @objc func didTapActionButtonFunc() {
@@ -167,12 +205,31 @@ extension ProfileView: CLLocationManagerDelegate, GMSAutocompleteResultsViewCont
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
-          
+        
+        actualPosition = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        
         // This updates the map’s camera to center around the user’s current location
         mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
           
         // Tell locationManager you’re no longer interested in updates
         locationManager.stopUpdatingLocation()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        print("Entered: \(region.identifier)")
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        print("Exited: \(region.identifier)")
+    }
+    
+    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
+        print("Monitoring failed for region with identifier: \(region!.identifier)")
+        print(error)
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Location Manager failed with the following error: \(error)")
     }
 
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didAutocompleteWith place: GMSPlace) {
