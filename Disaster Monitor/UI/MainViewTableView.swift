@@ -74,6 +74,7 @@ class MainViewTableView: UIView, ViewControllerModellableView {
     func update(oldModel: MainViewModel?) {
         guard let model = self.model else { return }
         events = model.state.events
+        events.sorted(by: {$0.daysAgo < $1.daysAgo})
         filteringValue = model.state.filteringValue ?? 0
         filteringDay = model.state.segmentedDays ?? 0
         print(self.filteringDay)
@@ -110,10 +111,21 @@ extension MainViewTableView: UITableViewDelegate, UITableViewDataSource {
         }
         
         switch section {
-        case .Event:
-            return events.count
+        case .OneDay:
+            return events.filter{$0.daysAgo == 1}.count
+        case .TwoDay:
+            return events.filter{$0.daysAgo == 2}.count
+        case .ThreeDay:
+            return events.filter{$0.daysAgo == 3}.count
+        case .FourDay:
+            return events.filter{$0.daysAgo == 4}.count
+        case .OthersDay:
+            return events.filter{$0.daysAgo > 4}.count
         }
     }
+    
+    //let events = model.list.filter{$0.magnitudo > model.filteringValue}.map{EventCellViewModel(id: $0.id, name: $0.name, magnitudo:$0.magnitudo, description: $0.description, coord:$0.coordinates )}
+
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
@@ -149,9 +161,8 @@ extension MainViewTableView: UITableViewDelegate, UITableViewDataSource {
         guard let section = MainSection(rawValue: indexPath.section) else { return }
         
         switch section {
-        case .Event:
+        default:
             didTapEventFunc(id: events[indexPath.row].id)
-            
         }
     }
 }

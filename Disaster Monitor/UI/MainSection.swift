@@ -8,14 +8,25 @@
 
 enum MainSection: Int, CaseIterable, CustomStringConvertible {
     
-    case Event
+    case OneDay
+    case TwoDay
+    case ThreeDay
+    case FourDay
+    case OthersDay
     
     var description: String {
         switch self {
-        case .Event:
-            return "Last events"
-        
-    }
+        case .OneDay:
+            return "Today"
+        case .TwoDay:
+            return "Yesterday"
+        case .ThreeDay:
+            return "Two Days Ago"
+        case .FourDay:
+            return "Three Days Ago"
+        case .OthersDay:
+            return "Previuos Days"
+        }
     }
 }
 
