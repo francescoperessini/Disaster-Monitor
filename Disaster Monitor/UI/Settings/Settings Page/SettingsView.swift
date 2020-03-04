@@ -6,7 +6,10 @@
 //  Copyright © 2019 Stefano Martina. All rights reserved.
 //
 
+import Foundation
+import Katana
 import Tempura
+import PinLayout
 
 // MARK: - ViewModel
 struct SettingsViewModel: ViewModelWithState {
@@ -84,17 +87,13 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        
-        guard let section = SettingsSection(rawValue: section) else {
-            return 0
-        }
+        guard let section = SettingsSection(rawValue: section) else { return 0 }
         
         switch section {
         case .Message:
             return MessageOption.allCases.count
         case .Privacy:
-            return 2
+            return PrivacyOption.allCases.count
         }
     }
     
@@ -128,9 +127,11 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         switch section {
         case .Message:
             let message = MessageOption(rawValue: indexPath.row)
-            cell.textLabel?.text = message?.description
+            // cell.textLabel?.text = message?.description
+            cell.sectionType = message
         case .Privacy:
-            cell.textLabel?.text = "test"
+            let privacy = PrivacyOption(rawValue: indexPath.row)
+            cell.sectionType = privacy
         }
 
         return cell
@@ -158,3 +159,4 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
     }
     
 }
+

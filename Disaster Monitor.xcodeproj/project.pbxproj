@@ -363,8 +363,8 @@
 			children = (
 				7B1DF43523ABA5EB004C952A /* SettingsView.swift */,
 				7B1DF43623ABA5EB004C952A /* SettingsViewController.swift */,
-				C677E5992407CA540079344A /* SettingsSection.swift */,
 				C6B0E86B24068AC9005CEE09 /* SettingsTableViewCell.swift */,
+				C677E5992407CA540079344A /* SettingsSection.swift */,
 			);
 			path = "Settings Page";
 			sourceTree = "<group>";
