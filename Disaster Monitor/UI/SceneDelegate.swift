@@ -68,5 +68,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, RootInstaller {
         // to restore the scene back to its current state.
     }
 
-
 }

@@ -31,13 +31,13 @@ final class DependenciesContainer: NavigationProvider {
     }
 }
 
-final class APIManager{
+final class APIManager {
     // Get all the events
     func getEvents() -> Promise<JSON> {
         return Promise<JSON>(in: .background) { resolve, reject, status in
             AF.request("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson").responseJSON { response in
-                if let data = response.data{
-                    if let json = try? JSON(data: data){
+                if let data = response.data {
+                    if let json = try? JSON(data: data) {
                         resolve(json)
                     }
                 }
@@ -49,8 +49,8 @@ final class APIManager{
     static func getEvent(id : String) -> Promise<JSON> {
         return Promise<JSON>(in: .background) { resolve, reject, status in
             AF.request("https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventid=" + id).responseJSON { response in
-                if let data = response.data{
-                    if let json = try? JSON(data: data){
+                if let data = response.data {
+                    if let json = try? JSON(data: data) {
                         resolve(json)
                     }
                 }
@@ -58,7 +58,6 @@ final class APIManager{
         }
     }
         
-    
 }
 
 /*Alamofire.request(url).responseJSON { response in

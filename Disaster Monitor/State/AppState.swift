@@ -12,10 +12,7 @@ import GoogleMaps
 import SwiftyJSON
 
 struct AppState: State, Codable {
-    var name: String?
-    var surname: String?
     var events: [Event] = []
-    var user: Profile?
     var filteringValue: Float?
     var message: String = "Message to be shared\nSent from Disaster Monitor App"
     var displayEvent: DetailedEvent?

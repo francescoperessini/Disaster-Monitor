@@ -7,10 +7,7 @@
 //
 
 import UIKit
-import Katana
 import Tempura
-
-
 
 class EventViewController: ViewControllerWithLocalState<EventView> {  // Extension of UIViewController
     override func viewWillAppear(_ animated: Bool) {
@@ -48,7 +45,7 @@ class EventViewController: ViewControllerWithLocalState<EventView> {  // Extensi
     }
 }
 
-struct EventControllerLocalState: LocalState{
+struct EventControllerLocalState: LocalState {
     var id: String? = nil
     var event: DetailedEvent?
 }

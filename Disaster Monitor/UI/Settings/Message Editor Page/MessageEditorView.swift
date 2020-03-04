@@ -8,6 +8,7 @@
 
 import Tempura
 import PinLayout
+
 // MARK: - ViewModel
 struct MessageEditorViewModel: ViewModelWithState {
     var state: AppState

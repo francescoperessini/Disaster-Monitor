@@ -6,8 +6,6 @@
 //  Copyright © 2019 Stefano Martina. All rights reserved.
 //
 
-import Foundation
-import Katana
 import Tempura
 
 // MARK: - ViewModel

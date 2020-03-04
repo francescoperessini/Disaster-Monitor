@@ -6,8 +6,6 @@
 //  Copyright © 2020 Stefano Martina. All rights reserved.
 //
 
-import Foundation
-import Katana
 import Tempura
 import PinLayout
 import GooglePlaces

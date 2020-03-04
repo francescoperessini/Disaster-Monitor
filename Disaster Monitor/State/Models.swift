@@ -8,8 +8,8 @@
 
 import Foundation
 
-struct Event : Codable, Equatable {
-    var id : String
+struct Event: Codable, Equatable {
+    var id: String
     var name: String
     var description: String
     var magnitudo: Float
@@ -39,7 +39,6 @@ struct Event : Codable, Equatable {
                                             month: Int(lines_today[1]),
                                             day: Int(lines_today[0]))
         
-        
         let date = NSDate(timeIntervalSince1970: self.time / 1000)
         let formatter_date = DateFormatter()
         formatter_date.timeZone = NSTimeZone(name: "UTC") as TimeZone?
@@ -52,15 +51,13 @@ struct Event : Codable, Equatable {
                                             month: Int(lines_date[1]),
                                             day: Int(lines_date[0]))
         
-        
         let diffInDays = Calendar.current.dateComponents([.day], from: dateB, to: dateA).day ?? 0
-        
         self.daysAgo = diffInDays
     }
 }
 
-struct DetailedEvent : Codable{
-    var id : String
+struct DetailedEvent: Codable {
+    var id: String
     var name: String
     var description: String
     var magnitudo: Float
@@ -83,12 +80,6 @@ struct DetailedEvent : Codable{
         formatter.dateFormat = "d MMM yyyy HH:mm:ss"
 
         self.time = formatter.string(from: date as Date)
-        
         self.depth = depth
     }
-}
-
-struct Profile : Codable{
-    var name: String
-    var surname: String
 }
