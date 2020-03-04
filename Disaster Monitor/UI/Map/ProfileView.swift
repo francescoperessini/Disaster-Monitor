@@ -172,8 +172,6 @@ class ProfileView: UIView, ViewControllerModellableView {
     }
     
     private func setupGeoFenceRegions() {
-        
-        
         for region in locationManager.monitoredRegions {
             locationManager.stopMonitoring(for: region)
         }
@@ -182,12 +180,12 @@ class ProfileView: UIView, ViewControllerModellableView {
             let longitude = event.coordinates[0]
             let latitude = event.coordinates[1]
             let identifier = event.name
-            let geoFenceRegion: CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), radius: 100, identifier: identifier)
+            let geoFenceRegion: CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), radius: 4000, identifier: identifier)
             // geoFenceRegion.notifyOnEntry = true
             // geoFenceRegion.notifyOnExit = false
             locationManager.startMonitoring(for: geoFenceRegion)
+            //print(locationManager.monitoredRegions)
         }
-        print(locationManager.monitoredRegions.count)
     }
     
     @objc func didTapActionButtonFunc() {
@@ -231,6 +229,11 @@ extension ProfileView: CLLocationManagerDelegate, GMSAutocompleteResultsViewCont
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Location Manager failed with the following error: \(error)")
     }
+    
+    /*func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
+        //print("Already in: \(region.identifier)")
+        locationManager.requestState(for: region)
+    }*/
 
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didAutocompleteWith place: GMSPlace) {
         searchController?.isActive = false
