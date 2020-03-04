@@ -1,5 +1,5 @@
 //
-//  MainTableViewCell.swift
+//  MainEventsTableViewCell.swift
 //  Disaster Monitor
 //
 //  Created by Stefano Martina on 28/02/2020.
@@ -8,12 +8,10 @@
 
 import UIKit
 import Tempura
-import Katana
-import GooglePlaces
 import GoogleMaps
 import PinLayout
 
-class MainTableViewCell: UITableViewCell/*, ModellableView*/{
+class MainEventsTableViewCell: UITableViewCell/*, ModellableView*/{
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.setup()
@@ -119,5 +117,5 @@ class MapView : UIView, ModellableView{
         super.layoutSubviews()
         self.mapView.pin.width(414).height(550)
     }
+    
 }
-

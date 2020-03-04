@@ -1,17 +1,15 @@
 //
-//  MainViewTableView.swift
+//  MainEventsView.swift
 //  Disaster Monitor
 //
 //  Created by Stefano Martina on 28/02/2020.
 //  Copyright © 2020 Stefano Martina. All rights reserved.
 //
 
-import Foundation
-import Katana
 import Tempura
 
 // MARK: - ViewModel
-struct MainViewTableViewModel: ViewModelWithState {
+struct MainEventsViewModel: ViewModelWithState {
     var state: AppState
     init?(state: AppState) {
         self.state = state
@@ -19,34 +17,37 @@ struct MainViewTableViewModel: ViewModelWithState {
 }
 
 // MARK: - View
-class MainViewTableView: UIView, ViewControllerModellableView {
+class MainEventsView: UIView, ViewControllerModellableView {
     
-    var mainViewTableView = UITableView()
+    var mainEventsTableView = UITableView()
     var events: [Event] = []
     var filteringValue: Float = 0
     var filteringDay: Int = 0
+    var refreshControl = UIRefreshControl()
     
     var didTapFilter: (() -> ())?
     var didTapEvent: ((String) -> ())?
+    var didPullRefreshControl: (() -> ())?
     
     struct Cells {
-        static let mainViewTableViewCell = "mainCell"
+        static let mainEventsTableViewCell = "mainCell"
     }
     
     func setup() {
-        self.addSubview(mainViewTableView)
-        configureSettingsTableView()
+        self.addSubview(mainEventsTableView)
+        configureMainEventsTableView()
+        setupRefreshControl()
     }
     
-    func configureSettingsTableView() {
-        setSettingsTableViewDelegates()
-        mainViewTableView.rowHeight = 60
-        mainViewTableView.register(MainTableViewCell.self, forCellReuseIdentifier: Cells.mainViewTableViewCell)
+    func configureMainEventsTableView() {
+        setMainEventsTableViewDelegates()
+        mainEventsTableView.rowHeight = 60
+        mainEventsTableView.register(MainEventsTableViewCell.self, forCellReuseIdentifier: Cells.mainEventsTableViewCell)
     }
     
-    func setSettingsTableViewDelegates() {
-        mainViewTableView.delegate = self
-        mainViewTableView.dataSource = self
+    func setMainEventsTableViewDelegates() {
+        mainEventsTableView.delegate = self
+        mainEventsTableView.dataSource = self
     }
 
     func style() {
@@ -76,38 +77,49 @@ class MainViewTableView: UIView, ViewControllerModellableView {
         events = model.state.events
         events.sorted(by: {$0.daysAgo < $1.daysAgo})
         filteringValue = model.state.filteringValue ?? 0
-        filteringDay = model.state.segmentedDays ?? 0
+        filteringDay = model.state.segmentedDays
         events = events.filter{$0.magnitudo > self.filteringValue && $0.daysAgo < self.filteringDay}
         DispatchQueue.main.async {
-           self.mainViewTableView.reloadData()
+            self.mainEventsTableView.reloadData()
+        }
+        DispatchQueue.main.async {
+            self.refreshControl.endRefreshing()
         }
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        mainViewTableView.pin.top().left().right().bottom()
+        mainEventsTableView.pin.top().left().right().bottom()
+    }
+    
+    private func setupRefreshControl() {
+        // refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(didPullRefreshControlFunc), for: .valueChanged)
+        mainEventsTableView.refreshControl = refreshControl
     }
     
     @objc func didTapFilterFunc() {
-           didTapFilter?()
+        didTapFilter?()
     }
        
     @objc func didTapEventFunc(id: String) {
-           didTapEvent?(id)
+        didTapEvent?(id)
+    }
+    
+    @objc func didPullRefreshControlFunc() {
+        didPullRefreshControl?()
     }
        
 }
 
-extension MainViewTableView: UITableViewDelegate, UITableViewDataSource {
+extension MainEventsView: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return MainSection.allCases.count
+        return MainEventsSection.allCases.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let section = MainSection(rawValue: section) else {
-            return 0
-        }
+        guard let section = MainEventsSection(rawValue: section) else { return 0 }
         
         switch section {
         case .OneDay:
@@ -124,7 +136,6 @@ extension MainViewTableView: UITableViewDelegate, UITableViewDataSource {
     }
     
     //let events = model.list.filter{$0.magnitudo > model.filteringValue}.map{EventCellViewModel(id: $0.id, name: $0.name, magnitudo:$0.magnitudo, description: $0.description, coord:$0.coordinates )}
-
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
@@ -133,7 +144,7 @@ extension MainViewTableView: UITableViewDelegate, UITableViewDataSource {
         let title = UILabel()
         title.font = UIFont(name: "Futura", size: 20)
         title.textColor = .label
-        title.text = MainSection(rawValue: section)?.description
+        title.text = MainEventsSection(rawValue: section)?.description
         view.addSubview(title)
         title.translatesAutoresizingMaskIntoConstraints = false
         title.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
@@ -147,9 +158,8 @@ extension MainViewTableView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = mainViewTableView.dequeueReusableCell(withIdentifier: Cells.mainViewTableViewCell, for: indexPath) as! MainTableViewCell
-        if events.count != 0{
-            
+        let cell = mainEventsTableView.dequeueReusableCell(withIdentifier: Cells.mainEventsTableViewCell, for: indexPath) as! MainEventsTableViewCell
+        if events.count != 0 {
             let event = events[indexPath.row]
             cell.setupCell(event: event)
         }
@@ -157,11 +167,11 @@ extension MainViewTableView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let section = MainSection(rawValue: indexPath.section) else { return }
+        guard let section = MainEventsSection(rawValue: indexPath.section) else { return }
         
         switch section {
-        default:
-            didTapEventFunc(id: events[indexPath.row].id)
+            default: didTapEventFunc(id: events[indexPath.row].id)
         }
     }
+    
 }

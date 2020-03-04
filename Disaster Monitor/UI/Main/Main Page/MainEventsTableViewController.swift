@@ -1,5 +1,5 @@
 //
-//  MainTableViewController.swift
+//  MainEventsTableViewController.swift
 //  Disaster Monitor
 //
 //  Created by Stefano Martina on 28/02/2020.
@@ -9,7 +9,7 @@
 import Tempura
 
 // MARK: - ViewController
-class MainTableViewController: ViewController<MainViewTableView> {
+class MainEventsTableViewController: ViewController<MainEventsView> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +25,10 @@ class MainTableViewController: ViewController<MainViewTableView> {
         rootView.didTapEvent = { [unowned self] id in
             let vc = UINavigationController(rootViewController: EventViewController(store: self.store, localState: EventControllerLocalState(id: id)))
             self.present(vc, animated: true, completion: nil)
+        }
+        
+        rootView.didPullRefreshControl = {
+            self.dispatch(GetEvents())
         }
     }
     
