@@ -7,9 +7,9 @@
 //
 
 import UIKit
-import PinLayout
 
 class SettingsTableViewCell: UITableViewCell {
+    
     // MARK: - Properties
     var sectionType: SectionType?{
         didSet{
@@ -55,19 +55,33 @@ class SettingsTableViewCell: UITableViewCell {
         return switchLabel
     }()
     
-    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        stepperControlRadius.translatesAutoresizingMaskIntoConstraints = false
+        stepperControlRadius.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        stepperControlRadius.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -20).isActive = true
+        
+        stepperLabelRadius.translatesAutoresizingMaskIntoConstraints = false
+        stepperLabelRadius.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        stepperLabelRadius.rightAnchor.constraint(equalTo: stepperControlRadius.rightAnchor, constant: -130).isActive = true
+        
+        stepperControlMagnitudo.translatesAutoresizingMaskIntoConstraints = false
+        stepperControlMagnitudo.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        stepperControlMagnitudo.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -20).isActive = true
+        
+        stepperLabelMagnitudo.translatesAutoresizingMaskIntoConstraints = false
+        stepperLabelMagnitudo.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        stepperLabelMagnitudo.rightAnchor.constraint(equalTo: stepperControlMagnitudo.rightAnchor, constant: -130).isActive = true
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         super.addSubview(stepperLabelMagnitudo)
         self.addSubview(stepperControlMagnitudo)
-        self.stepperControlMagnitudo.pin.right(-70).vCenter()
-        self.stepperLabelMagnitudo.pin.left(of: stepperControlMagnitudo).sizeToFit().marginRight(50).top(15)
         
         super.addSubview(stepperLabelRadius)
         self.addSubview(stepperControlRadius)
-        self.stepperControlRadius.pin.right(-70).vCenter()
-        self.stepperLabelRadius.pin.left(of: stepperControlMagnitudo).sizeToFit().marginRight(50).top(15)
     }
     
     required init?(coder: NSCoder) {
@@ -83,4 +97,3 @@ class SettingsTableViewCell: UITableViewCell {
         self.stepperLabelRadius.text = String(sender.value)
     }
 }
-

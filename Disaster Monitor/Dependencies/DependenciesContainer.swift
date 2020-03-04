@@ -32,6 +32,7 @@ final class DependenciesContainer: NavigationProvider {
 }
 
 final class APIManager {
+    
     // Get all the events
     func getEvents() -> Promise<JSON> {
         return Promise<JSON>(in: .background) { resolve, reject, status in
@@ -59,22 +60,3 @@ final class APIManager {
     }
         
 }
-
-/*Alamofire.request(url).responseJSON { response in
-        if let data = response.data {
-            if let json = try? JSON(data: data) {
-                for item in json["books"].arrayValue {
-                    var outputString: String
-                    //print(item["author"])
-                    outputString = item["author"].stringValue
-                    //urlOfProjectAsset.append(outputString)
-                    self.authors.append(outputString)
-                    //print("authors.count: \(self.authors.count)")
-                }
-            self.getAuthorsCount() // I added this line of code.
-            }
-        }
-
-https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventid=ci39087279
- 
- */

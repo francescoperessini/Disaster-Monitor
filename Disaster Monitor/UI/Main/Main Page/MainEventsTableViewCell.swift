@@ -6,10 +6,7 @@
 //  Copyright © 2020 Stefano Martina. All rights reserved.
 //
 
-import UIKit
 import Tempura
-import GoogleMaps
-import PinLayout
 
 class MainEventsTableViewCell: UITableViewCell {
     
@@ -23,100 +20,72 @@ class MainEventsTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: Subviews
+    // MARK: Subviews
     var nameLabel = UILabel()
     var descriptionLabel = UILabel()
     var magnitudoLabel = UILabel()
-    //var map = MapView()
     
     // MARK: Setup
     func setup() {
-        self.addSubview(self.nameLabel)
-        self.addSubview(self.descriptionLabel)
-        self.addSubview(self.magnitudoLabel)
-        //self.map.setup()
-        //self.map.style()
-        //self.addSubview(self.map)
+        self.addSubview(nameLabel)
+        self.addSubview(descriptionLabel)
+        self.addSubview(magnitudoLabel)
     }
     
-    //MARK: Style
+    // MARK: Style
     func style() {
-        //layoutSubviews()
         self.backgroundColor = .systemBackground
+        nameLabelStyle()
+        descriptionLabelStyle()
+        magnitudoLabelStyle()
     }
     
     // MARK: Layout
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.nameLabel.pin.top(10).right(50%).left(20).sizeToFit()
-        self.descriptionLabel.font = UIFont(name: "Futura", size: 20)
-        self.descriptionLabel.textColor = .systemGray
-        self.descriptionLabel.pin.below(of: nameLabel).left(20).sizeToFit()
-        self.descriptionLabel.font = UIFont(name: "Futura", size: 15)
-        //self.map.pin.below(of: descriptionLabel)//
-        self.magnitudoLabel.pin.right(pin.safeArea).sizeToFit().marginRight(10).vCenter()
-        self.magnitudoLabel.font = UIFont(name: "Futura", size: 20)
+    
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 2.5).isActive = true
+        nameLabel.leftAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leftAnchor, constant: 20).isActive = true
+        nameLabel.widthAnchor.constraint(equalToConstant: 320).isActive = true
+        nameLabel.heightAnchor.constraint(equalToConstant: self.bounds.height / 2).isActive = true
         
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        descriptionLabel.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -2.5).isActive = true
+        descriptionLabel.leftAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leftAnchor, constant: 20).isActive = true
+        descriptionLabel.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        descriptionLabel.heightAnchor.constraint(equalToConstant: self.bounds.height / 2).isActive = true
+        
+        magnitudoLabel.translatesAutoresizingMaskIntoConstraints = false
+        magnitudoLabel.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        magnitudoLabel.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -20).isActive = true
     }
     
-    func setupCell(event: Event){
-        //self.selectionStyle = UITableViewCell.SelectionStyle.none
+    func setupCell(event: Event) {
         nameLabel.text = event.name
         descriptionLabel.text = event.description
         magnitudoLabel.text = String(event.magnitudo)
         
         // Dangerous are those with magnitude over 3 --> they are blue
         if event.magnitudo > 3 {
-            self.magnitudoLabel.textColor = .systemBlue
-        }else{
-            self.magnitudoLabel.textColor = .systemGray
+            magnitudoLabel.textColor = .systemBlue
         }
-        
-        /*let coord1 = event.coordinates[0]
-        let coord2 = event.coordinates[1]
-        map.mapView.camera = GMSCameraPosition.camera(withLatitude: coord2, longitude: coord1, zoom: 10)
-        map.mapView.animate(to: map.mapView.camera)
-        let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: coord2, longitude: coord1)
-        marker.map = map.mapView*/
-    }
-}
-
-struct MapViewModel: ViewModel, Equatable {
-    var coordList: [[String]]
-}
-
-class MapView: UIView, ModellableView {
-    var mapView: GMSMapView!
-    func setup() {
-        let camera = GMSCameraPosition.camera(withLatitude: 999, longitude: 999, zoom: 0)
-        self.mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
-        self.addSubview(self.mapView)
-        do {
-            if traitCollection.userInterfaceStyle == .dark {
-                // Set the map style by passing the URL of the local file.
-                if let styleURL = Bundle.main.url(forResource: "style", withExtension: "json") {
-                  mapView.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
-                } else {
-                  NSLog("Unable to find style.json")
-                }
-            }
-        } catch {
-          NSLog("One or more of the map styles failed to load. \(error)")
+        else {
+            magnitudoLabel.textColor = .systemGray
         }
-        
-    }
-    func style(){
-        backgroundColor = superview?.backgroundColor
     }
     
-    func update(oldModel: MainViewModel?) {
-        self.setNeedsLayout()
+    private func nameLabelStyle() {
+        // nameLabel.font = UIFont(name: "Futura", size: 16)
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.mapView.pin.width(414).height(550)
+    private func descriptionLabelStyle() {
+        descriptionLabel.font = UIFont(name: "Futura", size: 15)
+        descriptionLabel.textColor = .systemGray
+    }
+    
+    private func magnitudoLabelStyle() {
+        magnitudoLabel.font = UIFont(name: "Futura", size: 20)
     }
     
 }
