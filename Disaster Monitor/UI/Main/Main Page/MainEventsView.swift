@@ -21,6 +21,12 @@ class MainEventsView: UIView, ViewControllerModellableView {
     
     var mainEventsTableView = UITableView()
     var events: [Event] = []
+    var todayEvents: [Event] = []
+    var yesterdayEvents: [Event] = []
+    var twoDaysAgoEvents: [Event] = []
+    var threeDaysAgoEvents: [Event] = []
+    var previousEvents: [Event] = []
+    
     var filteringValue: Float = 0
     var filteringDay: Int = 0
     var refreshControl = UIRefreshControl()
@@ -75,10 +81,14 @@ class MainEventsView: UIView, ViewControllerModellableView {
     func update(oldModel: MainViewModel?) {
         guard let model = self.model else { return }
         events = model.state.events
-        events.sorted(by: {$0.daysAgo < $1.daysAgo})
         filteringValue = model.state.filteringValue ?? 0
         filteringDay = model.state.segmentedDays
         events = events.filter{$0.magnitudo > self.filteringValue && $0.daysAgo < self.filteringDay}
+        todayEvents = events.filter{$0.daysAgo == 0}
+        yesterdayEvents = events.filter{$0.daysAgo == 1}
+        twoDaysAgoEvents = events.filter{$0.daysAgo == 2}
+        threeDaysAgoEvents = events.filter{$0.daysAgo == 3}
+        previousEvents = events.filter{$0.daysAgo > 4}
         DispatchQueue.main.async {
             self.mainEventsTableView.reloadData()
         }
@@ -93,7 +103,6 @@ class MainEventsView: UIView, ViewControllerModellableView {
     }
     
     private func setupRefreshControl() {
-        // refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(didPullRefreshControlFunc), for: .valueChanged)
         mainEventsTableView.refreshControl = refreshControl
     }
@@ -123,19 +132,17 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource {
         
         switch section {
         case .OneDay:
-            return events.filter{$0.daysAgo == 0}.count
+            return todayEvents.count
         case .TwoDay:
-            return events.filter{$0.daysAgo == 1}.count
+            return yesterdayEvents.count
         case .ThreeDay:
-            return events.filter{$0.daysAgo == 2}.count
+            return twoDaysAgoEvents.count
         case .FourDay:
-            return events.filter{$0.daysAgo == 3}.count
+            return threeDaysAgoEvents.count
         case .OthersDay:
-            return events.filter{$0.daysAgo > 4}.count
+            return previousEvents.count
         }
     }
-    
-    //let events = model.list.filter{$0.magnitudo > model.filteringValue}.map{EventCellViewModel(id: $0.id, name: $0.name, magnitudo:$0.magnitudo, description: $0.description, coord:$0.coordinates )}
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
@@ -159,18 +166,43 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = mainEventsTableView.dequeueReusableCell(withIdentifier: Cells.mainEventsTableViewCell, for: indexPath) as! MainEventsTableViewCell
-        if events.count != 0 {
-            let event = events[indexPath.row]
+
+        switch indexPath.section {
+        case 0:
+            let event = todayEvents[indexPath.row]
             cell.setupCell(event: event)
+        case 1:
+            let event = yesterdayEvents[indexPath.row]
+            cell.setupCell(event: event)
+        case 2:
+            let event = twoDaysAgoEvents[indexPath.row]
+            cell.setupCell(event: event)
+        case 3:
+            let event = threeDaysAgoEvents[indexPath.row]
+            cell.setupCell(event: event)
+        case 4:
+            let event = previousEvents[indexPath.row]
+            cell.setupCell(event: event)
+        default:
+            print("Default case")
         }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let section = MainEventsSection(rawValue: indexPath.section) else { return }
-        
+                
         switch section {
-            default: didTapEventFunc(id: events[indexPath.row].id)
+        case .OneDay:
+            didTapEventFunc(id: todayEvents[indexPath.row].id)
+        case .TwoDay:
+            didTapEventFunc(id: yesterdayEvents[indexPath.row].id)
+        case .ThreeDay:
+            didTapEventFunc(id: twoDaysAgoEvents[indexPath.row].id)
+        case .FourDay:
+            didTapEventFunc(id: threeDaysAgoEvents[indexPath.row].id)
+        case .OthersDay:
+            didTapEventFunc(id: previousEvents[indexPath.row].id)
         }
     }
     
