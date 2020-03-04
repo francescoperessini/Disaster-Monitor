@@ -11,7 +11,8 @@ import Tempura
 import GoogleMaps
 import PinLayout
 
-class MainEventsTableViewCell: UITableViewCell/*, ModellableView*/{
+class MainEventsTableViewCell: UITableViewCell {
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.setup()
@@ -27,7 +28,6 @@ class MainEventsTableViewCell: UITableViewCell/*, ModellableView*/{
     var descriptionLabel = UILabel()
     var magnitudoLabel = UILabel()
     //var map = MapView()
-    
     
     // MARK: Setup
     func setup() {
@@ -60,6 +60,7 @@ class MainEventsTableViewCell: UITableViewCell/*, ModellableView*/{
     }
     
     func setupCell(event: Event){
+        //self.selectionStyle = UITableViewCell.SelectionStyle.none
         nameLabel.text = event.name
         descriptionLabel.text = event.description
         magnitudoLabel.text = String(event.magnitudo)
@@ -82,11 +83,11 @@ class MainEventsTableViewCell: UITableViewCell/*, ModellableView*/{
 }
 
 struct MapViewModel: ViewModel, Equatable {
-    var coordList : [[String]]
+    var coordList: [[String]]
 }
 
-class MapView : UIView, ModellableView{
-    var mapView : GMSMapView!
+class MapView: UIView, ModellableView {
+    var mapView: GMSMapView!
     func setup() {
         let camera = GMSCameraPosition.camera(withLatitude: 999, longitude: 999, zoom: 0)
         self.mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
