@@ -1,5 +1,5 @@
 //
-//  FilterView.swift
+//  EventView.swift
 //  Disaster Monitor
 //
 //  Created by Stefano Martina on 25/02/2020.
@@ -7,12 +7,11 @@
 //
 
 import Tempura
-import PinLayout
-import GooglePlaces
 import GoogleMaps
 
 // MARK: - ViewModel
 struct EventViewModel: ViewModelWithLocalState {
+    
     var id: String?
     var event: DetailedEvent?
     
@@ -22,17 +21,17 @@ struct EventViewModel: ViewModelWithLocalState {
     }
     
     init?(state: AppState?, localState: EventControllerLocalState) {
-        guard let state = state else {return nil}
         self.id = localState.id
         self.event = localState.event
     }
+    
 }
 
 
 // MARK: - View
 class EventView: UIView, ViewControllerModellableView {
     
-    var map = MapView()
+    var mapView = GMSMapView()
     var coordinate = UILabel()
     var magnitude = UILabel()
     var time = UILabel()
@@ -40,18 +39,12 @@ class EventView: UIView, ViewControllerModellableView {
     
     var didTapClose: (() -> ())?
     
-    @objc func didTapCloseFunc() {
-        didTapClose?()
-    }
-    
     func setup() {
-        self.map.setup()
-        self.map.style()
-        self.addSubview(self.map)
-        self.addSubview(self.coordinate)
-        self.addSubview(self.magnitude)
-        self.addSubview(self.time)
-        self.addSubview(self.depth)
+        addSubview(mapView)
+        addSubview(coordinate)
+        addSubview(magnitude)
+        addSubview(time)
+        addSubview(depth)
     }
     
     func style() {
@@ -75,15 +68,16 @@ class EventView: UIView, ViewControllerModellableView {
     }
 
     func update(oldModel: EventViewModel?) {
-        let defaultValue: String = "Loading data"
-        guard let model = self.model else {return}
+        let defaultValue: String = "Loading data..."
+        guard let model = self.model else { return }
+        
         self.navigationItem?.title = model.event?.name
         
         let coord_str: String = String(format:"coordinates: %f  %f", model.event?.coordinates[0] ?? defaultValue, model.event?.coordinates[1] ?? defaultValue)
         self.coordinate.text = coord_str
         
         let magnitudo_model: String = String(format: "%f", model.event?.magnitudo ?? defaultValue)
-        let magnitudo_label: String  = String(magnitudo_model.prefix(through: magnitudo_model.index(magnitudo_model.startIndex, offsetBy: 2)))
+        let magnitudo_label: String = String(magnitudo_model.prefix(through: magnitudo_model.index(magnitudo_model.startIndex, offsetBy: 2)))
         let magnitude_str = String(format:"magnitude: %@", magnitudo_label)
         self.magnitude.text = magnitude_str
         
@@ -91,63 +85,53 @@ class EventView: UIView, ViewControllerModellableView {
         
         self.depth.text = String(format: "depth: %@ km", model.event?.depth ?? defaultValue)
         
-        let coord1 = model.event?.coordinates[0]
-        let coord2 = model.event?.coordinates[1]
-        
-        map.mapView.camera = GMSCameraPosition.camera(withLatitude: coord2 ?? 0, longitude: coord1 ?? 0, zoom: 10)
-        map.mapView.animate(to: map.mapView.camera)
+        updateMapView(latitude: (model.event?.coordinates[1]) ?? 0, longitude: (model.event?.coordinates[0]) ?? 0)
+    }
+    
+    private func updateMapView(latitude: Double, longitude: Double) {
+        let location = GMSCameraPosition.camera(withLatitude: latitude, longitude: longitude, zoom: 10)
+        mapView.animate(to: location)
         let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: coord2 ?? 0, longitude: coord1 ?? 0)
-        marker.map = map.mapView
-        self.setNeedsLayout()
+        marker.position = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        marker.appearAnimation = GMSMarkerAnimation.pop
+        marker.map = mapView
     }
 
-    // layout
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.map.pin.top(33%).height(66%)
-        self.coordinate.pin.top(pin.safeArea.top + 10).sizeToFit().left(30).marginTop(10)
-        self.magnitude.pin.below(of: self.coordinate).sizeToFit().left(30).marginTop(10)
-        self.time.pin.below(of: self.magnitude).sizeToFit().left(30).marginTop(10)
-        self.depth.pin.below(of: self.time).sizeToFit().left(30).marginTop(10)
-    }
-}
-
-struct MapViewModel: ViewModel, Equatable {
-    var coordList: [[String]]
-}
-
-class MapView: UIView, ModellableView {
-    var mapView: GMSMapView!
-    func setup() {
-        let camera = GMSCameraPosition.camera(withLatitude: 999, longitude: 999, zoom: 0)
-        self.mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
-        self.addSubview(self.mapView)
-        do {
-            if traitCollection.userInterfaceStyle == .dark {
-                // Set the map style by passing the URL of the local file.
-                if let styleURL = Bundle.main.url(forResource: "style", withExtension: "json") {
-                  mapView.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
-                } else {
-                  NSLog("Unable to find style.json")
-                }
-            }
-        } catch {
-          NSLog("One or more of the map styles failed to load. \(error)")
-        }
         
-    }
-    func style(){
-        backgroundColor = superview?.backgroundColor
+        coordinate.translatesAutoresizingMaskIntoConstraints = false
+        coordinate.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
+        coordinate.leftAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leftAnchor, constant: 10).isActive = true
+        coordinate.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -10).isActive = true
+        
+        magnitude.translatesAutoresizingMaskIntoConstraints = false
+        magnitude.topAnchor.constraint(equalTo: self.coordinate.topAnchor, constant: 30).isActive = true
+        magnitude.leftAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leftAnchor, constant: 10).isActive = true
+        magnitude.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -10).isActive = true
+        
+        time.translatesAutoresizingMaskIntoConstraints = false
+        time.topAnchor.constraint(equalTo: self.magnitude.topAnchor, constant: 30).isActive = true
+        time.leftAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leftAnchor, constant: 10).isActive = true
+        time.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -10).isActive = true
+        
+        depth.translatesAutoresizingMaskIntoConstraints = false
+        depth.topAnchor.constraint(equalTo: self.time.topAnchor, constant: 30).isActive = true
+        depth.leftAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leftAnchor, constant: 10).isActive = true
+        depth.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -10).isActive = true
+        
+        // Note: no safe area for the map is wanted!
+        mapView.translatesAutoresizingMaskIntoConstraints = false
+        mapView.topAnchor.constraint(equalTo: self.depth.topAnchor, constant: 100).isActive = true
+        mapView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        mapView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        mapView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        mapView.widthAnchor.constraint(equalToConstant: self.bounds.width).isActive = true
+        mapView.heightAnchor.constraint(equalToConstant: 0.7 * self.bounds.height).isActive = true
     }
     
-    func update(oldModel: MainViewModel?) {
-        self.setNeedsLayout()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.mapView.pin.width(414).height(550)
+    @objc func didTapCloseFunc() {
+        didTapClose?()
     }
     
 }

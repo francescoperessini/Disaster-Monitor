@@ -48,7 +48,7 @@ class EventCell: UICollectionViewCell, ConfigurableCell, SizeableCell {
     var nameLabel = UILabel()
     var descriptionLabel = UILabel()
     var magnitudoLabel = UILabel()
-    var map = MapView()
+    var map = GMSMapView()
     
     //MARK: Init
     override init(frame: CGRect) {
@@ -66,8 +66,6 @@ class EventCell: UICollectionViewCell, ConfigurableCell, SizeableCell {
         self.addSubview(self.nameLabel)
         self.addSubview(self.descriptionLabel)
         self.addSubview(self.magnitudoLabel)
-        self.map.setup()
-        self.map.style()
         self.addSubview(self.map)
     }
     
@@ -100,11 +98,11 @@ class EventCell: UICollectionViewCell, ConfigurableCell, SizeableCell {
             magnitudoLabel.text = String(model.magnitudo)
             let coord1 = model.coord[0]
             let coord2 = model.coord[1]
-            map.mapView.camera = GMSCameraPosition.camera(withLatitude: coord2, longitude: coord1, zoom: 10)
-            map.mapView.animate(to: map.mapView.camera)
+            let location = GMSCameraPosition.camera(withLatitude: coord2, longitude: coord1, zoom: 10)
+            map.animate(to: location)
             let marker = GMSMarker()
             marker.position = CLLocationCoordinate2D(latitude: coord2, longitude: coord1)
-            marker.map = map.mapView
+            marker.map = map
             self.setNeedsLayout()
         }
     }

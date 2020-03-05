@@ -28,8 +28,8 @@ class MainTabBarController: UITabBarController {
         mainViewController.tabBarItem.image = UIImage(systemName: "globe")
         
         let profilePageViewController = UINavigationController(rootViewController: ProfileViewController(store: store))
-        profilePageViewController.tabBarItem.title = "Profile"
-        profilePageViewController.tabBarItem.image = UIImage(systemName: "person")
+        profilePageViewController.tabBarItem.title = "Map"
+        profilePageViewController.tabBarItem.image = UIImage(systemName: "map")
         
         let settingsViewController = UINavigationController(rootViewController: SettingsViewController(store: store))
         settingsViewController.tabBarItem.title = "Settings"

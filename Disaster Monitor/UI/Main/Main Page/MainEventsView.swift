@@ -64,6 +64,8 @@ class MainEventsView: UIView, ViewControllerModellableView {
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
+            //navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label, .font: UIFont(name: "Futura", size: 30)!] // cambia aspetto del titolo
+            //navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label, .font: UIFont(name: "Futura", size: 30)!] // cambia aspetto del titolo (con prefersLargeTitles = true)
             navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo
             navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo (con prefersLargeTitles = true)
             navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
@@ -149,7 +151,8 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource {
         view.backgroundColor = .systemGray6
         
         let title = UILabel()
-        title.font = UIFont(name: "Futura", size: 20)
+        //title.font = UIFont(name: "Futura", size: 20)
+        title.font = UIFont.boldSystemFont(ofSize: 20)
         title.textColor = .label
         title.text = MainEventsSection(rawValue: section)?.description
         view.addSubview(title)

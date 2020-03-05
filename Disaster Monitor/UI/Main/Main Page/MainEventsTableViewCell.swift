@@ -76,16 +76,19 @@ class MainEventsTableViewCell: UITableViewCell {
     }
     
     private func nameLabelStyle() {
-        // nameLabel.font = UIFont(name: "Futura", size: 16)
+        //nameLabel.font = UIFont(name: "Futura", size: 18)
+        nameLabel.font = UIFont.systemFont(ofSize: 18)
     }
     
     private func descriptionLabelStyle() {
-        descriptionLabel.font = UIFont(name: "Futura", size: 15)
+        //descriptionLabel.font = UIFont(name: "Futura", size: 15)
+        descriptionLabel.font = UIFont.systemFont(ofSize: 15)
         descriptionLabel.textColor = .systemGray
     }
     
     private func magnitudoLabelStyle() {
-        magnitudoLabel.font = UIFont(name: "Futura", size: 20)
+        //magnitudoLabel.font = UIFont(name: "Futura", size: 22)
+        magnitudoLabel.font = UIFont.boldSystemFont(ofSize: 22)
     }
     
 }
