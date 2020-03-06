@@ -27,11 +27,13 @@ struct EventViewModel: ViewModelWithLocalState {
     
 }
 
-
 // MARK: - View
 class EventView: UIView, ViewControllerModellableView {
     
     var mapView = GMSMapView()
+    var latitude: Double?
+    var longitude: Double?
+    
     var coordinate = UILabel()
     var magnitude = UILabel()
     var time = UILabel()
@@ -39,6 +41,7 @@ class EventView: UIView, ViewControllerModellableView {
     
     var didTapClose: (() -> ())?
     
+    // MARK: Setup
     func setup() {
         addSubview(mapView)
         addSubview(coordinate)
@@ -47,26 +50,29 @@ class EventView: UIView, ViewControllerModellableView {
         addSubview(depth)
     }
     
+    // MARK: Style
     func style() {
-        navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapCloseFunc))
-        backgroundColor = .white
+        backgroundColor = .systemBackground
         navigationBar?.prefersLargeTitles = false
-        
+        navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapCloseFunc))
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
-            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.black] // cambia aspetto del titolo
-            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black] // cambia aspetto del titolo (con prefersLargeTitles = true)
-            navigationBar?.tintColor = .systemBlue
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo (con prefersLargeTitles = true)
+            navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
             navBarAppearance.backgroundColor = .systemGray6 // cambia il colore dello sfondo della navigation bar
+            // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
             navigationBar?.standardAppearance = navBarAppearance
             navigationBar?.scrollEdgeAppearance = navBarAppearance
         } else {
-            navigationBar?.tintColor = .black
+            navigationBar?.tintColor = .systemBlue
             navigationBar?.barTintColor = .systemGray6
+            // navigationBar?.isTranslucent = false
         }
     }
-
+    
+    // MARK: Update
     func update(oldModel: EventViewModel?) {
         let defaultValue: String = "Loading data..."
         guard let model = self.model else { return }
@@ -75,28 +81,40 @@ class EventView: UIView, ViewControllerModellableView {
         
         let coord_str: String = String(format:"coordinates: %f  %f", model.event?.coordinates[0] ?? defaultValue, model.event?.coordinates[1] ?? defaultValue)
         self.coordinate.text = coord_str
+        self.coordinate.textColor = .label
         
         let magnitudo_model: String = String(format: "%f", model.event?.magnitudo ?? defaultValue)
         let magnitudo_label: String = String(magnitudo_model.prefix(through: magnitudo_model.index(magnitudo_model.startIndex, offsetBy: 2)))
         let magnitude_str = String(format:"magnitude: %@", magnitudo_label)
         self.magnitude.text = magnitude_str
+        self.magnitude.textColor = .label
         
         self.time.text = String(format: "origin time: %@", model.event?.time ?? defaultValue)
+        self.time.textColor = .label
         
         self.depth.text = String(format: "depth: %@ km", model.event?.depth ?? defaultValue)
+        self.depth.textColor = .label
         
-        updateMapView(latitude: (model.event?.coordinates[1]) ?? 0, longitude: (model.event?.coordinates[0]) ?? 0)
+        latitude = model.event?.coordinates[1] ?? 0
+        longitude = model.event?.coordinates[0] ?? 0
+        
+        updateMapView()
     }
     
-    private func updateMapView(latitude: Double, longitude: Double) {
-        let location = GMSCameraPosition.camera(withLatitude: latitude, longitude: longitude, zoom: 10)
+    private func updateMapView() {
+        let location = GMSCameraPosition.camera(withLatitude: latitude!, longitude: longitude!, zoom: 10)
         mapView.animate(to: location)
+        setupMarker()
+    }
+    
+    private func setupMarker() {
         let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        marker.position = CLLocationCoordinate2D(latitude: latitude!, longitude: longitude!)
         marker.appearAnimation = GMSMarkerAnimation.pop
         marker.map = mapView
     }
 
+    // MARK: Layout
     override func layoutSubviews() {
         super.layoutSubviews()
         
@@ -132,6 +150,32 @@ class EventView: UIView, ViewControllerModellableView {
     
     @objc func didTapCloseFunc() {
         didTapClose?()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        let mapStyleString: String
+        
+        switch traitCollection.userInterfaceStyle {
+        case .light, .unspecified:
+            mapStyleString = "light_map_style"
+        case .dark:
+            mapStyleString = "dark_map_style"
+        default:
+            mapStyleString = "light_map_style"
+        }
+        
+        do {
+          // Set the map style by passing the URL of the local file.
+          if let styleURL = Bundle.main.url(forResource: mapStyleString, withExtension: "json") {
+            mapView.clear()
+            mapView.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
+          } else {
+            NSLog("Unable to find style.json")
+          }
+        } catch {
+          NSLog("One or more of the map styles failed to load. \(error)")
+        }
+        setupMarker()
     }
     
 }

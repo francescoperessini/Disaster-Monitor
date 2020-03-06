@@ -24,11 +24,12 @@ class ProfileView: UIView, ViewControllerModellableView {
    
     let locationManager = CLLocationManager()
     let mapView = GMSMapView()
+    let segmentedControl = UISegmentedControl(items: ["Normal", "Satellite"])
     var resultsViewController: GMSAutocompleteResultsViewController?
     var searchController: UISearchController?
     var resultView: UITextView?
     var didTapActionButton: (() -> ())?
-    
+
     var actualPosition: CLLocation?
     var nearestLocations_tmp: [Event] = []
     var nearestLocations: [Event] = []
@@ -36,12 +37,13 @@ class ProfileView: UIView, ViewControllerModellableView {
     func setup() {
         setupLocation()
         setupSearchBar()
+        setupSegmentedControl()
     }
 
     func style() {
         backgroundColor = .systemBackground
         navigationBar?.prefersLargeTitles = false
-        navigationItem?.title = "My Profile"
+        navigationItem?.title = "Around Me"
         navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapActionButtonFunc))
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
@@ -57,11 +59,10 @@ class ProfileView: UIView, ViewControllerModellableView {
             navigationBar?.tintColor = .systemBlue
             navigationBar?.barTintColor = .systemGray6
             // navigationBar?.isTranslucent = false
-            
         }
         mapViewStyle()
     }
-
+    
     func update(oldModel: MainViewModel?) {
         guard let model = model else { return }
         if model.state.events.count != 0 {
@@ -77,10 +78,13 @@ class ProfileView: UIView, ViewControllerModellableView {
                 setupGeoFenceRegions()
             }
         }
+        mapViewStyle()
     }
 
     override func layoutSubviews() {
-        self.addSubview(mapView)
+        addSubview(mapView)
+        mapView.addSubview(segmentedControl)
+        
         mapView.translatesAutoresizingMaskIntoConstraints = false
         mapView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
         mapView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
@@ -88,6 +92,12 @@ class ProfileView: UIView, ViewControllerModellableView {
         mapView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         mapView.widthAnchor.constraint(equalToConstant: self.bounds.width).isActive = true
         mapView.heightAnchor.constraint(equalToConstant: self.bounds.height).isActive = true
+        
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        segmentedControl.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 10).isActive = true
+        segmentedControl.centerXAnchor.constraint(equalTo: mapView.centerXAnchor).isActive = true
+        segmentedControl.leftAnchor.constraint(equalTo: mapView.leftAnchor, constant: 10).isActive = true
+        segmentedControl.rightAnchor.constraint(equalTo: mapView.rightAnchor, constant: -10).isActive = true
     }
     
     private func setupLocation() {
@@ -120,6 +130,12 @@ class ProfileView: UIView, ViewControllerModellableView {
         circ.strokeWidth = 2
         circ.map = mapView
         */
+    }
+    
+    private func setupSegmentedControl() {
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.addTarget(self, action: #selector(indexChanged(_:)), for: .valueChanged)
+        segmentedControl.backgroundColor = .systemBackground
     }
     
     private func setupSearchBar() {
@@ -182,12 +198,49 @@ class ProfileView: UIView, ViewControllerModellableView {
             // geoFenceRegion.notifyOnEntry = true
             // geoFenceRegion.notifyOnExit = false
             locationManager.startMonitoring(for: geoFenceRegion)
-            //print(locationManager.monitoredRegions)
+            // print(locationManager.monitoredRegions)
         }
     }
     
     @objc func didTapActionButtonFunc() {
         didTapActionButton?()
+    }
+    
+    @objc func indexChanged(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+            case 0:
+                mapView.mapType = GMSMapViewType.normal
+            case 1:
+                mapView.mapType = GMSMapViewType.satellite
+            default:
+                break
+        }
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        let mapStyleString: String
+        
+        switch traitCollection.userInterfaceStyle {
+        case .light, .unspecified:
+            mapStyleString = "light_map_style"
+        case .dark:
+            mapStyleString = "dark_map_style"
+        default:
+            mapStyleString = "light_map_style"
+        }
+        
+        do {
+          // Set the map style by passing the URL of the local file.
+          if let styleURL = Bundle.main.url(forResource: mapStyleString, withExtension: "json") {
+            mapView.clear()
+            mapView.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
+          } else {
+            NSLog("Unable to find style.json")
+          }
+        } catch {
+          NSLog("One or more of the map styles failed to load. \(error)")
+        }
+        setupMarkers()
     }
     
 }

@@ -1,20 +1,19 @@
 //
 //  SceneDelegate.swift
-//  Test
+//  Disaster Monitor
 //
 //  Created by Stefano Martina on 21/11/2019.
 //  Copyright © 2019 Stefano Martina. All rights reserved.
 //
 
-import UIKit
 import Katana
 import Tempura
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate, RootInstaller {
-
+    
     var window: UIWindow?
     var store: Store<AppState, DependenciesContainer>!
-
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
@@ -26,18 +25,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, RootInstaller {
         navigator.start(using: self, in: self.window!, at: Screen.home)
         window?.windowScene = windowScene
     }
-        
+    
     func installRoot(identifier: RouteElementIdentifier, context: Any?, completion: () -> ()) -> Bool {
-      if identifier == Screen.home.rawValue {
-        // let viewController = MainViewController(store: self.store)
-        // self.window?.rootViewController = viewController
-        let tabBarController = MainTabBarController(store: self.store)
-        self.window?.rootViewController = tabBarController
-        self.window?.makeKeyAndVisible()
-        completion()
-        return true
-      }
-      return false
+        if identifier == Screen.home.rawValue {
+            let tabBarController = MainTabBarController(store: self.store)
+            self.window?.rootViewController = tabBarController
+            completion()
+            return true
+        }
+        return false
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -46,22 +42,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, RootInstaller {
         // Release any resources associated with this scene that can be re-created the next time the scene connects.
         // The scene may re-connect later, as its session was not neccessarily discarded (see `application:didDiscardSceneSessions` instead).
     }
-
+    
     func sceneDidBecomeActive(_ scene: UIScene) {
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
     }
-
+    
     func sceneWillResignActive(_ scene: UIScene) {
         // Called when the scene will move from an active state to an inactive state.
         // This may occur due to temporary interruptions (ex. an incoming phone call).
     }
-
+    
     func sceneWillEnterForeground(_ scene: UIScene) {
         // Called as the scene transitions from the background to the foreground.
         // Use this method to undo the changes made on entering the background.
     }
-
+    
     func sceneDidEnterBackground(_ scene: UIScene) {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information

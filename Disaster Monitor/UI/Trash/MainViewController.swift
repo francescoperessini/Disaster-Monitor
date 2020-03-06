@@ -63,7 +63,3 @@ class MainViewController: ViewController<MainView> {
     }
     
 }
-
-enum Screen: String {
-    case home
-}

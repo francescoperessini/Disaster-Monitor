@@ -210,3 +210,7 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource {
     }
     
 }
+
+enum Screen: String {
+    case home
+}

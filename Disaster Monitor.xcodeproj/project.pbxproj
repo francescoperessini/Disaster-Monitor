@@ -29,7 +29,6 @@
 		7B564A3723A9404F00DD178C /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B564A3623A9404E00DD178C /* EventCell.swift */; };
 		7B69AD6D2405827300E040B9 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B69AD6C2405827300E040B9 /* FilterViewController.swift */; };
 		7B69AD6F240582B400E040B9 /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B69AD6E240582B400E040B9 /* FilterView.swift */; };
-		7B6E625F240912530047D7AE /* style.json in Resources */ = {isa = PBXBuildFile; fileRef = 7B6E625E240912530047D7AE /* style.json */; };
 		7B6E62692409629D0047D7AE /* MainEventsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6E62682409629D0047D7AE /* MainEventsView.swift */; };
 		7B6E626D240964AB0047D7AE /* MainEventsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6E626C240964AB0047D7AE /* MainEventsSection.swift */; };
 		7B6E626F2409674D0047D7AE /* MainEventsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6E626E2409674D0047D7AE /* MainEventsTableViewController.swift */; };
@@ -48,6 +47,8 @@
 		7BE4174123A8D56D0096F8EA /* AppNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE4174023A8D56D0096F8EA /* AppNavigation.swift */; };
 		BA312F5C824539761202BC92 /* Pods_Disaster_MonitorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DED2C185958EF922F2C4C351 /* Pods_Disaster_MonitorTests.framework */; };
 		C44A0D789BB99E45F293A346 /* Pods_Disaster_Monitor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F155C62AFE5B3EF4E48B1083 /* Pods_Disaster_Monitor.framework */; };
+		C614C97A2411A86600DC772E /* light_map_style.json in Resources */ = {isa = PBXBuildFile; fileRef = C614C9792411A86600DC772E /* light_map_style.json */; };
+		C614C97C2411A88A00DC772E /* dark_map_style.json in Resources */ = {isa = PBXBuildFile; fileRef = C614C97B2411A88A00DC772E /* dark_map_style.json */; };
 		C677E59A2407CA540079344A /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C677E5992407CA540079344A /* SettingsSection.swift */; };
 		C6B0E86C24068AC9005CEE09 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0E86B24068AC9005CEE09 /* SettingsTableViewCell.swift */; };
 		C6B0E86E2406DCE4005CEE09 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0E86D2406DCE4005CEE09 /* MainTabBarController.swift */; };
@@ -104,7 +105,6 @@
 		7B564A3623A9404E00DD178C /* EventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		7B69AD6C2405827300E040B9 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		7B69AD6E240582B400E040B9 /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
-		7B6E625E240912530047D7AE /* style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = style.json; sourceTree = "<group>"; };
 		7B6E62682409629D0047D7AE /* MainEventsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainEventsView.swift; sourceTree = "<group>"; };
 		7B6E626C240964AB0047D7AE /* MainEventsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainEventsSection.swift; sourceTree = "<group>"; };
 		7B6E626E2409674D0047D7AE /* MainEventsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainEventsTableViewController.swift; sourceTree = "<group>"; };
@@ -124,6 +124,8 @@
 		8C100DDEA741AB48464729DD /* Pods_Disaster_MonitorUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Disaster_MonitorUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F6A4890087B0E1A7288AB18 /* Pods-Disaster Monitor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disaster Monitor.debug.xcconfig"; path = "Target Support Files/Pods-Disaster Monitor/Pods-Disaster Monitor.debug.xcconfig"; sourceTree = "<group>"; };
 		BB502D60C134875ED664D9A7 /* Pods-Disaster MonitorUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disaster MonitorUITests.debug.xcconfig"; path = "Target Support Files/Pods-Disaster MonitorUITests/Pods-Disaster MonitorUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		C614C9792411A86600DC772E /* light_map_style.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = light_map_style.json; sourceTree = "<group>"; };
+		C614C97B2411A88A00DC772E /* dark_map_style.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = dark_map_style.json; sourceTree = "<group>"; };
 		C677E5992407CA540079344A /* SettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsSection.swift; path = "Disaster Monitor/UI/Settings/Settings Page/SettingsSection.swift"; sourceTree = SOURCE_ROOT; };
 		C6B0E86B24068AC9005CEE09 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		C6B0E86D2406DCE4005CEE09 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainTabBarController.swift; path = "Disaster Monitor/UI/MainTabBarController.swift"; sourceTree = SOURCE_ROOT; };
@@ -258,9 +260,9 @@
 			children = (
 				7B5038A923A8CD5700F18840 /* SceneDelegate.swift */,
 				C6B0E86D2406DCE4005CEE09 /* MainTabBarController.swift */,
-				7B6E625E240912530047D7AE /* style.json */,
 				C635C0BB240DB9A200970769 /* Main */,
 				C635C0BD240DB9C100970769 /* Map */,
+				C614C9782411A72E00DC772E /* Map Style */,
 				C635C0BC240DB9B800970769 /* Settings */,
 				C635C0C5240DBB3A00970769 /* Trash */,
 			);
@@ -319,6 +321,15 @@
 				FBCAFCBF2355DF0E58CD357C /* Pods-Disaster MonitorUITests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		C614C9782411A72E00DC772E /* Map Style */ = {
+			isa = PBXGroup;
+			children = (
+				C614C9792411A86600DC772E /* light_map_style.json */,
+				C614C97B2411A88A00DC772E /* dark_map_style.json */,
+			);
+			path = "Map Style";
 			sourceTree = "<group>";
 		};
 		C635C0BB240DB9A200970769 /* Main */ = {
@@ -529,8 +540,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7B6E625F240912530047D7AE /* style.json in Resources */,
+				C614C97A2411A86600DC772E /* light_map_style.json in Resources */,
 				7B5038B123A8CD5800F18840 /* Preview Assets.xcassets in Resources */,
+				C614C97C2411A88A00DC772E /* dark_map_style.json in Resources */,
 				7B5038AE23A8CD5800F18840 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

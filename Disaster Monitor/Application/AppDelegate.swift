@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  Test
+//  Disaster Monitor
 //
 //  Created by Stefano Martina on 21/11/2019.
 //  Copyright © 2019 Stefano Martina. All rights reserved.
@@ -38,6 +38,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
-
 }
-
