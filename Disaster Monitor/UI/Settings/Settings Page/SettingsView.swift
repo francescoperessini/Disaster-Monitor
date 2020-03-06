@@ -102,13 +102,14 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         view.backgroundColor = .systemGray6
         
         let title = UILabel()
-        title.font = UIFont(name: "Futura", size: 20)
+        //title.font = UIFont(name: "Futura", size: 20)
+        title.font = UIFont.boldSystemFont(ofSize: 20)
         title.textColor = .label
         title.text = SettingsSection(rawValue: section)?.description
         view.addSubview(title)
         title.translatesAutoresizingMaskIntoConstraints = false
-        title.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        title.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        title.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        title.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 20).isActive = true
         
         return view
     }
@@ -120,9 +121,7 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = settingsTableView.dequeueReusableCell(withIdentifier: Cells.settingsTableViewCell, for: indexPath) as! SettingsTableViewCell
         
-        guard let section = SettingsSection(rawValue: indexPath.section) else {
-                 return UITableViewCell()
-             }
+        guard let section = SettingsSection(rawValue: indexPath.section) else { return UITableViewCell() }
         
         switch section {
         case .Message:
@@ -139,7 +138,6 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         guard let section = SettingsSection(rawValue: indexPath.section) else { return }
         
         switch section {
@@ -155,7 +153,7 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
                 print("riga 1 della sezione Privacy")
             }
         }
-        
+        settingsTableView.deselectRow(at: settingsTableView.indexPathForSelectedRow!, animated: true)
     }
     
 }

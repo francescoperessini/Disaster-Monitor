@@ -21,11 +21,11 @@ class MainEventsView: UIView, ViewControllerModellableView {
     
     var mainEventsTableView = UITableView()
     var events: [Event] = []
-    var todayEvents: [Event] = []
-    var yesterdayEvents: [Event] = []
-    var twoDaysAgoEvents: [Event] = []
-    var threeDaysAgoEvents: [Event] = []
-    var previousEvents: [Event] = []
+    var past24Events: [Event] = []
+    var past48Events: [Event] = []
+    var past72Events: [Event] = []
+    var past96Events: [Event] = []
+    var previousDaysEvents: [Event] = []
     
     var filteringValue: Float = 0
     var filteringDay: Int = 0
@@ -86,11 +86,11 @@ class MainEventsView: UIView, ViewControllerModellableView {
         filteringValue = model.state.filteringValue ?? 0
         filteringDay = model.state.segmentedDays
         events = events.filter{$0.magnitudo > self.filteringValue && $0.daysAgo < self.filteringDay}
-        todayEvents = events.filter{$0.daysAgo == 0}
-        yesterdayEvents = events.filter{$0.daysAgo == 1}
-        twoDaysAgoEvents = events.filter{$0.daysAgo == 2}
-        threeDaysAgoEvents = events.filter{$0.daysAgo == 3}
-        previousEvents = events.filter{$0.daysAgo > 4}
+        past24Events = events.filter{$0.daysAgo == 0}
+        past48Events = events.filter{$0.daysAgo == 1}
+        past72Events = events.filter{$0.daysAgo == 2}
+        past96Events = events.filter{$0.daysAgo == 3}
+        previousDaysEvents = events.filter{$0.daysAgo > 4}
         DispatchQueue.main.async {
             self.mainEventsTableView.reloadData()
         }
@@ -133,16 +133,16 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource {
         guard let section = MainEventsSection(rawValue: section) else { return 0 }
         
         switch section {
-        case .OneDay:
-            return todayEvents.count
-        case .TwoDay:
-            return yesterdayEvents.count
-        case .ThreeDay:
-            return twoDaysAgoEvents.count
-        case .FourDay:
-            return threeDaysAgoEvents.count
-        case .OthersDay:
-            return previousEvents.count
+        case .Past24:
+            return past24Events.count
+        case .Past48:
+            return past48Events.count
+        case .Past72:
+            return past72Events.count
+        case .Past96:
+            return past96Events.count
+        case .PreviousDays:
+            return previousDaysEvents.count
         }
     }
     
@@ -157,8 +157,8 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource {
         title.text = MainEventsSection(rawValue: section)?.description
         view.addSubview(title)
         title.translatesAutoresizingMaskIntoConstraints = false
-        title.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        title.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        title.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        title.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 20).isActive = true
         
         return view
     }
@@ -172,19 +172,19 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource {
 
         switch indexPath.section {
         case 0:
-            let event = todayEvents[indexPath.row]
+            let event = past24Events[indexPath.row]
             cell.setupCell(event: event)
         case 1:
-            let event = yesterdayEvents[indexPath.row]
+            let event = past48Events[indexPath.row]
             cell.setupCell(event: event)
         case 2:
-            let event = twoDaysAgoEvents[indexPath.row]
+            let event = past72Events[indexPath.row]
             cell.setupCell(event: event)
         case 3:
-            let event = threeDaysAgoEvents[indexPath.row]
+            let event = past96Events[indexPath.row]
             cell.setupCell(event: event)
         case 4:
-            let event = previousEvents[indexPath.row]
+            let event = previousDaysEvents[indexPath.row]
             cell.setupCell(event: event)
         default:
             print("Default case")
@@ -196,17 +196,18 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource {
         guard let section = MainEventsSection(rawValue: indexPath.section) else { return }
                 
         switch section {
-        case .OneDay:
-            didTapEventFunc(id: todayEvents[indexPath.row].id)
-        case .TwoDay:
-            didTapEventFunc(id: yesterdayEvents[indexPath.row].id)
-        case .ThreeDay:
-            didTapEventFunc(id: twoDaysAgoEvents[indexPath.row].id)
-        case .FourDay:
-            didTapEventFunc(id: threeDaysAgoEvents[indexPath.row].id)
-        case .OthersDay:
-            didTapEventFunc(id: previousEvents[indexPath.row].id)
+        case .Past24:
+            didTapEventFunc(id: past24Events[indexPath.row].id)
+        case .Past48:
+            didTapEventFunc(id: past48Events[indexPath.row].id)
+        case .Past72:
+            didTapEventFunc(id: past72Events[indexPath.row].id)
+        case .Past96:
+            didTapEventFunc(id: past96Events[indexPath.row].id)
+        case .PreviousDays:
+            didTapEventFunc(id: previousDaysEvents[indexPath.row].id)
         }
+        mainEventsTableView.deselectRow(at: mainEventsTableView.indexPathForSelectedRow!, animated: true)
     }
     
 }
