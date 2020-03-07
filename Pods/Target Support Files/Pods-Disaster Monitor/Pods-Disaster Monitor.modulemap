@@ -1,4 +1,4 @@
-framework module Pods_Disaster_Monitor {
+module Pods_Disaster_Monitor {
   umbrella header "Pods-Disaster Monitor-umbrella.h"
 
   export *

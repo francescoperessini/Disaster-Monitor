@@ -1,4 +1,4 @@
-framework module Katana {
+module Katana {
   umbrella header "Katana-umbrella.h"
 
   export *

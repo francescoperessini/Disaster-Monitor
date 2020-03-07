@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" creator="mapstogpx.com" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd">
+  <metadata>
+    <link href="http://www.mapstogpx.com">
+      <text>Sverrir Sigmundarson</text>
+    </link>
+    <!--desc>Map data copyright 2020 Google</desc-->
+    <!--copyright author="Google Inc">
+    	<year>2020</year>
+    	<license>https://developers.google.com/maps/terms</license>
+    </copyright-->
+    <!--url>https://www.google.co.uk/maps/dir/Oils of Paicines, Airline Highway, Paicines, California, Stati Uniti/Parkfield, California 93451, Stati Uniti/@36.1900864,-121.0012302,10.48z/data=!4m19!4m18!1m10!1m1!1s0x80923f0c01a9fbad:0x685b23f7628a16e5!2m2!1d-121.2108331!2d36.6139785!3m4!1m2!1d-120.7241176!2d36.1999693!3s0x80931a6b07e39173:0x52ceb1dc8bf83823!1m5!1m1!1s0x809336801bebd28b:0xb6a0ce739b80736c!2m2!1d-120.4326542!2d35.8996856!3e0?hl=en</url-->
+    <time>2020-03-07T11:29:23Z</time>
+  </metadata>
+  <wpt lat="36.6140699" lon="-121.210822">
+    <name>WP001</name>
+    <time>2020-03-07T11:29:23Z</time>
+  </wpt>
+  <wpt lat="36.1872261" lon="-120.8212506">
+    <name>WP002</name>
+    <time>2020-03-07T12:08:38Z</time>
+  </wpt>
+  <wpt lat="36.0819959" lon="-120.4805951">
+    <name>WP003</name>
+    <time>2020-03-07T12:30:28Z</time>
+  </wpt>
+  <wpt lat="35.997106" lon="-120.4711833">
+    <name>WP004</name>
+    <time>2020-03-07T12:36:47Z</time>
+  </wpt>
+</gpx>

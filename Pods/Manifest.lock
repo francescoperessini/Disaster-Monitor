@@ -37,7 +37,7 @@ DEPENDENCIES:
   - Tempura
 
 SPEC REPOS:
-  trunk:
+  https://github.com/cocoapods/specs.git:
     - Alamofire
     - DeepDiff
     - GoogleMaps
@@ -61,6 +61,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
   Tempura: d38c2d982864d9dbca6b11a519e8b00024d04abd
 
-PODFILE CHECKSUM: 5a54919b5fb4caa3618be4ffd75cf0df04f78074
+PODFILE CHECKSUM: f30e9897c9834ec4a03de3f01f46041376572b01
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.7.5

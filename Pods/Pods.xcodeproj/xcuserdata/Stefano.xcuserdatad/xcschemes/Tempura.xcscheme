@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F86CA429C65B890702875E6A05740428"
-               BuildableName = "Tempura.framework"
+               BuildableName = "libTempura.a"
                BlueprintName = "Tempura"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>

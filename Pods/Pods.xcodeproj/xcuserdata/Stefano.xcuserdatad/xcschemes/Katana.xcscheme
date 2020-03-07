@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0C39A667D3291F0AF4A2FB6CC2779E7E"
-               BuildableName = "Katana.framework"
+               BuildableName = "libKatana.a"
                BlueprintName = "Katana"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>

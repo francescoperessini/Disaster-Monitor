@@ -1,4 +1,4 @@
-framework module Hydra {
+module Hydra {
   umbrella header "HydraAsync-umbrella.h"
 
   export *
