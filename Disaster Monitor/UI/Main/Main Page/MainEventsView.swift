@@ -149,16 +149,25 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
         view.backgroundColor = .systemGray6
-        
+
+        let clockImage = UIImage(systemName: "clock")
+        let clockImageView = UIImageView(image: clockImage!.withRenderingMode(.alwaysTemplate))
+        clockImageView.tintColor = .label
+
         let title = UILabel()
-        //title.font = UIFont(name: "Futura", size: 20)
+        // title.font = UIFont(name: "Futura", size: 20)
         title.font = UIFont.boldSystemFont(ofSize: 20)
         title.textColor = .label
         title.text = MainEventsSection(rawValue: section)?.description
+        
         view.addSubview(title)
+        view.addSubview(clockImageView)
+        clockImageView.translatesAutoresizingMaskIntoConstraints = false
+        clockImageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        clockImageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 20).isActive = true
         title.translatesAutoresizingMaskIntoConstraints = false
-        title.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
-        title.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 20).isActive = true
+        title.centerYAnchor.constraint(equalTo: clockImageView.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        title.leftAnchor.constraint(equalTo: clockImageView.safeAreaLayoutGuide.leftAnchor, constant: 25).isActive = true
         
         return view
     }
