@@ -43,11 +43,16 @@ class MainEventsTableViewCell: UITableViewCell {
     // MARK: Layout
     override func layoutSubviews() {
         super.layoutSubviews()
+        
+        magnitudoLabel.translatesAutoresizingMaskIntoConstraints = false
+        magnitudoLabel.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        magnitudoLabel.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -20).isActive = true
+        magnitudoLabel.heightAnchor.constraint(equalToConstant: self.bounds.height).isActive = true
     
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 2.5).isActive = true
         nameLabel.leftAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leftAnchor, constant: 20).isActive = true
-        nameLabel.widthAnchor.constraint(equalToConstant: 320).isActive = true
+        nameLabel.rightAnchor.constraint(equalTo: magnitudoLabel.safeAreaLayoutGuide.rightAnchor, constant: -50).isActive = true
         nameLabel.heightAnchor.constraint(equalToConstant: self.bounds.height / 2).isActive = true
         
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -55,10 +60,6 @@ class MainEventsTableViewCell: UITableViewCell {
         descriptionLabel.leftAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leftAnchor, constant: 20).isActive = true
         descriptionLabel.widthAnchor.constraint(equalToConstant: 300).isActive = true
         descriptionLabel.heightAnchor.constraint(equalToConstant: self.bounds.height / 2).isActive = true
-        
-        magnitudoLabel.translatesAutoresizingMaskIntoConstraints = false
-        magnitudoLabel.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
-        magnitudoLabel.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -20).isActive = true
     }
     
     func setupCell(event: Event) {

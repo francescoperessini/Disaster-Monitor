@@ -8,37 +8,24 @@
 
 enum MainEventsSection: Int, CaseIterable, CustomStringConvertible {
     
-    case OneDay
-    case TwoDay
-    case ThreeDay
-    case FourDay
-    case OthersDay
+    case Past24
+    case Past48
+    case Past72
+    case Past96
+    case PreviousDays
     
     var description: String {
         switch self {
-        case .OneDay:
-            return "Today"
-        case .TwoDay:
-            return "Yesterday"
-        case .ThreeDay:
-            return "Two Days Ago"
-        case .FourDay:
-            return "Three Days Ago"
-        case .OthersDay:
-            return "Previuos Days"
+        case .Past24:
+            return "Past 24 hours"
+        case .Past48:
+            return "Past 48 hours"
+        case .Past72:
+            return "Past 72 hours"
+        case .Past96:
+            return "Past 96 hours"
+        case .PreviousDays:
+            return "Previous Days"
         }
     }
-}
-
-enum EventOption: Int, CaseIterable, CustomStringConvertible {
-    
-    case event
-
-    var description: String {
-        switch self {
-        case .event:
-            return "pippo"
-        }
-    }
-    
 }
