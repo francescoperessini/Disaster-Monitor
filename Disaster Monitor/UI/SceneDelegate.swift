@@ -8,6 +8,7 @@
 
 import Katana
 import Tempura
+import BackgroundTasks
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate, RootInstaller {
     
@@ -18,6 +19,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, RootInstaller {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.disastermonitor.refresh", using: nil) { (task) in
+            self.handleAppRefresh(task: task as! BGAppRefreshTask)
+        }
         guard let windowScene = (scene as? UIWindowScene) else { return }
         store = Store<AppState, DependenciesContainer>()
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -62,6 +66,45 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, RootInstaller {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+        scheduleAppRefresh()
+    }
+    
+    
+    /*func applicationDidEnterBackground(_ application: UIApplication) {
+        print("baCCC")
+        scheduleAppRefresh()
+    }*/
+    
+    func scheduleAppRefresh(){
+        print("IN SCHEDULE")
+        let request = BGAppRefreshTaskRequest(identifier: "com.disastermonitor.refresh")
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 15*60)
+        
+        do {
+            try BGTaskScheduler.shared.submit(request)
+        } catch {
+            print("ERROR: \(error)")
+        }
+    }
+    
+    func handleAppRefresh(task: BGAppRefreshTask){
+        let queue = OperationQueue()
+        scheduleAppRefresh()
+        queue.maxConcurrentOperationCount = 1
+        
+        task.expirationHandler = {
+            queue.cancelAllOperations()
+        }
+        
+        queue.addOperation {
+            self.store.dispatch(GetEvents())
+        }
+        
+        let op = queue.operations.first!
+        
+        op.completionBlock = {
+            task.setTaskCompleted(success: !op.isCancelled)
+        }
     }
 
 }
