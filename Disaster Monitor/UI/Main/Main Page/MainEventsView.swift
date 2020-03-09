@@ -155,7 +155,7 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource {
         clockImageView.tintColor = .label
 
         let title = UILabel()
-        // title.font = UIFont(name: "Futura", size: 20)
+        //title.font = UIFont(name: "Futura", size: 20)
         title.font = UIFont.boldSystemFont(ofSize: 20)
         title.textColor = .label
         title.text = MainEventsSection(rawValue: section)?.description

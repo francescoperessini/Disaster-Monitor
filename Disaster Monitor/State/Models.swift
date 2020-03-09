@@ -32,7 +32,6 @@ struct Event: Codable, Equatable {
         
         self.daysAgo = Calendar.current.dateComponents([.day], from: date1, to: date2).day!
     }
-    
 }
 
 struct DetailedEvent: Codable {
@@ -53,12 +52,12 @@ struct DetailedEvent: Codable {
         let coord2 = Double(coordinates.split(separator: " ")[1]) ?? 0
         self.coordinates = [coord1, coord2]
         
-        let date = NSDate(timeIntervalSince1970: time_in / 1000)
+        let date = Date(timeIntervalSince1970: time_in / 1000)
         let formatter = DateFormatter()
-        formatter.timeZone = NSTimeZone(name: "UTC") as TimeZone?
-        formatter.dateFormat = "d MMM yyyy HH:mm:ss"
+        formatter.timeZone = TimeZone(identifier: "UTC")
+        formatter.dateFormat = "dd MMM yyyy HH:mm:ss"
 
-        self.time = formatter.string(from: date as Date)
+        self.time = formatter.string(from: date as Date) + " UTC"
         self.depth = depth
     }
 }

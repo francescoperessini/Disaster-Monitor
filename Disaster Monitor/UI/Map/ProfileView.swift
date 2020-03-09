@@ -94,10 +94,10 @@ class ProfileView: UIView, ViewControllerModellableView {
         mapView.heightAnchor.constraint(equalToConstant: self.bounds.height).isActive = true
         
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        segmentedControl.topAnchor.constraint(equalTo: mapView.topAnchor, constant: 10).isActive = true
-        segmentedControl.centerXAnchor.constraint(equalTo: mapView.centerXAnchor).isActive = true
-        segmentedControl.leftAnchor.constraint(equalTo: mapView.leftAnchor, constant: 10).isActive = true
-        segmentedControl.rightAnchor.constraint(equalTo: mapView.rightAnchor, constant: -10).isActive = true
+        segmentedControl.topAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
+        segmentedControl.centerXAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        segmentedControl.leftAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.leftAnchor, constant: 10).isActive = true
+        segmentedControl.rightAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.rightAnchor, constant: -10).isActive = true
     }
     
     private func setupLocation() {
