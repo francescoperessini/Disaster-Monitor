@@ -6,16 +6,11 @@
 //  Copyright © 2019 Stefano Martina. All rights reserved.
 //
 
-import UIKit
-import Tempura
-import Katana
 import GoogleMaps
 import GooglePlaces
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    var store: Store<AppState, DependenciesContainer>!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -23,8 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GMSPlacesClient.provideAPIKey("AIzaSyAcRUpdkE2wZYGDF_boI7NYgtkIdewuJHM")
         return true
     }
-
-    // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.

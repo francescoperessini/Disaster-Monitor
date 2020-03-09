@@ -216,7 +216,7 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource {
         case .PreviousDays:
             didTapEventFunc(id: previousDaysEvents[indexPath.row].id)
         }
-        mainEventsTableView.deselectRow(at: mainEventsTableView.indexPathForSelectedRow!, animated: true)
+        //mainEventsTableView.deselectRow(at: mainEventsTableView.indexPathForSelectedRow!, animated: true)
     }
     
 }

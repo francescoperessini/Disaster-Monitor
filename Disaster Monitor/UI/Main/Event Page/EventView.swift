@@ -9,6 +9,7 @@
 import Tempura
 import GoogleMaps
 
+/*
 // MARK: - ViewModel
 struct EventViewModel: ViewModelWithLocalState {
     
@@ -26,6 +27,15 @@ struct EventViewModel: ViewModelWithLocalState {
     }
     
 }
+ */
+
+// MARK: - ViewModel
+struct EventViewModel: ViewModelWithState {
+    var state: AppState
+    init?(state: AppState) {
+        self.state = state
+    }
+}
 
 // MARK: - View
 class EventView: UIView, ViewControllerModellableView {
@@ -38,9 +48,7 @@ class EventView: UIView, ViewControllerModellableView {
     var magnitude = UILabel()
     var time = UILabel()
     var depth = UILabel()
-    
-    var didTapClose: (() -> ())?
-    
+        
     // MARK: Setup
     func setup() {
         addSubview(mapView)
@@ -53,8 +61,7 @@ class EventView: UIView, ViewControllerModellableView {
     // MARK: Style
     func style() {
         backgroundColor = .systemBackground
-        navigationBar?.prefersLargeTitles = false
-        navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapCloseFunc))
+        navigationItem?.largeTitleDisplayMode = .never
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
@@ -74,30 +81,30 @@ class EventView: UIView, ViewControllerModellableView {
     
     // MARK: Update
     func update(oldModel: EventViewModel?) {
+        mapView.clear()
         let defaultValue: String = "Loading data..."
         guard let model = self.model else { return }
         
-        self.navigationItem?.title = model.event?.name
+        self.navigationItem?.title = model.state.displayEvent?.name
         
-        let coord_str: String = String(format:"coordinates: %f  %f", model.event?.coordinates[0] ?? defaultValue, model.event?.coordinates[1] ?? defaultValue)
+        let coord_str: String = String(format:"coordinates: %f  %f", model.state.displayEvent?.coordinates[0] ?? defaultValue, model.state.displayEvent?.coordinates[1] ?? defaultValue)
         self.coordinate.text = coord_str
         self.coordinate.textColor = .label
         
-        let magnitudo_model: String = String(format: "%f", model.event?.magnitudo ?? defaultValue)
+        let magnitudo_model: String = String(format: "%f", model.state.displayEvent?.magnitudo ?? defaultValue)
         let magnitudo_label: String = String(magnitudo_model.prefix(through: magnitudo_model.index(magnitudo_model.startIndex, offsetBy: 2)))
         let magnitude_str = String(format:"magnitude: %@", magnitudo_label)
         self.magnitude.text = magnitude_str
         self.magnitude.textColor = .label
         
-        self.time.text = String(format: "origin time: %@", model.event?.time ?? defaultValue)
+        self.time.text = String(format: "origin time: %@", model.state.displayEvent?.time ?? defaultValue)
         self.time.textColor = .label
         
-        self.depth.text = String(format: "depth: %@ km", model.event?.depth ?? defaultValue)
+        self.depth.text = String(format: "depth: %@ km", model.state.displayEvent?.depth ?? defaultValue)
         self.depth.textColor = .label
         
-        latitude = model.event?.coordinates[1] ?? 0
-        longitude = model.event?.coordinates[0] ?? 0
-        
+        latitude = model.state.displayEvent?.coordinates[1] ?? 0
+        longitude = model.state.displayEvent?.coordinates[0] ?? 0
         updateMapView()
     }
     
@@ -146,10 +153,6 @@ class EventView: UIView, ViewControllerModellableView {
         mapView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         mapView.widthAnchor.constraint(equalToConstant: self.bounds.width).isActive = true
         mapView.heightAnchor.constraint(equalToConstant: 0.7 * self.bounds.height).isActive = true
-    }
-    
-    @objc func didTapCloseFunc() {
-        didTapClose?()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

@@ -8,11 +8,12 @@
 
 import Tempura
 
-class EventViewController: ViewControllerWithLocalState<EventView> {
+class EventViewController: ViewController<EventView> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        /*
         APIManager.getEvent(id: self.localState.id ?? "")
             .then {
                 newValue in
@@ -24,17 +25,22 @@ class EventViewController: ViewControllerWithLocalState<EventView> {
                     let depth = newValue["properties"]["products"]["origin"][0]["properties"]["depth"].stringValue
                     self.localState.event = DetailedEvent(id: id, name: name, descr: "No description", magnitudo: magnitudo, coordinates: coordinates, time_in: time_in, depth: depth)
             }
+        */
     }
     
+    /*
     override func setupInteraction() {
         rootView.didTapClose = { [ unowned self ] in
             self.dismiss(animated: true, completion: nil)
         }
     }
+    */
     
 }
 
+/*
 struct EventControllerLocalState: LocalState {
     var id: String? = nil
     var event: DetailedEvent?
 }
+*/

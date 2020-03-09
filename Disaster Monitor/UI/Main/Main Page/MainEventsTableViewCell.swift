@@ -89,7 +89,7 @@ class MainEventsTableViewCell: UITableViewCell {
         let date = Date(timeIntervalSince1970: event.time / 1000)
         let formatter = DateFormatter()
         formatter.timeZone = TimeZone(identifier: "UTC")
-        formatter.dateFormat = "HH:mm:ss"
+        formatter.dateFormat = "HH:mm"
         timeLabel.text = formatter.string(from: date as Date) + " UTC"
         
         seismicTypeLabel.text = event.description

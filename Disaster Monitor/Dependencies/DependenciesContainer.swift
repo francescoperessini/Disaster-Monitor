@@ -47,7 +47,7 @@ final class APIManager {
     }
     
     // Get the event corresponding to passed id
-    static func getEvent(id : String) -> Promise<JSON> {
+    func getDetailedEvent(id: String) -> Promise<JSON> {
         return Promise<JSON>(in: .background) { resolve, reject, status in
             AF.request("https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventid=" + id).responseJSON { response in
                 if let data = response.data {
