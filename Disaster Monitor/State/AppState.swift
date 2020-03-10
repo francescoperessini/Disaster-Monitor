@@ -70,6 +70,17 @@ struct SetMessage: StateUpdater {
     }
 }
 
+struct InitState: StateUpdater {
+    var InState: AppState
+    func updateState(_ state: inout AppState) {
+        state.events = InState.events
+        state.filteringValue = InState.filteringValue
+        state.message = InState.message
+        state.displayEvent = InState.displayEvent
+        state.segmentedDays = InState.segmentedDays
+    }
+}
+
 struct GetEvents: SideEffect {
     func sideEffect(_ context: SideEffectContext<AppState, DependenciesContainer>) throws {
         context.dependencies.ApiManager
@@ -88,5 +99,24 @@ struct GetDetailedEvent: SideEffect {
             .then {
                 newValue in context.dispatch(DetailedEventStateUpdater(newValue: newValue))
             }
+    }
+}
+
+struct InitAppState: SideEffect {
+    func sideEffect(_ context: SideEffectContext<AppState, DependenciesContainer>) throws {
+        let file = "file.json"
+        if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first{
+            let fileURL = dir.appendingPathComponent(file)
+            let decoder: JSONDecoder = JSONDecoder.init()
+            let data = try! Data.init(contentsOf: URL(resolvingAliasFileAt: fileURL))
+            //reading
+            do {
+                let state: AppState = try decoder.decode(AppState.self, from: data)
+                context.dispatch(InitState(InState: state))
+            }
+            catch {
+                print("ERRORE LETTURA")
+            }
+        }
     }
 }
