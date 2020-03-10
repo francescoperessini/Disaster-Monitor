@@ -151,8 +151,6 @@ class EventView: UIView, ViewControllerModellableView {
         mapView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         mapView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         mapView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        mapView.widthAnchor.constraint(equalToConstant: self.bounds.width).isActive = true
-        mapView.heightAnchor.constraint(equalToConstant: 0.7 * self.bounds.height).isActive = true
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

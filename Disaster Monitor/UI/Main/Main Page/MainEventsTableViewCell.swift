@@ -106,24 +106,20 @@ class MainEventsTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-                
-        magnitudoLabel.translatesAutoresizingMaskIntoConstraints = false
-        magnitudoLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 2.5).isActive = true
-        magnitudoLabel.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -2.5).isActive = true
-        magnitudoLabel.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -10).isActive = true
-        magnitudoLabel.heightAnchor.constraint(equalToConstant: self.bounds.height).isActive = true
         
         placeLabel.translatesAutoresizingMaskIntoConstraints = false
-        placeLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 2.5).isActive = true
-        placeLabel.leftAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leftAnchor, constant: 20).isActive = true
-        placeLabel.rightAnchor.constraint(equalTo: magnitudoLabel.safeAreaLayoutGuide.rightAnchor, constant: -50).isActive = true
-        placeLabel.heightAnchor.constraint(equalToConstant: self.bounds.height / 2).isActive = true
+        placeLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 7).isActive = true
+        placeLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
+        placeLabel.trailingAnchor.constraint(equalTo: magnitudoLabel.safeAreaLayoutGuide.trailingAnchor, constant: -50).isActive = true
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.topAnchor.constraint(equalTo: placeLabel.safeAreaLayoutGuide.topAnchor).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -2.5).isActive = true
-        stackView.leftAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leftAnchor, constant: 20).isActive = true
-        stackView.heightAnchor.constraint(equalToConstant: self.bounds.height / 2).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -7).isActive = true
+        stackView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
+                
+        magnitudoLabel.translatesAutoresizingMaskIntoConstraints = false
+        magnitudoLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 7).isActive = true
+        magnitudoLabel.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -7).isActive = true
+        magnitudoLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -7).isActive = true
     }
     
 }

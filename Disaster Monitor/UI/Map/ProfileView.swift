@@ -90,8 +90,6 @@ class ProfileView: UIView, ViewControllerModellableView {
         mapView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
         mapView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         mapView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        mapView.widthAnchor.constraint(equalToConstant: self.bounds.width).isActive = true
-        mapView.heightAnchor.constraint(equalToConstant: self.bounds.height).isActive = true
         
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.topAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
@@ -150,12 +148,7 @@ class ProfileView: UIView, ViewControllerModellableView {
 
         // Put the search bar in the navigation bar.
         searchController?.searchBar.sizeToFit()
-        // navigationItem?.titleView = searchController?.searchBar
         navigationItem?.searchController = searchController
-
-        // When UISearchController presents the results view, present it in
-        // this view controller, not one further up the chain.
-        // definesPresentationContext = true
 
         // Prevent the navigation bar from being hidden when searching
         searchController?.hidesNavigationBarDuringPresentation = false
