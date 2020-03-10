@@ -23,7 +23,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, RootInstaller {
             self.handleAppRefresh(task: task as! BGAppRefreshTask)
         }
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        store = Store<AppState, DependenciesContainer>()
+        let interceptor = PersistorInterceptor.interceptor()
+        
+        store = Store<AppState, DependenciesContainer>(interceptors: [interceptor])
+        
+        self.store.dispatch(InitAppState())
+        
         window = UIWindow(frame: UIScreen.main.bounds)
         let navigator: Navigator! = self.store!.dependencies.navigator
         navigator.start(using: self, in: self.window!, at: Screen.home)
@@ -69,14 +74,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, RootInstaller {
         scheduleAppRefresh()
     }
     
-    
-    /*func applicationDidEnterBackground(_ application: UIApplication) {
-        print("baCCC")
-        scheduleAppRefresh()
-    }*/
-    
     func scheduleAppRefresh(){
-        print("IN SCHEDULE")
         let request = BGAppRefreshTaskRequest(identifier: "com.disastermonitor.refresh")
         request.earliestBeginDate = Date(timeIntervalSinceNow: 15*60)
         
