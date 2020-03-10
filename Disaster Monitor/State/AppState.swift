@@ -108,9 +108,10 @@ struct InitAppState: SideEffect {
         if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first{
             let fileURL = dir.appendingPathComponent(file)
             let decoder: JSONDecoder = JSONDecoder.init()
-            let data = try! Data.init(contentsOf: URL(resolvingAliasFileAt: fileURL))
+            
             //reading
             do {
+                let data = try! Data.init(contentsOf: URL(resolvingAliasFileAt: fileURL))
                 let state: AppState = try decoder.decode(AppState.self, from: data)
                 context.dispatch(InitState(InState: state))
             }
