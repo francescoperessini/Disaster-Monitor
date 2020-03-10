@@ -1,5 +1,5 @@
 //
-//  ProfileViewController.swift
+//  MapViewController.swift
 //  Disaster Monitor
 //
 //  Created by Stefano Martina on 17/12/2019.
@@ -9,7 +9,7 @@
 import Tempura
 
 // MARK: - ViewController
-class ProfileViewController: ViewController<ProfileView> {
+class MapViewController: ViewController<MapView> {
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -1,5 +1,5 @@
 //
-//  ProfileView.swift
+//  MapView.swift
 //  Disaster Monitor
 //
 //  Created by Stefano Martina on 17/12/2019.
@@ -12,7 +12,7 @@ import GoogleMaps
 import GooglePlaces
 
 // MARK: - ViewModel
-struct ProfileViewModel: ViewModelWithState {
+struct MapViewModel: ViewModelWithState {
     var state: AppState
     init?(state: AppState) {
         self.state = state
@@ -20,7 +20,7 @@ struct ProfileViewModel: ViewModelWithState {
 }
 
 // MARK: - View
-class ProfileView: UIView, ViewControllerModellableView {
+class MapView: UIView, ViewControllerModellableView {
    
     let locationManager = CLLocationManager()
     let mapView = GMSMapView()
@@ -31,8 +31,6 @@ class ProfileView: UIView, ViewControllerModellableView {
     var didTapActionButton: (() -> ())?
 
     var actualPosition: CLLocation?
-    var nearestLocations_tmp: [Event] = []
-    var nearestLocations: [Event] = []
 
     func setup() {
         setupLocation()
@@ -67,16 +65,6 @@ class ProfileView: UIView, ViewControllerModellableView {
         guard let model = model else { return }
         if model.state.events.count != 0 {
             setupMarkers()
-            
-            nearestLocations_tmp = model.state.events
-            nearestLocations.removeAll()
-            if actualPosition != nil {
-                for _ in 0...19 {
-                    let tmp = closestLocation(locations: self.nearestLocations_tmp, closestToLocation: self.actualPosition!)
-                    nearestLocations.append(tmp!)
-                }
-                setupGeoFenceRegions()
-            }
         }
         mapViewStyle()
     }
@@ -168,33 +156,6 @@ class ProfileView: UIView, ViewControllerModellableView {
         }
     }
     
-    private func closestLocation(locations: [Event], closestToLocation location: CLLocation) -> Event? {
-        if let closestLocation = locations.min(by: { location.distance(from: CLLocation(latitude: $0.coordinates[1], longitude: $0.coordinates[0])) < location.distance(from: CLLocation(latitude: $1.coordinates[1], longitude: $1.coordinates[0])) }) {
-            nearestLocations_tmp = nearestLocations_tmp.filter{$0 != closestLocation}
-            return closestLocation
-        } else {
-            print("coordinates is empty")
-            return nil
-        }
-    }
-    
-    private func setupGeoFenceRegions() {
-        for region in locationManager.monitoredRegions {
-            locationManager.stopMonitoring(for: region)
-        }
-                
-        for event in nearestLocations {
-            let longitude = event.coordinates[0]
-            let latitude = event.coordinates[1]
-            let identifier = event.name
-            let geoFenceRegion: CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), radius: 4000, identifier: identifier)
-            // geoFenceRegion.notifyOnEntry = true
-            // geoFenceRegion.notifyOnExit = false
-            locationManager.startMonitoring(for: geoFenceRegion)
-            // print(locationManager.monitoredRegions)
-        }
-    }
-    
     @objc func didTapActionButtonFunc() {
         didTapActionButton?()
     }
@@ -239,7 +200,7 @@ class ProfileView: UIView, ViewControllerModellableView {
 }
 
 // MARK: - CLLocationManagerDelegate
-extension ProfileView: CLLocationManagerDelegate, GMSAutocompleteResultsViewControllerDelegate {
+extension MapView: CLLocationManagerDelegate, GMSAutocompleteResultsViewControllerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         guard status == .authorizedWhenInUse else { return }
         locationManager.startUpdatingLocation()
@@ -256,28 +217,6 @@ extension ProfileView: CLLocationManagerDelegate, GMSAutocompleteResultsViewCont
         // Tell locationManager you’re no longer interested in updates
         locationManager.stopUpdatingLocation()
     }
-    
-    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print("Entered: \(region.identifier)")
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        print("Exited: \(region.identifier)")
-    }
-    
-    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
-        print("Monitoring failed for region with identifier: \(region!.identifier)")
-        print(error)
-    }
-
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Location Manager failed with the following error: \(error)")
-    }
-    
-    /*func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
-        //print("Already in: \(region.identifier)")
-        locationManager.requestState(for: region)
-    }*/
 
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didAutocompleteWith place: GMSPlace) {
         searchController?.isActive = false

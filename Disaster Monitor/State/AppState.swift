@@ -111,7 +111,7 @@ struct InitAppState: SideEffect {
             
             //reading
             do {
-                let data = try! Data.init(contentsOf: URL(resolvingAliasFileAt: fileURL))
+                let data = try Data.init(contentsOf: URL(resolvingAliasFileAt: fileURL))
                 let state: AppState = try decoder.decode(AppState.self, from: data)
                 context.dispatch(InitState(InState: state))
             }

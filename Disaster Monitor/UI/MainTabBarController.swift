@@ -27,7 +27,7 @@ class MainTabBarController: UITabBarController {
         mainViewController.tabBarItem.title = "Events"
         mainViewController.tabBarItem.image = UIImage(systemName: "globe")
         
-        let profilePageViewController = UINavigationController(rootViewController: ProfileViewController(store: store))
+        let profilePageViewController = UINavigationController(rootViewController: MapViewController(store: store))
         profilePageViewController.tabBarItem.title = "Map"
         profilePageViewController.tabBarItem.image = UIImage(systemName: "map")
         

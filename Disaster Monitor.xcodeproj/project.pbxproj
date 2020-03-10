@@ -36,8 +36,8 @@
 		7B6E6271240984830047D7AE /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6E6270240984830047D7AE /* EventView.swift */; };
 		7B6E62732409849B0047D7AE /* EventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6E62722409849B0047D7AE /* EventViewController.swift */; };
 		7B6E627524098B5F0047D7AE /* MainEventsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6E627424098B5F0047D7AE /* MainEventsTableViewCell.swift */; };
-		7B82217E23AB8BC6002DAA48 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B82217D23AB8BC6002DAA48 /* ProfileView.swift */; };
-		7B82218023AB8C9B002DAA48 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B82217F23AB8C9B002DAA48 /* ProfileViewController.swift */; };
+		7B82217E23AB8BC6002DAA48 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B82217D23AB8BC6002DAA48 /* MapView.swift */; };
+		7B82218023AB8C9B002DAA48 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B82217F23AB8C9B002DAA48 /* MapViewController.swift */; };
 		7B92360C241794DE00A4EF22 /* PersistorInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B92360B241794DE00A4EF22 /* PersistorInterceptor.swift */; };
 		7B9D000F23ABF3DC00B9FACB /* Zip4Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9D000E23ABF3DC00B9FACB /* Zip4Sequence.swift */; };
 		7BE4173323A8D3AD0096F8EA /* ItemActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE4173223A8D3AD0096F8EA /* ItemActions.swift */; };
@@ -114,8 +114,8 @@
 		7B6E6270240984830047D7AE /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		7B6E62722409849B0047D7AE /* EventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewController.swift; sourceTree = "<group>"; };
 		7B6E627424098B5F0047D7AE /* MainEventsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainEventsTableViewCell.swift; sourceTree = "<group>"; };
-		7B82217D23AB8BC6002DAA48 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
-		7B82217F23AB8C9B002DAA48 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		7B82217D23AB8BC6002DAA48 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		7B82217F23AB8C9B002DAA48 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		7B92360B241794DE00A4EF22 /* PersistorInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistorInterceptor.swift; sourceTree = "<group>"; };
 		7B9D000E23ABF3DC00B9FACB /* Zip4Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zip4Sequence.swift; sourceTree = "<group>"; };
 		7BE4173223A8D3AD0096F8EA /* ItemActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemActions.swift; sourceTree = "<group>"; };
@@ -202,7 +202,6 @@
 				7B5038AD23A8CD5800F18840 /* Assets.xcassets */,
 				7B5038B523A8CD5800F18840 /* Info.plist */,
 				7B5038AF23A8CD5800F18840 /* Preview Content */,
-				7B92360B241794DE00A4EF22 /* PersistorInterceptor.swift */,
 			);
 			path = "Disaster Monitor";
 			sourceTree = "<group>";
@@ -261,8 +260,9 @@
 		7BE4172A23A8D2E00096F8EA /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				7B5038A923A8CD5700F18840 /* SceneDelegate.swift */,
 				C6B0E86D2406DCE4005CEE09 /* MainTabBarController.swift */,
+				7B92360B241794DE00A4EF22 /* PersistorInterceptor.swift */,
+				7B5038A923A8CD5700F18840 /* SceneDelegate.swift */,
 				C635C0BB240DB9A200970769 /* Main */,
 				C635C0BD240DB9C100970769 /* Map */,
 				C614C9782411A72E00DC772E /* Map Style */,
@@ -357,8 +357,8 @@
 		C635C0BD240DB9C100970769 /* Map */ = {
 			isa = PBXGroup;
 			children = (
-				7B82217D23AB8BC6002DAA48 /* ProfileView.swift */,
-				7B82217F23AB8C9B002DAA48 /* ProfileViewController.swift */,
+				7B82217D23AB8BC6002DAA48 /* MapView.swift */,
+				7B82217F23AB8C9B002DAA48 /* MapViewController.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -686,7 +686,7 @@
 				7B564A3523A9325D00DD178C /* EventsFlowLayout.swift in Sources */,
 				7B6E62692409629D0047D7AE /* MainEventsView.swift in Sources */,
 				7B9D000F23ABF3DC00B9FACB /* Zip4Sequence.swift in Sources */,
-				7B82218023AB8C9B002DAA48 /* ProfileViewController.swift in Sources */,
+				7B82218023AB8C9B002DAA48 /* MapViewController.swift in Sources */,
 				7B6E62732409849B0047D7AE /* EventViewController.swift in Sources */,
 				7B564A2F23A9306D00DD178C /* ConfigurableCell.swift in Sources */,
 				7B564A2623A9300300DD178C /* String+Random.swift in Sources */,
@@ -694,7 +694,7 @@
 				7B564A1C23A92B7100DD178C /* ListView.swift in Sources */,
 				7BE4174123A8D56D0096F8EA /* AppNavigation.swift in Sources */,
 				7BE4173D23A8D4AC0096F8EA /* MainViewController.swift in Sources */,
-				7B82217E23AB8BC6002DAA48 /* ProfileView.swift in Sources */,
+				7B82217E23AB8BC6002DAA48 /* MapView.swift in Sources */,
 				7BE4173523A8D4130096F8EA /* DependenciesContainer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
