@@ -25,9 +25,7 @@ struct PersistorInterceptor {
                             
                             if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first{
                                 let fileURL = dir.appendingPathComponent(file)
-                                
                                 try data.write(to: fileURL)
-                                print("State persisted")
                             }
                             
                         } catch {
