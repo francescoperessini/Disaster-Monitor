@@ -7,10 +7,9 @@
 //
 
 import Katana
-import Tempura
 import BackgroundTasks
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate, RootInstaller {
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     var store: Store<AppState, DependenciesContainer>!
@@ -19,30 +18,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, RootInstaller {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+        
         BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.disastermonitor.refresh", using: nil) { (task) in
             self.handleAppRefresh(task: task as! BGAppRefreshTask)
         }
-        guard let windowScene = (scene as? UIWindowScene) else { return }
+        
         let interceptor = PersistorInterceptor.interceptor()
-        
         store = Store<AppState, DependenciesContainer>(interceptors: [interceptor])
+        store.dispatch(InitAppState())
         
-        self.store.dispatch(InitAppState())
-        
-        window = UIWindow(frame: UIScreen.main.bounds)
-        let navigator: Navigator! = self.store!.dependencies.navigator
-        navigator.start(using: self, in: self.window!, at: Screen.home)
-        window?.windowScene = windowScene
-    }
-    
-    func installRoot(identifier: RouteElementIdentifier, context: Any?, completion: () -> ()) -> Bool {
-        if identifier == Screen.home.rawValue {
-            let tabBarController = MainTabBarController(store: self.store)
-            self.window?.rootViewController = tabBarController
-            completion()
-            return true
-        }
-        return false
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        let tabBarController = MainTabBarController(store: store)
+
+        window = UIWindow(windowScene: windowScene)
+        window?.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {

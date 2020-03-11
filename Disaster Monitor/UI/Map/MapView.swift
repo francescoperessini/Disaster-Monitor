@@ -61,7 +61,7 @@ class MapView: UIView, ViewControllerModellableView {
         mapViewStyle()
     }
     
-    func update(oldModel: MainViewModel?) {
+    func update(oldModel: MapViewModel?) {
         guard let model = model else { return }
         if model.state.events.count != 0 {
             setupMarkers()

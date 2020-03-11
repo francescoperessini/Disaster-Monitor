@@ -164,7 +164,7 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource {
         view.addSubview(clockImageView)
         clockImageView.translatesAutoresizingMaskIntoConstraints = false
         clockImageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
-        clockImageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 20).isActive = true
+        clockImageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 15).isActive = true
         title.translatesAutoresizingMaskIntoConstraints = false
         title.centerYAnchor.constraint(equalTo: clockImageView.safeAreaLayoutGuide.centerYAnchor).isActive = true
         title.leftAnchor.constraint(equalTo: clockImageView.safeAreaLayoutGuide.leftAnchor, constant: 25).isActive = true
@@ -219,8 +219,4 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource {
         //mainEventsTableView.deselectRow(at: mainEventsTableView.indexPathForSelectedRow!, animated: true)
     }
     
-}
-
-enum Screen: String {
-    case home
 }

@@ -50,6 +50,7 @@ final class APIManager {
     func getDetailedEvent(id: String) -> Promise<JSON> {
         return Promise<JSON>(in: .background) { resolve, reject, status in
             AF.request("https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventid=" + id).responseJSON { response in
+                print(response.response!.statusCode)
                 if let data = response.data {
                     if let json = try? JSON(data: data) {
                         resolve(json)
