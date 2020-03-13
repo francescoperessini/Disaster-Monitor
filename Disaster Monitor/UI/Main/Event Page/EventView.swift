@@ -9,37 +9,21 @@
 import Tempura
 import GoogleMaps
 
-/*
-// MARK: - ViewModel
-struct EventViewModel: ViewModelWithLocalState {
-    
-    var id: String?
-    var event: DetailedEvent?
-    
-    init(id: String, event: DetailedEvent) {
-        self.id = id
-        self.event = event
-    }
-    
-    init?(state: AppState?, localState: EventControllerLocalState) {
-        self.id = localState.id
-        self.event = localState.event
-    }
-    
-}
- */
 
 // MARK: - ViewModel
-struct EventViewModel: ViewModelWithState {
-    var state: AppState
-    init?(state: AppState) {
-        self.state = state
+struct EventViewModel: ViewModelWithLocalState {
+
+    var event: Event?
+    
+    init?(state: AppState?, localState: EventControllerLocalState) {
+        self.event = state?.events.first(where: {$0.id == localState.id})
     }
+    
 }
 
 // MARK: - View
 class EventView: UIView, ViewControllerModellableView {
-    
+    var id: String?
     var mapView = GMSMapView()
     var latitude: Double?
     var longitude: Double?
@@ -85,26 +69,26 @@ class EventView: UIView, ViewControllerModellableView {
         let defaultValue: String = "Loading data..."
         guard let model = self.model else { return }
         
-        self.navigationItem?.title = model.state.displayEvent?.name
+        self.navigationItem?.title = model.event?.name
         
-        let coord_str: String = String(format:"coordinates: %f  %f", model.state.displayEvent?.coordinates[0] ?? defaultValue, model.state.displayEvent?.coordinates[1] ?? defaultValue)
+        let coord_str: String = String(format:"coordinates: %f  %f", model.event?.coordinates[0] ?? defaultValue, model.event?.coordinates[1] ?? defaultValue)
         self.coordinate.text = coord_str
         self.coordinate.textColor = .label
         
-        let magnitudo_model: String = String(format: "%f", model.state.displayEvent?.magnitudo ?? defaultValue)
+        let magnitudo_model: String = String(format: "%f", model.event?.magnitudo ?? defaultValue)
         let magnitudo_label: String = String(magnitudo_model.prefix(through: magnitudo_model.index(magnitudo_model.startIndex, offsetBy: 2)))
         let magnitude_str = String(format:"magnitude: %@", magnitudo_label)
         self.magnitude.text = magnitude_str
         self.magnitude.textColor = .label
         
-        self.time.text = String(format: "origin time: %@", model.state.displayEvent?.time ?? defaultValue)
+        self.time.text = String(format: "origin time: %@", model.event?.date as CVarArg? ?? defaultValue)
         self.time.textColor = .label
         
-        self.depth.text = String(format: "depth: %@ km", model.state.displayEvent?.depth ?? defaultValue)
+        self.depth.text = String(format: "depth: %f km", model.event?.depth ?? defaultValue)
         self.depth.textColor = .label
         
-        latitude = model.state.displayEvent?.coordinates[1] ?? 0
-        longitude = model.state.displayEvent?.coordinates[0] ?? 0
+        latitude = model.event?.coordinates[1] ?? 0
+        longitude = model.event?.coordinates[0] ?? 0
         updateMapView()
     }
     

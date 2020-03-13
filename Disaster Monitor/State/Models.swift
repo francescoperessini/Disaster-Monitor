@@ -14,10 +14,12 @@ struct Event: Codable, Equatable {
     var description: String
     var magnitudo: Float
     var coordinates: [Double]
+    var depth: Float
     var time: Double
+    var date: Date
     var daysAgo: Int = 0
     
-    init(id: String, name: String, descr: String, magnitudo: String, coordinates: String, time: Double) {
+    init(id: String, name: String, descr: String, magnitudo: String, coordinates: String, depth: Float, time: Double) {
         self.id = id
         self.name = name
         self.description = descr
@@ -25,39 +27,20 @@ struct Event: Codable, Equatable {
         let coord1 = Double(coordinates.split(separator: " ")[0]) ?? 0
         let coord2 = Double(coordinates.split(separator: " ")[1]) ?? 0
         self.coordinates = [coord1, coord2]
+        
+        self.depth = depth
+        
+        let date = Date(timeIntervalSince1970: (time) / 1000)
+        let formatter = DateFormatter()
+        formatter.timeZone = TimeZone(identifier: "UTC")
+        formatter.dateFormat = "dd MMM yyyy HH:mm:ss"
+        
+        self.date = date
+        
         self.time = time
         
         let date1 = Date(timeIntervalSince1970: self.time / 1000)
         let date2 = Date()
-        
         self.daysAgo = Calendar.current.dateComponents([.day], from: date1, to: date2).day!
-    }
-}
-
-struct DetailedEvent: Codable {
-    var id: String
-    var name: String
-    var description: String
-    var magnitudo: Float
-    var coordinates: [Double]
-    var time: String
-    var depth: String
-    
-    init(id: String, name: String, descr: String, magnitudo: String, coordinates: String, time_in: Double, depth: String) {
-        self.id = id
-        self.name = name
-        self.description = descr
-        self.magnitudo = Float(magnitudo) ?? 0
-        let coord1 = Double(coordinates.split(separator: " ")[0]) ?? 0
-        let coord2 = Double(coordinates.split(separator: " ")[1]) ?? 0
-        self.coordinates = [coord1, coord2]
-        
-        let date = Date(timeIntervalSince1970: time_in / 1000)
-        let formatter = DateFormatter()
-        formatter.timeZone = TimeZone(identifier: "UTC")
-        formatter.dateFormat = "dd MMM yyyy HH:mm:ss"
-
-        self.time = formatter.string(from: date as Date) + " UTC"
-        self.depth = depth
     }
 }
