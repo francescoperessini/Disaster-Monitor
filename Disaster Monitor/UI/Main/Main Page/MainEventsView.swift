@@ -203,7 +203,6 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let section = MainEventsSection(rawValue: indexPath.section) else { return }
-                
         switch section {
         case .Past24:
             didTapEventFunc(id: past24Events[indexPath.row].id)
@@ -216,7 +215,5 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource {
         case .PreviousDays:
             didTapEventFunc(id: previousDaysEvents[indexPath.row].id)
         }
-        //mainEventsTableView.deselectRow(at: mainEventsTableView.indexPathForSelectedRow!, animated: true)
     }
-    
 }

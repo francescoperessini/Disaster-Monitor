@@ -34,7 +34,7 @@ final class DependenciesContainer: NavigationProvider {
 final class APIManager {
     
     // Get all the events
-    func getEvents() -> Promise<JSON> {
+    func getEventsUSGS() -> Promise<JSON> {
         return Promise<JSON>(in: .background) { resolve, reject, status in
             AF.request("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson").responseJSON { response in
                 if let data = response.data {
@@ -46,11 +46,10 @@ final class APIManager {
         }
     }
     
-    // Get the event corresponding to passed id
-    func getDetailedEvent(id: String) -> Promise<JSON> {
+    func getEventsINGV() -> Promise<JSON> {
+        // TO-DO: fare in modo che torni sempre quello dell'ultima settimana concatenando la data di una settimana fa
         return Promise<JSON>(in: .background) { resolve, reject, status in
-            AF.request("https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventid=" + id).responseJSON { response in
-                print(response.response!.statusCode)
+            AF.request("https://webservices.ingv.it/fdsnws/event/1/query?starttime=2020-02-27T00:00:00&format=geojson").responseJSON { response in
                 if let data = response.data {
                     if let json = try? JSON(data: data) {
                         resolve(json)
@@ -59,5 +58,4 @@ final class APIManager {
             }
         }
     }
-        
 }
