@@ -8,7 +8,13 @@
 
 import Tempura
 
+protocol YourCellDelegate: class {
+    func didSlideFuncController(_ value: Float)
+}
+
 class FilterTableViewCell: UITableViewCell {
+    
+    var cellDelegate: YourCellDelegate?
     
     var filterSectionType: FilterSectionType? {
         didSet {
@@ -53,12 +59,10 @@ class FilterTableViewCell: UITableViewCell {
         label.textColor = .systemGray
         return label
     }()
-    
-    var didSlide: ((Float) -> ())?
-    
+        
     @objc func didSlideFunc(sender: UISlider) {
         magnitudeSliderValueLabel.text = String(sender.value)
-        didSlide?(sender.value)
+        cellDelegate?.didSlideFuncController(sender.value)
     }
     
     // MARK: - Segmented Control

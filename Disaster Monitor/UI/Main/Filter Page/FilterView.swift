@@ -17,7 +17,12 @@ struct FilterViewModel: ViewModelWithState {
 }
 
 // MARK: - View
-class FilterView: UIView, ViewControllerModellableView {
+class FilterView: UIView, ViewControllerModellableView, YourCellDelegate {
+    
+    
+    func didSlideFuncController(_ value: Float) {
+        
+    }
     
     var filterTableView = UITableView(frame: CGRect.zero, style: .grouped)
 
@@ -131,6 +136,7 @@ extension FilterView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = filterTableView.dequeueReusableCell(withIdentifier: Cells.filterTableViewCell, for: indexPath) as! FilterTableViewCell
+        cell.cellDelegate = self
         guard let section = FilterSection(rawValue: indexPath.section) else { return UITableViewCell() }
         
         switch section {
