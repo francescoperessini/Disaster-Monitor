@@ -22,11 +22,16 @@ struct SettingsViewModel: ViewModelWithState {
 // MARK: - View
 class SettingsView: UIView, ViewControllerModellableView {
 
-    var settingsTableView = UITableView()
+    var settingsTableView = UITableView(frame: CGRect.zero, style: .grouped)
     var didTapEditMessage: (() -> ())?
+    var didTapAboutUs: (() -> ())?
     
     @objc func didTapEditMessageFunc() {
         didTapEditMessage?()
+    }
+    
+    @objc func didTapAboutUsFunc() {
+        didTapAboutUs?()
     }
     
     struct Cells {
@@ -94,6 +99,10 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
             return MessageOption.allCases.count
         case .Privacy:
             return PrivacyOption.allCases.count
+        case .Styling:
+            return StylingOption.allCases.count
+        case .AboutUs:
+            return AboutUsOption.allCases.count
         }
     }
     
@@ -131,6 +140,13 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         case .Privacy:
             let privacy = PrivacyOption(rawValue: indexPath.row)
             cell.sectionType = privacy
+        case .Styling:
+            let style = StylingOption(rawValue: indexPath.row)
+            cell.sectionType = style
+        case .AboutUs:
+            let aboutUs = AboutUsOption(rawValue: indexPath.row)
+            cell.sectionType = aboutUs
+            
         }
 
         return cell
@@ -152,6 +168,11 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
             else if indexPath.row == 1 {
                 print("riga 1 della sezione Privacy")
             }
+        case .AboutUs:
+            didTapAboutUsFunc()
+            
+        default:
+            print("ciao")
         }
         settingsTableView.deselectRow(at: settingsTableView.indexPathForSelectedRow!, animated: true)
     }

@@ -68,7 +68,7 @@ class MainEventsView: UIView, ViewControllerModellableView {
             //navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label, .font: UIFont(name: "Futura", size: 30)!] // cambia aspetto del titolo (con prefersLargeTitles = true)
             navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo
             navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo (con prefersLargeTitles = true)
-            navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
+            //navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
             navBarAppearance.backgroundColor = .systemGray6 // cambia il colore dello sfondo della navigation bar
             // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
             navigationBar?.standardAppearance = navBarAppearance
@@ -91,6 +91,9 @@ class MainEventsView: UIView, ViewControllerModellableView {
         past72Events = events.filter{$0.daysAgo == 2}
         past96Events = events.filter{$0.daysAgo == 3}
         previousDaysEvents = events.filter{$0.daysAgo > 4}
+        
+        navigationBar?.tintColor = model.state.customColor.getColor()
+        
         DispatchQueue.main.async {
             self.mainEventsTableView.reloadData()
         }
