@@ -25,5 +25,9 @@ class SettingsViewController: ViewController<SettingsView> {
             vc.modalPresentationStyle = .custom
             self.present(vc, animated: true, completion: nil)
         }
+        
+        rootView.didTapStylingColor = { [unowned self] color in
+            self.dispatch(UpdateCustomColor(color: color))
+        }
     }
 }

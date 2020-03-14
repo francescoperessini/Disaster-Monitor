@@ -9,17 +9,10 @@
 import UIKit
 import Tempura
 
-// MARK: - ViewModel
-struct SettingsTableViewCellViewModel: ViewModelWithState {
-    var state: AppState
-    init?(state: AppState) {
-        self.state = state
-    }
-}
 
-class SettingsTableViewCell: UITableViewCell, ViewControllerModellableView {
+class SettingsTableViewCell: UITableViewCell {
     
-    var didTapStylingColor: (() -> ())?
+    var didTapStylingColor: ((Color) -> ())?
     // MARK: - Properties
     var sectionType: SectionType?{
         didSet{
@@ -128,16 +121,9 @@ class SettingsTableViewCell: UITableViewCell, ViewControllerModellableView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    func setup() {
-
-    }
-       
-    func style() {
-        
-    }
-
-    func update(oldModel: SettingsTableViewCellViewModel?) {
+    // MARK: - StateInitializer
+    func setupColorCell(color: Color){
+        self.segmentedColors.selectedSegmentIndex = ["BLUE", "GREEN", "RED"].firstIndex(of: color.getColorName()) ?? 0
     }
     
     // MARK: - Selectors
@@ -151,20 +137,13 @@ class SettingsTableViewCell: UITableViewCell, ViewControllerModellableView {
     
     @objc func handleTapStylingColor(sender: UISegmentedControl){
         print("--> \(sender.titleForSegment(at: sender.selectedSegmentIndex)!)")
-        didTapStylingColor?()
-    }
-
-}
-
-class SettingsTableViewCellController: ViewController<SettingsTableViewCell>{
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
-    override func setupInteraction() {
-        rootView.didTapStylingColor = {
-            print("pippo")
+        let selectedColor = sender.titleForSegment(at: sender.selectedSegmentIndex)!
+        switch selectedColor {
+            case "RED": didTapStylingColor?(Color(name: colors.red))
+            case "GREEN": didTapStylingColor?(Color(name: colors.green))
+            default: didTapStylingColor?(Color(name: colors.blue))
         }
+        
     }
+
 }

@@ -35,6 +35,14 @@ struct Color: Codable{
         default:                return UIColor.systemBlue
         }
     }
+    
+    func getColorName() -> String{
+        switch self.name {
+        case colors.green:      return "GREEN"
+        case colors.red:        return "RED"
+        default:                return "BLUE"
+        }
+    }
 }
 
 struct EventsStateUpdater: StateUpdater {
@@ -118,6 +126,13 @@ struct InitState: StateUpdater {
         state.message = InState.message
         state.displayEvent = InState.displayEvent
         state.segmentedDays = InState.segmentedDays
+    }
+}
+
+struct UpdateCustomColor: StateUpdater {
+    var color: Color
+    func updateState(_ state: inout AppState) {
+        state.customColor = color
     }
 }
 

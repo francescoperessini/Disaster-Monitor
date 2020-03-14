@@ -26,6 +26,9 @@ class SettingsView: UIView, ViewControllerModellableView {
     var didTapEditMessage: (() -> ())?
     var didTapAboutUs: (() -> ())?
     
+    var didTapStylingColor: ((Color) -> ())?
+    var customColor: Color?
+    
     @objc func didTapEditMessageFunc() {
         didTapEditMessage?()
     }
@@ -65,6 +68,7 @@ class SettingsView: UIView, ViewControllerModellableView {
     }
 
     func update(oldModel: MainViewModel?) {
+        self.customColor = model?.state.customColor
     }
 
     override func layoutSubviews() {
@@ -143,10 +147,13 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         case .Styling:
             let style = StylingOption(rawValue: indexPath.row)
             cell.sectionType = style
+            if cell.sectionType!.containsSegmenteColor{
+                cell.didTapStylingColor = self.didTapStylingColor
+                cell.setupColorCell(color: self.customColor!)
+            }
         case .AboutUs:
             let aboutUs = AboutUsOption(rawValue: indexPath.row)
             cell.sectionType = aboutUs
-            
         }
 
         return cell
