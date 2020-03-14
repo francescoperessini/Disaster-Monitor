@@ -17,6 +17,24 @@ struct AppState: State, Codable {
     var message: String = "Message to be shared\nSent from Disaster Monitor App"
     var displayEvent: Event?
     var segmentedDays: Int = 999
+    var customColor: Color = Color(name: colors.red)
+}
+
+enum colors: Int, Codable {
+    case red
+    case blue
+    case green
+}
+
+struct Color: Codable{
+    var name: colors
+    func getColor() -> UIColor{
+        switch self.name {
+        case colors.green:      return UIColor.systemGreen
+        case colors.red:        return UIColor.systemRed
+        default:                return UIColor.systemBlue
+        }
+    }
 }
 
 struct EventsStateUpdater: StateUpdater {

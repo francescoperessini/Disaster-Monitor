@@ -49,6 +49,8 @@
 		7BE4174123A8D56D0096F8EA /* AppNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE4174023A8D56D0096F8EA /* AppNavigation.swift */; };
 		C60D1E50241BE2D40054DF3B /* FilterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60D1E4F241BE2D40054DF3B /* FilterTableViewCell.swift */; };
 		C60D1E52241BF3000054DF3B /* FilterSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60D1E51241BF3000054DF3B /* FilterSection.swift */; };
+		7BF0726D241BECF4004A5E9E /* AboutUsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF0726C241BECF4004A5E9E /* AboutUsView.swift */; };
+		7BF0726F241BEE09004A5E9E /* AboutUsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF0726E241BEE09004A5E9E /* AboutUsViewController.swift */; };
 		C614C97A2411A86600DC772E /* light_map_style.json in Resources */ = {isa = PBXBuildFile; fileRef = C614C9792411A86600DC772E /* light_map_style.json */; };
 		C614C97C2411A88A00DC772E /* dark_map_style.json in Resources */ = {isa = PBXBuildFile; fileRef = C614C97B2411A88A00DC772E /* dark_map_style.json */; };
 		C677E59A2407CA540079344A /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C677E5992407CA540079344A /* SettingsSection.swift */; };
@@ -127,6 +129,8 @@
 		7BE4173A23A8D49C0096F8EA /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		7BE4173C23A8D4AC0096F8EA /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		7BE4174023A8D56D0096F8EA /* AppNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
+		7BF0726C241BECF4004A5E9E /* AboutUsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutUsView.swift; sourceTree = "<group>"; };
+		7BF0726E241BEE09004A5E9E /* AboutUsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutUsViewController.swift; sourceTree = "<group>"; };
 		9F6A4890087B0E1A7288AB18 /* Pods-Disaster Monitor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disaster Monitor.debug.xcconfig"; path = "Target Support Files/Pods-Disaster Monitor/Pods-Disaster Monitor.debug.xcconfig"; sourceTree = "<group>"; };
 		BB502D60C134875ED664D9A7 /* Pods-Disaster MonitorUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disaster MonitorUITests.debug.xcconfig"; path = "Target Support Files/Pods-Disaster MonitorUITests/Pods-Disaster MonitorUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		C60D1E4F241BE2D40054DF3B /* FilterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTableViewCell.swift; sourceTree = "<group>"; };
@@ -317,6 +321,15 @@
 			path = Actions;
 			sourceTree = "<group>";
 		};
+		7BF0726B241BECB9004A5E9E /* About Us */ = {
+			isa = PBXGroup;
+			children = (
+				7BF0726C241BECF4004A5E9E /* AboutUsView.swift */,
+				7BF0726E241BEE09004A5E9E /* AboutUsViewController.swift */,
+			);
+			path = "About Us";
+			sourceTree = "<group>";
+		};
 		942463ABA6BF08AA0CDC8FBC /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -354,6 +367,7 @@
 			children = (
 				C635C0C1240DBA4800970769 /* Settings Page */,
 				C635C0BF240DBA2D00970769 /* Message Editor Page */,
+				7BF0726B241BECB9004A5E9E /* About Us */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -380,9 +394,9 @@
 			isa = PBXGroup;
 			children = (
 				7B1DF43523ABA5EB004C952A /* SettingsView.swift */,
-				7B1DF43623ABA5EB004C952A /* SettingsViewController.swift */,
 				C6B0E86B24068AC9005CEE09 /* SettingsTableViewCell.swift */,
 				C677E5992407CA540079344A /* SettingsSection.swift */,
+				7B1DF43623ABA5EB004C952A /* SettingsViewController.swift */,
 			);
 			path = "Settings Page";
 			sourceTree = "<group>";
@@ -666,6 +680,7 @@
 				C6E81A722409BB6C00CCD23D /* MessageEditorViewController.swift in Sources */,
 				7B69AD6F240582B400E040B9 /* FilterView.swift in Sources */,
 				7B564A2A23A9302E00DD178C /* UIView+Blink.swift in Sources */,
+				7BF0726F241BEE09004A5E9E /* AboutUsViewController.swift in Sources */,
 				C6C625082409AC5A00E994F3 /* MessageEditorView.swift in Sources */,
 				7B6E6271240984830047D7AE /* EventView.swift in Sources */,
 				C6B0E86E2406DCE4005CEE09 /* MainTabBarController.swift in Sources */,
@@ -680,6 +695,7 @@
 				7B564A3323A9309C00DD178C /* Source.swift in Sources */,
 				C677E59A2407CA540079344A /* SettingsSection.swift in Sources */,
 				7B6E626F2409674D0047D7AE /* MainEventsTableViewController.swift in Sources */,
+				7BF0726D241BECF4004A5E9E /* AboutUsView.swift in Sources */,
 				7B1DF43823ABA5EB004C952A /* SettingsViewController.swift in Sources */,
 				7BE4173923A8D4390096F8EA /* AppState.swift in Sources */,
 				7B1DF43723ABA5EB004C952A /* SettingsView.swift in Sources */,

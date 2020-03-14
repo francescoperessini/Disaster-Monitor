@@ -7,9 +7,19 @@
 //
 
 import UIKit
+import Tempura
 
-class SettingsTableViewCell: UITableViewCell {
+// MARK: - ViewModel
+struct SettingsTableViewCellViewModel: ViewModelWithState {
+    var state: AppState
+    init?(state: AppState) {
+        self.state = state
+    }
+}
+
+class SettingsTableViewCell: UITableViewCell, ViewControllerModellableView {
     
+    var didTapStylingColor: (() -> ())?
     // MARK: - Properties
     var sectionType: SectionType?{
         didSet{
@@ -20,6 +30,10 @@ class SettingsTableViewCell: UITableViewCell {
             
             stepperControlRadius.isHidden = !sectionType.containsStepperRadius
             stepperLabelRadius.isHidden = !sectionType.containsStepperRadius
+            
+            segmentedColors.isHidden = !sectionType.containsSegmenteColor
+            
+            segmentedMap.isHidden = !sectionType.containsSegmentedMap
         }
     }
     
@@ -55,6 +69,21 @@ class SettingsTableViewCell: UITableViewCell {
         return switchLabel
     }()
     
+    lazy var segmentedColors: UISegmentedControl = {
+        let colorSegmented = UISegmentedControl(items: ["BLUE", "GREEN", "RED"])
+        /*(colorSegmented.subviews[0] as UIView).tintColor = UIColor.blue
+        (colorSegmented.subviews[1] as UIView).tintColor = UIColor.systemGreen
+        (colorSegmented.subviews[2] as UIView).tintColor = UIColor.systemRed*/
+        colorSegmented.addTarget(self, action: #selector(handleTapStylingColor), for: .valueChanged)
+
+        return colorSegmented
+    }()
+    
+    lazy var segmentedMap: UISegmentedControl = {
+        let mapSegmented = UISegmentedControl(items: ["Standard", "Silver", "Retro", "Dark"])
+        return mapSegmented
+    }()
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         
@@ -73,6 +102,14 @@ class SettingsTableViewCell: UITableViewCell {
         stepperLabelMagnitudo.translatesAutoresizingMaskIntoConstraints = false
         stepperLabelMagnitudo.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
         stepperLabelMagnitudo.rightAnchor.constraint(equalTo: stepperControlMagnitudo.rightAnchor, constant: -130).isActive = true
+        
+        segmentedColors.translatesAutoresizingMaskIntoConstraints = false
+        segmentedColors.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        segmentedColors.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -20).isActive = true
+        
+        segmentedMap.translatesAutoresizingMaskIntoConstraints = false
+        segmentedMap.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        segmentedMap.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -20).isActive = true
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -82,10 +119,25 @@ class SettingsTableViewCell: UITableViewCell {
         
         super.addSubview(stepperLabelRadius)
         self.addSubview(stepperControlRadius)
+        
+        self.addSubview(segmentedColors)
+        
+        self.addSubview(segmentedMap)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setup() {
+
+    }
+       
+    func style() {
+        
+    }
+
+    func update(oldModel: SettingsTableViewCellViewModel?) {
     }
     
     // MARK: - Selectors
@@ -94,6 +146,25 @@ class SettingsTableViewCell: UITableViewCell {
     }
     
     @objc func handleTapRadius(sender: UIStepper){
-        self.stepperLabelRadius.text = String(sender.value)
+        self.stepperLabelRadius.text = String("\(sender.value) m.")
+    }
+    
+    @objc func handleTapStylingColor(sender: UISegmentedControl){
+        print("--> \(sender.titleForSegment(at: sender.selectedSegmentIndex)!)")
+        didTapStylingColor?()
+    }
+
+}
+
+class SettingsTableViewCellController: ViewController<SettingsTableViewCell>{
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    override func setupInteraction() {
+        rootView.didTapStylingColor = {
+            print("pippo")
+        }
     }
 }
