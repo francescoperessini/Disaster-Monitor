@@ -47,6 +47,8 @@
 		7BE4173B23A8D49C0096F8EA /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE4173A23A8D49C0096F8EA /* MainView.swift */; };
 		7BE4173D23A8D4AC0096F8EA /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE4173C23A8D4AC0096F8EA /* MainViewController.swift */; };
 		7BE4174123A8D56D0096F8EA /* AppNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE4174023A8D56D0096F8EA /* AppNavigation.swift */; };
+		C60D1E50241BE2D40054DF3B /* FilterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60D1E4F241BE2D40054DF3B /* FilterTableViewCell.swift */; };
+		C60D1E52241BF3000054DF3B /* FilterSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60D1E51241BF3000054DF3B /* FilterSection.swift */; };
 		C614C97A2411A86600DC772E /* light_map_style.json in Resources */ = {isa = PBXBuildFile; fileRef = C614C9792411A86600DC772E /* light_map_style.json */; };
 		C614C97C2411A88A00DC772E /* dark_map_style.json in Resources */ = {isa = PBXBuildFile; fileRef = C614C97B2411A88A00DC772E /* dark_map_style.json */; };
 		C677E59A2407CA540079344A /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C677E5992407CA540079344A /* SettingsSection.swift */; };
@@ -127,6 +129,8 @@
 		7BE4174023A8D56D0096F8EA /* AppNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
 		9F6A4890087B0E1A7288AB18 /* Pods-Disaster Monitor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disaster Monitor.debug.xcconfig"; path = "Target Support Files/Pods-Disaster Monitor/Pods-Disaster Monitor.debug.xcconfig"; sourceTree = "<group>"; };
 		BB502D60C134875ED664D9A7 /* Pods-Disaster MonitorUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disaster MonitorUITests.debug.xcconfig"; path = "Target Support Files/Pods-Disaster MonitorUITests/Pods-Disaster MonitorUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		C60D1E4F241BE2D40054DF3B /* FilterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTableViewCell.swift; sourceTree = "<group>"; };
+		C60D1E51241BF3000054DF3B /* FilterSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSection.swift; sourceTree = "<group>"; };
 		C614C9792411A86600DC772E /* light_map_style.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = light_map_style.json; sourceTree = "<group>"; };
 		C614C97B2411A88A00DC772E /* dark_map_style.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = dark_map_style.json; sourceTree = "<group>"; };
 		C677E5992407CA540079344A /* SettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsSection.swift; path = "Disaster Monitor/UI/Settings/Settings Page/SettingsSection.swift"; sourceTree = SOURCE_ROOT; };
@@ -399,6 +403,8 @@
 			children = (
 				7B69AD6E240582B400E040B9 /* FilterView.swift */,
 				7B69AD6C2405827300E040B9 /* FilterViewController.swift */,
+				C60D1E4F241BE2D40054DF3B /* FilterTableViewCell.swift */,
+				C60D1E51241BF3000054DF3B /* FilterSection.swift */,
 			);
 			path = "Filter Page";
 			sourceTree = "<group>";
@@ -687,6 +693,7 @@
 				7B6E62692409629D0047D7AE /* MainEventsView.swift in Sources */,
 				7B9D000F23ABF3DC00B9FACB /* Zip4Sequence.swift in Sources */,
 				7B82218023AB8C9B002DAA48 /* MapViewController.swift in Sources */,
+				C60D1E50241BE2D40054DF3B /* FilterTableViewCell.swift in Sources */,
 				7B6E62732409849B0047D7AE /* EventViewController.swift in Sources */,
 				7B564A2F23A9306D00DD178C /* ConfigurableCell.swift in Sources */,
 				7B564A2623A9300300DD178C /* String+Random.swift in Sources */,
@@ -696,6 +703,7 @@
 				7BE4173D23A8D4AC0096F8EA /* MainViewController.swift in Sources */,
 				7B82217E23AB8BC6002DAA48 /* MapView.swift in Sources */,
 				7BE4173523A8D4130096F8EA /* DependenciesContainer.swift in Sources */,
+				C60D1E52241BF3000054DF3B /* FilterSection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,7 +7,6 @@
 //
 
 import Tempura
-import PinLayout
 
 // MARK: - ViewModel
 struct FilterViewModel: ViewModelWithState {
@@ -19,71 +18,25 @@ struct FilterViewModel: ViewModelWithState {
 
 // MARK: - View
 class FilterView: UIView, ViewControllerModellableView {
-    var slider = UISlider()
-    var sliderLabel = UILabel()
-    var sliderLabelComment = UILabel()
     
-    var sortingLabel = UILabel()
-    var sortingLabelComment = UILabel()
-    
-    var segmentedLabel = UILabel()
-    var segmentedLabelComment = UILabel()
-    
-    let segmentedControl = UISegmentedControl(items: ["1", "3", "5", "7"])
-    
-    var didTapSlider: ((Float) -> ())?
-    var didTapSegmented: ((Int) -> ())?
+    var filterTableView = UITableView(frame: CGRect.zero, style: .grouped)
+
     var didTapClose: (() -> ())?
     
-    @objc func didTapSliderFunc(sender: UISlider) {
-        didTapSlider?(sender.value)
-    }
     @objc func didTapCloseFunc() {
         didTapClose?()
     }
-    @objc func didTapSegmentedFunc(sender: UISegmentedControl){
-        didTapSegmented?(Int(sender.titleForSegment(at: sender.selectedSegmentIndex) ?? "") ?? 0)
-    }
-    
-    func setup() {
-        backgroundColor = .white
-        self.addSubview(slider)
-        self.addSubview(sliderLabel)
-        self.addSubview(sliderLabelComment)
-        self.addSubview(sortingLabel)
-        self.addSubview(sortingLabelComment)
-        self.addSubview(segmentedLabel)
-        self.addSubview(segmentedLabelComment)
-        self.addSubview(segmentedControl)
-        
-        self.sliderLabel.text = "Magnitudo"
-        self.sliderLabelComment.text = "You can set here the desidered threshold"
-        
-        self.slider.isContinuous = false
-        self.slider.maximumValue = 5
-        self.slider.minimumValue = 0
-        self.slider.frame = CGRect(x: 0, y: 0, width: 400, height: 35)
-        self.slider.minimumTrackTintColor = .black
-        self.slider.maximumTrackTintColor = .lightGray
-        self.slider.thumbTintColor = .black
-        
-        slider.addTarget(self, action: #selector(didTapSliderFunc), for: .valueChanged)
-        
-        self.sortingLabel.text = "Sorting Preferences"
-        self.sortingLabelComment.text = "You can set here the desidered ordering"
-        
-        self.segmentedLabel.text = "Time Period"
-        self.segmentedLabelComment.text = "You can set the time period in days"
-        self.segmentedControl.selectedSegmentIndex = 0
-        self.segmentedControl.addTarget(self, action: #selector(didTapSegmentedFunc), for: .valueChanged)
 
-        segmentedControl.layer.cornerRadius = 5.0
-        segmentedControl.backgroundColor = .lightGray
-        segmentedControl.tintColor = .systemGray6
+    struct Cells {
+        static let filterTableViewCell = "filterCell"
     }
-    
+
+    func setup() {
+        addSubview(filterTableView)
+        configureFilterTableView()
+    }
+
     func style() {
-        backgroundColor = .systemBackground
         navigationItem?.title = "Filters"
         navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapCloseFunc))
         if #available(iOS 13.0, *) {
@@ -101,23 +54,34 @@ class FilterView: UIView, ViewControllerModellableView {
             navigationBar?.barTintColor = .systemGray6
             // navigationBar?.isTranslucent = false
         }
-        
-        let h2title = UIFont(name: "Futura", size: 20)
-        let h3title = UIFont(name: "Futura", size: 15)
-                
-        self.sliderLabel.font = h2title
-        self.sliderLabelComment.font = h3title
-        self.sliderLabelComment.textColor = .systemGray
-        
-        self.sortingLabel.font = h2title
-        self.sortingLabelComment.font = h3title
-        self.sortingLabelComment.textColor = .systemGray
-        
-        self.segmentedLabel.font = h2title
-        self.segmentedLabelComment.font = h3title
-        self.segmentedLabelComment.textColor = .systemGray
     }
 
+    func update(oldModel: FilterViewModel?) {
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        filterTableView.translatesAutoresizingMaskIntoConstraints = false
+        filterTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        filterTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        filterTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
+        filterTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
+    }
+
+    private func configureFilterTableView() {
+        setFilterTableViewDelegates()
+        //filterTableView.estimatedRowHeight = 100
+        //filterTableView.rowHeight = UITableView.automaticDimension
+        filterTableView.rowHeight = 80
+        filterTableView.register(FilterTableViewCell.self, forCellReuseIdentifier: Cells.filterTableViewCell)
+    }
+
+    private func setFilterTableViewDelegates() {
+        filterTableView.delegate = self
+        filterTableView.dataSource = self
+    }
+    
+    /*
     func update(oldModel: FilterViewModel?) {
         guard let model = self.model else {return}
 
@@ -126,24 +90,61 @@ class FilterView: UIView, ViewControllerModellableView {
         self.setNeedsLayout()
     }
 
-    // layout
-    override func layoutSubviews() {
-        super.layoutSubviews()
-                
-        self.sliderLabel.pin.top(55).sizeToFit().marginTop(CGFloat(10)).left(30)
-        self.sliderLabelComment.pin.below(of: sliderLabel).left(30).sizeToFit()
-        self.slider.pin.below(of: sliderLabelComment).hCenter().width(80%).marginTop(10)
-        
-        self.sortingLabel.pin.below(of: slider).sizeToFit().marginTop(CGFloat(10)).left(30)
-        self.sortingLabelComment.pin.below(of: sortingLabel).left(30).sizeToFit()
-        
-        self.segmentedLabel.pin.below(of: sortingLabelComment).left(30).marginTop(CGFloat(40)).sizeToFit()
-        self.segmentedLabelComment.pin.below(of: segmentedLabel).left(30).sizeToFit()
-        self.segmentedControl.pin.below(of: segmentedLabelComment).hCenter().width(80%).marginTop(10)
+    */
+}
+
+extension FilterView: UITableViewDelegate, UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return FilterSection.allCases.count
     }
     
-    @objc func appo(){
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let section = FilterSection(rawValue: section) else { return 0 }
         
+        switch section {
+        case .Magnitude:
+            return MagnitudeOption.allCases.count
+        case .Period:
+            return PeriodOption.allCases.count
+        case .Source:
+            return SourceOption.allCases.count
+        }
     }
-  
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return FilterSection(rawValue: section)?.description
+    }
+    
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        guard let section = FilterSection(rawValue: section) else { return "" }
+        
+        switch section {
+        case .Magnitude:
+            return "Filter events by magnitude"
+        case .Period:
+            return "Filter events by time period"
+        case .Source:
+            return "Filter events by data source"
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = filterTableView.dequeueReusableCell(withIdentifier: Cells.filterTableViewCell, for: indexPath) as! FilterTableViewCell
+        guard let section = FilterSection(rawValue: indexPath.section) else { return UITableViewCell() }
+        
+        switch section {
+        case .Magnitude:
+            let magnitude = MagnitudeOption(rawValue: indexPath.row)
+            cell.filterSectionType = magnitude
+        case .Period:
+            let period = PeriodOption(rawValue: indexPath.row)
+            cell.filterSectionType = period
+        case .Source:
+            let source = SourceOption(rawValue: indexPath.row)
+            cell.filterSectionType = source
+        }
+        return cell
+    }
+    
 }

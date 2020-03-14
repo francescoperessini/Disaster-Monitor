@@ -16,17 +16,20 @@ class FilterViewController: ViewController<FilterView> {
        }
     
     override func setupInteraction() {
-        rootView.didTapSlider = { [unowned self] v in
-            self.dispatch(SetThreshold(value: v))
-        }
-        
-        rootView.didTapClose = { [unowned self] in
+
+        rootView.didTapClose = {
             self.dismiss(animated: true, completion: nil)
         }
-        
+    
+        /*
+        rootView..didTapSlider = { [unowned self] v in
+            self.dispatch(SetThreshold(value: v))
+        }
+
         rootView.didTapSegmented = { [unowned self] v in
             self.dispatch(SetSegmented(value: v))
         }
+        */
     }
     
 }
