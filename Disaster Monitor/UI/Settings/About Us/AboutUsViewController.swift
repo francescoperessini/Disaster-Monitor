@@ -39,18 +39,20 @@ final class AboutUsViewController: UIViewController {
         view.backgroundColor = .clear
         view.addSubview(backdropView)
         view.addSubview(menuView)
-        view.addSubview(textViewMenu)
+        menuView.addSubview(textViewMenu)
         menuView.backgroundColor = .systemBackground
+        
         menuView.translatesAutoresizingMaskIntoConstraints = false
         menuView.heightAnchor.constraint(equalToConstant: menuHeight).isActive = true
         menuView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         menuView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         menuView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         
-        textViewMenu.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        textViewMenu.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        textViewMenu.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        textViewMenu.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        textViewMenu.translatesAutoresizingMaskIntoConstraints = false
+        textViewMenu.leadingAnchor.constraint(equalTo: menuView.safeAreaLayoutGuide.leadingAnchor, constant: 5).isActive = true
+        textViewMenu.trailingAnchor.constraint(equalTo: menuView.safeAreaLayoutGuide.trailingAnchor, constant: -5).isActive = true
+        textViewMenu.topAnchor.constraint(equalTo: menuView.safeAreaLayoutGuide.topAnchor, constant: 5).isActive = true
+        textViewMenu.bottomAnchor.constraint(equalTo: menuView.safeAreaLayoutGuide.bottomAnchor, constant: -5).isActive = true
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(AboutUsViewController.handleTap(_:)))
         backdropView.addGestureRecognizer(tapGesture)

@@ -6,7 +6,7 @@
 //  Copyright © 2020 Stefano Martina. All rights reserved.
 //
 
-import Tempura
+import UIKit
 
 class MainEventsTableViewCell: UITableViewCell {
     
