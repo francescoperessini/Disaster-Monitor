@@ -115,9 +115,5 @@ enum AboutUsOption: Int, CaseIterable, SectionType{
     var containsSegmenteColor: Bool { return false }
     var containsSegmentedMap: Bool { return false }
     
-    var description: String{
-        switch self {
-            case .info: return "Infos about us"
-        }
-    }
+    var description: String{ return "" }
 }

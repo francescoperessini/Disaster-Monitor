@@ -64,9 +64,6 @@ class SettingsTableViewCell: UITableViewCell {
     
     lazy var segmentedColors: UISegmentedControl = {
         let colorSegmented = UISegmentedControl(items: ["BLUE", "GREEN", "RED"])
-        /*(colorSegmented.subviews[0] as UIView).tintColor = UIColor.blue
-        (colorSegmented.subviews[1] as UIView).tintColor = UIColor.systemGreen
-        (colorSegmented.subviews[2] as UIView).tintColor = UIColor.systemRed*/
         colorSegmented.addTarget(self, action: #selector(handleTapStylingColor), for: .valueChanged)
 
         return colorSegmented
@@ -136,7 +133,6 @@ class SettingsTableViewCell: UITableViewCell {
     }
     
     @objc func handleTapStylingColor(sender: UISegmentedControl){
-        print("--> \(sender.titleForSegment(at: sender.selectedSegmentIndex)!)")
         let selectedColor = sender.titleForSegment(at: sender.selectedSegmentIndex)!
         switch selectedColor {
             case "RED": didTapStylingColor?(Color(name: colors.red))

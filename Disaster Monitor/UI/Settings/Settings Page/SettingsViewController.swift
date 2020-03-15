@@ -20,11 +20,7 @@ class SettingsViewController: ViewController<SettingsView> {
             let vc = UINavigationController(rootViewController: MessageEditorViewController(store: self.store))
             self.present(vc, animated: true, completion: nil)
         }
-        rootView.didTapAboutUs = {
-            let vc = AboutUsViewController()
-            vc.modalPresentationStyle = .custom
-            self.present(vc, animated: true, completion: nil)
-        }
+        
         
         rootView.didTapStylingColor = { [unowned self] color in
             self.dispatch(UpdateCustomColor(color: color))

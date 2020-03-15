@@ -47,7 +47,6 @@
 		7BE4173B23A8D49C0096F8EA /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE4173A23A8D49C0096F8EA /* MainView.swift */; };
 		7BE4173D23A8D4AC0096F8EA /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE4173C23A8D4AC0096F8EA /* MainViewController.swift */; };
 		7BE4174123A8D56D0096F8EA /* AppNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE4174023A8D56D0096F8EA /* AppNavigation.swift */; };
-		7BF0726F241BEE09004A5E9E /* AboutUsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF0726E241BEE09004A5E9E /* AboutUsViewController.swift */; };
 		C60D1E50241BE2D40054DF3B /* FilterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60D1E4F241BE2D40054DF3B /* FilterTableViewCell.swift */; };
 		C60D1E52241BF3000054DF3B /* FilterSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60D1E51241BF3000054DF3B /* FilterSection.swift */; };
 		C614C97A2411A86600DC772E /* light_map_style.json in Resources */ = {isa = PBXBuildFile; fileRef = C614C9792411A86600DC772E /* light_map_style.json */; };
@@ -128,7 +127,6 @@
 		7BE4173A23A8D49C0096F8EA /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		7BE4173C23A8D4AC0096F8EA /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		7BE4174023A8D56D0096F8EA /* AppNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
-		7BF0726E241BEE09004A5E9E /* AboutUsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutUsViewController.swift; sourceTree = "<group>"; };
 		9F6A4890087B0E1A7288AB18 /* Pods-Disaster Monitor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disaster Monitor.debug.xcconfig"; path = "Target Support Files/Pods-Disaster Monitor/Pods-Disaster Monitor.debug.xcconfig"; sourceTree = "<group>"; };
 		BB502D60C134875ED664D9A7 /* Pods-Disaster MonitorUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disaster MonitorUITests.debug.xcconfig"; path = "Target Support Files/Pods-Disaster MonitorUITests/Pods-Disaster MonitorUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		C60D1E4F241BE2D40054DF3B /* FilterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTableViewCell.swift; sourceTree = "<group>"; };
@@ -319,14 +317,6 @@
 			path = Actions;
 			sourceTree = "<group>";
 		};
-		7BF0726B241BECB9004A5E9E /* About Us */ = {
-			isa = PBXGroup;
-			children = (
-				7BF0726E241BEE09004A5E9E /* AboutUsViewController.swift */,
-			);
-			path = "About Us";
-			sourceTree = "<group>";
-		};
 		942463ABA6BF08AA0CDC8FBC /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -364,7 +354,6 @@
 			children = (
 				C635C0C1240DBA4800970769 /* Settings Page */,
 				C635C0BF240DBA2D00970769 /* Message Editor Page */,
-				7BF0726B241BECB9004A5E9E /* About Us */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -677,7 +666,6 @@
 				C6E81A722409BB6C00CCD23D /* MessageEditorViewController.swift in Sources */,
 				7B69AD6F240582B400E040B9 /* FilterView.swift in Sources */,
 				7B564A2A23A9302E00DD178C /* UIView+Blink.swift in Sources */,
-				7BF0726F241BEE09004A5E9E /* AboutUsViewController.swift in Sources */,
 				C6C625082409AC5A00E994F3 /* MessageEditorView.swift in Sources */,
 				7B6E6271240984830047D7AE /* EventView.swift in Sources */,
 				C6B0E86E2406DCE4005CEE09 /* MainTabBarController.swift in Sources */,

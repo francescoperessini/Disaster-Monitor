@@ -24,17 +24,12 @@ class SettingsView: UIView, ViewControllerModellableView {
 
     var settingsTableView = UITableView(frame: CGRect.zero, style: .grouped)
     var didTapEditMessage: (() -> ())?
-    var didTapAboutUs: (() -> ())?
     
     var didTapStylingColor: ((Color) -> ())?
     var customColor: Color?
     
     @objc func didTapEditMessageFunc() {
         didTapEditMessage?()
-    }
-    
-    @objc func didTapAboutUsFunc() {
-        didTapAboutUs?()
     }
     
     struct Cells {
@@ -106,7 +101,7 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         case .Styling:
             return StylingOption.allCases.count
         case .AboutUs:
-            return AboutUsOption.allCases.count
+            return 0
         }
     }
     
@@ -129,6 +124,21 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
+    }
+    
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        guard let section = SettingsSection(rawValue: section) else { return "" }
+        
+        switch section {
+        case .AboutUs:
+            return "We are two CSE Students at Polimi, Francesco and Stefano"
+        case .Message:
+            return "Safe message is the message you can share in Map Page"
+        case .Privacy:
+            return "TBD"
+        case .Styling:
+            return "Customize here your experience"
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -175,8 +185,6 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
             else if indexPath.row == 1 {
                 print("riga 1 della sezione Privacy")
             }
-        case .AboutUs:
-            didTapAboutUsFunc()
             
         default:
             print("ciao")
