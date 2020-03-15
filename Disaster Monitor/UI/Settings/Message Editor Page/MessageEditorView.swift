@@ -36,6 +36,7 @@ class MessageEditorView: UIView, ViewControllerModellableView {
         self.leftView.addSubview(usernameLabel)
         self.addSubview(currentMessage)
         self.addSubview(messageComment)
+        messageTextField.addTarget(self, action: #selector(unlockButton), for: .editingChanged)
     }
     
     func style() {
@@ -76,6 +77,7 @@ class MessageEditorView: UIView, ViewControllerModellableView {
         navigationItem?.title = "Message Editor"
         navigationItem?.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didTapCancelButtonFunc))
         navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapDoneButtonFunc))
+        navigationItem?.rightBarButtonItem?.isEnabled = false
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
@@ -126,11 +128,13 @@ class MessageEditorView: UIView, ViewControllerModellableView {
     }
     
     @objc func didTapDoneButtonFunc() {
-        //print(sender.text ?? "")
         if (self.messageTextField.text ?? "" != ""){
             didTapDoneButton?(self.messageTextField.text ?? "")
         }
-            
+    }
+    
+    @objc func unlockButton(){
+        navigationItem?.rightBarButtonItem?.isEnabled = true
     }
     
 }

@@ -19,6 +19,7 @@ enum SettingsSection: Int, CaseIterable, CustomStringConvertible {
     case Privacy
     case Styling
     case AboutUs
+    case DataSource
     
     var description: String {
         switch self {
@@ -30,6 +31,8 @@ enum SettingsSection: Int, CaseIterable, CustomStringConvertible {
             return "Styling"
         case .AboutUs:
             return "About us"
+        case .DataSource:
+            return "Data Sources"
         }
     }
     
@@ -108,6 +111,17 @@ enum StylingOption: Int, CaseIterable, SectionType{
 }
 
 enum AboutUsOption: Int, CaseIterable, SectionType{
+    case info
+    
+    var containsStepperRadius: Bool{ return false }
+    var containsStepperMagnitudo: Bool{ return false }
+    var containsSegmenteColor: Bool { return false }
+    var containsSegmentedMap: Bool { return false }
+    
+    var description: String{ return "" }
+}
+
+enum DataSourceOption: Int, CaseIterable, SectionType{
     case info
     
     var containsStepperRadius: Bool{ return false }

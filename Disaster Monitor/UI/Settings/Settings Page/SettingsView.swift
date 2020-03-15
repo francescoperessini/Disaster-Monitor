@@ -100,7 +100,7 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
             return PrivacyOption.allCases.count
         case .Styling:
             return StylingOption.allCases.count
-        case .AboutUs:
+        default:
             return 0
         }
     }
@@ -138,6 +138,8 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
             return "TBD"
         case .Styling:
             return "Customize here your experience"
+        case .DataSource:
+            return "We are currently using INGV and USGS Api Endpoints"
         }
     }
     
@@ -164,6 +166,10 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         case .AboutUs:
             let aboutUs = AboutUsOption(rawValue: indexPath.row)
             cell.sectionType = aboutUs
+            
+        case .DataSource:
+            let dataSource = DataSourceOption(rawValue: indexPath.row)
+            cell.sectionType = dataSource
         }
 
         return cell
