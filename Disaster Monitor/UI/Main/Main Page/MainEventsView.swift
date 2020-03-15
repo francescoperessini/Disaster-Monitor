@@ -47,7 +47,7 @@ class MainEventsView: UIView, ViewControllerModellableView {
     
     func configureMainEventsTableView() {
         setMainEventsTableViewDelegates()
-        mainEventsTableView.rowHeight = 60
+        mainEventsTableView.rowHeight = 63
         mainEventsTableView.register(MainEventsTableViewCell.self, forCellReuseIdentifier: Cells.mainEventsTableViewCell)
     }
     
@@ -83,7 +83,7 @@ class MainEventsView: UIView, ViewControllerModellableView {
     func update(oldModel: MainViewModel?) {
         guard let model = self.model else { return }
         events = model.state.events
-        filteringValue = model.state.filteringValue ?? 0
+        filteringValue = model.state.filteringValue
         filteringDay = model.state.segmentedDays
         events = events.filter{$0.magnitudo > self.filteringValue && $0.daysAgo < self.filteringDay}
         past24Events = events.filter{$0.daysAgo == 0}

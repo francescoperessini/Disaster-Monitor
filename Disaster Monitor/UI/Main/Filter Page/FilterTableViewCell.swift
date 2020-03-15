@@ -8,14 +8,8 @@
 
 import Tempura
 
-protocol YourCellDelegate: class {
-    func didSlideFuncController(_ value: Float)
-}
-
 class FilterTableViewCell: UITableViewCell {
-    
-    var cellDelegate: YourCellDelegate?
-    
+        
     var filterSectionType: FilterSectionType? {
         didSet {
             guard let filterSectionType = filterSectionType else { return }
@@ -26,15 +20,9 @@ class FilterTableViewCell: UITableViewCell {
             
             magnitudoSlider.isHidden = !filterSectionType.containsMagnitudeSlider
             magnitudeSliderValueLabel.isHidden = !filterSectionType.containsMagnitudeSliderValueLabel
-            if(!magnitudeSliderValueLabel.isHidden) {
-                print("da mettere valore dello stato!")
-            }
-            
+           
             timePeriodSegmentedControl.isHidden = !filterSectionType.containsTimePeriodSegmentedControl
             timePeriodSegmentedControlValueLabel.isHidden = !filterSectionType.containsTimePeriodSegmentedControlValueLabel
-            if(!timePeriodSegmentedControlValueLabel.isHidden) {
-                print("da mettere valore dello stato!")
-            }
         }
     }
     
@@ -44,12 +32,17 @@ class FilterTableViewCell: UITableViewCell {
         return label
     }()
 
-    // MARK: - Slider
+    // MARK: - Magnitude Section
+    func setupSliderSection(value: Float) {
+        magnitudoSlider.setValue(value, animated: true)
+        setSliderValue(value: value)
+    }
+    
     lazy var magnitudoSlider: UISlider = {
         let slider = UISlider()
         slider.isContinuous = false
-        slider.minimumValue = 0
-        slider.maximumValue = 6
+        slider.minimumValue = 0.0
+        slider.maximumValue = 6.0
         slider.addTarget(self, action: #selector(didSlideFunc), for: .valueChanged)
         return slider
     }()
@@ -59,13 +52,30 @@ class FilterTableViewCell: UITableViewCell {
         label.textColor = .systemGray
         return label
     }()
+    
+    var didSlide: ((Float) -> ())?
         
     @objc func didSlideFunc(sender: UISlider) {
-        magnitudeSliderValueLabel.text = String(sender.value)
-        cellDelegate?.didSlideFuncController(sender.value)
+        setSliderValue(value: sender.value)
+        didSlide?(sender.value)
     }
     
-    // MARK: - Segmented Control
+    private func setSliderValue(value: Float) {
+        let string = String(String(value).prefix(4))
+        if string == "6.0" {
+            magnitudeSliderValueLabel.text = "> " + string
+        }
+        else {
+            magnitudeSliderValueLabel.text = string
+        }
+    }
+    
+    // MARK: - Time Period Section
+    func setupSegmentedControlSection(period: String) {
+        timePeriodSegmentedControl.selectedSegmentIndex = ["1", "3", "5", "7"].firstIndex(of: period) ?? 0
+        setPeriod(period: period)
+    }
+    
     lazy var timePeriodSegmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(items: ["1", "3", "5", "7"])
         segmentedControl.selectedSegmentIndex = 0
@@ -83,17 +93,35 @@ class FilterTableViewCell: UITableViewCell {
     
     @objc func didTapSegmentedControlFunc(sender: UISegmentedControl) {
         let period = timePeriodSegmentedControl.titleForSegment(at: timePeriodSegmentedControl.selectedSegmentIndex)
-        if period == "1" {
-            timePeriodSegmentedControlValueLabel.text = period! + " day"
-        }
-        else {
-            timePeriodSegmentedControlValueLabel.text = period! + " days"
-        }
+        setPeriod(period: period!)
         didTapSegmented?(Int(sender.titleForSegment(at: sender.selectedSegmentIndex) ?? "") ?? 0)
     }
     
+    private func setPeriod(period: String) {
+        if period == "1" {
+            timePeriodSegmentedControlValueLabel.text = period + " day"
+        }
+        else {
+            timePeriodSegmentedControlValueLabel.text = period + " days"
+        }
+    }
+    
+    // MARK: - Data source Section
+    lazy var INGVSwitch: UISwitch = {
+        let switch1 = UISwitch()
+        return switch1
+        
+    }()
+    
+    lazy var USGSSwitch: UISwitch = {
+        let switch2 = UISwitch()
+        return switch2
+
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
         setup()
     }
     

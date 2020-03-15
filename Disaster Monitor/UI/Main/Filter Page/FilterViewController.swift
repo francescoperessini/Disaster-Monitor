@@ -21,15 +21,14 @@ class FilterViewController: ViewController<FilterView> {
             self.dismiss(animated: true, completion: nil)
         }
     
-        /*
-        rootView..didTapSlider = { [unowned self] v in
+        rootView.didSlide = { [unowned self] v in
             self.dispatch(SetThreshold(value: v))
         }
-
+        
         rootView.didTapSegmented = { [unowned self] v in
             self.dispatch(SetSegmented(value: v))
         }
-        */
+        
     }
     
 }
