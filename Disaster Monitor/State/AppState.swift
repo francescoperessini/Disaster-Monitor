@@ -18,6 +18,7 @@ struct AppState: State, Codable {
     var displayEvent: Event?
     var segmentedDays: Int = 7
     var customColor: Color = Color(name: colors.red)
+    var dataSources: [String: Bool] = ["INGV": true, "USGS": true]
 }
 
 enum colors: Int, Codable {
@@ -55,7 +56,7 @@ struct EventsStateUpdater: StateUpdater {
         let id = newValue["features"].arrayValue.map {$0["id"].stringValue}
         let time = newValue["features"].arrayValue.map {$0["properties"]["time"].doubleValue}
         let depth = newValue["features"].arrayValue.map{$0["geometry"]["coordinates"][2].floatValue}
-        let dataSource = "USGS 🇺🇸"
+        let dataSource = "USGS"
         
         for i in 0...arrayNames.count - 1 {
             if !state.events.contains(where: { $0.id == id[i] }){
@@ -76,7 +77,7 @@ struct EventsStateUpdaterINGV: StateUpdater {
         let id = newValue["features"].arrayValue.map {$0["properties"]["eventId"].stringValue}
         let time_str = newValue["features"].arrayValue.map {$0["properties"]["time"].stringValue}
         let depth = newValue["features"].arrayValue.map{$0["geometry"]["coordinates"][2].floatValue}
-        let dataSource = "INGV 🇮🇹"
+        let dataSource = "INGV"
         var result_time: [Double] = []
         
         let dateFormatter = DateFormatter()

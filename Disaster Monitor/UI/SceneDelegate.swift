@@ -23,8 +23,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             self.handleAppRefresh(task: task as! BGAppRefreshTask)
         }
         
-        let interceptor = PersistorInterceptor.interceptor()
-        store = Store<AppState, DependenciesContainer>(interceptors: [interceptor])
+        //let interceptor = PersistorInterceptor.interceptor()
+        //store = Store<AppState, DependenciesContainer>(interceptors: [interceptor])
+        
+        store = Store<AppState, DependenciesContainer>()
         
         store.dispatch(InitAppState())
         
