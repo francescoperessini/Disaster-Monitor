@@ -18,8 +18,9 @@ struct Event: Codable, Equatable {
     var time: Double
     var date: Date
     var daysAgo: Int = 0
+    var dataSource: String
     
-    init(id: String, name: String, descr: String, magnitudo: String, coordinates: String, depth: Float, time: Double) {
+    init(id: String, name: String, descr: String, magnitudo: String, coordinates: String, depth: Float, time: Double, dataSource: String) {
         self.id = id
         self.name = name
         self.description = descr
@@ -42,5 +43,7 @@ struct Event: Codable, Equatable {
         let date1 = Date(timeIntervalSince1970: self.time / 1000)
         let date2 = Date()
         self.daysAgo = Calendar.current.dateComponents([.day], from: date1, to: date2).day!
+        
+        self.dataSource = dataSource
     }
 }

@@ -13,8 +13,10 @@ class MainEventsTableViewCell: UITableViewCell {
     var placeLabel = UILabel()
     let stackView = UIStackView()
     var timeLabel = UILabel()
-    let separatorLabel = UILabel()
+    let separatorLabel1 = UILabel()
     var seismicTypeLabel = UILabel()
+    let separatorLabel2 = UILabel()
+    var dataSourceLabel = UILabel()
     var magnitudoLabel = UILabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -41,17 +43,20 @@ class MainEventsTableViewCell: UITableViewCell {
         stackView.spacing = 5.0
         
         stackView.addArrangedSubview(timeLabel)
-        stackView.addArrangedSubview(separatorLabel)
+        stackView.addArrangedSubview(separatorLabel1)
         stackView.addArrangedSubview(seismicTypeLabel)
+        stackView.addArrangedSubview(separatorLabel2)
+        stackView.addArrangedSubview(dataSourceLabel)
     }
     
     private func style() {
         backgroundColor = .systemBackground
         placeLabelStyle()
-        timeLabelStyle()
         separatorStyle()
+        timeLabelStyle()
         seismicTypeLabelStyle()
         magnitudoLabelStyle()
+        dataSourceLabelStyle()
     }
     
     private func placeLabelStyle() {
@@ -66,10 +71,15 @@ class MainEventsTableViewCell: UITableViewCell {
     }
     
     private func separatorStyle() {
-        //separatorLabel.font = UIFont(name: "Futura", size: 15)
-        separatorLabel.font = UIFont.systemFont(ofSize: 15)
-        separatorLabel.text = "•"
-        separatorLabel.textColor = .systemGray
+        //separatorLabel1.font = UIFont(name: "Futura", size: 15)
+        separatorLabel1.font = UIFont.systemFont(ofSize: 15)
+        separatorLabel1.text = "•"
+        separatorLabel1.textColor = .systemGray
+        
+        //separatorLabel2.font = UIFont(name: "Futura", size: 15)
+        separatorLabel2.font = UIFont.systemFont(ofSize: 15)
+        separatorLabel2.text = "•"
+        separatorLabel2.textColor = .systemGray
     }
     
     private func seismicTypeLabelStyle() {
@@ -81,6 +91,12 @@ class MainEventsTableViewCell: UITableViewCell {
     private func magnitudoLabelStyle() {
         //magnitudoLabel.font = UIFont(name: "Futura", size: 22)
         magnitudoLabel.font = UIFont.boldSystemFont(ofSize: 22)
+    }
+    
+    private func dataSourceLabelStyle() {
+        //dataSourceLabel.font = UIFont(name: "Futura", size: 15)
+        dataSourceLabel.font = UIFont.systemFont(ofSize: 15)
+        dataSourceLabel.textColor = .systemGray
     }
     
     func setupCell(event: Event) {
@@ -95,6 +111,8 @@ class MainEventsTableViewCell: UITableViewCell {
         seismicTypeLabel.text = event.description
         
         magnitudoLabel.text = String(event.magnitudo)
+        
+        dataSourceLabel.text = event.dataSource
 
         if event.magnitudo > 3 {
             magnitudoLabel.textColor = .systemBlue

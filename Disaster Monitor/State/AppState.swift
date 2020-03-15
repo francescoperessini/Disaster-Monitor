@@ -13,10 +13,10 @@ import SwiftyJSON
 
 struct AppState: State, Codable {
     var events: [Event] = []
-    var filteringValue: Float?
+    var filteringValue: Float = 0.0
     var message: String = "Message to be shared\nSent from Disaster Monitor App"
     var displayEvent: Event?
-    var segmentedDays: Int = 999
+    var segmentedDays: Int = 7
     var customColor: Color = Color(name: colors.red)
 }
 
@@ -55,10 +55,11 @@ struct EventsStateUpdater: StateUpdater {
         let id = newValue["features"].arrayValue.map {$0["id"].stringValue}
         let time = newValue["features"].arrayValue.map {$0["properties"]["time"].doubleValue}
         let depth = newValue["features"].arrayValue.map{$0["geometry"]["coordinates"][2].floatValue}
+        let dataSource = "USGS 🇺🇸"
         
         for i in 0...arrayNames.count - 1 {
             if !state.events.contains(where: { $0.id == id[i] }){
-                state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i]))
+                state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource))
             }
         }
         state.events.sort(by: {$0.time > $1.time})
@@ -75,6 +76,7 @@ struct EventsStateUpdaterINGV: StateUpdater {
         let id = newValue["features"].arrayValue.map {$0["properties"]["eventId"].stringValue}
         let time_str = newValue["features"].arrayValue.map {$0["properties"]["time"].stringValue}
         let depth = newValue["features"].arrayValue.map{$0["geometry"]["coordinates"][2].floatValue}
+        let dataSource = "INGV 🇮🇹"
         var result_time: [Double] = []
         
         let dateFormatter = DateFormatter()
@@ -88,7 +90,7 @@ struct EventsStateUpdaterINGV: StateUpdater {
 
         for i in 0...arrayNames.count - 1 {
             if !state.events.contains(where: { $0.id == id[i] }){
-                state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: result_time[i]))
+                state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: result_time[i], dataSource: dataSource))
             }
         }
         state.events.sort(by: {$0.time > $1.time})

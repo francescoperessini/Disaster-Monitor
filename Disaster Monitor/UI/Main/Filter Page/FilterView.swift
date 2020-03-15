@@ -17,12 +17,7 @@ struct FilterViewModel: ViewModelWithState {
 }
 
 // MARK: - View
-class FilterView: UIView, ViewControllerModellableView, YourCellDelegate {
-    
-    
-    func didSlideFuncController(_ value: Float) {
-        
-    }
+class FilterView: UIView, ViewControllerModellableView {
     
     var filterTableView = UITableView(frame: CGRect.zero, style: .grouped)
 
@@ -31,6 +26,14 @@ class FilterView: UIView, ViewControllerModellableView, YourCellDelegate {
     @objc func didTapCloseFunc() {
         didTapClose?()
     }
+    
+    // MARK: - Slider
+    var sliderValue: Float?
+    var didSlide: ((Float) -> ())?
+    
+    // MARK: - Segmented Control
+    var segmentedControlValue: String?
+    var didTapSegmented: ((Int) -> ())?
 
     struct Cells {
         static let filterTableViewCell = "filterCell"
@@ -62,6 +65,10 @@ class FilterView: UIView, ViewControllerModellableView, YourCellDelegate {
     }
 
     func update(oldModel: FilterViewModel?) {
+        guard let model = self.model else { return }
+        
+        sliderValue = model.state.filteringValue
+        segmentedControlValue = String(model.state.segmentedDays)
     }
 
     override func layoutSubviews() {
@@ -85,17 +92,7 @@ class FilterView: UIView, ViewControllerModellableView, YourCellDelegate {
         filterTableView.delegate = self
         filterTableView.dataSource = self
     }
-    
-    /*
-    func update(oldModel: FilterViewModel?) {
-        guard let model = self.model else {return}
 
-        self.slider.setValue(model.state.filteringValue ?? 0, animated: true)
-        self.segmentedControl.selectedSegmentIndex = ["1", "3", "5", "7"].index(of: String(model.state.segmentedDays) ?? "") ?? 0
-        self.setNeedsLayout()
-    }
-
-    */
 }
 
 extension FilterView: UITableViewDelegate, UITableViewDataSource {
@@ -128,7 +125,7 @@ extension FilterView: UITableViewDelegate, UITableViewDataSource {
         case .Magnitude:
             return "Filter events by magnitude"
         case .Period:
-            return "Filter events by time period"
+            return "Filter events by time period (days)"
         case .Source:
             return "Filter events by data source"
         }
@@ -136,16 +133,23 @@ extension FilterView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = filterTableView.dequeueReusableCell(withIdentifier: Cells.filterTableViewCell, for: indexPath) as! FilterTableViewCell
-        cell.cellDelegate = self
         guard let section = FilterSection(rawValue: indexPath.section) else { return UITableViewCell() }
         
         switch section {
         case .Magnitude:
             let magnitude = MagnitudeOption(rawValue: indexPath.row)
             cell.filterSectionType = magnitude
+            if cell.filterSectionType!.containsMagnitudeSlider {
+                cell.didSlide = self.didSlide
+                cell.setupSliderSection(value: sliderValue ?? 0)
+            }
         case .Period:
             let period = PeriodOption(rawValue: indexPath.row)
             cell.filterSectionType = period
+            if cell.filterSectionType!.containsTimePeriodSegmentedControl {
+                cell.didTapSegmented = self.didTapSegmented
+                cell.setupSegmentedControlSection(period: segmentedControlValue ?? "")
+            }
         case .Source:
             let source = SourceOption(rawValue: indexPath.row)
             cell.filterSectionType = source

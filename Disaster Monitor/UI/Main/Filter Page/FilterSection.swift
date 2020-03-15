@@ -73,7 +73,8 @@ enum PeriodOption: Int, CaseIterable, FilterSectionType {
 
 enum SourceOption: Int, CaseIterable, FilterSectionType {
     
-    case SourceValue
+    case INGVSource
+    case USGSSource
     
     var containsDescriptionLabel: Bool { return true }
     var containsMagnitudeSlider: Bool { return false }
@@ -83,8 +84,10 @@ enum SourceOption: Int, CaseIterable, FilterSectionType {
     
     var description: String {
         switch self {
-        case .SourceValue:
-            return "Data source"
+        case .INGVSource:
+            return "INGV 🇮🇹"
+        case .USGSSource:
+            return "USGS 🇺🇸"
         }
     }
     
