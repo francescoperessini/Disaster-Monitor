@@ -23,7 +23,6 @@ class MainEventsTableViewController: ViewController<MainEventsView> {
         }
         
         rootView.didTapEvent = { [unowned self] id in
-            print(id)
             let vc = EventViewController(store: self.store, localState: EventControllerLocalState(id: id))
             self.navigationController?.pushViewController(vc, animated: true)
         }

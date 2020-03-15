@@ -25,7 +25,12 @@ class FilterTableViewCell: UITableViewCell {
             timePeriodSegmentedControlValueLabel.isHidden = !filterSectionType.containsTimePeriodSegmentedControlValueLabel
             
             INGVSwitch.isHidden = !filterSectionType.containsINGVSwitch
+            INGVdescriptionLabel.isHidden = !filterSectionType.containsINGVdescriptionLabel
+            INGVdescriptionLabel.text = filterSectionType.description
+            
             USGSSwitch.isHidden = !filterSectionType.containsUSGSSwitch
+            USGSdescriptionLabel.isHidden = !filterSectionType.containsUSGSdescriptionLabel
+            USGSdescriptionLabel.text = filterSectionType.description
         }
     }
     
@@ -110,31 +115,44 @@ class FilterTableViewCell: UITableViewCell {
     }
     
     // MARK: - Data Source Section
-    func setupDataSourceSection(dic: [String: Bool]) {
-        INGVSwitch.setOn(dic["INGV"]!, animated: true)
-        USGSSwitch.setOn(dic["USGS"]!, animated: true)
+    func setupINGVSwitch(value: Bool) {
+        INGVSwitch.setOn(value, animated: true)
+    }
+    
+    func setupUSGSSwitch(value: Bool) {
+        USGSSwitch.setOn(value, animated: true)
     }
     
     lazy var INGVSwitch: UISwitch = {
         let switch1 = UISwitch()
-        switch1.addTarget(self, action: #selector(didTapSwitch1Func(sender:)), for: .valueChanged)
+        switch1.addTarget(self, action: #selector(didTapSwitchINGVFunc), for: .valueChanged)
         return switch1
+    }()
+    
+    lazy var INGVdescriptionLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    lazy var USGSdescriptionLabel: UILabel = {
+        let label = UILabel()
+        return label
     }()
     
     lazy var USGSSwitch: UISwitch = {
         let switch2 = UISwitch()
-        switch2.addTarget(self, action: #selector(didTapSwitch2Func(sender:)), for: .valueChanged)
+        switch2.addTarget(self, action: #selector(didTapSwitchUSGSFunc), for: .valueChanged)
         return switch2
     }()
     
     var didTapSwitchINGV: ((Bool) -> ())?
     var didTapSwitchUSGS: ((Bool) -> ())?
     
-    @objc func didTapSwitch1Func(sender: UISwitch) {
+    @objc func didTapSwitchINGVFunc(sender: UISwitch) {
         didTapSwitchINGV?(sender.isOn)
     }
     
-    @objc func didTapSwitch2Func(sender: UISwitch) {
+    @objc func didTapSwitchUSGSFunc(sender: UISwitch) {
         didTapSwitchUSGS?(sender.isOn)
     }
     
@@ -151,7 +169,9 @@ class FilterTableViewCell: UITableViewCell {
         addSubview(timePeriodSegmentedControl)
         addSubview(timePeriodSegmentedControlValueLabel)
         addSubview(INGVSwitch)
+        addSubview(INGVdescriptionLabel)
         addSubview(USGSSwitch)
+        addSubview(USGSdescriptionLabel)
     }
     
     required init?(coder: NSCoder) {
@@ -160,7 +180,7 @@ class FilterTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
+
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
         //descriptionLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
@@ -192,16 +212,20 @@ class FilterTableViewCell: UITableViewCell {
         //timePeriodSegmentedControlValueLabel.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
         
         INGVSwitch.translatesAutoresizingMaskIntoConstraints = false
-        //INGVSwitch.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+        INGVSwitch.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
         INGVSwitch.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
-        INGVSwitch.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
-        //INGVSwitch.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        
+        INGVdescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        INGVdescriptionLabel.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        INGVdescriptionLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
         
         USGSSwitch.translatesAutoresizingMaskIntoConstraints = false
-        //USGSSwitch.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+        USGSSwitch.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
         USGSSwitch.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
-        USGSSwitch.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
-        //USGSSwitch.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        
+        USGSdescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        USGSdescriptionLabel.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        USGSdescriptionLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
     }
 
 }

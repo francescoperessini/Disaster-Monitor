@@ -90,7 +90,7 @@ class FilterView: UIView, ViewControllerModellableView {
         setFilterTableViewDelegates()
         //filterTableView.estimatedRowHeight = 100
         //filterTableView.rowHeight = UITableView.automaticDimension
-        filterTableView.rowHeight = 80
+        filterTableView.rowHeight = 90
         filterTableView.register(FilterTableViewCell.self, forCellReuseIdentifier: Cells.filterTableViewCell)
     }
 
@@ -159,10 +159,13 @@ extension FilterView: UITableViewDelegate, UITableViewDataSource {
         case .Source:
             let source = SourceOption(rawValue: indexPath.row)
             cell.filterSectionType = source
-            if cell.filterSectionType!.containsINGVSwitch && cell.filterSectionType!.containsUSGSSwitch {
+            if cell.filterSectionType!.containsINGVSwitch {
                 cell.didTapSwitchINGV = self.didTapSwitchINGV
+                cell.setupINGVSwitch(value: switchValues!["INGV"] ?? true)
+            }
+            if cell.filterSectionType!.containsUSGSSwitch {
                 cell.didTapSwitchUSGS = self.didTapSwitchUSGS
-                cell.setupDataSourceSection(dic: switchValues ?? ["INGV": true, "USGS": true])
+                cell.setupUSGSSwitch(value: switchValues!["USGS"] ?? true)
             }
         }
         return cell

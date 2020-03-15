@@ -29,6 +29,7 @@ class MainEventsView: UIView, ViewControllerModellableView {
     
     var filteringValue: Float = 0
     var filteringDay: Int = 0
+    var dataSources: [String: Bool] = [:]
     var refreshControl = UIRefreshControl()
     
     var didTapFilter: (() -> ())?
@@ -86,7 +87,10 @@ class MainEventsView: UIView, ViewControllerModellableView {
         events = model.state.events
         filteringValue = model.state.filteringValue
         filteringDay = model.state.segmentedDays
-        events = events.filter{$0.magnitudo > self.filteringValue && $0.daysAgo < self.filteringDay}
+        dataSources = model.state.dataSources
+        dataSources = dataSources.filter{$0.value == true}
+        let tmp = dataSources.keys
+        events = events.filter{$0.magnitudo > self.filteringValue && $0.daysAgo < self.filteringDay && tmp.contains($0.dataSource)}
         past24Events = events.filter{$0.daysAgo == 0}
         past48Events = events.filter{$0.daysAgo == 1}
         past72Events = events.filter{$0.daysAgo == 2}

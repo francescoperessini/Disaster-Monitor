@@ -13,7 +13,9 @@ protocol FilterSectionType: CustomStringConvertible {
     var containsTimePeriodSegmentedControl: Bool { get }
     var containsTimePeriodSegmentedControlValueLabel: Bool { get }
     var containsINGVSwitch: Bool { get }
+    var containsINGVdescriptionLabel: Bool { get }
     var containsUSGSSwitch: Bool { get }
+    var containsUSGSdescriptionLabel: Bool { get }
 }
 
 enum FilterSection: Int, CaseIterable, CustomStringConvertible {
@@ -45,7 +47,9 @@ enum MagnitudeOption: Int, CaseIterable, FilterSectionType {
     var containsTimePeriodSegmentedControl: Bool { return false }
     var containsTimePeriodSegmentedControlValueLabel: Bool { return false }
     var containsINGVSwitch: Bool { return false }
+    var containsINGVdescriptionLabel: Bool { return false }
     var containsUSGSSwitch: Bool { return false }
+    var containsUSGSdescriptionLabel: Bool { return false }
     
     var description: String {
         switch self {
@@ -66,7 +70,9 @@ enum PeriodOption: Int, CaseIterable, FilterSectionType {
     var containsTimePeriodSegmentedControl: Bool { return true }
     var containsTimePeriodSegmentedControlValueLabel: Bool { return true }
     var containsINGVSwitch: Bool { return false }
+    var containsINGVdescriptionLabel: Bool { return false }
     var containsUSGSSwitch: Bool { return false }
+    var containsUSGSdescriptionLabel: Bool { return false }
     
     var description: String {
         switch self {
@@ -82,13 +88,43 @@ enum SourceOption: Int, CaseIterable, FilterSectionType {
     case INGVSource
     case USGSSource
     
-    var containsDescriptionLabel: Bool { return true }
+    var containsDescriptionLabel: Bool { return false }
     var containsMagnitudeSlider: Bool { return false }
     var containsMagnitudeSliderValueLabel: Bool { return false }
     var containsTimePeriodSegmentedControl: Bool { return false }
     var containsTimePeriodSegmentedControlValueLabel: Bool { return false }
-    var containsINGVSwitch: Bool { return true }
-    var containsUSGSSwitch: Bool { return true }
+    var containsINGVSwitch: Bool {
+        switch self {
+        case .INGVSource:
+            return true
+        case .USGSSource:
+            return false
+        }
+    }
+    var containsINGVdescriptionLabel: Bool {
+        switch self {
+        case .INGVSource:
+            return true
+        case .USGSSource:
+            return false
+        }
+    }
+    var containsUSGSSwitch: Bool {
+        switch self {
+        case .INGVSource:
+            return false
+        case .USGSSource:
+            return true
+        }
+    }
+    var containsUSGSdescriptionLabel: Bool {
+        switch self {
+        case .INGVSource:
+            return false
+        case .USGSSource:
+            return true
+        }
+    }
     
     var description: String {
         switch self {

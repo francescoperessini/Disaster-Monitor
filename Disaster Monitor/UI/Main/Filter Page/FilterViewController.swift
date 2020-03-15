@@ -30,11 +30,11 @@ class FilterViewController: ViewController<FilterView> {
         }
         
         rootView.didTapSwitchINGV = { [unowned self] v in
-            print(v)
+            self.dispatch(SetINGVPreference(value: v))
         }
         
         rootView.didTapSwitchUSGS = { [unowned self] v in
-            print(v)
+            self.dispatch(SetUSGSPreference(value: v))
         }
     }
     

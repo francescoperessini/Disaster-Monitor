@@ -126,6 +126,20 @@ struct SetSegmented: StateUpdater {
     }
 }
 
+struct SetINGVPreference: StateUpdater {
+    var value: Bool
+    func updateState(_ state: inout AppState) {
+        state.dataSources["INGV"] = value
+    }
+}
+
+struct SetUSGSPreference: StateUpdater {
+    var value: Bool
+    func updateState(_ state: inout AppState) {
+        state.dataSources["USGS"] = value
+    }
+}
+
 struct SetMessage: StateUpdater {
     var newMessage: String
     func updateState(_ state: inout AppState) {
