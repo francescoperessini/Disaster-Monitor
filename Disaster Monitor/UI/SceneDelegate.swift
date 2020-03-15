@@ -24,9 +24,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         let interceptor = PersistorInterceptor.interceptor()
-        //store = Store<AppState, DependenciesContainer>(interceptors: [interceptor])
-        store = Store<AppState, DependenciesContainer>()
-        //store.dispatch(InitAppState())
+        store = Store<AppState, DependenciesContainer>(interceptors: [interceptor])
+        
+        store.dispatch(InitAppState())
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let tabBarController = MainTabBarController(store: store)
