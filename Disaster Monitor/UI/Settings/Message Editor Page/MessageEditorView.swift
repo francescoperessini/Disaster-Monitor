@@ -40,12 +40,11 @@ class MessageEditorView: UIView, ViewControllerModellableView {
     }
     
     func style() {
-        backgroundColor = .white
+        backgroundColor = .systemBackground
         navigationControllerStyle()
         messageTextFieldStyle()
         usernameLabelStyle()
         self.messageComment.font = UIFont.systemFont(ofSize: 20)
-        
     }
     
     func update(oldModel: MessageEditorViewModel?) {
