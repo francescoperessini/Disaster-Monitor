@@ -19,6 +19,7 @@ class MainEventsTableViewController: ViewController<MainEventsView> {
     override func setupInteraction() {
         rootView.didTapFilter = {
             let vc = UINavigationController(rootViewController: FilterViewController(store: self.store))
+            vc.modalPresentationStyle = .overFullScreen
             self.present(vc, animated: true, completion: nil)
         }
         

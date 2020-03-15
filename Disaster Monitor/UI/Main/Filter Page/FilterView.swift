@@ -88,9 +88,7 @@ class FilterView: UIView, ViewControllerModellableView {
 
     private func configureFilterTableView() {
         setFilterTableViewDelegates()
-        //filterTableView.estimatedRowHeight = 100
-        //filterTableView.rowHeight = UITableView.automaticDimension
-        filterTableView.rowHeight = 90
+        filterTableView.isScrollEnabled = false
         filterTableView.register(FilterTableViewCell.self, forCellReuseIdentifier: Cells.filterTableViewCell)
     }
 
@@ -102,6 +100,32 @@ class FilterView: UIView, ViewControllerModellableView {
 }
 
 extension FilterView: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let section = FilterSection(rawValue: indexPath.section) else { return 0.0 }
+
+        switch section {
+        case .Magnitude:
+            return 80
+        case .Period:
+            return 80
+        case .Source:
+            return UITableView.automaticDimension
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let section = FilterSection(rawValue: indexPath.section) else { return 0.0 }
+
+        switch section {
+        case .Magnitude:
+            return 80
+        case .Period:
+            return 80
+        case .Source:
+            return UITableView.automaticDimension
+        }
+    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return FilterSection.allCases.count
@@ -129,11 +153,11 @@ extension FilterView: UITableViewDelegate, UITableViewDataSource {
         
         switch section {
         case .Magnitude:
-            return "Filter events by magnitude"
+            return "Filter events by magnitude.\nEarthquake magnitude is a measure of the size of an earthquake at its source."
         case .Period:
-            return "Filter events by time period (days)"
+            return "Filter events by time period."
         case .Source:
-            return "Filter events by data source"
+            return "Filter events by data source.\nINGV: Istituto Nazionale di Geofisica e Vulcanologia\nUSGS: United States Geological Survey"
         }
     }
     

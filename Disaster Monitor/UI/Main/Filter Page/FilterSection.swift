@@ -77,7 +77,7 @@ enum PeriodOption: Int, CaseIterable, FilterSectionType {
     var description: String {
         switch self {
         case .PeriodValue:
-            return "Time Period"
+            return "Days to be displayed"
         }
     }
     
