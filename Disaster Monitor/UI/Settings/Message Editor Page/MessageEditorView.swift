@@ -54,10 +54,12 @@ class MessageEditorView: UIView, ViewControllerModellableView {
         let string = String(format:"This message is the prepared message that you can send to your contacts whenever you are detected near an earthquake, now it is: %@", messageFromState ?? "No message set")
         
         let font = UIFont.systemFont(ofSize: 20)
-        let attributedString = NSMutableAttributedString(string: string, attributes: [NSAttributedString.Key.font: font])
+        let attributedString = NSMutableAttributedString(string: string, attributes: [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.systemGray])
         let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: font.pointSize)]
         let range = (string as NSString).range(of: messageFromState ?? "")
         attributedString.addAttributes(boldFontAttribute, range: range)
+        
+        
         
         
         self.messageComment.attributedText = attributedString
