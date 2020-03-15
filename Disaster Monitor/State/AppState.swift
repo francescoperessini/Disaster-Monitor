@@ -132,6 +132,7 @@ struct InitState: StateUpdater {
         state.message = InState.message
         state.displayEvent = InState.displayEvent
         state.segmentedDays = InState.segmentedDays
+        state.customColor = InState.customColor
     }
 }
 
