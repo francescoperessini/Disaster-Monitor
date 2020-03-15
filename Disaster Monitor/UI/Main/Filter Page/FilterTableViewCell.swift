@@ -23,6 +23,9 @@ class FilterTableViewCell: UITableViewCell {
            
             timePeriodSegmentedControl.isHidden = !filterSectionType.containsTimePeriodSegmentedControl
             timePeriodSegmentedControlValueLabel.isHidden = !filterSectionType.containsTimePeriodSegmentedControlValueLabel
+            
+            INGVSwitch.isHidden = !filterSectionType.containsINGVSwitch
+            USGSSwitch.isHidden = !filterSectionType.containsUSGSSwitch
         }
     }
     
@@ -33,7 +36,7 @@ class FilterTableViewCell: UITableViewCell {
     }()
 
     // MARK: - Magnitude Section
-    func setupSliderSection(value: Float) {
+    func setupMagnitudeSection(value: Float) {
         magnitudoSlider.setValue(value, animated: true)
         setSliderValue(value: value)
     }
@@ -71,7 +74,7 @@ class FilterTableViewCell: UITableViewCell {
     }
     
     // MARK: - Time Period Section
-    func setupSegmentedControlSection(period: String) {
+    func setupTimePeriodSection(period: String) {
         timePeriodSegmentedControl.selectedSegmentIndex = ["1", "3", "5", "7"].firstIndex(of: period) ?? 0
         setPeriod(period: period)
     }
@@ -106,18 +109,34 @@ class FilterTableViewCell: UITableViewCell {
         }
     }
     
-    // MARK: - Data source Section
+    // MARK: - Data Source Section
+    func setupDataSourceSection(dic: [String: Bool]) {
+        INGVSwitch.setOn(dic["INGV"]!, animated: true)
+        USGSSwitch.setOn(dic["USGS"]!, animated: true)
+    }
+    
     lazy var INGVSwitch: UISwitch = {
         let switch1 = UISwitch()
+        switch1.addTarget(self, action: #selector(didTapSwitch1Func(sender:)), for: .valueChanged)
         return switch1
-        
     }()
     
     lazy var USGSSwitch: UISwitch = {
         let switch2 = UISwitch()
+        switch2.addTarget(self, action: #selector(didTapSwitch2Func(sender:)), for: .valueChanged)
         return switch2
-
     }()
+    
+    var didTapSwitchINGV: ((Bool) -> ())?
+    var didTapSwitchUSGS: ((Bool) -> ())?
+    
+    @objc func didTapSwitch1Func(sender: UISwitch) {
+        didTapSwitchINGV?(sender.isOn)
+    }
+    
+    @objc func didTapSwitch2Func(sender: UISwitch) {
+        didTapSwitchUSGS?(sender.isOn)
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
@@ -131,6 +150,8 @@ class FilterTableViewCell: UITableViewCell {
         addSubview(magnitudeSliderValueLabel)
         addSubview(timePeriodSegmentedControl)
         addSubview(timePeriodSegmentedControlValueLabel)
+        addSubview(INGVSwitch)
+        addSubview(USGSSwitch)
     }
     
     required init?(coder: NSCoder) {
@@ -169,6 +190,18 @@ class FilterTableViewCell: UITableViewCell {
         timePeriodSegmentedControlValueLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
         timePeriodSegmentedControlValueLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
         //timePeriodSegmentedControlValueLabel.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        
+        INGVSwitch.translatesAutoresizingMaskIntoConstraints = false
+        //INGVSwitch.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+        INGVSwitch.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
+        INGVSwitch.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
+        //INGVSwitch.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        
+        USGSSwitch.translatesAutoresizingMaskIntoConstraints = false
+        //USGSSwitch.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+        USGSSwitch.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
+        USGSSwitch.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
+        //USGSSwitch.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
 
 }

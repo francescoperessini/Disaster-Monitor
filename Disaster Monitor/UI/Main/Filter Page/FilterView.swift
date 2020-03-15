@@ -27,14 +27,19 @@ class FilterView: UIView, ViewControllerModellableView {
         didTapClose?()
     }
     
-    // MARK: - Slider
+    // MARK: - Magnitude Section
     var sliderValue: Float?
     var didSlide: ((Float) -> ())?
     
-    // MARK: - Segmented Control
+    // MARK: - Time Period Section
     var segmentedControlValue: String?
     var didTapSegmented: ((Int) -> ())?
-
+    
+    // MARK: - Data Source Section
+    var switchValues: [String: Bool]?
+    var didTapSwitchINGV: ((Bool) -> ())?
+    var didTapSwitchUSGS: ((Bool) -> ())?
+    
     struct Cells {
         static let filterTableViewCell = "filterCell"
     }
@@ -69,6 +74,7 @@ class FilterView: UIView, ViewControllerModellableView {
         
         sliderValue = model.state.filteringValue
         segmentedControlValue = String(model.state.segmentedDays)
+        switchValues = model.state.dataSources
     }
 
     override func layoutSubviews() {
@@ -141,18 +147,23 @@ extension FilterView: UITableViewDelegate, UITableViewDataSource {
             cell.filterSectionType = magnitude
             if cell.filterSectionType!.containsMagnitudeSlider {
                 cell.didSlide = self.didSlide
-                cell.setupSliderSection(value: sliderValue ?? 0)
+                cell.setupMagnitudeSection(value: sliderValue ?? 0.0)
             }
         case .Period:
             let period = PeriodOption(rawValue: indexPath.row)
             cell.filterSectionType = period
             if cell.filterSectionType!.containsTimePeriodSegmentedControl {
                 cell.didTapSegmented = self.didTapSegmented
-                cell.setupSegmentedControlSection(period: segmentedControlValue ?? "")
+                cell.setupTimePeriodSection(period: segmentedControlValue ?? "")
             }
         case .Source:
             let source = SourceOption(rawValue: indexPath.row)
             cell.filterSectionType = source
+            if cell.filterSectionType!.containsINGVSwitch && cell.filterSectionType!.containsUSGSSwitch {
+                cell.didTapSwitchINGV = self.didTapSwitchINGV
+                cell.didTapSwitchUSGS = self.didTapSwitchUSGS
+                cell.setupDataSourceSection(dic: switchValues ?? ["INGV": true, "USGS": true])
+            }
         }
         return cell
     }

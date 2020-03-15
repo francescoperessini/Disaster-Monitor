@@ -12,6 +12,8 @@ protocol FilterSectionType: CustomStringConvertible {
     var containsMagnitudeSliderValueLabel: Bool { get }
     var containsTimePeriodSegmentedControl: Bool { get }
     var containsTimePeriodSegmentedControlValueLabel: Bool { get }
+    var containsINGVSwitch: Bool { get }
+    var containsUSGSSwitch: Bool { get }
 }
 
 enum FilterSection: Int, CaseIterable, CustomStringConvertible {
@@ -42,6 +44,8 @@ enum MagnitudeOption: Int, CaseIterable, FilterSectionType {
     var containsMagnitudeSliderValueLabel: Bool { return true }
     var containsTimePeriodSegmentedControl: Bool { return false }
     var containsTimePeriodSegmentedControlValueLabel: Bool { return false }
+    var containsINGVSwitch: Bool { return false }
+    var containsUSGSSwitch: Bool { return false }
     
     var description: String {
         switch self {
@@ -61,6 +65,8 @@ enum PeriodOption: Int, CaseIterable, FilterSectionType {
     var containsMagnitudeSliderValueLabel: Bool { return false }
     var containsTimePeriodSegmentedControl: Bool { return true }
     var containsTimePeriodSegmentedControlValueLabel: Bool { return true }
+    var containsINGVSwitch: Bool { return false }
+    var containsUSGSSwitch: Bool { return false }
     
     var description: String {
         switch self {
@@ -81,6 +87,8 @@ enum SourceOption: Int, CaseIterable, FilterSectionType {
     var containsMagnitudeSliderValueLabel: Bool { return false }
     var containsTimePeriodSegmentedControl: Bool { return false }
     var containsTimePeriodSegmentedControlValueLabel: Bool { return false }
+    var containsINGVSwitch: Bool { return true }
+    var containsUSGSSwitch: Bool { return true }
     
     var description: String {
         switch self {

@@ -29,6 +29,13 @@ class FilterViewController: ViewController<FilterView> {
             self.dispatch(SetSegmented(value: v))
         }
         
+        rootView.didTapSwitchINGV = { [unowned self] v in
+            print(v)
+        }
+        
+        rootView.didTapSwitchUSGS = { [unowned self] v in
+            print(v)
+        }
     }
     
 }
