@@ -34,6 +34,7 @@ class MainEventsView: UIView, ViewControllerModellableView {
     var didTapFilter: (() -> ())?
     var didTapEvent: ((String) -> ())?
     var didPullRefreshControl: (() -> ())?
+    var color: Color?
     
     struct Cells {
         static let mainEventsTableViewCell = "mainCell"
@@ -91,7 +92,7 @@ class MainEventsView: UIView, ViewControllerModellableView {
         past72Events = events.filter{$0.daysAgo == 2}
         past96Events = events.filter{$0.daysAgo == 3}
         previousDaysEvents = events.filter{$0.daysAgo > 4}
-        
+        color = model.state.customColor
         navigationBar?.tintColor = model.state.customColor.getColor()
         
         DispatchQueue.main.async {
@@ -181,26 +182,17 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = mainEventsTableView.dequeueReusableCell(withIdentifier: Cells.mainEventsTableViewCell, for: indexPath) as! MainEventsTableViewCell
-
+        let event: Event?
+        
         switch indexPath.section {
-        case 0:
-            let event = past24Events[indexPath.row]
-            cell.setupCell(event: event)
-        case 1:
-            let event = past48Events[indexPath.row]
-            cell.setupCell(event: event)
-        case 2:
-            let event = past72Events[indexPath.row]
-            cell.setupCell(event: event)
-        case 3:
-            let event = past96Events[indexPath.row]
-            cell.setupCell(event: event)
-        case 4:
-            let event = previousDaysEvents[indexPath.row]
-            cell.setupCell(event: event)
-        default:
-            print("Default case")
+            case 0: event = past24Events[indexPath.row]
+            case 1: event = past48Events[indexPath.row]
+            case 2: event = past72Events[indexPath.row]
+            case 3: event = past96Events[indexPath.row]
+            default: event = previousDaysEvents[indexPath.row]
         }
+        
+        cell.setupCell(event: event!, color: color!)
         return cell
     }
     

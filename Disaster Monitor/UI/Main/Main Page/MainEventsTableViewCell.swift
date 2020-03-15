@@ -99,7 +99,7 @@ class MainEventsTableViewCell: UITableViewCell {
         dataSourceLabel.textColor = .systemGray
     }
     
-    func setupCell(event: Event) {
+    func setupCell(event: Event, color: Color) {
         placeLabel.text = event.name
         
         let date = Date(timeIntervalSince1970: event.time / 1000)
@@ -115,7 +115,7 @@ class MainEventsTableViewCell: UITableViewCell {
         dataSourceLabel.text = event.dataSource
 
         if event.magnitudo > 3 {
-            magnitudoLabel.textColor = .systemBlue
+            magnitudoLabel.textColor = color.getColor()
         }
         else {
             magnitudoLabel.textColor = .systemGray
