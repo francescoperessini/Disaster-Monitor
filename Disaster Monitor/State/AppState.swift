@@ -57,7 +57,9 @@ struct EventsStateUpdater: StateUpdater {
         let depth = newValue["features"].arrayValue.map{$0["geometry"]["coordinates"][2].floatValue}
         
         for i in 0...arrayNames.count - 1 {
-            state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i]))
+            if !state.events.contains(where: { $0.id == id[i] }){
+                state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i]))
+            }
         }
         state.events.sort(by: {$0.time > $1.time})
     }
@@ -85,7 +87,9 @@ struct EventsStateUpdaterINGV: StateUpdater {
         }
 
         for i in 0...arrayNames.count - 1 {
-            state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: result_time[i]))
+            if !state.events.contains(where: { $0.id == id[i] }){
+                state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: result_time[i]))
+            }
         }
         state.events.sort(by: {$0.time > $1.time})
     }
@@ -138,7 +142,7 @@ struct UpdateCustomColor: StateUpdater {
 
 struct GetEvents: SideEffect {
     func sideEffect(_ context: SideEffectContext<AppState, DependenciesContainer>) throws {
-        context.dispatch(DeleteEvents())
+        //context.dispatch(DeleteEvents())
         context.dependencies.ApiManager
             .getEventsUSGS()
             .then {
@@ -168,7 +172,7 @@ struct InitAppState: SideEffect {
                 context.dispatch(InitState(InState: state))
             }
             catch {
-                print("ERRORE LETTURA")
+                print(error)
             }
         }
     }
