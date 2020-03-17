@@ -8,7 +8,6 @@
 
 import Katana
 import Hydra
-import GoogleMaps
 import SwiftyJSON
 
 struct AppState: State, Codable {
@@ -19,6 +18,7 @@ struct AppState: State, Codable {
     var segmentedDays: Int = 7
     var customColor: Color = Color(name: colors.red)
     var dataSources: [String: Bool] = ["INGV": true, "USGS": true]
+    var regions: [Region] = []
 }
 
 enum colors: Int, Codable {

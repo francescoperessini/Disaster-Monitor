@@ -7,6 +7,7 @@
 //
 
 import Katana
+import CoreLocation
 import BackgroundTasks
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -65,18 +66,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         scheduleAppRefresh()
     }
     
-    func scheduleAppRefresh(){
+    func scheduleAppRefresh() {
         let request = BGAppRefreshTaskRequest(identifier: "com.disastermonitor.refresh")
-        request.earliestBeginDate = Date(timeIntervalSinceNow: 15*60)
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60)
         
         do {
             try BGTaskScheduler.shared.submit(request)
         } catch {
-            print("ERROR: \(error)")
+            print(error)
         }
     }
     
-    func handleAppRefresh(task: BGAppRefreshTask){
+    func handleAppRefresh(task: BGAppRefreshTask) {
         let queue = OperationQueue()
         scheduleAppRefresh()
         queue.maxConcurrentOperationCount = 1
@@ -86,11 +87,39 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         queue.addOperation {
-            self.store.dispatch(GetEvents())
+            // l'identifier della region non deve essere per forza uguale a quello della notifica!
+            let region: CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2DMake(-56.072800, -27.595400), radius: 10000.0, identifier: "region")
+            for event in self.store.state.events {
+                let coo = CLLocationCoordinate2D(latitude: event.coordinates[1], longitude: event.coordinates[0])
+                if region.contains(coo) {
+                    let center = UNUserNotificationCenter.current()
+                    
+                    let content = UNMutableNotificationContent()
+                    content.title = "test"
+                    content.body = "You've entered a new region"
+                    content.sound = UNNotificationSound.default
+                    
+                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+
+                    let notificationRequest:UNNotificationRequest = UNNotificationRequest(identifier: "Region", content: content, trigger: trigger)
+                    
+                    //center.removeAllPendingNotificationRequests()
+                    //center.removeAllDeliveredNotifications()
+                    center.add(notificationRequest, withCompletionHandler: { (error) in
+                        if let error = error {
+                            // Something went wrong
+                            print(error)
+                        }
+                        else{
+                            print("added")
+                        }
+                    })
+                }
+            }
         }
         
         let op = queue.operations.first!
-        
+
         op.completionBlock = {
             task.setTaskCompleted(success: !op.isCancelled)
         }

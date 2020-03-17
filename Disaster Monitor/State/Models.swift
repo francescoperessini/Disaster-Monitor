@@ -49,3 +49,15 @@ struct Event: Codable, Equatable {
         self.updated = updated
     }
 }
+
+struct Region: Codable {
+    var latitude: Double
+    var longitudine: Double
+    var radius: Float
+    
+    init(latitude: Double, longitudine: Double, radius: Float) {
+        self.latitude = latitude
+        self.longitudine = longitudine
+        self.radius = radius
+    }
+}

@@ -10,7 +10,6 @@ import Tempura
 import CoreLocation
 import GoogleMaps
 import GooglePlaces
-import UserNotifications
 
 // MARK: - ViewModel
 struct MapViewModel: ViewModelWithState {
@@ -21,7 +20,7 @@ struct MapViewModel: ViewModelWithState {
 }
 
 // MARK: - View
-class MapView: UIView, ViewControllerModellableView, UNUserNotificationCenterDelegate {
+class MapView: UIView, ViewControllerModellableView {
    
     let locationManager = CLLocationManager()
     let mapView = GMSMapView()
@@ -36,7 +35,6 @@ class MapView: UIView, ViewControllerModellableView, UNUserNotificationCenterDel
     // MARK: - Setup
     func setup() {
         setupLocation()
-        // setupLocalNotifications()
         setupSearchBar()
         setupSegmentedControl()
     }
@@ -52,82 +50,6 @@ class MapView: UIView, ViewControllerModellableView, UNUserNotificationCenterDel
             //locationManager.pausesLocationUpdatesAutomatically = false
             locationManager.startUpdatingLocation()
         }
-    }
-    
-    private func setupLocalNotifications() {
-        let application = UIApplication.shared
-
-        if #available(iOS 10.0, *) {
-            // For iOS 10 display notification (sent via APNS)
-            UNUserNotificationCenter.current().delegate = self
-
-            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-            UNUserNotificationCenter.current().requestAuthorization(options: authOptions) { (isAuthorized, error) in
-                if (error != nil) {
-                    print(error!)
-                }
-                else {
-                    if (isAuthorized) {
-                        print("authorized")
-                        NotificationCenter.default.post(Notification(name: Notification.Name("AUTHORIZED")))
-                    }
-                    else {
-                        /*
-                        let pushPreference = UserDefaults.standard.bool(forKey: "PREF_PUSH_NOTIFICATIONS")
-                        if pushPreference == false {
-                        }
-                        */
-                        let alert = UIAlertController(title: "Turn on Notifications", message: "Push notifications are turned off.", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "Turn on notifications", style: .default, handler: { (alertAction) in
-                            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else { return }
-
-                            if UIApplication.shared.canOpenURL(settingsUrl) {
-                                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
-                                    // Checking for setting is opened or not
-                                    print("Setting is opened: \(success)")
-                                })
-                            }
-                            // UserDefaults.standard.set(true, forKey: "PREF_PUSH_NOTIFICATIONS")
-                        }))
-                        alert.addAction(UIAlertAction(title: "No thanks.", style: .default, handler: { (actionAlert) in
-                            print("user denied")
-                            // UserDefaults.standard.set(true, forKey: "PREF_PUSH_NOTIFICATIONS")
-                        }))
-                        let viewController = UIApplication.shared.windows.filter{$0.isKeyWindow}.first?.rootViewController
-                        DispatchQueue.main.async {
-                            viewController?.present(alert, animated: true, completion: nil)
-                        }
-                    }
-                }
-            }
-        }
-        else {
-            let settings: UIUserNotificationSettings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
-            application.registerUserNotificationSettings(settings)
-        }
-    }
-    
-    private func postLocalNotifications(eventTitle: String, region: CLCircularRegion) {
-        let center = UNUserNotificationCenter.current()
-        
-        let content = UNMutableNotificationContent()
-        content.title = eventTitle
-        content.body = "You've entered a new region"
-        content.sound = UNNotificationSound.default
-        
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-
-        let notificationRequest:UNNotificationRequest = UNNotificationRequest(identifier: "Region", content: content, trigger: trigger)
-        
-        center.add(notificationRequest, withCompletionHandler: { (error) in
-            if let error = error {
-                // Something went wrong
-                print(error)
-            }
-            else{
-                print("added")
-            }
-        })
     }
     
     private func setupSearchBar() {
@@ -157,7 +79,7 @@ class MapView: UIView, ViewControllerModellableView, UNUserNotificationCenterDel
     func style() {
         backgroundColor = .systemBackground
         navigationBar?.prefersLargeTitles = false
-        navigationItem?.title = "Around Me"
+        navigationItem?.title = "Around You"
         navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapActionButtonFunc))
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
@@ -209,7 +131,7 @@ class MapView: UIView, ViewControllerModellableView, UNUserNotificationCenterDel
         mapView.settings.myLocationButton = true
         
         // compassButton displays only when map is NOT in the north direction
-        mapView.settings.compassButton = true
+        //mapView.settings.compassButton = true
         mapView.settings.scrollGestures = true
         mapView.settings.zoomGestures = true
         mapView.settings.tiltGestures = true
@@ -292,15 +214,8 @@ extension MapView: CLLocationManagerDelegate, GMSAutocompleteResultsViewControll
         
         actualPosition = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         
-        /*
-        let region :CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2DMake(43.61871, -116.214607), radius: 100, identifier: "Boise")
-        if region.contains(actualPosition!.coordinate) {
-            postLocalNotifications(eventTitle: region.identifier, region: region)
-        }
-        */
-        
         // This updates the map’s camera to center around the user’s current location
-        mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
+        // mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
           
         // Tell locationManager you’re no longer interested in updates
         // locationManager.stopUpdatingLocation()
@@ -308,13 +223,6 @@ extension MapView: CLLocationManagerDelegate, GMSAutocompleteResultsViewControll
 
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didAutocompleteWith place: GMSPlace) {
         searchController?.isActive = false
-        
-        /*
-        // Do something with the selected place.
-        print("Place name: \(String(describing: place.name))")
-        print("Place address: \(String(describing: place.formattedAddress))")
-        print("Place attributions: \(String(describing: place.attributions))")
-        */
                 
         let newLocation = GMSCameraPosition(target: place.coordinate, zoom: 12, bearing: 0, viewingAngle: 0)
         mapView.animate(to: newLocation)
