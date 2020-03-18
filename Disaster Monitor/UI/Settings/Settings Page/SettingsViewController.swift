@@ -25,5 +25,9 @@ class SettingsViewController: ViewController<SettingsView> {
         rootView.didTapStylingColor = { [unowned self] color in
             self.dispatch(UpdateCustomColor(color: color))
         }
+        
+        rootView.didTapSwitch = { [unowned self] value in
+            self.dispatch(SetDebugMode(value: value))
+        }
     }
 }

@@ -26,7 +26,10 @@ class SettingsView: UIView, ViewControllerModellableView {
     var didTapEditMessage: (() -> ())?
     
     var didTapStylingColor: ((Color) -> ())?
+    var didTapSwitch: ((Bool) -> ())?
+
     var customColor: Color?
+    var debugMode: Bool?
     
     @objc func didTapEditMessageFunc() {
         didTapEditMessage?()
@@ -64,6 +67,7 @@ class SettingsView: UIView, ViewControllerModellableView {
 
     func update(oldModel: MainViewModel?) {
         self.customColor = model?.state.customColor
+        self.debugMode = model?.state.debugMode
     }
 
     override func layoutSubviews() {
@@ -86,6 +90,22 @@ class SettingsView: UIView, ViewControllerModellableView {
 
 extension SettingsView: UITableViewDelegate, UITableViewDataSource {
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let section = SettingsSection(rawValue: indexPath.section) else { return 0.0 }
+
+        switch section {
+        default: return UITableView.automaticDimension
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let section = SettingsSection(rawValue: indexPath.section) else { return 0.0 }
+
+        switch section {
+        default: return UITableView.automaticDimension
+        }
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return SettingsSection.allCases.count
     }
@@ -100,6 +120,8 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
             return PrivacyOption.allCases.count
         case .Styling:
             return StylingOption.allCases.count
+        case .Debug:
+            return DebugOption.allCases.count
         default:
             return 0
         }
@@ -140,6 +162,8 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
             return "Customize here your experience"
         case .DataSource:
             return "We are currently using INGV and USGS Api Endpoints"
+        case .Debug:
+            return "Activate here debug mode"
         }
     }
     
@@ -159,7 +183,7 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         case .Styling:
             let style = StylingOption(rawValue: indexPath.row)
             cell.sectionType = style
-            if cell.sectionType!.containsSegmenteColor{
+            if cell.sectionType!.containsSegmenteColor {
                 cell.didTapStylingColor = self.didTapStylingColor
                 cell.setupColorCell(color: self.customColor!)
             }
@@ -170,10 +194,15 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         case .DataSource:
             let dataSource = DataSourceOption(rawValue: indexPath.row)
             cell.sectionType = dataSource
+        case .Debug:
+            let debug = DebugOption(rawValue: indexPath.row)
+            cell.sectionType = debug
+            if cell.sectionType!.containsDebugModeSwitch {
+                cell.didTapSwitch = self.didTapSwitch
+                cell.setupDebugSwitch(value: self.debugMode!)
+            }
         }
-
         return cell
-        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -184,19 +213,13 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
             if indexPath.row == 0 {
                 didTapEditMessageFunc()
             }
-        case .Privacy:
-            if indexPath.row == 0 {
-                print("riga 0 della sezione Privacy")
-            }
-            else if indexPath.row == 1 {
-                print("riga 1 della sezione Privacy")
-            }
-            
-        default:
-            print("ciao")
+        case .Privacy: break
+        case .Styling: break
+        case .AboutUs: break
+        case .DataSource: break
+        case .Debug: break
         }
         settingsTableView.deselectRow(at: settingsTableView.indexPathForSelectedRow!, animated: true)
     }
     
 }
-

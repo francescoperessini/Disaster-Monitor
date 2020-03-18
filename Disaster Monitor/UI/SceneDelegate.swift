@@ -87,35 +87,43 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         queue.addOperation {
-            // l'identifier della region non deve essere per forza uguale a quello della notifica!
-            let region: CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2DMake(-56.072800, -27.595400), radius: 10000.0, identifier: "region")
-            for event in self.store.state.events {
-                let coo = CLLocationCoordinate2D(latitude: event.coordinates[1], longitude: event.coordinates[0])
-                if region.contains(coo) {
-                    let center = UNUserNotificationCenter.current()
-                    
-                    let content = UNMutableNotificationContent()
-                    content.title = "test"
-                    content.body = "You've entered a new region"
-                    content.sound = UNNotificationSound.default
-                    
-                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+            
+            if self.store.state.debugMode {
+                print("debug mode attiva")
+                // l'identifier della region non deve essere per forza uguale a quello della notifica!
+                let region: CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2DMake(-56.072800, -27.595400), radius: 10000.0, identifier: "region")
+                for event in self.store.state.events {
+                    let coo = CLLocationCoordinate2D(latitude: event.coordinates[1], longitude: event.coordinates[0])
+                    if region.contains(coo) {
+                        let center = UNUserNotificationCenter.current()
+                        
+                        let content = UNMutableNotificationContent()
+                        content.title = "test"
+                        content.body = "You've entered a new region"
+                        content.sound = UNNotificationSound.default
+                        
+                        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
 
-                    let notificationRequest:UNNotificationRequest = UNNotificationRequest(identifier: "Region", content: content, trigger: trigger)
-                    
-                    //center.removeAllPendingNotificationRequests()
-                    //center.removeAllDeliveredNotifications()
-                    center.add(notificationRequest, withCompletionHandler: { (error) in
-                        if let error = error {
-                            // Something went wrong
-                            print(error)
-                        }
-                        else{
-                            print("added")
-                        }
-                    })
+                        let notificationRequest:UNNotificationRequest = UNNotificationRequest(identifier: "Region", content: content, trigger: trigger)
+                        
+                        //center.removeAllPendingNotificationRequests()
+                        //center.removeAllDeliveredNotifications()
+                        center.add(notificationRequest, withCompletionHandler: { (error) in
+                            if let error = error {
+                                // Something went wrong
+                                print(error)
+                            }
+                            else{
+                                print("added")
+                            }
+                        })
+                    }
                 }
             }
+            else {
+                print("debug mode NON attiva")
+            }
+            
         }
         
         let op = queue.operations.first!

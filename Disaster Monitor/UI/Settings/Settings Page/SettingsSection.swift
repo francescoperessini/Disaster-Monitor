@@ -6,11 +6,12 @@
 //  Copyright © 2020 Stefano Martina. All rights reserved.
 //
 
-protocol SectionType : CustomStringConvertible{
-    var containsStepperMagnitudo: Bool { get  }
+protocol SectionType: CustomStringConvertible {
+    var containsStepperMagnitudo: Bool { get }
     var containsStepperRadius: Bool { get }
     var containsSegmenteColor: Bool { get }
     var containsSegmentedMap: Bool { get }
+    var containsDebugModeSwitch: Bool { get }
 }
 
 enum SettingsSection: Int, CaseIterable, CustomStringConvertible {
@@ -20,6 +21,7 @@ enum SettingsSection: Int, CaseIterable, CustomStringConvertible {
     case Styling
     case AboutUs
     case DataSource
+    case Debug
     
     var description: String {
         switch self {
@@ -33,18 +35,22 @@ enum SettingsSection: Int, CaseIterable, CustomStringConvertible {
             return "About us"
         case .DataSource:
             return "Data Sources"
+        case .Debug:
+            return "Debug"
         }
     }
     
 }
 
 enum MessageOption: Int, CaseIterable, SectionType {
+    
     case editMessage
     
     var containsStepperMagnitudo: Bool{ return false }
     var containsStepperRadius: Bool { return false }
     var containsSegmenteColor: Bool { return false }
     var containsSegmentedMap: Bool { return false }
+    var containsDebugModeSwitch: Bool { return false }
     
     var description: String {
         switch self {
@@ -54,18 +60,19 @@ enum MessageOption: Int, CaseIterable, SectionType {
     }
 }
 
-enum PrivacyOption: Int, CaseIterable, SectionType{
+enum PrivacyOption: Int, CaseIterable, SectionType {
+    
     case radius
     case places
     case magnitudo
     
-    var containsStepperRadius: Bool{
+    var containsStepperRadius: Bool {
         switch self {
             case .radius: return true
             default: return false
         }
     }
-    var containsStepperMagnitudo: Bool{
+    var containsStepperMagnitudo: Bool {
         switch self {
             case .magnitudo: return true
             default: return false
@@ -73,8 +80,9 @@ enum PrivacyOption: Int, CaseIterable, SectionType{
     }
     var containsSegmenteColor: Bool { return false }
     var containsSegmentedMap: Bool { return false }
+    var containsDebugModeSwitch: Bool { return false }
         
-    var description: String{
+    var description: String {
         switch self {
             case .radius: return "Notification Radius"
             case .places: return "Monitored places"
@@ -83,7 +91,8 @@ enum PrivacyOption: Int, CaseIterable, SectionType{
     }
 }
 
-enum StylingOption: Int, CaseIterable, SectionType{
+enum StylingOption: Int, CaseIterable, SectionType {
+    
     case color
     case mapStyle
     
@@ -101,8 +110,9 @@ enum StylingOption: Int, CaseIterable, SectionType{
             case .mapStyle: return true
         }
     }
+    var containsDebugModeSwitch: Bool { return false }
     
-    var description: String{
+    var description: String {
         switch self {
             case .color: return "Main color"
             case .mapStyle: return "Map style"
@@ -110,24 +120,46 @@ enum StylingOption: Int, CaseIterable, SectionType{
     }
 }
 
-enum AboutUsOption: Int, CaseIterable, SectionType{
+enum AboutUsOption: Int, CaseIterable, SectionType {
+    
     case info
     
     var containsStepperRadius: Bool{ return false }
     var containsStepperMagnitudo: Bool{ return false }
     var containsSegmenteColor: Bool { return false }
     var containsSegmentedMap: Bool { return false }
+    var containsDebugModeSwitch: Bool { return false }
     
     var description: String{ return "" }
 }
 
-enum DataSourceOption: Int, CaseIterable, SectionType{
+enum DataSourceOption: Int, CaseIterable, SectionType {
+    
     case info
     
     var containsStepperRadius: Bool{ return false }
     var containsStepperMagnitudo: Bool{ return false }
     var containsSegmenteColor: Bool { return false }
     var containsSegmentedMap: Bool { return false }
+    var containsDebugModeSwitch: Bool { return false }
     
     var description: String{ return "" }
+}
+
+enum DebugOption: Int, CaseIterable, SectionType {
+    
+    case DebugMode
+    
+    var containsStepperRadius: Bool{ return false }
+    var containsStepperMagnitudo: Bool{ return false }
+    var containsSegmenteColor: Bool { return false }
+    var containsSegmentedMap: Bool { return false }
+    var containsDebugModeSwitch: Bool { return true }
+    
+    var description: String {
+        switch self {
+        case .DebugMode: return "Debug Mode"
+        }
+    }
+    
 }

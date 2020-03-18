@@ -19,6 +19,7 @@ struct AppState: State, Codable {
     var customColor: Color = Color(name: colors.red)
     var dataSources: [String: Bool] = ["INGV": true, "USGS": true]
     var regions: [Region] = []
+    var debugMode: Bool = false
 }
 
 enum colors: Int, Codable {
@@ -27,9 +28,9 @@ enum colors: Int, Codable {
     case green
 }
 
-struct Color: Codable{
+struct Color: Codable {
     var name: colors
-    func getColor() -> UIColor{
+    func getColor() -> UIColor {
         switch self.name {
         case colors.green:      return UIColor.systemGreen
         case colors.red:        return UIColor.systemRed
@@ -37,7 +38,7 @@ struct Color: Codable{
         }
     }
     
-    func getColorName() -> String{
+    func getColorName() -> String {
         switch self.name {
         case colors.green:      return "GREEN"
         case colors.red:        return "RED"
@@ -163,6 +164,13 @@ struct UpdateCustomColor: StateUpdater {
     var color: Color
     func updateState(_ state: inout AppState) {
         state.customColor = color
+    }
+}
+
+struct SetDebugMode: StateUpdater {
+    var value: Bool
+    func updateState(_ state: inout AppState) {
+        state.debugMode = value
     }
 }
 
