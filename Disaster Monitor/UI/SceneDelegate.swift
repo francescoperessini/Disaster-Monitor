@@ -87,43 +87,47 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         queue.addOperation {
-            
             if self.store.state.debugMode {
-                print("debug mode attiva")
-                // l'identifier della region non deve essere per forza uguale a quello della notifica!
-                let region: CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2DMake(-56.072800, -27.595400), radius: 10000.0, identifier: "region")
-                for event in self.store.state.events {
-                    let coo = CLLocationCoordinate2D(latitude: event.coordinates[1], longitude: event.coordinates[0])
-                    if region.contains(coo) {
-                        let center = UNUserNotificationCenter.current()
-                        
-                        let content = UNMutableNotificationContent()
-                        content.title = "test"
-                        content.body = "You've entered a new region"
-                        content.sound = UNNotificationSound.default
-                        
-                        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-
-                        let notificationRequest:UNNotificationRequest = UNNotificationRequest(identifier: "Region", content: content, trigger: trigger)
-                        
-                        //center.removeAllPendingNotificationRequests()
-                        //center.removeAllDeliveredNotifications()
-                        center.add(notificationRequest, withCompletionHandler: { (error) in
-                            if let error = error {
-                                // Something went wrong
-                                print(error)
-                            }
-                            else{
-                                print("added")
-                            }
-                        })
-                    }
-                }
+                print("Debug mode activated")
+                // Creazione di un evento fittizio
+                let time = Date().timeIntervalSince1970
+                let event = Event(id: "test", name: "Test earthquake", descr: "earthquake", magnitudo: "5.5", coordinates: "9.226937 45.478085", depth: 10.0, time: 1584542766360, dataSource: "USGS", updated: 1584542766360)
+                self.store.dispatch(AddEventDebugMode(event: event))
             }
             else {
-                print("debug mode NON attiva")
+                print("Debug mode not activated")
+                self.store.dispatch(GetEvents())
             }
-            
+            /*
+            // l'identifier della region non deve essere per forza uguale a quello della notifica!
+            let region: CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2DMake(-56.072800, -27.595400), radius: 10000.0, identifier: "region")
+            for event in self.store.state.events {
+                let coo = CLLocationCoordinate2D(latitude: event.coordinates[1], longitude: event.coordinates[0])
+                if region.contains(coo) {
+                    let center = UNUserNotificationCenter.current()
+                    
+                    let content = UNMutableNotificationContent()
+                    content.title = "test"
+                    content.body = "You've entered a new region"
+                    content.sound = UNNotificationSound.default
+                    
+                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+
+                    let notificationRequest:UNNotificationRequest = UNNotificationRequest(identifier: "Region", content: content, trigger: trigger)
+                    
+                    //center.removeAllPendingNotificationRequests()
+                    //center.removeAllDeliveredNotifications()
+                    center.add(notificationRequest, withCompletionHandler: { (error) in
+                        if let error = error {
+                            print(error)
+                        }
+                        else{
+                            print("Notification added")
+                        }
+                    })
+                }
+            }
+            */
         }
         
         let op = queue.operations.first!

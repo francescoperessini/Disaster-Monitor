@@ -15,11 +15,11 @@ struct AppState: State, Codable {
     var filteringValue: Float = 0.0
     var message: String = "Message to be shared\nSent from Disaster Monitor App"
     var displayEvent: Event?
-    var segmentedDays: Int = 7
+    var segmentedDays: Int = 999
     var customColor: Color = Color(name: colors.red)
     var dataSources: [String: Bool] = ["INGV": true, "USGS": true]
     var regions: [Region] = []
-    var debugMode: Bool = false
+    var debugMode: Bool = true
 }
 
 enum colors: Int, Codable {
@@ -171,6 +171,13 @@ struct SetDebugMode: StateUpdater {
     var value: Bool
     func updateState(_ state: inout AppState) {
         state.debugMode = value
+    }
+}
+
+struct AddEventDebugMode: StateUpdater {
+    var event: Event
+    func updateState(_ state: inout AppState) {
+        state.events.insert(event, at: 0)
     }
 }
 
