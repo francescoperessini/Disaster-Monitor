@@ -102,11 +102,11 @@ class MainEventsTableViewCell: UITableViewCell {
     func setupCell(event: Event, color: Color) {
         placeLabel.text = event.name
         
-        let date = Date(timeIntervalSince1970: event.time / 1000)
         let formatter = DateFormatter()
         formatter.timeZone = TimeZone(identifier: "UTC")
         formatter.dateFormat = "HH:mm"
-        timeLabel.text = formatter.string(from: date as Date) + " UTC"
+        let formattedDate = formatter.string(from: event.date)
+        timeLabel.text = formattedDate
         
         seismicTypeLabel.text = event.description
         

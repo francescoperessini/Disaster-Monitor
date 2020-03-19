@@ -81,7 +81,13 @@ class EventView: UIView, ViewControllerModellableView {
         self.magnitude.text = magnitude_str
         self.magnitude.textColor = .label
         
-        self.time.text = String(format: "origin time: %@", model.event?.date as CVarArg? ?? defaultValue)
+        let formatter = DateFormatter()
+        formatter.timeZone = TimeZone(identifier: "UTC")
+        formatter.dateFormat = "dd MMMM yyyy HH:mm:ss"
+        let formattedDate = formatter.string(from: model.event?.date ?? Date())
+        
+        self.time.text = "origin time: " + formattedDate
+        //self.time.text = String(format: "origin time: %@", model.event?.date as CVarArg? ?? defaultValue)
         self.time.textColor = .label
         
         self.depth.text = String(format: "depth: %f km", model.event?.depth ?? defaultValue)

@@ -90,11 +90,11 @@ struct EventsStateUpdaterINGV: StateUpdater {
         var result_time: [Double] = []
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS" //Your date format
-        dateFormatter.timeZone = TimeZone(abbreviation: "UTC+0:00") //Current time zone
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
         
         for time in time_str{
-            guard let appo = dateFormatter.date(from:time) else { return }
+            guard let appo = dateFormatter.date(from: time) else { return }
             result_time.append(appo.timeIntervalSince1970 * 1000.0)
         }
 
@@ -183,17 +183,28 @@ struct AddEventDebugMode: StateUpdater {
 
 struct GetEvents: SideEffect {
     func sideEffect(_ context: SideEffectContext<AppState, DependenciesContainer>) throws {
+        
+        let weekAgo = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: Date())!
+        let formatter = DateFormatter()
+        formatter.timeZone = TimeZone(identifier: "UTC")
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let formattedDate = formatter.string(from: weekAgo)
+        let fullFormattedDateArr = formattedDate.split(separator: " ")
+        let date = String(fullFormattedDateArr[0])
+        let time = String(fullFormattedDateArr[1])
+        
         //context.dispatch(DeleteEvents())
+
         context.dependencies.ApiManager
-            .getEventsUSGS()
+            .getEventsUSGS(date: date, time: time)
             .then {
                 newValue in
-                    context.dispatch(EventsStateUpdater(newValue: newValue))
-            }
+                context.dispatch(EventsStateUpdater(newValue: newValue))
+        }
         context.dependencies.ApiManager
-        .getEventsINGV()
-        .then {
-            newValue in
+            .getEventsINGV(date: date, time: time)
+            .then {
+                newValue in
                 context.dispatch(EventsStateUpdaterINGV(newValue: newValue))
         }
     }

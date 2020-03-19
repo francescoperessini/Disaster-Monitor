@@ -25,25 +25,18 @@ struct Event: Codable, Equatable {
         self.id = id
         self.name = name
         self.description = descr
-        self.magnitudo = Float(magnitudo) ?? 0
-        let coord1 = Double(coordinates.split(separator: " ")[0]) ?? 0
-        let coord2 = Double(coordinates.split(separator: " ")[1]) ?? 0
+        self.magnitudo = Float(magnitudo) ?? 0.0
+        let coord1 = Double(coordinates.split(separator: " ")[0]) ?? 0.0
+        let coord2 = Double(coordinates.split(separator: " ")[1]) ?? 0.0
         self.coordinates = [coord1, coord2]
-        
         self.depth = depth
-        
-        let date = Date(timeIntervalSince1970: (time) / 1000)
-        let formatter = DateFormatter()
-        formatter.timeZone = TimeZone(identifier: "UTC")
-        formatter.dateFormat = "dd MMM yyyy HH:mm:ss"
-        
+        self.time = time
+
+        let date = Date(timeIntervalSince1970: time / 1000)
         self.date = date
         
-        self.time = time
-        
-        let date1 = Date(timeIntervalSince1970: self.time / 1000)
         let date2 = Date()
-        self.daysAgo = Calendar.current.dateComponents([.day], from: date1, to: date2).day!
+        self.daysAgo = Calendar.current.dateComponents([.day], from: date, to: date2).day!
         
         self.dataSource = dataSource
         self.updated = updated
