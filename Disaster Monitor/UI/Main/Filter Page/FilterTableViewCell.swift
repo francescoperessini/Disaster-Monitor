@@ -51,7 +51,8 @@ class FilterTableViewCell: UITableViewCell {
         slider.isContinuous = false
         slider.minimumValue = 0.0
         slider.maximumValue = 6.0
-        slider.addTarget(self, action: #selector(didSlideFunc), for: .touchDragInside)
+        slider.addTarget(self, action: #selector(didSlideFuncLabel), for: .touchDragInside)
+        slider.addTarget(self, action: #selector(didSlideFuncState), for: .valueChanged)
         return slider
     }()
     
@@ -63,8 +64,11 @@ class FilterTableViewCell: UITableViewCell {
     
     var didSlide: ((Float) -> ())?
         
-    @objc func didSlideFunc(sender: UISlider) {
+    @objc func didSlideFuncLabel(sender: UISlider) {
         setSliderValue(value: sender.value)
+    }
+    
+    @objc func didSlideFuncState(sender: UISlider) {
         didSlide?(sender.value)
     }
     
