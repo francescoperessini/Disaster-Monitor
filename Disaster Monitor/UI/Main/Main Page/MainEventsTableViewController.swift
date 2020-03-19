@@ -31,6 +31,15 @@ class MainEventsTableViewController: ViewController<MainEventsView> {
         rootView.didPullRefreshControl = {
             self.dispatch(GetEvents())
         }
+        
+        rootView.didTapSearch = { [unowned self] in
+            self.present(self.rootView.searchController, animated: true, completion: nil)
+        }
+        
+        rootView.end = { [unowned self] text in
+            self.dispatch(SearchEvent(text: text))
+        }
+        
     }
     
 }

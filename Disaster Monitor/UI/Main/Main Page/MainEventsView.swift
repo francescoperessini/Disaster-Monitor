@@ -17,7 +17,7 @@ struct MainEventsViewModel: ViewModelWithState {
 }
 
 // MARK: - View
-class MainEventsView: UIView, ViewControllerModellableView {
+class MainEventsView: UIView, ViewControllerModellableView{
     
     var mainEventsTableView = UITableView()
     var events: [Event] = []
@@ -31,12 +31,15 @@ class MainEventsView: UIView, ViewControllerModellableView {
     var filteringDay: Int = 0
     var dataSources: [String: Bool] = [:]
     var refreshControl = UIRefreshControl()
+    var isSearching = true
     
     var didTapFilter: (() -> ())?
+    var didTapSearch: (() -> ())?
     var didTapEvent: ((String) -> ())?
     var didPullRefreshControl: (() -> ())?
     var color: Color?
-    
+    var searchController = UISearchController(searchResultsController: nil)
+    var end: ((String) -> ())?
     struct Cells {
         static let mainEventsTableViewCell = "mainCell"
     }
@@ -63,6 +66,8 @@ class MainEventsView: UIView, ViewControllerModellableView {
         navigationBar?.prefersLargeTitles = true
         navigationItem?.title = "Main Events"
         navigationItem?.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "slider.horizontal.3"), style: .plain, target: self, action: #selector(didTapFilterFunc))
+        navigationItem?.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(didTapSearchFunc))
+        
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
@@ -72,7 +77,7 @@ class MainEventsView: UIView, ViewControllerModellableView {
             navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo (con prefersLargeTitles = true)
             //navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
             navBarAppearance.backgroundColor = .systemGray6 // cambia il colore dello sfondo della navigation bar
-            // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
+            // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi􀊫
             navigationBar?.standardAppearance = navBarAppearance
             navigationBar?.scrollEdgeAppearance = navBarAppearance
         } else {
@@ -90,12 +95,17 @@ class MainEventsView: UIView, ViewControllerModellableView {
         dataSources = model.state.dataSources
         dataSources = dataSources.filter{$0.value == true}
         let tmp = dataSources.keys
-        events = events.filter{$0.magnitudo > self.filteringValue && $0.daysAgo < self.filteringDay && tmp.contains($0.dataSource)}
+        let str = model.state.searchString
+        events = events.filter{ $0.magnitudo > self.filteringValue && $0.daysAgo < self.filteringDay && tmp.contains($0.dataSource)}
+        
+        /*if str != "" {
+            events = events.filter{$0.name.contains(str)}
+        }*/
         past24Events = events.filter{$0.daysAgo == 0}
         past48Events = events.filter{$0.daysAgo == 1}
         past72Events = events.filter{$0.daysAgo == 2}
         past96Events = events.filter{$0.daysAgo == 3}
-        previousDaysEvents = events.filter{$0.daysAgo > 4}
+        previousDaysEvents = events.filter{$0.daysAgo >= 4}
         color = model.state.customColor
         navigationBar?.tintColor = model.state.customColor.getColor()
         
@@ -128,10 +138,22 @@ class MainEventsView: UIView, ViewControllerModellableView {
     @objc func didPullRefreshControlFunc() {
         didPullRefreshControl?()
     }
-       
+    
+    @objc func didTapSearchFunc() {
+        // Create the search controller and specify that it should present its results in this same view
+        searchController = UISearchController(searchResultsController: nil)
+
+        // Set any properties (in this case, don't hide the nav bar and don't show the emoji keyboard option)
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.keyboardType = UIKeyboardType.asciiCapable
+
+        // Make this class the delegate and present the search
+        self.searchController.searchBar.delegate = self
+        didTapSearch?()
+    }
 }
 
-extension MainEventsView: UITableViewDelegate, UITableViewDataSource {
+extension MainEventsView: UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return MainEventsSection.allCases.count
@@ -213,6 +235,17 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource {
             didTapEventFunc(id: past96Events[indexPath.row].id)
         case .PreviousDays:
             didTapEventFunc(id: previousDaysEvents[indexPath.row].id)
+        }
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text == nil || searchBar.text == ""{
+            isSearching = false
+            self.endEditing(true)
+            end?("")
+        }else{
+            isSearching = true
+            end?(searchBar.text!)
         }
     }
 }

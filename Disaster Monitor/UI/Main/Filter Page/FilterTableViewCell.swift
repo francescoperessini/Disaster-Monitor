@@ -51,7 +51,7 @@ class FilterTableViewCell: UITableViewCell {
         slider.isContinuous = false
         slider.minimumValue = 0.0
         slider.maximumValue = 6.0
-        slider.addTarget(self, action: #selector(didSlideFunc), for: .valueChanged)
+        slider.addTarget(self, action: #selector(didSlideFunc), for: .touchDragInside)
         return slider
     }()
     

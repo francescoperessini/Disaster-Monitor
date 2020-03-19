@@ -20,6 +20,7 @@ struct AppState: State, Codable {
     var dataSources: [String: Bool] = ["INGV": true, "USGS": true]
     var regions: [Region] = []
     var debugMode: Bool = true
+    var searchString: String = ""
 }
 
 enum colors: Int, Codable {
@@ -110,6 +111,13 @@ struct EventsStateUpdaterINGV: StateUpdater {
 struct DeleteEvents: StateUpdater{
     func updateState(_ state: inout AppState) {
         state.events.removeAll()
+    }
+}
+
+struct SearchEvent: StateUpdater{
+    var text: String
+    func updateState(_ state: inout AppState) {
+        state.searchString = text
     }
 }
 
