@@ -89,10 +89,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         queue.addOperation {
             if self.store.state.debugMode {
                 print("Debug mode activated")
-                // Creazione di un evento fittizio
-                let time = Date().timeIntervalSince1970
-                let event = Event(id: "test", name: "Test earthquake", descr: "earthquake", magnitudo: "5.5", coordinates: "9.226937 45.478085", depth: 10.0, time: 1584542766360, dataSource: "USGS", updated: 1584542766360)
-                self.store.dispatch(AddEventDebugMode(event: event))
+                self.store.dispatch(AddEventDebugMode())
             }
             else {
                 print("Debug mode not activated")

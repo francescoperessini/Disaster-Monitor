@@ -19,7 +19,7 @@ struct AppState: State, Codable {
     var customColor: Color = Color(name: colors.red)
     var dataSources: [String: Bool] = ["INGV": true, "USGS": true]
     var regions: [Region] = []
-    var debugMode: Bool = true
+    var debugMode: Bool = false
     var searchString: String = ""
 }
 
@@ -195,9 +195,13 @@ struct SetDebugMode: StateUpdater {
 }
 
 struct AddEventDebugMode: StateUpdater {
-    var event: Event
     func updateState(_ state: inout AppState) {
-        state.events.insert(event, at: 0)
+        // Creazione di un evento fittizio
+        let tmp = Date()
+        let time = tmp.timeIntervalSince1970 * 1000.0
+        let event = Event(id: "test_earthquake", name: "Test Earthquake", descr: "earthquake", magnitudo: "7.5", coordinates: "9.226937 45.478085", depth: 10.0, time: time, dataSource: "USGS", updated: time)
+        state.events.append(event)
+        state.events.sort(by: {$0.time > $1.time})
     }
 }
 
@@ -212,7 +216,7 @@ struct GetEvents: SideEffect {
         let fullFormattedDateArr = formattedDate.split(separator: " ")
         let date = String(fullFormattedDateArr[0])
         let time = String(fullFormattedDateArr[1])
-                
+                        
         context.dispatch(UpdateDaysAgo())
 
         context.dependencies.ApiManager
