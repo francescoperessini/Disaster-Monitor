@@ -126,12 +126,12 @@ class MainEventsTableViewCell: UITableViewCell {
         super.layoutSubviews()
         
         placeLabel.translatesAutoresizingMaskIntoConstraints = false
-        placeLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 7).isActive = true
+        placeLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 9).isActive = true
         placeLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
         placeLabel.trailingAnchor.constraint(equalTo: magnitudoLabel.safeAreaLayoutGuide.trailingAnchor, constant: -60).isActive = true
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -7).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -11).isActive = true
         stackView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
                 
         magnitudoLabel.translatesAutoresizingMaskIntoConstraints = false

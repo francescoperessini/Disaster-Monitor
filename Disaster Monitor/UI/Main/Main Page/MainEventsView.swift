@@ -52,7 +52,7 @@ class MainEventsView: UIView, ViewControllerModellableView{
     
     func configureMainEventsTableView() {
         setMainEventsTableViewDelegates()
-        mainEventsTableView.rowHeight = 63
+        mainEventsTableView.rowHeight = 65
         mainEventsTableView.register(MainEventsTableViewCell.self, forCellReuseIdentifier: Cells.mainEventsTableViewCell)
     }
     
