@@ -95,36 +95,38 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 print("Debug mode not activated")
                 self.store.dispatch(GetEvents())
             }
-            /*
-            // l'identifier della region non deve essere per forza uguale a quello della notifica!
-            let region: CLCircularRegion = CLCircularRegion(center: CLLocationCoordinate2DMake(-56.072800, -27.595400), radius: 10000.0, identifier: "region")
+            
+            // Via Ronchi, 39-31, 20134 Milano MI
+            let hardCodedCoordinates = CLLocation(latitude: 45.489031, longitude: 9.236980)
+            
             for event in self.store.state.events {
-                let coo = CLLocationCoordinate2D(latitude: event.coordinates[1], longitude: event.coordinates[0])
-                if region.contains(coo) {
+                let eventCoordinates = CLLocation(latitude: event.coordinates[1], longitude: event.coordinates[0])
+                
+                // Distanza in km
+                let distance = hardCodedCoordinates.distance(from: eventCoordinates) / 1000
+                
+                if distance <= 5.0 {
                     let center = UNUserNotificationCenter.current()
                     
                     let content = UNMutableNotificationContent()
-                    content.title = "test"
-                    content.body = "You've entered a new region"
+                    content.title = "Seismic event detected"
+                    content.body = "Seismic event detected near..."
                     content.sound = UNNotificationSound.default
                     
                     let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
 
-                    let notificationRequest:UNNotificationRequest = UNNotificationRequest(identifier: "Region", content: content, trigger: trigger)
+                    let notificationRequest: UNNotificationRequest = UNNotificationRequest(identifier: "test", content: content, trigger: trigger)
                     
-                    //center.removeAllPendingNotificationRequests()
-                    //center.removeAllDeliveredNotifications()
                     center.add(notificationRequest, withCompletionHandler: { (error) in
                         if let error = error {
                             print(error)
                         }
-                        else{
+                        else {
                             print("Notification added")
                         }
                     })
                 }
             }
-            */
         }
         
         let op = queue.operations.first!
