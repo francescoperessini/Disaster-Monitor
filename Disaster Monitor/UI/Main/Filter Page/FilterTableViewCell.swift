@@ -48,10 +48,11 @@ class FilterTableViewCell: UITableViewCell {
     
     lazy var magnitudoSlider: UISlider = {
         let slider = UISlider()
+        slider.isContinuous = false
         slider.minimumValue = -1.0
         slider.maximumValue = 10.0
         slider.addTarget(self, action: #selector(didSlideFuncLabel), for: .touchDragInside)
-        //slider.addTarget(self, action: #selector(didSlideFuncState), for: .valueChanged)
+        slider.addTarget(self, action: #selector(didSlideFuncState), for: .valueChanged)
         return slider
     }()
     
