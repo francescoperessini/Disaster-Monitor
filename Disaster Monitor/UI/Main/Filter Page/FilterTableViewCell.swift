@@ -7,7 +7,6 @@
 //
 
 import Tempura
-import WARangeSlider
 
 class FilterTableViewCell: UITableViewCell {
         
@@ -43,16 +42,16 @@ class FilterTableViewCell: UITableViewCell {
 
     // MARK: - Magnitude Section
     func setupMagnitudeSection(value: Float) {
-        //magnitudoSlider.setValue(value, animated: true)
-        //setSliderValue(value: value)
+        magnitudoSlider.setValue(value, animated: true)
+        setSliderValue(value: value)
     }
     
-    lazy var magnitudoSlider: RangeSlider = {
-        let slider = RangeSlider()
+    lazy var magnitudoSlider: UISlider = {
+        let slider = UISlider()
         slider.minimumValue = -1.0
         slider.maximumValue = 10.0
-        //slider.addTarget(self, action: #selector(didSlideFuncLabel), for: .touchDragInside)
-        slider.addTarget(self, action: #selector(didSlideFuncState), for: .touchDragInside)
+        slider.addTarget(self, action: #selector(didSlideFuncLabel), for: .touchDragInside)
+        //slider.addTarget(self, action: #selector(didSlideFuncState), for: .valueChanged)
         return slider
     }()
     
@@ -68,20 +67,22 @@ class FilterTableViewCell: UITableViewCell {
         setSliderValue(value: sender.value)
     }
     
-    @objc func didSlideFuncState(sender: RangeSlider) {
-        //didSlide?(sender.value)
-        print(sender.lowerValue)
-        print(sender.upperValue)
+    @objc func didSlideFuncState(sender: UISlider) {
+        didSlide?(sender.value)
     }
     
     private func setSliderValue(value: Float) {
-        let string = String(String(value).prefix(4))
-        if string == "6.0" {
-            magnitudeSliderValueLabel.text = "> " + string
+        let string: String
+        if value < 0 {
+            string = String(String(value).prefix(4))
+        }
+        else if value >= 0 && value < 10 {
+            string = String(String(value).prefix(3))
         }
         else {
-            magnitudeSliderValueLabel.text = string
+            string = String(String(value).prefix(4))
         }
+        magnitudeSliderValueLabel.text = "> " + string
     }
     
     // MARK: - Time Period Section
@@ -203,7 +204,6 @@ class FilterTableViewCell: UITableViewCell {
         magnitudoSlider.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
         magnitudoSlider.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
         magnitudoSlider.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -15).isActive = true
-        magnitudoSlider.heightAnchor.constraint(equalToConstant: 30).isActive = true
 
         timePeriodSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
         timePeriodSegmentedControl.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
