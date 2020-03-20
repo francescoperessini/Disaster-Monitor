@@ -13,6 +13,7 @@ target 'Disaster Monitor' do
   pod 'Alamofire',:modular_headers => true
   pod 'PromiseKit',:modular_headers => true
   pod 'SwiftyJSON',:modular_headers => true
+  pod "WARangeSlider",:modular_headers => true
   # Pods for Disaster Monitor
 
   target 'Disaster MonitorTests' do

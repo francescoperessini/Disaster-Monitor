@@ -12,10 +12,10 @@ import SwiftyJSON
 
 struct AppState: State, Codable {
     var events: [Event] = []
-    var filteringValue: Float = 0.0
+    var filteringValue: Float = -1.0
     var message: String = "Message to be shared\nSent from Disaster Monitor App"
     var displayEvent: Event?
-    var segmentedDays: Int = 999
+    var segmentedDays: Int = 7
     var customColor: Color = Color(name: colors.red)
     var dataSources: [String: Bool] = ["INGV": true, "USGS": true]
     var regions: [Region] = []

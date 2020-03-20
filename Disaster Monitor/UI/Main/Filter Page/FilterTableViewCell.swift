@@ -7,6 +7,7 @@
 //
 
 import Tempura
+import WARangeSlider
 
 class FilterTableViewCell: UITableViewCell {
         
@@ -42,17 +43,16 @@ class FilterTableViewCell: UITableViewCell {
 
     // MARK: - Magnitude Section
     func setupMagnitudeSection(value: Float) {
-        magnitudoSlider.setValue(value, animated: true)
-        setSliderValue(value: value)
+        //magnitudoSlider.setValue(value, animated: true)
+        //setSliderValue(value: value)
     }
     
-    lazy var magnitudoSlider: UISlider = {
-        let slider = UISlider()
-        slider.isContinuous = false
-        slider.minimumValue = 0.0
-        slider.maximumValue = 6.0
-        slider.addTarget(self, action: #selector(didSlideFuncLabel), for: .touchDragInside)
-        slider.addTarget(self, action: #selector(didSlideFuncState), for: .valueChanged)
+    lazy var magnitudoSlider: RangeSlider = {
+        let slider = RangeSlider()
+        slider.minimumValue = -1.0
+        slider.maximumValue = 10.0
+        //slider.addTarget(self, action: #selector(didSlideFuncLabel), for: .touchDragInside)
+        slider.addTarget(self, action: #selector(didSlideFuncState), for: .touchDragInside)
         return slider
     }()
     
@@ -68,8 +68,10 @@ class FilterTableViewCell: UITableViewCell {
         setSliderValue(value: sender.value)
     }
     
-    @objc func didSlideFuncState(sender: UISlider) {
-        didSlide?(sender.value)
+    @objc func didSlideFuncState(sender: RangeSlider) {
+        //didSlide?(sender.value)
+        print(sender.lowerValue)
+        print(sender.upperValue)
     }
     
     private func setSliderValue(value: Float) {
@@ -201,6 +203,7 @@ class FilterTableViewCell: UITableViewCell {
         magnitudoSlider.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
         magnitudoSlider.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
         magnitudoSlider.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -15).isActive = true
+        magnitudoSlider.heightAnchor.constraint(equalToConstant: 30).isActive = true
 
         timePeriodSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
         timePeriodSegmentedControl.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
