@@ -96,7 +96,7 @@ class MainEventsView: UIView, ViewControllerModellableView{
         dataSources = dataSources.filter{$0.value == true}
         let tmp = dataSources.keys
         let str = model.state.searchString
-        events = events.filter{ $0.magnitudo > self.filteringValue && $0.daysAgo < self.filteringDay && tmp.contains($0.dataSource)}
+        events = events.filter{$0.magnitudo >= self.filteringValue && $0.daysAgo < self.filteringDay && tmp.contains($0.dataSource)}
         
         if str != "" {
             events = events.filter{$0.name.contains(str)}

@@ -12,7 +12,7 @@ import SwiftyJSON
 
 struct AppState: State, Codable {
     var events: [Event] = []
-    var filteringValue: Float = 0.0
+    var filteringValue: Float = 0.00
     var message: String = "Message to be shared\nSent from Disaster Monitor App"
     var displayEvent: Event?
     var segmentedDays: Int = 7
@@ -62,13 +62,13 @@ struct EventsStateUpdater: StateUpdater {
         let dataSource = "USGS"
         
         for i in 0...arrayNames.count - 1 {
-            //Unseen Event
-            if !state.events.contains(where: { $0.id == id[i] }) {
+            // Unseen event
+            if !state.events.contains(where: {$0.id == id[i]}) {
                 state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i]))
             }
-            //Seen event, with an update
-            else if state.events.contains(where: { $0.id == id[i] && $0.updated == updated[i]}) {
-                let toRemoveEvent = state.events.firstIndex{$0.id == id[i] && $0.updated == updated[i] }
+            // Seen event, with an update
+            else if state.events.contains(where: {$0.id == id[i] && $0.updated == updated[i]}) {
+                let toRemoveEvent = state.events.firstIndex{$0.id == id[i] && $0.updated == updated[i]}
                 state.events.remove(at: toRemoveEvent!)
                 state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i]))
             }
@@ -108,13 +108,18 @@ struct EventsStateUpdaterINGV: StateUpdater {
     }
 }
 
-struct DeleteEvents: StateUpdater{
+struct UpdateDaysAgo: StateUpdater {
     func updateState(_ state: inout AppState) {
-        state.events.removeAll()
+        let date = Date()
+        for i in 0...state.events.count - 1 {
+            let tmp = Calendar.current.dateComponents([.day], from: state.events[i].date, to: date).day!
+            state.events[i].daysAgo = tmp
+        }
+        //state.events.forEach{state.events[state.events.firstIndex(of: $0)!].daysAgo = Calendar.current.dateComponents([.day], from: $0.date, to: date).day!}
     }
 }
 
-struct SearchEvent: StateUpdater{
+struct SearchEvent: StateUpdater {
     var text: String
     func updateState(_ state: inout AppState) {
         state.searchString = text
@@ -200,8 +205,8 @@ struct GetEvents: SideEffect {
         let fullFormattedDateArr = formattedDate.split(separator: " ")
         let date = String(fullFormattedDateArr[0])
         let time = String(fullFormattedDateArr[1])
-        
-        //context.dispatch(DeleteEvents())
+                
+        context.dispatch(UpdateDaysAgo())
 
         context.dependencies.ApiManager
             .getEventsUSGS(date: date, time: time)

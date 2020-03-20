@@ -75,15 +75,12 @@ class FilterTableViewCell: UITableViewCell {
     private func setSliderValue(value: Float) {
         let string: String
         if value < 0 {
-            string = String(String(value).prefix(4))
-        }
-        else if value >= 0 && value < 10 {
-            string = String(String(value).prefix(3))
+            string = String(String(value).prefix(5))
         }
         else {
             string = String(String(value).prefix(4))
         }
-        magnitudeSliderValueLabel.text = "> " + string
+        magnitudeSliderValueLabel.text = ">= " + string
     }
     
     // MARK: - Time Period Section
