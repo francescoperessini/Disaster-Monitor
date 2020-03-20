@@ -51,22 +51,22 @@ struct Color: Codable {
 struct EventsStateUpdater: StateUpdater {
     let newValue: JSON
     func updateState(_ state: inout AppState) {
-        let arrayNames = newValue["features"].arrayValue.map {$0["properties"]["place"].stringValue}
-        let description = newValue["features"].arrayValue.map {$0["properties"]["type"].stringValue}
-        let magnitudo = newValue["features"].arrayValue.map {$0["properties"]["mag"].stringValue}
-        let coord = newValue["features"].arrayValue.map {"\($0["geometry"]["coordinates"][0].stringValue) \($0["geometry"]["coordinates"][1].stringValue)"}
-        let id = newValue["features"].arrayValue.map {$0["id"].stringValue}
-        let time = newValue["features"].arrayValue.map {$0["properties"]["time"].doubleValue}
+        let arrayNames = newValue["features"].arrayValue.map{$0["properties"]["place"].stringValue}
+        let description = newValue["features"].arrayValue.map{$0["properties"]["type"].stringValue}
+        let magnitudo = newValue["features"].arrayValue.map{$0["properties"]["mag"].stringValue}
+        let coord = newValue["features"].arrayValue.map{"\($0["geometry"]["coordinates"][0].stringValue) \($0["geometry"]["coordinates"][1].stringValue)"}
+        let id = newValue["features"].arrayValue.map{$0["id"].stringValue}
+        let time = newValue["features"].arrayValue.map{$0["properties"]["time"].doubleValue}
         let depth = newValue["features"].arrayValue.map{$0["geometry"]["coordinates"][2].floatValue}
-        let updated = newValue["features"].arrayValue.map {$0["properties"]["updated"].doubleValue}
+        let updated = newValue["features"].arrayValue.map{$0["properties"]["updated"].doubleValue}
         let dataSource = "USGS"
         
         for i in 0...arrayNames.count - 1 {
-            // Unseen event
+            // Unseen events
             if !state.events.contains(where: {$0.id == id[i]}) {
                 state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i]))
             }
-            // Seen event, with an update
+            // Seen events, with an update
             else if state.events.contains(where: {$0.id == id[i] && $0.updated == updated[i]}) {
                 let toRemoveEvent = state.events.firstIndex{$0.id == id[i] && $0.updated == updated[i]}
                 state.events.remove(at: toRemoveEvent!)
@@ -80,12 +80,12 @@ struct EventsStateUpdater: StateUpdater {
 struct EventsStateUpdaterINGV: StateUpdater {
     let newValue: JSON
     func updateState(_ state: inout AppState) {
-        let arrayNames = newValue["features"].arrayValue.map {$0["properties"]["place"].stringValue}
-        let description = newValue["features"].arrayValue.map {$0["properties"]["type"].stringValue}
-        let magnitudo = newValue["features"].arrayValue.map {$0["properties"]["mag"].stringValue}
-        let coord = newValue["features"].arrayValue.map {"\($0["geometry"]["coordinates"][0].stringValue) \($0["geometry"]["coordinates"][1].stringValue)"}
-        let id = newValue["features"].arrayValue.map {$0["properties"]["eventId"].stringValue}
-        let time_str = newValue["features"].arrayValue.map {$0["properties"]["time"].stringValue}
+        let arrayNames = newValue["features"].arrayValue.map{$0["properties"]["place"].stringValue}
+        let description = newValue["features"].arrayValue.map{$0["properties"]["type"].stringValue}
+        let magnitudo = newValue["features"].arrayValue.map{$0["properties"]["mag"].stringValue}
+        let coord = newValue["features"].arrayValue.map{"\($0["geometry"]["coordinates"][0].stringValue) \($0["geometry"]["coordinates"][1].stringValue)"}
+        let id = newValue["features"].arrayValue.map{$0["properties"]["eventId"].stringValue}
+        let time_str = newValue["features"].arrayValue.map{$0["properties"]["time"].stringValue}
         let depth = newValue["features"].arrayValue.map{$0["geometry"]["coordinates"][2].floatValue}
         let dataSource = "INGV"
         var result_time: [Double] = []
@@ -94,13 +94,13 @@ struct EventsStateUpdaterINGV: StateUpdater {
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
         dateFormatter.timeZone = TimeZone(identifier: "UTC")
         
-        for time in time_str{
+        for time in time_str {
             guard let appo = dateFormatter.date(from: time) else { return }
             result_time.append(appo.timeIntervalSince1970 * 1000.0)
         }
 
         for i in 0...arrayNames.count - 1 {
-            if !state.events.contains(where: { $0.id == id[i] }) {
+            if !state.events.contains(where: {$0.id == id[i]}) {
                 state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: result_time[i], dataSource: dataSource, updated: 0))
             }
         }
@@ -110,12 +110,19 @@ struct EventsStateUpdaterINGV: StateUpdater {
 
 struct UpdateDaysAgo: StateUpdater {
     func updateState(_ state: inout AppState) {
-        let date = Date()
-        for i in 0...state.events.count - 1 {
-            let tmp = Calendar.current.dateComponents([.day], from: state.events[i].date, to: date).day!
-            state.events[i].daysAgo = tmp
+        /*
+        if !state.events.isEmpty {
+            let date = Date()
+            for i in 0...state.events.count - 1 {
+                let tmp = Calendar.current.dateComponents([.day], from: state.events[i].date, to: date).day!
+                state.events[i].daysAgo = tmp
+            }
         }
-        //state.events.forEach{state.events[state.events.firstIndex(of: $0)!].daysAgo = Calendar.current.dateComponents([.day], from: $0.date, to: date).day!}
+        */
+        if !state.events.isEmpty {
+            let date = Date()
+            state.events.forEach{state.events[state.events.firstIndex(of: $0)!].daysAgo = Calendar.current.dateComponents([.day], from: $0.date, to: date).day!}
+        }
     }
 }
 
