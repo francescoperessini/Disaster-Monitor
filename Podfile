@@ -14,6 +14,7 @@ target 'Disaster Monitor' do
   pod 'PromiseKit',:modular_headers => true
   pod 'SwiftyJSON',:modular_headers => true
   pod "WARangeSlider",:modular_headers => true
+  pod 'Google-Maps-iOS-Utils',:modular_headers => true
   # Pods for Disaster Monitor
 
   target 'Disaster MonitorTests' do

@@ -10,6 +10,7 @@ import Tempura
 import CoreLocation
 import GoogleMaps
 import GooglePlaces
+import GoogleMapsUtils
 
 // MARK: - ViewModel
 struct MapViewModel: ViewModelWithState {
@@ -22,15 +23,14 @@ struct MapViewModel: ViewModelWithState {
 // MARK: - View
 class MapView: UIView, ViewControllerModellableView {
    
+    var events: [Event] = []
     let locationManager = CLLocationManager()
     let mapView = GMSMapView()
-    let segmentedControl = UISegmentedControl(items: ["Normal", "Satellite"])
+    var heatmapLayer = GMUHeatmapTileLayer()
+    let segmentedControl = UISegmentedControl(items: ["Normal", "Satellite", "Heatmap"])
     var resultsViewController: GMSAutocompleteResultsViewController?
     var searchController: UISearchController?
-    var resultView: UITextView?
     var didTapActionButton: (() -> ())?
-
-    var actualPosition: CLLocation?
 
     // MARK: - Setup
     func setup() {
@@ -45,9 +45,7 @@ class MapView: UIView, ViewControllerModellableView {
         
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            //locationManager.allowsBackgroundLocationUpdates = true
-            //locationManager.pausesLocationUpdatesAutomatically = false
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
         }
     }
@@ -101,10 +99,13 @@ class MapView: UIView, ViewControllerModellableView {
     
     func update(oldModel: MapViewModel?) {
         guard let model = model else { return }
-        if model.state.events.count != 0 {
+        events = model.state.events
+        if segmentedControl.selectedSegmentIndex == 0 || segmentedControl.selectedSegmentIndex == 1 {
             setupMarkers()
         }
-        mapViewStyle()
+        else {
+            setupHeatmap()
+        }
     }
 
     override func layoutSubviews() {
@@ -131,31 +132,44 @@ class MapView: UIView, ViewControllerModellableView {
         mapView.settings.myLocationButton = true
         
         // compassButton displays only when map is NOT in the north direction
-        //mapView.settings.compassButton = true
+        mapView.settings.compassButton = false
         mapView.settings.scrollGestures = true
         mapView.settings.zoomGestures = true
         mapView.settings.tiltGestures = true
-        
-        /*
-        let circ = GMSCircle(position: marker.position, radius: 100000)
-        circ.fillColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.10)
-        circ.strokeColor = .red
-        circ.strokeWidth = 2
-        circ.map = mapView
-        */
     }
 
     private func setupMarkers() {
         mapView.clear()
-        for event in (model?.state.events)! {
-            let longitude = event.coordinates[0]
-            let latitude = event.coordinates[1]
-            let position = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-            let marker = GMSMarker(position: position)
-            marker.title = event.name
-            marker.snippet = "Magnitudo: \(String(event.magnitudo))"
-            marker.appearAnimation = GMSMarkerAnimation.pop
-            marker.map = mapView
+        heatmapLayer.map = nil
+        if !events.isEmpty {
+            for event in events {
+                let longitude = event.coordinates[0]
+                let latitude = event.coordinates[1]
+                let position = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                let marker = GMSMarker(position: position)
+                marker.title = event.name
+                marker.snippet = "Magnitudo: \(String(event.magnitudo))"
+                marker.appearAnimation = GMSMarkerAnimation.pop
+                marker.map = mapView
+            }
+        }
+    }
+    
+    private func setupHeatmap() {
+        mapView.clear()
+        mapView.animate(toZoom: 0)
+        var list = [GMUWeightedLatLng]()
+        if !events.isEmpty {
+            for event in events {
+                let lon = event.coordinates[0]
+                let lat = event.coordinates[1]
+                let coords = GMUWeightedLatLng(coordinate: CLLocationCoordinate2DMake(lat , lon), intensity: 1.0)
+                list.append(coords)
+            }
+            heatmapLayer.radius = 50
+            heatmapLayer.weightedData = list
+            heatmapLayer.clearTileCache()
+            heatmapLayer.map = mapView
         }
     }
     
@@ -165,12 +179,17 @@ class MapView: UIView, ViewControllerModellableView {
     
     @objc func indexChanged(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex {
-            case 0:
-                mapView.mapType = GMSMapViewType.normal
-            case 1:
-                mapView.mapType = GMSMapViewType.satellite
-            default:
-                break
+        case 0:
+            setupMarkers()
+            mapView.mapType = GMSMapViewType.normal
+        case 1:
+            setupMarkers()
+            mapView.mapType = GMSMapViewType.satellite
+        case 2:
+            setupHeatmap()
+            mapView.mapType = GMSMapViewType.terrain
+        default:
+            break
         }
     }
     
@@ -189,7 +208,6 @@ class MapView: UIView, ViewControllerModellableView {
         do {
           // Set the map style by passing the URL of the local file.
           if let styleURL = Bundle.main.url(forResource: mapStyleString, withExtension: "json") {
-            mapView.clear()
             mapView.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
           } else {
             NSLog("Unable to find style.json")
@@ -197,7 +215,12 @@ class MapView: UIView, ViewControllerModellableView {
         } catch {
           NSLog("One or more of the map styles failed to load. \(error)")
         }
-        setupMarkers()
+        if segmentedControl.selectedSegmentIndex == 0 || segmentedControl.selectedSegmentIndex == 1 {
+            setupMarkers()
+        }
+        else {
+            setupHeatmap()
+        }
     }
     
 }
@@ -210,13 +233,6 @@ extension MapView: CLLocationManagerDelegate, GMSAutocompleteResultsViewControll
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.first else { return }
-        
-        actualPosition = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-        
-        // This updates the map’s camera to center around the user’s current location
-        // mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
-          
         // Tell locationManager you’re no longer interested in updates
         // locationManager.stopUpdatingLocation()
     }

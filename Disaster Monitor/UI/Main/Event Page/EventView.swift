@@ -12,13 +12,11 @@ import GoogleMaps
 
 // MARK: - ViewModel
 struct EventViewModel: ViewModelWithLocalState {
-
     var event: Event?
     
     init?(state: AppState?, localState: EventControllerLocalState) {
-        self.event = state?.events.first(where: {$0.id == localState.id})
+        self.event = state?.events.first(where:{$0.id == localState.id})
     }
-    
 }
 
 // MARK: - View
@@ -44,7 +42,7 @@ class EventView: UIView, ViewControllerModellableView {
     
     // MARK: Style
     func style() {
-        backgroundColor = .systemBackground
+        //backgroundColor = .systemBackground
         navigationItem?.largeTitleDisplayMode = .never
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
