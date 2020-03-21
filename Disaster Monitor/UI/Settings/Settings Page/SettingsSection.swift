@@ -12,6 +12,7 @@ protocol SectionType: CustomStringConvertible {
     var containsSegmenteColor: Bool { get }
     var containsSegmentedMap: Bool { get }
     var containsDebugModeSwitch: Bool { get }
+    var containsOpenSymbol: Bool { get }
 }
 
 enum SettingsSection: Int, CaseIterable, CustomStringConvertible {
@@ -51,6 +52,7 @@ enum MessageOption: Int, CaseIterable, SectionType {
     var containsSegmenteColor: Bool { return false }
     var containsSegmentedMap: Bool { return false }
     var containsDebugModeSwitch: Bool { return false }
+    var containsOpenSymbol: Bool { return false }
     
     var description: String {
         switch self {
@@ -78,6 +80,14 @@ enum PrivacyOption: Int, CaseIterable, SectionType {
             default: return false
         }
     }
+    
+    var containsOpenSymbol: Bool{
+        switch self {
+        case .places: return true
+            default: return false
+        }
+    }
+    
     var containsSegmenteColor: Bool { return false }
     var containsSegmentedMap: Bool { return false }
     var containsDebugModeSwitch: Bool { return false }
@@ -98,6 +108,8 @@ enum StylingOption: Int, CaseIterable, SectionType {
     
     var containsStepperRadius: Bool{ return false }
     var containsStepperMagnitudo: Bool{ return false }
+    var containsOpenSymbol: Bool { return false }
+    
     var containsSegmenteColor: Bool {
         switch self {
             case .color: return true
@@ -129,6 +141,7 @@ enum AboutUsOption: Int, CaseIterable, SectionType {
     var containsSegmenteColor: Bool { return false }
     var containsSegmentedMap: Bool { return false }
     var containsDebugModeSwitch: Bool { return false }
+    var containsOpenSymbol: Bool { return false }
     
     var description: String{ return "" }
 }
@@ -142,6 +155,7 @@ enum DataSourceOption: Int, CaseIterable, SectionType {
     var containsSegmenteColor: Bool { return false }
     var containsSegmentedMap: Bool { return false }
     var containsDebugModeSwitch: Bool { return false }
+    var containsOpenSymbol: Bool { return false }
     
     var description: String{ return "" }
 }
@@ -155,6 +169,7 @@ enum DebugOption: Int, CaseIterable, SectionType {
     var containsSegmenteColor: Bool { return false }
     var containsSegmentedMap: Bool { return false }
     var containsDebugModeSwitch: Bool { return true }
+    var containsOpenSymbol: Bool { return false }
     
     var description: String {
         switch self {

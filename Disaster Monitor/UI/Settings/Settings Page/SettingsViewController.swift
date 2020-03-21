@@ -21,6 +21,10 @@ class SettingsViewController: ViewController<SettingsView> {
             self.present(vc, animated: true, completion: nil)
         }
         
+        rootView.didTapEditMonitoredLocations = {
+            let vc = MonitoredRegionViewController(store: self.store)
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
         
         rootView.didTapStylingColor = { [unowned self] color in
             self.dispatch(UpdateCustomColor(color: color))

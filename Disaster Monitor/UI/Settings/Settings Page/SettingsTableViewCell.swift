@@ -26,6 +26,8 @@ class SettingsTableViewCell: UITableViewCell {
             segmentedMap.isHidden = !sectionType.containsSegmentedMap
             
             debugSwitch.isHidden = !sectionType.containsDebugModeSwitch
+            
+            openImageView.isHidden = !sectionType.containsOpenSymbol
         }
     }
     
@@ -59,6 +61,11 @@ class SettingsTableViewCell: UITableViewCell {
         let switchLabel = UILabel()
         switchLabel.text = "0"
         return switchLabel
+    }()
+    
+    lazy var openImageView: UIImageView = {
+        let img = UIImageView(image: UIImage(systemName: "􀆂"))
+        return img
     }()
     
     lazy var segmentedColors: UISegmentedControl = {
@@ -109,6 +116,10 @@ class SettingsTableViewCell: UITableViewCell {
         debugSwitch.translatesAutoresizingMaskIntoConstraints = false
         debugSwitch.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
         debugSwitch.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -20).isActive = true
+        
+        openImageView.translatesAutoresizingMaskIntoConstraints = false
+        openImageView.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        openImageView.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -20).isActive = true
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -124,6 +135,8 @@ class SettingsTableViewCell: UITableViewCell {
         self.addSubview(segmentedMap)
         
         self.addSubview(debugSwitch)
+        
+        self.addSubview(openImageView)
     }
     
     required init?(coder: NSCoder) {

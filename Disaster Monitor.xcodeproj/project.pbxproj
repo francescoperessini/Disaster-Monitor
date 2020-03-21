@@ -10,6 +10,10 @@
 		3488026885E98AB18388285D /* libPods-Disaster Monitor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 47C89C4D857C7D74010269F4 /* libPods-Disaster Monitor.a */; };
 		7B1DF43723ABA5EB004C952A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1DF43523ABA5EB004C952A /* SettingsView.swift */; };
 		7B1DF43823ABA5EB004C952A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1DF43623ABA5EB004C952A /* SettingsViewController.swift */; };
+		7B44821124252D5B000DDDAC /* MonitoredRegionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B44821024252D5B000DDDAC /* MonitoredRegionsView.swift */; };
+		7B44821324252D66000DDDAC /* MonitoredRegionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B44821224252D66000DDDAC /* MonitoredRegionViewController.swift */; };
+		7B44821524252D7A000DDDAC /* MonitoredRegionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B44821424252D7A000DDDAC /* MonitoredRegionViewCell.swift */; };
+		7B44821724252D88000DDDAC /* MonitoredRegionSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B44821624252D88000DDDAC /* MonitoredRegionSection.swift */; };
 		7B5038A823A8CD5700F18840 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5038A723A8CD5700F18840 /* AppDelegate.swift */; };
 		7B5038AA23A8CD5700F18840 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5038A923A8CD5700F18840 /* SceneDelegate.swift */; };
 		7B5038AE23A8CD5800F18840 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7B5038AD23A8CD5800F18840 /* Assets.xcassets */; };
@@ -36,6 +40,10 @@
 		7B6E6271240984830047D7AE /* EventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6E6270240984830047D7AE /* EventView.swift */; };
 		7B6E62732409849B0047D7AE /* EventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6E62722409849B0047D7AE /* EventViewController.swift */; };
 		7B6E627524098B5F0047D7AE /* MainEventsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6E627424098B5F0047D7AE /* MainEventsTableViewCell.swift */; };
+		7B78A4B624265C0400903791 /* AddMonitoredPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B78A4B524265C0400903791 /* AddMonitoredPlaceView.swift */; };
+		7B78A4B824265C0F00903791 /* AddMonitoredPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B78A4B724265C0F00903791 /* AddMonitoredPlaceViewController.swift */; };
+		7B78A4BA242697FC00903791 /* AddMonitoredRegionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B78A4B9242697FC00903791 /* AddMonitoredRegionCell.swift */; };
+		7B78A4BC2426981B00903791 /* AddMonitoredRegionSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B78A4BB2426981B00903791 /* AddMonitoredRegionSection.swift */; };
 		7B82217E23AB8BC6002DAA48 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B82217D23AB8BC6002DAA48 /* MapView.swift */; };
 		7B82218023AB8C9B002DAA48 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B82217F23AB8C9B002DAA48 /* MapViewController.swift */; };
 		7B92360C241794DE00A4EF22 /* PersistorInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B92360B241794DE00A4EF22 /* PersistorInterceptor.swift */; };
@@ -84,6 +92,10 @@
 		61CCB0348A1EC0F4C5560FCE /* Pods-Disaster Monitor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disaster Monitor.release.xcconfig"; path = "Target Support Files/Pods-Disaster Monitor/Pods-Disaster Monitor.release.xcconfig"; sourceTree = "<group>"; };
 		7B1DF43523ABA5EB004C952A /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		7B1DF43623ABA5EB004C952A /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		7B44821024252D5B000DDDAC /* MonitoredRegionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitoredRegionsView.swift; sourceTree = "<group>"; };
+		7B44821224252D66000DDDAC /* MonitoredRegionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitoredRegionViewController.swift; sourceTree = "<group>"; };
+		7B44821424252D7A000DDDAC /* MonitoredRegionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitoredRegionViewCell.swift; sourceTree = "<group>"; };
+		7B44821624252D88000DDDAC /* MonitoredRegionSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitoredRegionSection.swift; sourceTree = "<group>"; };
 		7B5038A423A8CD5700F18840 /* Disaster Monitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Disaster Monitor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B5038A723A8CD5700F18840 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7B5038A923A8CD5700F18840 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -116,6 +128,10 @@
 		7B6E6270240984830047D7AE /* EventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventView.swift; sourceTree = "<group>"; };
 		7B6E62722409849B0047D7AE /* EventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewController.swift; sourceTree = "<group>"; };
 		7B6E627424098B5F0047D7AE /* MainEventsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainEventsTableViewCell.swift; sourceTree = "<group>"; };
+		7B78A4B524265C0400903791 /* AddMonitoredPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMonitoredPlaceView.swift; sourceTree = "<group>"; };
+		7B78A4B724265C0F00903791 /* AddMonitoredPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMonitoredPlaceViewController.swift; sourceTree = "<group>"; };
+		7B78A4B9242697FC00903791 /* AddMonitoredRegionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMonitoredRegionCell.swift; sourceTree = "<group>"; };
+		7B78A4BB2426981B00903791 /* AddMonitoredRegionSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMonitoredRegionSection.swift; sourceTree = "<group>"; };
 		7B82217D23AB8BC6002DAA48 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		7B82217F23AB8C9B002DAA48 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		7B92360B241794DE00A4EF22 /* PersistorInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistorInterceptor.swift; sourceTree = "<group>"; };
@@ -171,6 +187,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7B44820F24252D2A000DDDAC /* Monitored Places */ = {
+			isa = PBXGroup;
+			children = (
+				7B78A4B424265BE900903791 /* AddMonitoredPlace */,
+				7B44821024252D5B000DDDAC /* MonitoredRegionsView.swift */,
+				7B44821224252D66000DDDAC /* MonitoredRegionViewController.swift */,
+				7B44821424252D7A000DDDAC /* MonitoredRegionViewCell.swift */,
+				7B44821624252D88000DDDAC /* MonitoredRegionSection.swift */,
+			);
+			path = "Monitored Places";
+			sourceTree = "<group>";
+		};
 		7B50389B23A8CD5700F18840 = {
 			isa = PBXGroup;
 			children = (
@@ -261,12 +289,24 @@
 			path = CollectionView;
 			sourceTree = "<group>";
 		};
+		7B78A4B424265BE900903791 /* AddMonitoredPlace */ = {
+			isa = PBXGroup;
+			children = (
+				7B78A4B524265C0400903791 /* AddMonitoredPlaceView.swift */,
+				7B78A4B724265C0F00903791 /* AddMonitoredPlaceViewController.swift */,
+				7B78A4B9242697FC00903791 /* AddMonitoredRegionCell.swift */,
+				7B78A4BB2426981B00903791 /* AddMonitoredRegionSection.swift */,
+			);
+			path = AddMonitoredPlace;
+			sourceTree = "<group>";
+		};
 		7BE4172A23A8D2E00096F8EA /* UI */ = {
 			isa = PBXGroup;
 			children = (
 				C6B0E86D2406DCE4005CEE09 /* MainTabBarController.swift */,
 				7B92360B241794DE00A4EF22 /* PersistorInterceptor.swift */,
 				7B5038A923A8CD5700F18840 /* SceneDelegate.swift */,
+				7B44820F24252D2A000DDDAC /* Monitored Places */,
 				C635C0BB240DB9A200970769 /* Main */,
 				C635C0BD240DB9C100970769 /* Map */,
 				C614C9782411A72E00DC772E /* Map Style */,
@@ -664,18 +704,21 @@
 			files = (
 				7B6E626D240964AB0047D7AE /* MainEventsSection.swift in Sources */,
 				C6E81A722409BB6C00CCD23D /* MessageEditorViewController.swift in Sources */,
+				7B78A4B624265C0400903791 /* AddMonitoredPlaceView.swift in Sources */,
 				7B69AD6F240582B400E040B9 /* FilterView.swift in Sources */,
 				7B564A2A23A9302E00DD178C /* UIView+Blink.swift in Sources */,
 				C6C625082409AC5A00E994F3 /* MessageEditorView.swift in Sources */,
 				7B6E6271240984830047D7AE /* EventView.swift in Sources */,
 				C6B0E86E2406DCE4005CEE09 /* MainTabBarController.swift in Sources */,
 				7B564A2823A9301800DD178C /* UIControl+TargetActionable.swift in Sources */,
+				7B44821124252D5B000DDDAC /* MonitoredRegionsView.swift in Sources */,
 				C6B0E86C24068AC9005CEE09 /* SettingsTableViewCell.swift in Sources */,
 				7BE4173323A8D3AD0096F8EA /* ItemActions.swift in Sources */,
 				7B6E627524098B5F0047D7AE /* MainEventsTableViewCell.swift in Sources */,
 				7B564A2323A92FEB00DD178C /* String+Height.swift in Sources */,
 				7BE4173B23A8D49C0096F8EA /* MainView.swift in Sources */,
 				7B564A3123A9308700DD178C /* DataSource.swift in Sources */,
+				7B44821524252D7A000DDDAC /* MonitoredRegionViewCell.swift in Sources */,
 				7B5038A823A8CD5700F18840 /* AppDelegate.swift in Sources */,
 				7B564A3323A9309C00DD178C /* Source.swift in Sources */,
 				C677E59A2407CA540079344A /* SettingsSection.swift in Sources */,
@@ -689,13 +732,17 @@
 				7B5038AA23A8CD5700F18840 /* SceneDelegate.swift in Sources */,
 				7BE4173723A8D42F0096F8EA /* Models.swift in Sources */,
 				7B564A3723A9404F00DD178C /* EventCell.swift in Sources */,
+				7B78A4B824265C0F00903791 /* AddMonitoredPlaceViewController.swift in Sources */,
 				7B564A3523A9325D00DD178C /* EventsFlowLayout.swift in Sources */,
 				7B6E62692409629D0047D7AE /* MainEventsView.swift in Sources */,
+				7B78A4BC2426981B00903791 /* AddMonitoredRegionSection.swift in Sources */,
+				7B44821724252D88000DDDAC /* MonitoredRegionSection.swift in Sources */,
 				7B9D000F23ABF3DC00B9FACB /* Zip4Sequence.swift in Sources */,
 				7B82218023AB8C9B002DAA48 /* MapViewController.swift in Sources */,
 				C60D1E50241BE2D40054DF3B /* FilterTableViewCell.swift in Sources */,
 				7B6E62732409849B0047D7AE /* EventViewController.swift in Sources */,
 				7B564A2F23A9306D00DD178C /* ConfigurableCell.swift in Sources */,
+				7B78A4BA242697FC00903791 /* AddMonitoredRegionCell.swift in Sources */,
 				7B564A2623A9300300DD178C /* String+Random.swift in Sources */,
 				7B69AD6D2405827300E040B9 /* FilterViewController.swift in Sources */,
 				7B564A1C23A92B7100DD178C /* ListView.swift in Sources */,
@@ -703,6 +750,7 @@
 				7BE4173D23A8D4AC0096F8EA /* MainViewController.swift in Sources */,
 				7B82217E23AB8BC6002DAA48 /* MapView.swift in Sources */,
 				7BE4173523A8D4130096F8EA /* DependenciesContainer.swift in Sources */,
+				7B44821324252D66000DDDAC /* MonitoredRegionViewController.swift in Sources */,
 				C60D1E52241BF3000054DF3B /* FilterSection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
