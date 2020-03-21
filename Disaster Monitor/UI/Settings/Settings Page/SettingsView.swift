@@ -24,6 +24,7 @@ class SettingsView: UIView, ViewControllerModellableView {
 
     var settingsTableView = UITableView(frame: CGRect.zero, style: .grouped)
     var didTapEditMessage: (() -> ())?
+    var didTapEditMonitoredLocations: (() -> ())?
     
     var didTapStylingColor: ((Color) -> ())?
     var didTapSwitch: ((Bool) -> ())?
@@ -33,6 +34,10 @@ class SettingsView: UIView, ViewControllerModellableView {
     
     @objc func didTapEditMessageFunc() {
         didTapEditMessage?()
+    }
+    
+    @objc func didTapEditMonitoredLocationsFunc() {
+        didTapEditMonitoredLocations?()
     }
     
     struct Cells {
@@ -79,7 +84,7 @@ class SettingsView: UIView, ViewControllerModellableView {
            setSettingsTableViewDelegates()
            settingsTableView.rowHeight = 60
            settingsTableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: Cells.settingsTableViewCell)
-       }
+    }
        
     private func setSettingsTableViewDelegates() {
        settingsTableView.delegate = self
@@ -213,7 +218,10 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
             if indexPath.row == 0 {
                 didTapEditMessageFunc()
             }
-        case .Privacy: break
+        case .Privacy:
+            if indexPath.row == 1 {
+                didTapEditMonitoredLocationsFunc()
+            }
         case .Styling: break
         case .AboutUs: break
         case .DataSource: break

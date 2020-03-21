@@ -18,7 +18,7 @@ struct AppState: State, Codable {
     var segmentedDays: Int = 7
     var customColor: Color = Color(name: colors.red)
     var dataSources: [String: Bool] = ["INGV": true, "USGS": true]
-    var regions: [Region] = []
+    var regions: [Region] = [Region(latitude: 1, longitudine: 2, radius: 3, magnitude: 4), Region(latitude: 1, longitudine: 2, radius: 3, magnitude: 4), Region(latitude: 1, longitudine: 2, radius: 3, magnitude: 4)]
     var debugMode: Bool = false
     var searchString: String = ""
 }
@@ -191,6 +191,19 @@ struct SetDebugMode: StateUpdater {
     var value: Bool
     func updateState(_ state: inout AppState) {
         state.debugMode = value
+    }
+}
+
+struct RemoveMonitoredPlace: StateUpdater {
+    var index: Int
+    func updateState(_ state: inout AppState) {
+        state.regions.remove(at: index)
+    }
+}
+
+struct AddMonitoredPlace: StateUpdater {
+    func updateState(_ state: inout AppState) {
+        state.regions.append(Region(latitude: 9, longitudine: 9, radius: 9, magnitude: 9))
     }
 }
 
