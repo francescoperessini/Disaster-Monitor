@@ -25,6 +25,17 @@ class EventView: UIView, ViewControllerModellableView {
     
     let infoVStackView = UIStackView()
     var placeLabel = UILabel()
+    var hStackView = UIStackView()
+    var firstColumnVStackView = UIStackView()
+    var dateImage = UIImageView(image: UIImage(systemName: "clock")!.withRenderingMode(.alwaysTemplate))
+    var dateLabel = UILabel()
+    var coordinatesImage = UIImageView(image: UIImage(systemName: "mappin")!.withRenderingMode(.alwaysTemplate))
+    var coordinatesLabel = UILabel()
+    var secondColumnVStackView = UIStackView()
+    var magnitudeImage = UIImageView(image: UIImage(systemName: "waveform.path.ecg")!.withRenderingMode(.alwaysTemplate))
+    var magnitudeLabel = UILabel()
+    var depthImage = UIImageView(image: UIImage(systemName: "arrow.down.circle")!.withRenderingMode(.alwaysTemplate))
+    var depthLabel = UILabel()
     
     var mapView = GMSMapView()
     var latitude: Double = 0.0
@@ -33,7 +44,12 @@ class EventView: UIView, ViewControllerModellableView {
     func setup() {
         addSubview(mainVStackView)
         setupMainVStackView()
+        
+        setupFirstColumnVStackView()
+        setupSecondColumnVStackView()
+        setupHStackView()
         setupInfoVStackView()
+        
         setupMapView()
     }
     
@@ -53,10 +69,42 @@ class EventView: UIView, ViewControllerModellableView {
         infoVStackView.alignment = .fill
         infoVStackView.spacing = 5.0
         
-        let view = UIView()
-        view.backgroundColor = .yellow
+        infoVStackView.addArrangedSubview(placeLabel)
+        infoVStackView.addArrangedSubview(hStackView)
+    }
+    
+    private func setupHStackView() {
+        hStackView.axis = .horizontal
+        hStackView.distribution = .fill
+        hStackView.alignment = .fill
+        hStackView.spacing = 5.0
         
-        infoVStackView.addArrangedSubview(view)
+        hStackView.addArrangedSubview(firstColumnVStackView)
+        hStackView.addArrangedSubview(secondColumnVStackView)
+    }
+    
+    private func setupFirstColumnVStackView() {
+        firstColumnVStackView.axis = .vertical
+        firstColumnVStackView.distribution = .equalSpacing
+        firstColumnVStackView.alignment = .center
+        firstColumnVStackView.spacing = 5.0
+        
+        firstColumnVStackView.addArrangedSubview(dateImage)
+        firstColumnVStackView.addArrangedSubview(dateLabel)
+        firstColumnVStackView.addArrangedSubview(coordinatesImage)
+        firstColumnVStackView.addArrangedSubview(coordinatesLabel)
+    }
+    
+    private func setupSecondColumnVStackView() {
+        secondColumnVStackView.axis = .vertical
+        secondColumnVStackView.distribution = .equalSpacing
+        secondColumnVStackView.alignment = .center
+        secondColumnVStackView.spacing = 5.0
+        
+        secondColumnVStackView.addArrangedSubview(magnitudeImage)
+        secondColumnVStackView.addArrangedSubview(magnitudeLabel)
+        secondColumnVStackView.addArrangedSubview(depthImage)
+        secondColumnVStackView.addArrangedSubview(depthLabel)
     }
     
     private func setupMapView() {
@@ -86,19 +134,78 @@ class EventView: UIView, ViewControllerModellableView {
             // navigationBar?.isTranslucent = false
         }
         placeLabelStyle()
+        dateImageStyle()
+        dateLabelStyle()
+        coordinatesImageStyle()
+        coordinatesLabelStyle()
+        magnitudeImageStyle()
+        magnitudeLabelStyle()
+        depthImageStyle()
+        depthLabelStyle()
     }
     
     private func placeLabelStyle() {
-        placeLabel.font = UIFont.systemFont(ofSize: 18)
+        placeLabel.textAlignment = .center
+        placeLabel.font = UIFont.systemFont(ofSize: 20)
         placeLabel.textColor = .label
+    }
+    
+    private func dateImageStyle() {
+        dateImage.tintColor = .label
+    }
+    
+    private func dateLabelStyle() {
+        dateLabel.font = UIFont.systemFont(ofSize: 18)
+        dateLabel.textColor = .label
+    }
+    
+    private func coordinatesImageStyle() {
+        coordinatesImage.tintColor = .label
+    }
+    
+    private func coordinatesLabelStyle() {
+        coordinatesLabel.font = UIFont.systemFont(ofSize: 18)
+        coordinatesLabel.textColor = .label
+    }
+    
+    private func magnitudeImageStyle() {
+        magnitudeImage.tintColor = .label
+    }
+    
+    private func magnitudeLabelStyle() {
+        magnitudeLabel.font = UIFont.systemFont(ofSize: 18)
+        magnitudeLabel.textColor = .label
+    }
+    
+    private func depthImageStyle() {
+        depthImage.tintColor = .label
+    }
+    
+    private func depthLabelStyle() {
+        depthLabel.font = UIFont.systemFont(ofSize: 18)
+        depthLabel.textColor = .label
     }
     
     func update(oldModel: EventViewModel?) {
         guard let model = self.model else { return }
         if model.event != nil {
             placeLabel.text = model.event?.name
+            
+            let formatter = DateFormatter()
+            formatter.timeZone = TimeZone(identifier: "UTC")
+            formatter.dateFormat = "dd/MM/yy, HH:mm:ss"
+            let formattedDate = formatter.string(from: model.event!.date)
+            dateLabel.text = formattedDate + " UTC"
+            
             latitude = (model.event?.coordinates[1])!
             longitude = (model.event?.coordinates[0])!
+            let dms = coordinateToDMS(latitude: latitude, longitude: longitude)
+            coordinatesLabel.text = dms.latitude + ", " + dms.longitude
+            
+            magnitudeLabel.text = String((model.event?.magnitudo)!)
+            
+            depthLabel.text = String((model.event?.depth)!) + " km"
+            
             updateMapView()
         }
     }
@@ -111,6 +218,23 @@ class EventView: UIView, ViewControllerModellableView {
         marker.position = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         marker.appearAnimation = GMSMarkerAnimation.pop
         marker.map = mapView
+    }
+    
+    private func coordinateToDMS(latitude: Double, longitude: Double) -> (latitude: String, longitude: String) {
+        let latDegrees = abs(Int(latitude))
+        let latMinutes = abs(Int((latitude * 3600).truncatingRemainder(dividingBy: 3600) / 60))
+        let latSeconds = Double(abs((latitude * 3600).truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60)))
+
+        let lonDegrees = abs(Int(longitude))
+        let lonMinutes = abs(Int((longitude * 3600).truncatingRemainder(dividingBy: 3600) / 60))
+        let lonSeconds = Double(abs((longitude * 3600).truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60) ))
+        
+        return (String(format:"%d° %d' %@", latDegrees, latMinutes, latSeconds, latitude >= 0 ? "N" : "S"),
+                String(format:"%d° %d' %@", lonDegrees, lonMinutes, lonSeconds, longitude >= 0 ? "E" : "W"))
+        /*
+        return (String(format:"%d° %d' %.2f\" %@", latDegrees, latMinutes, latSeconds, latitude >= 0 ? "N" : "S"),
+                String(format:"%d° %d' %.2f\" %@", lonDegrees, lonMinutes, lonSeconds, longitude >= 0 ? "E" : "W"))
+        */
     }
     
     override func layoutSubviews() {

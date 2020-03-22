@@ -60,41 +60,34 @@ class MainEventsTableViewCell: UITableViewCell {
     }
     
     private func placeLabelStyle() {
-        //placeLabel.font = UIFont(name: "Futura", size: 18)
         placeLabel.font = UIFont.systemFont(ofSize: 18)
     }
     
     private func timeLabelStyle() {
-        //timeLabel.font = UIFont(name: "Futura", size: 15)
         timeLabel.font = UIFont.systemFont(ofSize: 15)
         timeLabel.textColor = .systemGray
     }
     
     private func separatorStyle() {
-        //separatorLabel1.font = UIFont(name: "Futura", size: 15)
         separatorLabel1.font = UIFont.systemFont(ofSize: 15)
         separatorLabel1.text = "•"
         separatorLabel1.textColor = .systemGray
         
-        //separatorLabel2.font = UIFont(name: "Futura", size: 15)
         separatorLabel2.font = UIFont.systemFont(ofSize: 15)
         separatorLabel2.text = "•"
         separatorLabel2.textColor = .systemGray
     }
     
     private func seismicTypeLabelStyle() {
-        //seismicTypeLabel.font = UIFont(name: "Futura", size: 15)
         seismicTypeLabel.font = UIFont.systemFont(ofSize: 15)
         seismicTypeLabel.textColor = .systemGray
     }
     
     private func magnitudoLabelStyle() {
-        //magnitudoLabel.font = UIFont(name: "Futura", size: 22)
         magnitudoLabel.font = UIFont.boldSystemFont(ofSize: 22)
     }
     
     private func dataSourceLabelStyle() {
-        //dataSourceLabel.font = UIFont(name: "Futura", size: 15)
         dataSourceLabel.font = UIFont.systemFont(ofSize: 15)
         dataSourceLabel.textColor = .systemGray
     }
