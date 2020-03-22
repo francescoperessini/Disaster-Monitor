@@ -7,12 +7,11 @@
 //
 
 protocol SectionType: CustomStringConvertible {
-    var containsStepperMagnitudo: Bool { get }
-    var containsStepperRadius: Bool { get }
     var containsSegmenteColor: Bool { get }
     var containsSegmentedMap: Bool { get }
     var containsDebugModeSwitch: Bool { get }
     var containsOpenSymbol: Bool { get }
+    var containsNotificationSwitch: Bool { get }
 }
 
 enum SettingsSection: Int, CaseIterable, CustomStringConvertible {
@@ -47,12 +46,11 @@ enum MessageOption: Int, CaseIterable, SectionType {
     
     case editMessage
     
-    var containsStepperMagnitudo: Bool{ return false }
-    var containsStepperRadius: Bool { return false }
     var containsSegmenteColor: Bool { return false }
     var containsSegmentedMap: Bool { return false }
     var containsDebugModeSwitch: Bool { return false }
     var containsOpenSymbol: Bool { return false }
+    var containsNotificationSwitch: Bool { return false }
     
     var description: String {
         switch self {
@@ -64,26 +62,20 @@ enum MessageOption: Int, CaseIterable, SectionType {
 
 enum PrivacyOption: Int, CaseIterable, SectionType {
     
-    case radius
+    case enabled
     case places
-    case magnitudo
     
-    var containsStepperRadius: Bool {
-        switch self {
-            case .radius: return true
-            default: return false
-        }
-    }
-    var containsStepperMagnitudo: Bool {
-        switch self {
-            case .magnitudo: return true
-            default: return false
-        }
-    }
     
     var containsOpenSymbol: Bool{
         switch self {
         case .places: return true
+            default: return false
+        }
+    }
+    
+    var containsNotificationSwitch: Bool{
+        switch self {
+        case .enabled: return true
             default: return false
         }
     }
@@ -94,9 +86,8 @@ enum PrivacyOption: Int, CaseIterable, SectionType {
         
     var description: String {
         switch self {
-            case .radius: return "Notification Radius"
+            case .enabled: return "Notification enabling"
             case .places: return "Monitored places"
-            case .magnitudo: return "Magnitudo"
         }
     }
 }
@@ -106,9 +97,8 @@ enum StylingOption: Int, CaseIterable, SectionType {
     case color
     case mapStyle
     
-    var containsStepperRadius: Bool{ return false }
-    var containsStepperMagnitudo: Bool{ return false }
     var containsOpenSymbol: Bool { return false }
+    var containsNotificationSwitch: Bool { return false }
     
     var containsSegmenteColor: Bool {
         switch self {
@@ -136,13 +126,11 @@ enum AboutUsOption: Int, CaseIterable, SectionType {
     
     case info
     
-    var containsStepperRadius: Bool{ return false }
-    var containsStepperMagnitudo: Bool{ return false }
     var containsSegmenteColor: Bool { return false }
     var containsSegmentedMap: Bool { return false }
     var containsDebugModeSwitch: Bool { return false }
     var containsOpenSymbol: Bool { return false }
-    
+    var containsNotificationSwitch: Bool { return false }
     var description: String{ return "" }
 }
 
@@ -150,13 +138,11 @@ enum DataSourceOption: Int, CaseIterable, SectionType {
     
     case info
     
-    var containsStepperRadius: Bool{ return false }
-    var containsStepperMagnitudo: Bool{ return false }
     var containsSegmenteColor: Bool { return false }
     var containsSegmentedMap: Bool { return false }
     var containsDebugModeSwitch: Bool { return false }
     var containsOpenSymbol: Bool { return false }
-    
+    var containsNotificationSwitch: Bool { return false }
     var description: String{ return "" }
 }
 
@@ -164,12 +150,11 @@ enum DebugOption: Int, CaseIterable, SectionType {
     
     case DebugMode
     
-    var containsStepperRadius: Bool{ return false }
-    var containsStepperMagnitudo: Bool{ return false }
     var containsSegmenteColor: Bool { return false }
     var containsSegmentedMap: Bool { return false }
     var containsDebugModeSwitch: Bool { return true }
     var containsOpenSymbol: Bool { return false }
+    var containsNotificationSwitch: Bool { return false }
     
     var description: String {
         switch self {

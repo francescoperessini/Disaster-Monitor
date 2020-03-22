@@ -28,7 +28,8 @@ class SettingsView: UIView, ViewControllerModellableView {
     
     var didTapStylingColor: ((Color) -> ())?
     var didTapSwitch: ((Bool) -> ())?
-
+    var didTapNotificationSwitch: ((Bool) -> ())?
+    
     var customColor: Color?
     var debugMode: Bool?
     
@@ -162,7 +163,7 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         case .Message:
             return "Safe message is the message you can share in Map Page"
         case .Privacy:
-            return "TBD"
+            return "Here you can turn on or off the notifications and setup yuor monitored places "
         case .Styling:
             return "Customize here your experience"
         case .DataSource:
@@ -185,6 +186,9 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         case .Privacy:
             let privacy = PrivacyOption(rawValue: indexPath.row)
             cell.sectionType = privacy
+            if cell.sectionType!.containsNotificationSwitch {
+                cell.didTapNotificationSwitch = self.didTapNotificationSwitch
+            }
         case .Styling:
             let style = StylingOption(rawValue: indexPath.row)
             cell.sectionType = style

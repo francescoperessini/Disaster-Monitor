@@ -33,5 +33,9 @@ class SettingsViewController: ViewController<SettingsView> {
         rootView.didTapSwitch = { [unowned self] value in
             self.dispatch(SetDebugMode(value: value))
         }
+        
+        rootView.didTapNotificationSwitch = { [unowned self] value in
+            self.dispatch(SetNotificationMode(value: value))
+        }
     }
 }
