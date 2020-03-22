@@ -21,6 +21,7 @@ struct AppState: State, Codable {
     var regions: [Region] = []
     var debugMode: Bool = false
     var searchString: String = ""
+    var isNotficiationEnabled: Bool = true
 }
 
 enum colors: Int, Codable {
@@ -193,6 +194,13 @@ struct SetDebugMode: StateUpdater {
     var value: Bool
     func updateState(_ state: inout AppState) {
         state.debugMode = value
+    }
+}
+
+struct SetNotificationMode: StateUpdater {
+    var value: Bool
+    func updateState(_ state: inout AppState) {
+        state.isNotficiationEnabled = value
     }
 }
 
