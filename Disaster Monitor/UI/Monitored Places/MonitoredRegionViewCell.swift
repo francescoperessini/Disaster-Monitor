@@ -11,9 +11,14 @@ import Tempura
 class MonitoredRegionViewCell: UITableViewCell {
     
     // MARK: - Description Label
-    lazy var descriptionLabel: UILabel = {
-        let label = UILabel()
-        return label
+    lazy var nameLabel: UILabel = {
+        let nameLabel = UILabel()
+        return nameLabel
+    }()
+    
+    lazy var coordinatesLabel: UILabel = {
+        let coordinatesLabel = UILabel()
+        return coordinatesLabel
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -22,7 +27,8 @@ class MonitoredRegionViewCell: UITableViewCell {
     }
     
     private func setup() {
-        addSubview(descriptionLabel)
+        addSubview(nameLabel)
+        addSubview(coordinatesLabel)
     }
     
     required init?(coder: NSCoder) {
@@ -31,13 +37,20 @@ class MonitoredRegionViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 9).isActive = true
-        descriptionLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 9).isActive = true
+        nameLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
+        
+        coordinatesLabel.translatesAutoresizingMaskIntoConstraints = false
+        coordinatesLabel.topAnchor.constraint(equalTo: nameLabel.safeAreaLayoutGuide.bottomAnchor, constant: 5).isActive = true
+        coordinatesLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
+        
+        coordinatesLabel.textColor = .systemGray
     }
     
     func setupCell(region: Region) {
-        self.descriptionLabel.text = "\(region.latitude) \(region.longitudine) \(region.magnitude) \(region.radius)"
+        self.nameLabel.text = "\(region.name) • magnitudo: \(region.magnitude) • radius: \(region.radius)"
+        self.coordinatesLabel.text = "\(region.latitude) • \(region.longitudine)"
     }
     
 }

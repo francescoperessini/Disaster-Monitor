@@ -18,5 +18,10 @@ class AddMonitoredPlaceViewController: ViewController<AddMonitoredPlaceView> {
         rootView.didTapClose = { [unowned self] in
             self.dismiss(animated: true, completion: nil)
         }
+        
+        rootView.didTapApply = { [unowned self] coordinate, magnitude, radius in
+            self.dismiss(animated: true, completion: nil)
+            self.dispatch(AddMonitoredPlace(coordinate: coordinate, magnitude: magnitude, radious: radius))
+        }
     }
 }

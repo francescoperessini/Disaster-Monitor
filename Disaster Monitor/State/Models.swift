@@ -44,12 +44,14 @@ struct Event: Codable, Equatable {
 }
 
 struct Region: Codable {
+    var name: String
     var latitude: Double
     var longitudine: Double
     var radius: Double
     var magnitude: Float
     
-    init(latitude: Double, longitudine: Double, radius: Double, magnitude: Float) {
+    init(name: String, latitude: Double, longitudine: Double, radius: Double, magnitude: Float) {
+        self.name = name
         self.latitude = latitude
         self.longitudine = longitudine
         self.radius = radius
