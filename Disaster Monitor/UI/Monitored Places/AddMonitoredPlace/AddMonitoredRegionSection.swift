@@ -7,6 +7,7 @@
 //
 
 protocol SectionTypeAddMonitored: CustomStringConvertible {
+    var containsNameTextField: Bool { get }
     var containsStepperMagnitudo: Bool { get }
     var containsStepperRadius: Bool { get }
     var containsMap: Bool { get }
@@ -24,15 +25,24 @@ enum AddMonitoredRegionSection: Int, CaseIterable, CustomStringConvertible{
 }
 
 enum AddMonitoredRegionOption: Int, CaseIterable, SectionTypeAddMonitored {
+    case name
     case magnitudoThreshold
     case radius
     case map
     
     var description: String {
         switch self {
+        case .name: return "Monitored place's name"
             case .magnitudoThreshold: return "Magnitudo Threshold"
             case .radius: return "Radius"
             case .map: return "map"
+        }
+    }
+    
+    var containsNameTextField: Bool{
+        switch self {
+        case .name: return true
+        default: return false
         }
     }
     

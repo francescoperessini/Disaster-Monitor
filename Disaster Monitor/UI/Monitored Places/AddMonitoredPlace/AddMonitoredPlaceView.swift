@@ -24,8 +24,15 @@ class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
     var searchController: UISearchController?
     var resultsViewController: GMSAutocompleteResultsViewController?
     var didTapClose: (()  -> ())?
-    
+    var didTapApply: ((String, [Double], Float, Double)  -> ())?
     var addMonitoredEventsTableView = UITableView(frame: CGRect.zero, style: .grouped)
+    var coordinatesToSend: CLLocationCoordinate2D?
+    var mapView: GMSMapView?
+    var searchString: String?
+    
+    var cellMagnitudo: AddMonitoredRegionCell?
+    var cellRadius: AddMonitoredRegionCell?
+    
     struct Cells {
         static let addMonitoredRegionCell = "AddMonitoredRegionCell"
     }
@@ -34,6 +41,7 @@ class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
         addSubview(addMonitoredEventsTableView)
         setupSearchBar()
         configureSettingsTableView()
+        
     }
     
     func setAddMonitoredRegionViewDelegates() {
@@ -70,6 +78,8 @@ class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
         backgroundColor = .systemBackground
         navigationItem?.title = "Add a monitored region"
         navigationItem?.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapCloseFunc))
+        navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapApplyFunc))
+        navigationItem?.rightBarButtonItem?.isEnabled = false
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
@@ -87,9 +97,12 @@ class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
     @objc func didTapCloseFunc(){
         didTapClose?()
     }
-    
+    @objc func didTapApplyFunc(){
+        let r = Float((cellMagnitudo?.stepperControlMagnitudo.value)!)
+        let m = cellRadius!.stepperControlRadius.value
+        didTapApply?(searchString ?? "Unknown place", [Double(coordinatesToSend!.latitude), Double(coordinatesToSend!.longitude)],r ,m )
+    }
     func update(oldModel: AddMonitoredPlaceViewModel?) {
-        guard let model = self.model else { return }
 
     }
 
@@ -101,32 +114,40 @@ class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
 }
 
 // MARK: - CLLocationManagerDelegate
-extension AddMonitoredPlaceView: CLLocationManagerDelegate, GMSAutocompleteResultsViewControllerDelegate {
+extension AddMonitoredPlaceView: CLLocationManagerDelegate, GMSAutocompleteResultsViewControllerDelegate, GMSMapViewDelegate {
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didAutocompleteWith place: GMSPlace) {
         searchController?.isActive = false
         let newLocation = GMSCameraPosition(target: place.coordinate, zoom: 12, bearing: 0, viewingAngle: 0)
-        
-        //guard let mapCell = self.addMonitoredEventsTableView.cellForRow(at: IndexPath(row: 0, section: 2)) as? AddMonitoredRegionCell else {return}
-        let mapCell = self.addMonitoredEventsTableView.visibleCells[2]
-        
-        //mapCell.mapView.animate(to: newLocation)
-        //mapView.animate(to: newLocation)
+        mapView?.animate(to: newLocation)
+        searchString = place.name
     }
 
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didFailAutocompleteWithError error: Error) {
         print("Error: ", error.localizedDescription)
     }
     
+    func mapView(_ mapView: GMSMapView, didLongPressAt coordinate: CLLocationCoordinate2D) {
+        mapView.clear()
+        coordinatesToSend = coordinate
+        let marker = GMSMarker(position: coordinate)
+        marker.title = "Hello World"
+        marker.map = mapView
+        
+        let circleCenter = CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        let circ = GMSCircle(position: circleCenter, radius: 1000)
+        circ.map = mapView
+        
+        navigationItem?.rightBarButtonItem?.isEnabled = true
+    }
 }
 
 extension AddMonitoredPlaceView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if(indexPath.row == 0 || indexPath.row == 1){
-            return 60;
-        }
-        else {
-            return 500;
+        guard let option = AddMonitoredRegionOption(rawValue: indexPath.row) else { return 0.0 }
+        switch option {
+            case .map: return 500
+            default: return 60
         }
     }
     
@@ -138,7 +159,6 @@ extension AddMonitoredPlaceView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        print("AddMonitoredRegionSection.allCases.count \(AddMonitoredRegionSection.allCases.count)")
         return AddMonitoredRegionSection.allCases.count
     }
     
@@ -159,11 +179,25 @@ extension AddMonitoredPlaceView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print(indexPath)
         let cell = addMonitoredEventsTableView.dequeueReusableCell(withIdentifier: Cells.addMonitoredRegionCell, for: indexPath) as! AddMonitoredRegionCell
-        guard let section = AddMonitoredRegionSection(rawValue: indexPath.section) else { return UITableViewCell() }
+
         let type = AddMonitoredRegionOption(rawValue: indexPath.row)
         cell.sectionType = type
+        
+        /*guard let bool = type?.containsMap else{return cell}
+        if bool{
+            mapView = cell.mapView
+            cell.mapView.delegate = self
+        }*/
+        
+        if type?.containsMap ?? false{
+            mapView = cell.mapView
+            cell.mapView.delegate = self
+        }else if type?.containsStepperMagnitudo ?? false{
+            cellMagnitudo = cell
+        }else if type?.containsStepperRadius ?? false{
+            cellRadius = cell
+        }
         return cell
     }
 }
