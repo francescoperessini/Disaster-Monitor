@@ -9,14 +9,11 @@
 import Tempura
 
 class EventViewController: ViewControllerWithLocalState<EventView> {
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 }
 
-
 struct EventControllerLocalState: LocalState {
     var id: String?
 }
-
