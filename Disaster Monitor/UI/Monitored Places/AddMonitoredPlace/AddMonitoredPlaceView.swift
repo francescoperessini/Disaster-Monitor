@@ -24,10 +24,11 @@ class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
     var searchController: UISearchController?
     var resultsViewController: GMSAutocompleteResultsViewController?
     var didTapClose: (()  -> ())?
-    var didTapApply: (([Double], Float, Double)  -> ())?
+    var didTapApply: ((String, [Double], Float, Double)  -> ())?
     var addMonitoredEventsTableView = UITableView(frame: CGRect.zero, style: .grouped)
     var coordinatesToSend: CLLocationCoordinate2D?
     var mapView: GMSMapView?
+    var searchString: String?
     
     var cellMagnitudo: AddMonitoredRegionCell?
     var cellRadius: AddMonitoredRegionCell?
@@ -99,7 +100,7 @@ class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
     @objc func didTapApplyFunc(){
         let r = Float((cellMagnitudo?.stepperControlMagnitudo.value)!)
         let m = cellRadius!.stepperControlRadius.value
-        didTapApply?([Double(coordinatesToSend!.latitude), Double(coordinatesToSend!.longitude)],r ,m )
+        didTapApply?(searchString ?? "Unknown place", [Double(coordinatesToSend!.latitude), Double(coordinatesToSend!.longitude)],r ,m )
     }
     func update(oldModel: AddMonitoredPlaceViewModel?) {
 
@@ -118,6 +119,7 @@ extension AddMonitoredPlaceView: CLLocationManagerDelegate, GMSAutocompleteResul
         searchController?.isActive = false
         let newLocation = GMSCameraPosition(target: place.coordinate, zoom: 12, bearing: 0, viewingAngle: 0)
         mapView?.animate(to: newLocation)
+        searchString = place.name
     }
 
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didFailAutocompleteWithError error: Error) {
@@ -137,7 +139,6 @@ extension AddMonitoredPlaceView: CLLocationManagerDelegate, GMSAutocompleteResul
         
         navigationItem?.rightBarButtonItem?.isEnabled = true
     }
-    
 }
 
 extension AddMonitoredPlaceView: UITableViewDelegate, UITableViewDataSource {
