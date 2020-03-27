@@ -21,53 +21,182 @@ struct EventViewModel: ViewModelWithLocalState {
 // MARK: - View
 class EventView: UIView, ViewControllerModellableView {
         
+    var mainVStackViewContainer = UIView()
     var mainVStackView = UIStackView()
 
-    let infoVStackView = UIStackView()
+    var infoHStackView = UIStackView()
     var placeLabel = UILabel()
-    var hStackView = UIStackView()
     var firstColumnVStackView = UIStackView()
+    var dateHStackView = UIStackView()
     var dateImage = UIImageView(image: UIImage(systemName: "clock")!.withRenderingMode(.alwaysTemplate))
     var dateLabel = UILabel()
+    var coordinatesHStackView = UIStackView()
     var coordinatesImage = UIImageView(image: UIImage(systemName: "mappin")!.withRenderingMode(.alwaysTemplate))
     var coordinatesLabel = UILabel()
     var secondColumnVStackView = UIStackView()
+    var magnitudeHStackView = UIStackView()
     var magnitudeImage = UIImageView(image: UIImage(systemName: "waveform.path.ecg")!.withRenderingMode(.alwaysTemplate))
     var magnitudeLabel = UILabel()
+    var depthHStackView = UIStackView()
     var depthImage = UIImageView(image: UIImage(systemName: "arrow.down.circle")!.withRenderingMode(.alwaysTemplate))
     var depthLabel = UILabel()
     
+    var mapContainer = UIView()
     var mapView = GMSMapView()
     var latitude: Double = 0.0
     var longitude: Double = 0.0
         
     func setup() {
+        addSubview(mainVStackViewContainer)
+        mainVStackViewContainer.addSubview(mainVStackView)
         setupMainVStackView()
+        
+        addSubview(mapContainer)
+        mapContainer.addSubview(mapView)
         setupMapView()
-        addSubview(mainVStackView)
     }
     
     private func setupMainVStackView() {
-        mainVStackView.translatesAutoresizingMaskIntoConstraints = false
         mainVStackView.axis = .vertical
-        mainVStackView.distribution = .fillEqually
-        mainVStackView.spacing = 5.0
+        mainVStackView.distribution = .fillProportionally
+        mainVStackView.alignment = .fill
+        mainVStackView.spacing = 0.0
         
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .yellow
+        view.addSubview(placeLabel)
+        placeLabel.translatesAutoresizingMaskIntoConstraints = false
+        placeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        placeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        placeLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        view.backgroundColor = .systemGray6
         
-        let view2 = UIView()
-        view2.translatesAutoresizingMaskIntoConstraints = false
-        view2.backgroundColor = .green
+        setupInfoHStackView()
         
         mainVStackView.addArrangedSubview(view)
-        mainVStackView.addArrangedSubview(view2)
-        mainVStackView.addArrangedSubview(mapView)
+        mainVStackView.addArrangedSubview(infoHStackView)
+    }
+    
+    private func setupInfoHStackView() {
+        infoHStackView.translatesAutoresizingMaskIntoConstraints = false
+        infoHStackView.axis = .horizontal
+        infoHStackView.distribution = .fillProportionally
+        infoHStackView.alignment = .fill
+        // se metti spacing 1.0 il constraint si rompe
+        infoHStackView.spacing = 0.0
+        
+        setupFirstColumnVStackView()
+        setupSecondColumnVStackView()
+        
+        infoHStackView.addArrangedSubview(firstColumnVStackView)
+        infoHStackView.addArrangedSubview(secondColumnVStackView)
+    }
+    
+    private func setupFirstColumnVStackView() {
+        firstColumnVStackView.translatesAutoresizingMaskIntoConstraints = false
+        firstColumnVStackView.axis = .vertical
+        firstColumnVStackView.distribution = .fillEqually
+        firstColumnVStackView.alignment = .fill
+        firstColumnVStackView.spacing = 0.0
+        
+        let dateView = UIView()
+        dateView.translatesAutoresizingMaskIntoConstraints = false
+        dateView.addSubview(dateHStackView)
+        dateHStackView.leadingAnchor.constraint(equalTo: dateView.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        dateHStackView.trailingAnchor.constraint(equalTo: dateView.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        dateHStackView.centerYAnchor.constraint(equalTo: dateView.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        dateView.backgroundColor = .systemGray6
+        
+        let coordinatesView = UIView()
+        coordinatesView.translatesAutoresizingMaskIntoConstraints = false
+        coordinatesView.addSubview(coordinatesHStackView)
+        coordinatesHStackView.leadingAnchor.constraint(equalTo: coordinatesView.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        coordinatesHStackView.trailingAnchor.constraint(equalTo: coordinatesView.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        coordinatesHStackView.centerYAnchor.constraint(equalTo: coordinatesView.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        coordinatesView.backgroundColor = .systemGray6
+        
+        setupDateHStackView()
+        setupCoordinatesHStackView()
+        
+        firstColumnVStackView.addArrangedSubview(dateView)
+        firstColumnVStackView.addArrangedSubview(coordinatesView)
+    }
+    
+    private func setupDateHStackView() {
+        dateHStackView.translatesAutoresizingMaskIntoConstraints = false
+        dateHStackView.axis = .horizontal
+        dateHStackView.distribution = .equalCentering
+        dateHStackView.alignment = .center
+        dateHStackView.spacing = 0.0
+        
+        dateHStackView.addArrangedSubview(dateImage)
+        dateHStackView.addArrangedSubview(dateLabel)
+    }
+    
+    private func setupCoordinatesHStackView() {
+        coordinatesHStackView.translatesAutoresizingMaskIntoConstraints = false
+        coordinatesHStackView.axis = .horizontal
+        coordinatesHStackView.distribution = .equalCentering
+        coordinatesHStackView.alignment = .center
+        coordinatesHStackView.spacing = 0.0
+        
+        coordinatesHStackView.addArrangedSubview(coordinatesImage)
+        coordinatesHStackView.addArrangedSubview(coordinatesLabel)
+    }
+    
+    private func setupSecondColumnVStackView() {
+        secondColumnVStackView.translatesAutoresizingMaskIntoConstraints = false
+        secondColumnVStackView.axis = .vertical
+        secondColumnVStackView.distribution = .fillEqually
+        secondColumnVStackView.alignment = .fill
+        secondColumnVStackView.spacing = 0.0
+        
+        let magnitudeView = UIView()
+        magnitudeView.translatesAutoresizingMaskIntoConstraints = false
+        magnitudeView.addSubview(magnitudeHStackView)
+        magnitudeHStackView.leadingAnchor.constraint(equalTo: magnitudeView.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        magnitudeHStackView.trailingAnchor.constraint(equalTo: magnitudeView.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        magnitudeHStackView.centerYAnchor.constraint(equalTo: magnitudeView.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        magnitudeView.backgroundColor = .systemGray6
+        
+        let depthView = UIView()
+        depthView.translatesAutoresizingMaskIntoConstraints = false
+        depthView.addSubview(depthHStackView)
+        depthHStackView.leadingAnchor.constraint(equalTo: depthView.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        depthHStackView.trailingAnchor.constraint(equalTo: depthView.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        depthHStackView.centerYAnchor.constraint(equalTo: depthView.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        depthView.backgroundColor = .systemGray6
+        
+        setupMagnitudeHStackView()
+        setupDepthHStackView()
+        
+        secondColumnVStackView.addArrangedSubview(magnitudeView)
+        secondColumnVStackView.addArrangedSubview(depthView)
+    }
+    
+    private func setupMagnitudeHStackView() {
+        magnitudeHStackView.translatesAutoresizingMaskIntoConstraints = false
+        magnitudeHStackView.axis = .horizontal
+        magnitudeHStackView.distribution = .equalCentering
+        magnitudeHStackView.alignment = .center
+        magnitudeHStackView.spacing = 0.0
+    
+        magnitudeHStackView.addArrangedSubview(magnitudeImage)
+        magnitudeHStackView.addArrangedSubview(magnitudeLabel)
+    }
+    
+    private func setupDepthHStackView() {
+        depthHStackView.translatesAutoresizingMaskIntoConstraints = false
+        depthHStackView.axis = .horizontal
+        depthHStackView.distribution = .equalCentering
+        depthHStackView.alignment = .center
+        depthHStackView.spacing = 0.0
+        
+        depthHStackView.addArrangedSubview(depthImage)
+        depthHStackView.addArrangedSubview(depthLabel)
     }
      
     private func setupMapView() {
-        mapView.translatesAutoresizingMaskIntoConstraints = false
         // compassButton displays only when map is NOT in the north direction
         mapView.settings.compassButton = true
         mapView.settings.scrollGestures = true
@@ -76,7 +205,7 @@ class EventView: UIView, ViewControllerModellableView {
     }
     
     func style() {
-        backgroundColor = .systemBackground
+        backgroundColor = .systemGray6
         navigationItem?.largeTitleDisplayMode = .never
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
@@ -106,7 +235,7 @@ class EventView: UIView, ViewControllerModellableView {
     
     private func placeLabelStyle() {
         placeLabel.textAlignment = .center
-        placeLabel.font = UIFont.systemFont(ofSize: 20)
+        placeLabel.font = UIFont.boldSystemFont(ofSize: 20)
         placeLabel.textColor = .label
     }
     
@@ -115,7 +244,7 @@ class EventView: UIView, ViewControllerModellableView {
     }
     
     private func dateLabelStyle() {
-        dateLabel.font = UIFont.systemFont(ofSize: 18)
+        dateLabel.font = UIFont.systemFont(ofSize: 15)
         dateLabel.textColor = .label
     }
     
@@ -124,7 +253,7 @@ class EventView: UIView, ViewControllerModellableView {
     }
     
     private func coordinatesLabelStyle() {
-        coordinatesLabel.font = UIFont.systemFont(ofSize: 18)
+        coordinatesLabel.font = UIFont.systemFont(ofSize: 15)
         coordinatesLabel.textColor = .label
     }
     
@@ -133,7 +262,7 @@ class EventView: UIView, ViewControllerModellableView {
     }
     
     private func magnitudeLabelStyle() {
-        magnitudeLabel.font = UIFont.systemFont(ofSize: 18)
+        magnitudeLabel.font = UIFont.systemFont(ofSize: 15)
         magnitudeLabel.textColor = .label
     }
     
@@ -142,7 +271,7 @@ class EventView: UIView, ViewControllerModellableView {
     }
     
     private func depthLabelStyle() {
-        depthLabel.font = UIFont.systemFont(ofSize: 18)
+        depthLabel.font = UIFont.systemFont(ofSize: 15)
         depthLabel.textColor = .label
     }
     
@@ -201,10 +330,29 @@ class EventView: UIView, ViewControllerModellableView {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        mainVStackView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
-        mainVStackView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        mainVStackView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        mainVStackView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        mainVStackViewContainer.translatesAutoresizingMaskIntoConstraints = false
+        mainVStackViewContainer.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
+        mainVStackViewContainer.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
+        mainVStackViewContainer.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -10).isActive = true
+        mainVStackViewContainer.heightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.heightAnchor, multiplier: 0.4).isActive = true
+        
+        mainVStackView.translatesAutoresizingMaskIntoConstraints = false
+        mainVStackView.topAnchor.constraint(equalTo: mainVStackViewContainer.safeAreaLayoutGuide.topAnchor).isActive = true
+        mainVStackView.bottomAnchor.constraint(equalTo: mainVStackViewContainer.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        mainVStackView.leadingAnchor.constraint(equalTo: mainVStackViewContainer.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        mainVStackView.trailingAnchor.constraint(equalTo: mainVStackViewContainer.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        
+        mapContainer.translatesAutoresizingMaskIntoConstraints = false
+        mapContainer.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        mapContainer.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        mapContainer.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        mapContainer.heightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.heightAnchor, multiplier: 0.6).isActive = true
+        
+        mapView.translatesAutoresizingMaskIntoConstraints = false
+        mapView.topAnchor.constraint(equalTo: mapContainer.safeAreaLayoutGuide.topAnchor).isActive = true
+        mapView.bottomAnchor.constraint(equalTo: mapContainer.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        mapView.leadingAnchor.constraint(equalTo: mapContainer.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        mapView.trailingAnchor.constraint(equalTo: mapContainer.safeAreaLayoutGuide.trailingAnchor).isActive = true
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
