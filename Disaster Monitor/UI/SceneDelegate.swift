@@ -14,11 +14,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     var store: Store<AppState, DependenciesContainer>!
+    var lastCleaned: Date?
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+        
+        
+        
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.disastermonitor.db_cleaning", using: nil) { (task) in
+            self.handleDbCleaning(task: task as! BGProcessingTask)
+        }
         
         BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.disastermonitor.refresh", using: nil) { (task) in
             self.handleAppRefresh(task: task as! BGAppRefreshTask)
@@ -64,6 +71,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
         scheduleAppRefresh()
+        scheduleDatabaseCleaningIfNeeded()
+    }
+    
+    func scheduleDatabaseCleaningIfNeeded(){
+        /*let now = Date()
+        let oneWeek = TimeInterval(7 * 24 * 60 * 60)
+        
+        guard now > (self.lastCleaned ?? Date() + oneWeek) else {return}*/
+        
+        let request = BGProcessingTaskRequest(identifier: "com.disastermonitor.db_cleaning")
+        
+        do{
+            try BGTaskScheduler.shared.submit(request)
+        }catch{
+            print("Could not schedule database cleaning \(error)")
+        }
     }
     
     func scheduleAppRefresh() {
@@ -135,5 +158,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             task.setTaskCompleted(success: !op.isCancelled)
         }
     }
+    
+    func handleDbCleaning(task: BGProcessingTask){
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        
+        task.expirationHandler = {
+            queue.cancelAllOperations()
+        }
+        
+        queue.addOperation {
+            self.store.dispatch(DeleteOlder())
+        }
+        
+        let op = queue.operations.first!
 
+        op.completionBlock = {
+            task.setTaskCompleted(success: !op.isCancelled)
+        }
+    }
 }

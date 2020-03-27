@@ -229,12 +229,12 @@ class EventView: UIView, ViewControllerModellableView {
         let lonMinutes = abs(Int((longitude * 3600).truncatingRemainder(dividingBy: 3600) / 60))
         let lonSeconds = Double(abs((longitude * 3600).truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60) ))
         
-        return (String(format:"%d° %d' %@", latDegrees, latMinutes, latSeconds, latitude >= 0 ? "N" : "S"),
-                String(format:"%d° %d' %@", lonDegrees, lonMinutes, lonSeconds, longitude >= 0 ? "E" : "W"))
-        /*
+        /*return (String(format:"%d° %d' %@", latDegrees, latMinutes, latSeconds, latitude >= 0 ? "N" : "S"),
+                String(format:"%d° %d' %@", lonDegrees, lonMinutes, lonSeconds, longitude >= 0 ? "E" : "W"))*/
+        
         return (String(format:"%d° %d' %.2f\" %@", latDegrees, latMinutes, latSeconds, latitude >= 0 ? "N" : "S"),
                 String(format:"%d° %d' %.2f\" %@", lonDegrees, lonMinutes, lonSeconds, longitude >= 0 ? "E" : "W"))
-        */
+        
     }
     
     override func layoutSubviews() {

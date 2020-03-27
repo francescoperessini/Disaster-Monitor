@@ -68,11 +68,12 @@ struct EventsStateUpdater: StateUpdater {
                 state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i]))
             }
             // Seen events, with an update
-            else if state.events.contains(where: {$0.id == id[i] && $0.updated == updated[i]}) {
-                let toRemoveEvent = state.events.firstIndex{$0.id == id[i] && $0.updated == updated[i]}
+            else if state.events.contains(where: {$0.id == id[i] && $0.updated != updated[i]}){
+                let toRemoveEvent = state.events.firstIndex{$0.id == id[i] && $0.updated != updated[i]}
                 state.events.remove(at: toRemoveEvent!)
                 state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i]))
             }
+
         }
         state.events.sort(by: {$0.time > $1.time})
     }
@@ -230,6 +231,14 @@ struct AddEventDebugMode: StateUpdater {
         let event = Event(id: "test_earthquake", name: "Test Earthquake", descr: "earthquake", magnitudo: "7.5", coordinates: "9.226937 45.478085", depth: 10.0, time: time, dataSource: "USGS", updated: time)
         state.events.append(event)
         state.events.sort(by: {$0.time > $1.time})
+    }
+}
+
+struct DeleteOlder: StateUpdater{
+    func updateState(_ state: inout AppState) {
+        print("Before: state.events.count\(state.events.count)")
+        state.events.removeAll(where:{ $0.daysAgo > 2 })
+        print("After: state.events.count\(state.events.count)")
     }
 }
 
