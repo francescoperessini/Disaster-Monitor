@@ -20,9 +20,9 @@ struct EventViewModel: ViewModelWithLocalState {
 
 // MARK: - View
 class EventView: UIView, ViewControllerModellableView {
-    
-    let mainVStackView = UIStackView()
-    
+        
+    var mainVStackView = UIStackView()
+
     let infoVStackView = UIStackView()
     var placeLabel = UILabel()
     var hStackView = UIStackView()
@@ -42,72 +42,32 @@ class EventView: UIView, ViewControllerModellableView {
     var longitude: Double = 0.0
         
     func setup() {
-        addSubview(mainVStackView)
         setupMainVStackView()
-        
-        setupFirstColumnVStackView()
-        setupSecondColumnVStackView()
-        setupHStackView()
-        setupInfoVStackView()
-        
         setupMapView()
+        addSubview(mainVStackView)
     }
     
     private func setupMainVStackView() {
+        mainVStackView.translatesAutoresizingMaskIntoConstraints = false
         mainVStackView.axis = .vertical
-        mainVStackView.distribution = .fill
-        mainVStackView.alignment = .fill
-        mainVStackView.spacing = 0
+        mainVStackView.distribution = .fillEqually
+        mainVStackView.spacing = 5.0
         
-        mainVStackView.addArrangedSubview(infoVStackView)
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .yellow
+        
+        let view2 = UIView()
+        view2.translatesAutoresizingMaskIntoConstraints = false
+        view2.backgroundColor = .green
+        
+        mainVStackView.addArrangedSubview(view)
+        mainVStackView.addArrangedSubview(view2)
         mainVStackView.addArrangedSubview(mapView)
     }
-    
-    private func setupInfoVStackView() {
-        infoVStackView.axis = .vertical
-        infoVStackView.distribution = .fill
-        infoVStackView.alignment = .fill
-        infoVStackView.spacing = 5.0
-        
-        infoVStackView.addArrangedSubview(placeLabel)
-        infoVStackView.addArrangedSubview(hStackView)
-    }
-    
-    private func setupHStackView() {
-        hStackView.axis = .horizontal
-        hStackView.distribution = .fill
-        hStackView.alignment = .fill
-        hStackView.spacing = 5.0
-        
-        hStackView.addArrangedSubview(firstColumnVStackView)
-        hStackView.addArrangedSubview(secondColumnVStackView)
-    }
-    
-    private func setupFirstColumnVStackView() {
-        firstColumnVStackView.axis = .vertical
-        firstColumnVStackView.distribution = .equalSpacing
-        firstColumnVStackView.alignment = .center
-        firstColumnVStackView.spacing = 5.0
-        
-        firstColumnVStackView.addArrangedSubview(dateImage)
-        firstColumnVStackView.addArrangedSubview(dateLabel)
-        firstColumnVStackView.addArrangedSubview(coordinatesImage)
-        firstColumnVStackView.addArrangedSubview(coordinatesLabel)
-    }
-    
-    private func setupSecondColumnVStackView() {
-        secondColumnVStackView.axis = .vertical
-        secondColumnVStackView.distribution = .equalSpacing
-        secondColumnVStackView.alignment = .center
-        secondColumnVStackView.spacing = 5.0
-        
-        secondColumnVStackView.addArrangedSubview(magnitudeImage)
-        secondColumnVStackView.addArrangedSubview(magnitudeLabel)
-        secondColumnVStackView.addArrangedSubview(depthImage)
-        secondColumnVStackView.addArrangedSubview(depthLabel)
-    }
-    
+     
     private func setupMapView() {
+        mapView.translatesAutoresizingMaskIntoConstraints = false
         // compassButton displays only when map is NOT in the north direction
         mapView.settings.compassButton = true
         mapView.settings.scrollGestures = true
@@ -116,7 +76,7 @@ class EventView: UIView, ViewControllerModellableView {
     }
     
     func style() {
-        backgroundColor = .systemGray6
+        backgroundColor = .systemBackground
         navigationItem?.largeTitleDisplayMode = .never
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
@@ -223,31 +183,28 @@ class EventView: UIView, ViewControllerModellableView {
     private func coordinateToDMS(latitude: Double, longitude: Double) -> (latitude: String, longitude: String) {
         let latDegrees = abs(Int(latitude))
         let latMinutes = abs(Int((latitude * 3600).truncatingRemainder(dividingBy: 3600) / 60))
-        let latSeconds = Double(abs((latitude * 3600).truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60)))
+        //let latSeconds = Double(abs((latitude * 3600).truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60)))
 
         let lonDegrees = abs(Int(longitude))
         let lonMinutes = abs(Int((longitude * 3600).truncatingRemainder(dividingBy: 3600) / 60))
-        let lonSeconds = Double(abs((longitude * 3600).truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60) ))
+        //let lonSeconds = Double(abs((longitude * 3600).truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60) ))
+    
+        return (String(format:"%d° %d' %@", latDegrees, latMinutes, latitude >= 0 ? "N" : "S"),
+                String(format:"%d° %d' %@", lonDegrees, lonMinutes, longitude >= 0 ? "E" : "W"))
         
-        /*return (String(format:"%d° %d' %@", latDegrees, latMinutes, latSeconds, latitude >= 0 ? "N" : "S"),
-                String(format:"%d° %d' %@", lonDegrees, lonMinutes, lonSeconds, longitude >= 0 ? "E" : "W"))*/
-        
+        /*
         return (String(format:"%d° %d' %.2f\" %@", latDegrees, latMinutes, latSeconds, latitude >= 0 ? "N" : "S"),
                 String(format:"%d° %d' %.2f\" %@", lonDegrees, lonMinutes, lonSeconds, longitude >= 0 ? "E" : "W"))
-        
+        */
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        mainVStackView.translatesAutoresizingMaskIntoConstraints = false
         mainVStackView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
         mainVStackView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
         mainVStackView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
         mainVStackView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        
-        mapView.translatesAutoresizingMaskIntoConstraints = false
-        mapView.heightAnchor.constraint(equalToConstant: 500).isActive = true
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
