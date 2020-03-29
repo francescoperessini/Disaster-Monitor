@@ -111,7 +111,7 @@ class EventView: UIView, ViewControllerModellableView {
     func style() {
         backgroundColor = .systemGray6
         navigationItem?.largeTitleDisplayMode = .never
-        navigationItem?.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "safari"), style: .plain, target: self, action: #selector(didTapSafariFunc))
+        navigationItem?.rightBarButtonItems = [UIBarButtonItem(image: UIImage(systemName: "safari"), style: .plain, target: self, action: #selector(didTapSafariFunc)), UIBarButtonItem(barButtonSystemItem: .action, target: self, action: nil)]
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()

@@ -22,9 +22,10 @@ struct Event: Codable, Equatable {
     var updated: Double
     var magType: String
     var url: String
+    var felt: Int
     
     init(id: String, name: String, descr: String, magnitudo: String, coordinates: String, depth: Float, time: Double, dataSource: String,
-         updated: Double, magType: String, url: String) {
+         updated: Double, magType: String, url: String, felt: Int) {
         self.id = id
         self.name = name
         self.description = descr
@@ -45,6 +46,7 @@ struct Event: Codable, Equatable {
         self.updated = updated
         self.magType = magType.uppercased()
         self.url = url
+        self.felt = felt
     }
 }
 
