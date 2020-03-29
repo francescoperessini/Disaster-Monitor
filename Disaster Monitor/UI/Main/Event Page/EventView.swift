@@ -21,181 +21,67 @@ struct EventViewModel: ViewModelWithLocalState {
 // MARK: - View
 class EventView: UIView, ViewControllerModellableView {
         
-    var mainVStackViewContainer = UIView()
-    var mainVStackView = UIStackView()
-
-    var infoHStackView = UIStackView()
-    var placeLabel = UILabel()
-    var firstColumnVStackView = UIStackView()
-    var dateHStackView = UIStackView()
-    var dateImage = UIImageView(image: UIImage(systemName: "clock")!.withRenderingMode(.alwaysTemplate))
-    var dateLabel = UILabel()
-    var coordinatesHStackView = UIStackView()
-    var coordinatesImage = UIImageView(image: UIImage(systemName: "mappin")!.withRenderingMode(.alwaysTemplate))
-    var coordinatesLabel = UILabel()
-    var secondColumnVStackView = UIStackView()
-    var magnitudeHStackView = UIStackView()
-    var magnitudeImage = UIImageView(image: UIImage(systemName: "waveform.path.ecg")!.withRenderingMode(.alwaysTemplate))
-    var magnitudeLabel = UILabel()
-    var depthHStackView = UIStackView()
-    var depthImage = UIImageView(image: UIImage(systemName: "arrow.down.circle")!.withRenderingMode(.alwaysTemplate))
-    var depthLabel = UILabel()
+    var firstRow: UIView = UIView()
+    var secondRow: UIView = UIView()
     
-    var mapContainer = UIView()
+    var firstEntireRow: UIView = UIView()
+    var secondSplittedRow: UIView = UIView()
+    var thirdSplittedRow: UIView = UIView()
+    
+    var firstRowFirstCell: UIView = UIView()
+    var firstRowSecondCell: UIView = UIView()
+    
+    var secondRowFirstCell: UIView = UIView()
+    var secondRowSecondCell: UIView = UIView()
+    
     var mapView = GMSMapView()
     var latitude: Double = 0.0
     var longitude: Double = 0.0
-        
+    
+    var placeLabel = UILabel()
+    var dateLabel = UILabel()
+    var coordinatesLabel = UILabel()
+    var magnitudeLabel = UILabel()
+    var depthLabel = UILabel()
+    
+    
+    var dateImage = UIImageView(image: UIImage(systemName: "clock")!.withRenderingMode(.alwaysTemplate))
+    var coordinatesImage = UIImageView(image: UIImage(systemName: "mappin")!.withRenderingMode(.alwaysTemplate))
+    var magnitudeImage = UIImageView(image: UIImage(systemName: "waveform.path.ecg")!.withRenderingMode(.alwaysTemplate))
+    var depthImage = UIImageView(image: UIImage(systemName: "arrow.down.circle")!.withRenderingMode(.alwaysTemplate))
+
+    
     func setup() {
-        addSubview(mainVStackViewContainer)
-        mainVStackViewContainer.addSubview(mainVStackView)
-        setupMainVStackView()
+        self.addSubview(firstRow)
+        self.addSubview(secondRow)
+        firstRow.addSubview(firstEntireRow)
+        firstRow.addSubview(secondSplittedRow)
+        firstRow.addSubview(thirdSplittedRow)
         
-        addSubview(mapContainer)
-        mapContainer.addSubview(mapView)
+        secondSplittedRow.addSubview(firstRowFirstCell)
+        secondSplittedRow.addSubview(firstRowSecondCell)
+        
+        thirdSplittedRow.addSubview(secondRowFirstCell)
+        thirdSplittedRow.addSubview(secondRowSecondCell)
+        
+        firstRow.addSubview(placeLabel)
+        
+        firstRowFirstCell.addSubview(coordinatesLabel)
+        firstRowFirstCell.addSubview(coordinatesImage)
+        
+        firstRowSecondCell.addSubview(magnitudeLabel)
+        firstRowSecondCell.addSubview(magnitudeImage)
+        
+        secondRowFirstCell.addSubview(dateLabel)
+        secondRowFirstCell.addSubview(dateImage)
+        
+        secondRowSecondCell.addSubview(depthLabel)
+        secondRowSecondCell.addSubview(depthImage)
+        
+        secondRow.addSubview(mapView)
         setupMapView()
     }
-    
-    private func setupMainVStackView() {
-        mainVStackView.axis = .vertical
-        mainVStackView.distribution = .fillProportionally
-        mainVStackView.alignment = .fill
-        mainVStackView.spacing = 0.0
-        
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(placeLabel)
-        placeLabel.translatesAutoresizingMaskIntoConstraints = false
-        placeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        placeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        placeLabel.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
-        view.backgroundColor = .systemGray6
-        
-        setupInfoHStackView()
-        
-        mainVStackView.addArrangedSubview(view)
-        mainVStackView.addArrangedSubview(infoHStackView)
-    }
-    
-    private func setupInfoHStackView() {
-        infoHStackView.translatesAutoresizingMaskIntoConstraints = false
-        infoHStackView.axis = .horizontal
-        infoHStackView.distribution = .fillProportionally
-        infoHStackView.alignment = .fill
-        // se metti spacing 1.0 il constraint si rompe
-        infoHStackView.spacing = 0.0
-        
-        setupFirstColumnVStackView()
-        setupSecondColumnVStackView()
-        
-        infoHStackView.addArrangedSubview(firstColumnVStackView)
-        infoHStackView.addArrangedSubview(secondColumnVStackView)
-    }
-    
-    private func setupFirstColumnVStackView() {
-        firstColumnVStackView.translatesAutoresizingMaskIntoConstraints = false
-        firstColumnVStackView.axis = .vertical
-        firstColumnVStackView.distribution = .fillEqually
-        firstColumnVStackView.alignment = .fill
-        firstColumnVStackView.spacing = 0.0
-        
-        let dateView = UIView()
-        dateView.translatesAutoresizingMaskIntoConstraints = false
-        dateView.addSubview(dateHStackView)
-        dateHStackView.leadingAnchor.constraint(equalTo: dateView.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        dateHStackView.trailingAnchor.constraint(equalTo: dateView.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        dateHStackView.centerYAnchor.constraint(equalTo: dateView.safeAreaLayoutGuide.centerYAnchor).isActive = true
-        dateView.backgroundColor = .systemGray6
-        
-        let coordinatesView = UIView()
-        coordinatesView.translatesAutoresizingMaskIntoConstraints = false
-        coordinatesView.addSubview(coordinatesHStackView)
-        coordinatesHStackView.leadingAnchor.constraint(equalTo: coordinatesView.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        coordinatesHStackView.trailingAnchor.constraint(equalTo: coordinatesView.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        coordinatesHStackView.centerYAnchor.constraint(equalTo: coordinatesView.safeAreaLayoutGuide.centerYAnchor).isActive = true
-        coordinatesView.backgroundColor = .systemGray6
-        
-        setupDateHStackView()
-        setupCoordinatesHStackView()
-        
-        firstColumnVStackView.addArrangedSubview(dateView)
-        firstColumnVStackView.addArrangedSubview(coordinatesView)
-    }
-    
-    private func setupDateHStackView() {
-        dateHStackView.translatesAutoresizingMaskIntoConstraints = false
-        dateHStackView.axis = .horizontal
-        dateHStackView.distribution = .equalCentering
-        dateHStackView.alignment = .center
-        dateHStackView.spacing = 0.0
-        
-        dateHStackView.addArrangedSubview(dateImage)
-        dateHStackView.addArrangedSubview(dateLabel)
-    }
-    
-    private func setupCoordinatesHStackView() {
-        coordinatesHStackView.translatesAutoresizingMaskIntoConstraints = false
-        coordinatesHStackView.axis = .horizontal
-        coordinatesHStackView.distribution = .equalCentering
-        coordinatesHStackView.alignment = .center
-        coordinatesHStackView.spacing = 0.0
-        
-        coordinatesHStackView.addArrangedSubview(coordinatesImage)
-        coordinatesHStackView.addArrangedSubview(coordinatesLabel)
-    }
-    
-    private func setupSecondColumnVStackView() {
-        secondColumnVStackView.translatesAutoresizingMaskIntoConstraints = false
-        secondColumnVStackView.axis = .vertical
-        secondColumnVStackView.distribution = .fillEqually
-        secondColumnVStackView.alignment = .fill
-        secondColumnVStackView.spacing = 0.0
-        
-        let magnitudeView = UIView()
-        magnitudeView.translatesAutoresizingMaskIntoConstraints = false
-        magnitudeView.addSubview(magnitudeHStackView)
-        magnitudeHStackView.leadingAnchor.constraint(equalTo: magnitudeView.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        magnitudeHStackView.trailingAnchor.constraint(equalTo: magnitudeView.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        magnitudeHStackView.centerYAnchor.constraint(equalTo: magnitudeView.safeAreaLayoutGuide.centerYAnchor).isActive = true
-        magnitudeView.backgroundColor = .systemGray6
-        
-        let depthView = UIView()
-        depthView.translatesAutoresizingMaskIntoConstraints = false
-        depthView.addSubview(depthHStackView)
-        depthHStackView.leadingAnchor.constraint(equalTo: depthView.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        depthHStackView.trailingAnchor.constraint(equalTo: depthView.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        depthHStackView.centerYAnchor.constraint(equalTo: depthView.safeAreaLayoutGuide.centerYAnchor).isActive = true
-        depthView.backgroundColor = .systemGray6
-        
-        setupMagnitudeHStackView()
-        setupDepthHStackView()
-        
-        secondColumnVStackView.addArrangedSubview(magnitudeView)
-        secondColumnVStackView.addArrangedSubview(depthView)
-    }
-    
-    private func setupMagnitudeHStackView() {
-        magnitudeHStackView.translatesAutoresizingMaskIntoConstraints = false
-        magnitudeHStackView.axis = .horizontal
-        magnitudeHStackView.distribution = .equalCentering
-        magnitudeHStackView.alignment = .center
-        magnitudeHStackView.spacing = 0.0
-    
-        magnitudeHStackView.addArrangedSubview(magnitudeImage)
-        magnitudeHStackView.addArrangedSubview(magnitudeLabel)
-    }
-    
-    private func setupDepthHStackView() {
-        depthHStackView.translatesAutoresizingMaskIntoConstraints = false
-        depthHStackView.axis = .horizontal
-        depthHStackView.distribution = .equalCentering
-        depthHStackView.alignment = .center
-        depthHStackView.spacing = 0.0
-        
-        depthHStackView.addArrangedSubview(depthImage)
-        depthHStackView.addArrangedSubview(depthLabel)
-    }
-     
+
     private func setupMapView() {
         // compassButton displays only when map is NOT in the north direction
         mapView.settings.compassButton = true
@@ -203,6 +89,8 @@ class EventView: UIView, ViewControllerModellableView {
         mapView.settings.zoomGestures = true
         mapView.settings.tiltGestures = true
     }
+    
+    //MARK: Styling
     
     func style() {
         backgroundColor = .systemGray6
@@ -214,13 +102,11 @@ class EventView: UIView, ViewControllerModellableView {
             navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo (con prefersLargeTitles = true)
             navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
             navBarAppearance.backgroundColor = .systemGray6 // cambia il colore dello sfondo della navigation bar
-            // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
             navigationBar?.standardAppearance = navBarAppearance
             navigationBar?.scrollEdgeAppearance = navBarAppearance
         } else {
             navigationBar?.tintColor = .systemBlue
             navigationBar?.barTintColor = .systemGray6
-            // navigationBar?.isTranslucent = false
         }
         placeLabelStyle()
         dateImageStyle()
@@ -231,6 +117,11 @@ class EventView: UIView, ViewControllerModellableView {
         magnitudeLabelStyle()
         depthImageStyle()
         depthLabelStyle()
+        mapStyle()
+    }
+    
+    private func mapStyle(){
+        mapView.layer.cornerRadius = 10;
     }
     
     private func placeLabelStyle() {
@@ -275,11 +166,12 @@ class EventView: UIView, ViewControllerModellableView {
         depthLabel.textColor = .label
     }
     
+    //MARK: Update
+
     func update(oldModel: EventViewModel?) {
         guard let model = self.model else { return }
         if model.event != nil {
             placeLabel.text = model.event?.name
-            
             let formatter = DateFormatter()
             formatter.timeZone = TimeZone(identifier: "UTC")
             formatter.dateFormat = "dd/MM/yy, HH:mm:ss"
@@ -312,71 +204,123 @@ class EventView: UIView, ViewControllerModellableView {
     private func coordinateToDMS(latitude: Double, longitude: Double) -> (latitude: String, longitude: String) {
         let latDegrees = abs(Int(latitude))
         let latMinutes = abs(Int((latitude * 3600).truncatingRemainder(dividingBy: 3600) / 60))
-        //let latSeconds = Double(abs((latitude * 3600).truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60)))
 
         let lonDegrees = abs(Int(longitude))
         let lonMinutes = abs(Int((longitude * 3600).truncatingRemainder(dividingBy: 3600) / 60))
-        //let lonSeconds = Double(abs((longitude * 3600).truncatingRemainder(dividingBy: 3600).truncatingRemainder(dividingBy: 60) ))
     
         return (String(format:"%d° %d' %@", latDegrees, latMinutes, latitude >= 0 ? "N" : "S"),
                 String(format:"%d° %d' %@", lonDegrees, lonMinutes, longitude >= 0 ? "E" : "W"))
-        
-        /*
-        return (String(format:"%d° %d' %.2f\" %@", latDegrees, latMinutes, latSeconds, latitude >= 0 ? "N" : "S"),
-                String(format:"%d° %d' %.2f\" %@", lonDegrees, lonMinutes, lonSeconds, longitude >= 0 ? "E" : "W"))
-        */
     }
+    
+    //MARK: Layout
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        mainVStackViewContainer.translatesAutoresizingMaskIntoConstraints = false
-        mainVStackViewContainer.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
-        mainVStackViewContainer.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
-        mainVStackViewContainer.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -10).isActive = true
-        mainVStackViewContainer.heightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.heightAnchor, multiplier: 0.4).isActive = true
+        //MARK: Rows
         
-        mainVStackView.translatesAutoresizingMaskIntoConstraints = false
-        mainVStackView.topAnchor.constraint(equalTo: mainVStackViewContainer.safeAreaLayoutGuide.topAnchor).isActive = true
-        mainVStackView.bottomAnchor.constraint(equalTo: mainVStackViewContainer.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        mainVStackView.leadingAnchor.constraint(equalTo: mainVStackViewContainer.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        mainVStackView.trailingAnchor.constraint(equalTo: mainVStackViewContainer.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        firstRow.translatesAutoresizingMaskIntoConstraints = false
+        firstRow.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
+        firstRow.heightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.heightAnchor, multiplier: 0.3).isActive = true
+        firstRow.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        firstRow.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
         
-        mapContainer.translatesAutoresizingMaskIntoConstraints = false
-        mapContainer.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        mapContainer.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        mapContainer.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        mapContainer.heightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.heightAnchor, multiplier: 0.6).isActive = true
+        secondRow.translatesAutoresizingMaskIntoConstraints = false
+        secondRow.topAnchor.constraint(equalTo: self.firstRow.bottomAnchor).isActive = true
+        secondRow.heightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.heightAnchor, multiplier: 0.7).isActive = true
+        secondRow.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        secondRow.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        
+        firstEntireRow.translatesAutoresizingMaskIntoConstraints = false
+        firstEntireRow.topAnchor.constraint(equalTo: self.firstRow.topAnchor).isActive = true
+        firstEntireRow.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor, multiplier: 0.2).isActive = true
+        firstEntireRow.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        firstEntireRow.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        
+        secondSplittedRow.translatesAutoresizingMaskIntoConstraints = false
+        secondSplittedRow.topAnchor.constraint(equalTo: self.firstEntireRow.bottomAnchor).isActive = true
+        secondSplittedRow.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor, multiplier: 0.4).isActive = true
+        secondSplittedRow.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        secondSplittedRow.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        
+        thirdSplittedRow.translatesAutoresizingMaskIntoConstraints = false
+        thirdSplittedRow.topAnchor.constraint(equalTo: self.secondSplittedRow.bottomAnchor).isActive = true
+        thirdSplittedRow.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor, multiplier: 0.4).isActive = true
+        thirdSplittedRow.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        thirdSplittedRow.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        
+        //MARK: Cells
+        
+        firstRowFirstCell.translatesAutoresizingMaskIntoConstraints = false
+        firstRowFirstCell.topAnchor.constraint(equalTo: self.secondSplittedRow.topAnchor).isActive = true
+        firstRowFirstCell.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor).isActive = true
+        firstRowFirstCell.widthAnchor.constraint(equalTo: self.secondSplittedRow.widthAnchor, multiplier: 0.7).isActive = true
+        firstRowFirstCell.leadingAnchor.constraint(equalTo: self.secondSplittedRow.leadingAnchor).isActive = true
+        
+        firstRowSecondCell.translatesAutoresizingMaskIntoConstraints = false
+        firstRowSecondCell.topAnchor.constraint(equalTo: self.secondSplittedRow.topAnchor).isActive = true
+        firstRowSecondCell.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor).isActive = true
+        firstRowSecondCell.widthAnchor.constraint(equalTo: self.secondSplittedRow.widthAnchor, multiplier: 0.3).isActive = true
+        firstRowSecondCell.leadingAnchor.constraint(equalTo: self.firstRowFirstCell.trailingAnchor).isActive = true
+        
+        secondRowFirstCell.translatesAutoresizingMaskIntoConstraints = false
+        secondRowFirstCell.topAnchor.constraint(equalTo: self.thirdSplittedRow.topAnchor).isActive = true
+        secondRowFirstCell.heightAnchor.constraint(equalTo: self.secondRow.heightAnchor).isActive = true
+        secondRowFirstCell.widthAnchor.constraint(equalTo: self.thirdSplittedRow.widthAnchor, multiplier: 0.7).isActive = true
+        secondRowFirstCell.leadingAnchor.constraint(equalTo: self.thirdSplittedRow.leadingAnchor).isActive = true
+        
+        secondRowSecondCell.translatesAutoresizingMaskIntoConstraints = false
+        secondRowSecondCell.topAnchor.constraint(equalTo: self.thirdSplittedRow.topAnchor).isActive = true
+        secondRowSecondCell.heightAnchor.constraint(equalTo: self.secondRow.heightAnchor).isActive = true
+        secondRowSecondCell.widthAnchor.constraint(equalTo: self.thirdSplittedRow.widthAnchor, multiplier: 0.3).isActive = true
+        secondRowSecondCell.leadingAnchor.constraint(equalTo: self.secondRowFirstCell.trailingAnchor).isActive = true
+        
+        //MARK: Content
         
         mapView.translatesAutoresizingMaskIntoConstraints = false
-        mapView.topAnchor.constraint(equalTo: mapContainer.safeAreaLayoutGuide.topAnchor).isActive = true
-        mapView.bottomAnchor.constraint(equalTo: mapContainer.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        mapView.leadingAnchor.constraint(equalTo: mapContainer.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        mapView.trailingAnchor.constraint(equalTo: mapContainer.safeAreaLayoutGuide.trailingAnchor).isActive = true
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        let mapStyleString: String
+        mapView.topAnchor.constraint(equalTo: secondRow.safeAreaLayoutGuide.topAnchor).isActive = true
+        mapView.bottomAnchor.constraint(equalTo: secondRow.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
+        mapView.leadingAnchor.constraint(equalTo: secondRow.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+        mapView.trailingAnchor.constraint(equalTo: secondRow.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
         
-        switch traitCollection.userInterfaceStyle {
-        case .light, .unspecified:
-            mapStyleString = "light_map_style"
-        case .dark:
-            mapStyleString = "dark_map_style"
-        default:
-            mapStyleString = "light_map_style"
-        }
+        placeLabel.translatesAutoresizingMaskIntoConstraints = false
+        placeLabel.topAnchor.constraint(equalTo: firstRow.topAnchor).isActive = true
+        placeLabel.centerXAnchor.constraint(equalTo: self.firstRow.centerXAnchor).isActive = true
         
-        do {
-          // Set the map style by passing the URL of the local file.
-          if let styleURL = Bundle.main.url(forResource: mapStyleString, withExtension: "json") {
-            mapView.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
-          } else {
-            NSLog("Unable to find style.json")
-          }
-        } catch {
-          NSLog("One or more of the map styles failed to load. \(error)")
-        }
+        coordinatesLabel.translatesAutoresizingMaskIntoConstraints = false
+        coordinatesLabel.topAnchor.constraint(equalTo: secondSplittedRow.topAnchor).isActive = true
+        coordinatesLabel.centerXAnchor.constraint(equalTo: self.firstRowFirstCell.centerXAnchor).isActive = true
+        coordinatesLabel.centerYAnchor.constraint(equalTo: self.secondSplittedRow.centerYAnchor).isActive = true
+        
+        coordinatesImage.translatesAutoresizingMaskIntoConstraints = false
+        coordinatesImage.leadingAnchor.constraint(equalTo: self.firstRowFirstCell.leadingAnchor, constant: 20).isActive = true
+        coordinatesImage.centerYAnchor.constraint(equalTo: self.secondSplittedRow.centerYAnchor).isActive = true
+        
+        magnitudeLabel.translatesAutoresizingMaskIntoConstraints = false
+        magnitudeLabel.topAnchor.constraint(equalTo: secondSplittedRow.topAnchor).isActive = true
+        magnitudeLabel.centerXAnchor.constraint(equalTo: self.firstRowSecondCell.centerXAnchor).isActive = true
+        magnitudeLabel.centerYAnchor.constraint(equalTo: self.secondSplittedRow.centerYAnchor).isActive = true
+        
+        magnitudeImage.translatesAutoresizingMaskIntoConstraints = false
+        magnitudeImage.leadingAnchor.constraint(equalTo: self.firstRowSecondCell.leadingAnchor, constant: 0).isActive = true
+        magnitudeImage.centerYAnchor.constraint(equalTo: self.secondSplittedRow.centerYAnchor).isActive = true
+        
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
+        dateLabel.topAnchor.constraint(equalTo: thirdSplittedRow.topAnchor).isActive = true
+        dateLabel.centerXAnchor.constraint(equalTo: self.secondRowFirstCell.centerXAnchor).isActive = true
+        dateLabel.centerYAnchor.constraint(equalTo: self.thirdSplittedRow.centerYAnchor).isActive = true
+        
+        dateImage.translatesAutoresizingMaskIntoConstraints = false
+        dateImage.leadingAnchor.constraint(equalTo: self.secondRowFirstCell.leadingAnchor, constant: 20).isActive = true
+        dateImage.centerYAnchor.constraint(equalTo: self.thirdSplittedRow.centerYAnchor).isActive = true
+        
+        depthLabel.translatesAutoresizingMaskIntoConstraints = false
+        depthLabel.topAnchor.constraint(equalTo: thirdSplittedRow.topAnchor).isActive = true
+        depthLabel.centerXAnchor.constraint(equalTo: self.secondRowSecondCell.centerXAnchor).isActive = true
+        depthLabel.centerYAnchor.constraint(equalTo: self.thirdSplittedRow.centerYAnchor).isActive = true
+        
+        depthImage.translatesAutoresizingMaskIntoConstraints = false
+        depthImage.leadingAnchor.constraint(equalTo: self.secondRowSecondCell.leadingAnchor, constant: 0).isActive = true
+        depthImage.centerYAnchor.constraint(equalTo: self.thirdSplittedRow.centerYAnchor).isActive = true
     }
-    
 }
