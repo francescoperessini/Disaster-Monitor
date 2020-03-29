@@ -43,7 +43,7 @@ struct Event: Codable, Equatable {
         
         self.dataSource = dataSource
         self.updated = updated
-        self.magType = magType
+        self.magType = magType.uppercased()
         self.url = url
     }
 }
