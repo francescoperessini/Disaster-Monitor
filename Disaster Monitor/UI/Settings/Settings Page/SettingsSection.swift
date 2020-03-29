@@ -19,9 +19,9 @@ enum SettingsSection: Int, CaseIterable, CustomStringConvertible {
     case Message
     case Privacy
     case Styling
+    case Debug
     case AboutUs
     case DataSource
-    case Debug
     
     var description: String {
         switch self {

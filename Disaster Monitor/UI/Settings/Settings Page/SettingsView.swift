@@ -133,25 +133,8 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView()
-        view.backgroundColor = .systemGray6
-        
-        let title = UILabel()
-        //title.font = UIFont(name: "Futura", size: 20)
-        title.font = UIFont.boldSystemFont(ofSize: 20)
-        title.textColor = .label
-        title.text = SettingsSection(rawValue: section)?.description
-        view.addSubview(title)
-        title.translatesAutoresizingMaskIntoConstraints = false
-        title.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
-        title.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 20).isActive = true
-        
-        return view
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return SettingsSection(rawValue: section)?.description
     }
     
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
@@ -231,7 +214,6 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         case .DataSource: break
         case .Debug: break
         }
-        settingsTableView.deselectRow(at: settingsTableView.indexPathForSelectedRow!, animated: true)
     }
     
 }

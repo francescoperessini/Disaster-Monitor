@@ -42,20 +42,22 @@ class MonitoredRegionsView: UIView, ViewControllerModellableView {
 
     func style() {
         navigationItem?.title = "Monitored Regions"
+        navigationItem?.largeTitleDisplayMode = .never
         navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapAddFunc))
-        
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
-            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label]
-            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label]
-            navigationBar?.tintColor = .systemBlue
-            navBarAppearance.backgroundColor = .systemGray6
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo (con prefersLargeTitles = true)
+            navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
+            navBarAppearance.backgroundColor = .systemGray6 // cambia il colore dello sfondo della navigation bar
+            // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
             navigationBar?.standardAppearance = navBarAppearance
             navigationBar?.scrollEdgeAppearance = navBarAppearance
         } else {
             navigationBar?.tintColor = .systemBlue
             navigationBar?.barTintColor = .systemGray6
+            // navigationBar?.isTranslucent = false
         }
     }
 
@@ -83,7 +85,6 @@ class MonitoredRegionsView: UIView, ViewControllerModellableView {
     
     @objc func didTapAddFunc(){
         didTapAdd?()
-
     }
     
     @objc func didTapCloseFunc(){
@@ -112,18 +113,52 @@ extension MonitoredRegionsView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.monitoredRegion.count
+        if self.monitoredRegion.isEmpty {
+            setEmptyView(title: "You don't have any monitored region", message: "You can add one by pressing '+'")
+            return 0
+        }
+        else {
+            restore()
+            return self.monitoredRegion.count
+        }
+    }
+    
+    func setEmptyView(title: String, message: String) {
+        let emptyView = UIView()
+        let titleLabel = UILabel()
+        let messageLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textColor = .label
+        titleLabel.font = UIFont.systemFont(ofSize: 18)
+        messageLabel.textColor = .systemGray
+        messageLabel.font = UIFont.systemFont(ofSize: 15)
+        emptyView.addSubview(titleLabel)
+        emptyView.addSubview(messageLabel)
+        titleLabel.centerYAnchor.constraint(equalTo: emptyView.centerYAnchor).isActive = true
+        titleLabel.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor).isActive = true
+        messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 15).isActive = true
+        messageLabel.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor).isActive = true
+        titleLabel.text = title
+        messageLabel.text = message
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center
+        
+        monitoredEventsTableView.backgroundView = emptyView
+        monitoredEventsTableView.separatorStyle = .none
+    }
+    
+    func restore() {
+        monitoredEventsTableView.backgroundView = nil
+        monitoredEventsTableView.separatorStyle = .singleLine
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return MonitoredRegionSection(rawValue: section)?.description
-    }
-    
-    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        guard let section = MonitoredRegionSection(rawValue: section) else { return "" }
-        switch section {
-        case .MonitoredRegion:
-            return "Description"
+        if self.monitoredRegion.isEmpty {
+            return nil
+        }
+        else {
+            return MonitoredRegionSection(rawValue: section)?.description
         }
     }
     

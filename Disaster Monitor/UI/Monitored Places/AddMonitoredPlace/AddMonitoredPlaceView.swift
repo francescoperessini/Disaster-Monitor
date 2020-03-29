@@ -190,16 +190,15 @@ extension AddMonitoredPlaceView: UITableViewDelegate, UITableViewDataSource {
             cell.mapView.delegate = self
         }*/
         
-        if type?.containsMap ?? false{
+        if type?.containsMap ?? false {
             mapView = cell.mapView
             cell.mapView.delegate = self
-        }else if type?.containsStepperMagnitudo ?? false{
+        } else if type?.containsStepperMagnitudo ?? false {
             cellMagnitudo = cell
-        }else if type?.containsStepperRadius ?? false{
+        } else if type?.containsStepperRadius ?? false {
             cellRadius = cell
         }
         return cell
     }
+    
 }
-
-
