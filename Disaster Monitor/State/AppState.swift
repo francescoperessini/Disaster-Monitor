@@ -91,7 +91,7 @@ struct EventsStateUpdaterINGV: StateUpdater {
         let time_str = newValue["features"].arrayValue.map{$0["properties"]["time"].stringValue}
         let depth = newValue["features"].arrayValue.map{$0["geometry"]["coordinates"][2].floatValue}
         let magType = newValue["features"].arrayValue.map{$0["properties"]["magType"].stringValue}
-        let url_tmp = "http://cnt.rm.ingv.it/event/"
+        let url_tmp = "http://terremoti.ingv.it/event/"
         let dataSource = "INGV"
         var result_time: [Double] = []
         
