@@ -20,6 +20,9 @@ struct EventViewModel: ViewModelWithLocalState {
 
 // MARK: - View
 class EventView: UIView, ViewControllerModellableView {
+    
+    var didTapSafari: ((String) -> ())?
+    var url: String = ""
         
     var firstRow: UIView = UIView()
     var secondRow: UIView = UIView()
@@ -105,10 +108,10 @@ class EventView: UIView, ViewControllerModellableView {
     }
     
     //MARK: Styling
-    
     func style() {
         backgroundColor = .systemGray6
         navigationItem?.largeTitleDisplayMode = .never
+        navigationItem?.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "safari"), style: .plain, target: self, action: #selector(didTapSafariFunc))
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
@@ -133,6 +136,10 @@ class EventView: UIView, ViewControllerModellableView {
         depthLabelStyle()
         mapStyle()
         magnitudoBigLabelStyle()
+    }
+    
+    @objc func didTapSafariFunc() {
+        didTapSafari?(url)
     }
     
     private func magnitudoBigLabelStyle(){
@@ -213,6 +220,8 @@ class EventView: UIView, ViewControllerModellableView {
             magnitudeLabel.text = String((model.event?.magnitudo)!)
             
             depthLabel.text = String((model.event?.depth)!) + " km"
+            
+            url = (model.event?.url)!
             
             updateMapView()
         }
