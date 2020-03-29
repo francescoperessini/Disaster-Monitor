@@ -25,8 +25,9 @@ class EventView: UIView, ViewControllerModellableView {
     var secondRow: UIView = UIView()
     
     var firstEntireRow: UIView = UIView()
-    var secondSplittedRow: UIView = UIView()
+    var secondEntireRow: UIView = UIView()
     var thirdSplittedRow: UIView = UIView()
+    var fourthSplittedRow: UIView = UIView()
     
     var firstRowFirstCell: UIView = UIView()
     var firstRowSecondCell: UIView = UIView()
@@ -44,6 +45,11 @@ class EventView: UIView, ViewControllerModellableView {
     var magnitudeLabel = UILabel()
     var depthLabel = UILabel()
     
+    let size:CGFloat = 48
+    let someView = UIView()
+    var magnitudoBigLabel = UILabel()
+    
+    let fontSmall = UIFont.systemFont(ofSize: 18)
     
     var dateImage = UIImageView(image: UIImage(systemName: "clock")!.withRenderingMode(.alwaysTemplate))
     var coordinatesImage = UIImageView(image: UIImage(systemName: "mappin")!.withRenderingMode(.alwaysTemplate))
@@ -55,14 +61,16 @@ class EventView: UIView, ViewControllerModellableView {
         self.addSubview(firstRow)
         self.addSubview(secondRow)
         firstRow.addSubview(firstEntireRow)
-        firstRow.addSubview(secondSplittedRow)
+        firstRow.addSubview(secondEntireRow)
         firstRow.addSubview(thirdSplittedRow)
+        firstRow.addSubview(fourthSplittedRow)
         
-        secondSplittedRow.addSubview(firstRowFirstCell)
-        secondSplittedRow.addSubview(firstRowSecondCell)
         
-        thirdSplittedRow.addSubview(secondRowFirstCell)
-        thirdSplittedRow.addSubview(secondRowSecondCell)
+        thirdSplittedRow.addSubview(firstRowFirstCell)
+        thirdSplittedRow.addSubview(firstRowSecondCell)
+        
+        fourthSplittedRow.addSubview(secondRowFirstCell)
+        fourthSplittedRow.addSubview(secondRowSecondCell)
         
         firstRow.addSubview(placeLabel)
         
@@ -80,6 +88,12 @@ class EventView: UIView, ViewControllerModellableView {
         
         secondRow.addSubview(mapView)
         setupMapView()
+        
+        self.secondEntireRow.addSubview(someView)
+        
+        someView.addSubview(magnitudoBigLabel)
+        
+        
     }
 
     private func setupMapView() {
@@ -118,6 +132,18 @@ class EventView: UIView, ViewControllerModellableView {
         depthImageStyle()
         depthLabelStyle()
         mapStyle()
+        magnitudoBigLabelStyle()
+    }
+    
+    private func magnitudoBigLabelStyle(){
+        magnitudoBigLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        magnitudoBigLabel.layer.cornerRadius = magnitudoBigLabel.frame.width/2
+        
+        magnitudoBigLabel.textColor = UIColor.white
+        magnitudoBigLabel.textAlignment = .center
+        //magnitudoBigLabel.font = UIFont.systemFont(ofSize: 14.0)
+
+        
     }
     
     private func mapStyle(){
@@ -135,7 +161,7 @@ class EventView: UIView, ViewControllerModellableView {
     }
     
     private func dateLabelStyle() {
-        dateLabel.font = UIFont.systemFont(ofSize: 15)
+        dateLabel.font = fontSmall
         dateLabel.textColor = .label
     }
     
@@ -144,7 +170,7 @@ class EventView: UIView, ViewControllerModellableView {
     }
     
     private func coordinatesLabelStyle() {
-        coordinatesLabel.font = UIFont.systemFont(ofSize: 15)
+        coordinatesLabel.font = fontSmall
         coordinatesLabel.textColor = .label
     }
     
@@ -153,7 +179,7 @@ class EventView: UIView, ViewControllerModellableView {
     }
     
     private func magnitudeLabelStyle() {
-        magnitudeLabel.font = UIFont.systemFont(ofSize: 15)
+        magnitudeLabel.font = fontSmall
         magnitudeLabel.textColor = .label
     }
     
@@ -162,7 +188,7 @@ class EventView: UIView, ViewControllerModellableView {
     }
     
     private func depthLabelStyle() {
-        depthLabel.font = UIFont.systemFont(ofSize: 15)
+        depthLabel.font = fontSmall
         depthLabel.textColor = .label
     }
     
@@ -171,6 +197,7 @@ class EventView: UIView, ViewControllerModellableView {
     func update(oldModel: EventViewModel?) {
         guard let model = self.model else { return }
         if model.event != nil {
+            magnitudoBigLabel.text = String((model.event?.magnitudo)!)
             placeLabel.text = model.event?.name
             let formatter = DateFormatter()
             formatter.timeZone = TimeZone(identifier: "UTC")
@@ -237,42 +264,48 @@ class EventView: UIView, ViewControllerModellableView {
         firstEntireRow.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
         firstEntireRow.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
         
-        secondSplittedRow.translatesAutoresizingMaskIntoConstraints = false
-        secondSplittedRow.topAnchor.constraint(equalTo: self.firstEntireRow.bottomAnchor).isActive = true
-        secondSplittedRow.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor, multiplier: 0.4).isActive = true
-        secondSplittedRow.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        secondSplittedRow.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        secondEntireRow.translatesAutoresizingMaskIntoConstraints = false
+        secondEntireRow.topAnchor.constraint(equalTo: self.firstEntireRow.bottomAnchor).isActive = true
+        secondEntireRow.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor, multiplier: 0.3).isActive = true
+        secondEntireRow.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        secondEntireRow.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
         
         thirdSplittedRow.translatesAutoresizingMaskIntoConstraints = false
-        thirdSplittedRow.topAnchor.constraint(equalTo: self.secondSplittedRow.bottomAnchor).isActive = true
-        thirdSplittedRow.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor, multiplier: 0.4).isActive = true
+        thirdSplittedRow.topAnchor.constraint(equalTo: self.secondEntireRow.bottomAnchor).isActive = true
+        thirdSplittedRow.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor, multiplier: 0.25).isActive = true
         thirdSplittedRow.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
         thirdSplittedRow.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        
+        fourthSplittedRow.translatesAutoresizingMaskIntoConstraints = false
+        fourthSplittedRow.topAnchor.constraint(equalTo: self.thirdSplittedRow.bottomAnchor).isActive = true
+        fourthSplittedRow.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor, multiplier: 0.25).isActive = true
+        fourthSplittedRow.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        fourthSplittedRow.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
         
         //MARK: Cells
         
         firstRowFirstCell.translatesAutoresizingMaskIntoConstraints = false
-        firstRowFirstCell.topAnchor.constraint(equalTo: self.secondSplittedRow.topAnchor).isActive = true
+        firstRowFirstCell.topAnchor.constraint(equalTo: self.thirdSplittedRow.topAnchor).isActive = true
         firstRowFirstCell.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor).isActive = true
-        firstRowFirstCell.widthAnchor.constraint(equalTo: self.secondSplittedRow.widthAnchor, multiplier: 0.7).isActive = true
-        firstRowFirstCell.leadingAnchor.constraint(equalTo: self.secondSplittedRow.leadingAnchor).isActive = true
+        firstRowFirstCell.widthAnchor.constraint(equalTo: self.thirdSplittedRow.widthAnchor, multiplier: 0.7).isActive = true
+        firstRowFirstCell.leadingAnchor.constraint(equalTo: self.thirdSplittedRow.leadingAnchor).isActive = true
         
         firstRowSecondCell.translatesAutoresizingMaskIntoConstraints = false
-        firstRowSecondCell.topAnchor.constraint(equalTo: self.secondSplittedRow.topAnchor).isActive = true
+        firstRowSecondCell.topAnchor.constraint(equalTo: self.thirdSplittedRow.topAnchor).isActive = true
         firstRowSecondCell.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor).isActive = true
-        firstRowSecondCell.widthAnchor.constraint(equalTo: self.secondSplittedRow.widthAnchor, multiplier: 0.3).isActive = true
+        firstRowSecondCell.widthAnchor.constraint(equalTo: self.thirdSplittedRow.widthAnchor, multiplier: 0.3).isActive = true
         firstRowSecondCell.leadingAnchor.constraint(equalTo: self.firstRowFirstCell.trailingAnchor).isActive = true
         
         secondRowFirstCell.translatesAutoresizingMaskIntoConstraints = false
-        secondRowFirstCell.topAnchor.constraint(equalTo: self.thirdSplittedRow.topAnchor).isActive = true
+        secondRowFirstCell.topAnchor.constraint(equalTo: self.fourthSplittedRow.topAnchor).isActive = true
         secondRowFirstCell.heightAnchor.constraint(equalTo: self.secondRow.heightAnchor).isActive = true
-        secondRowFirstCell.widthAnchor.constraint(equalTo: self.thirdSplittedRow.widthAnchor, multiplier: 0.7).isActive = true
-        secondRowFirstCell.leadingAnchor.constraint(equalTo: self.thirdSplittedRow.leadingAnchor).isActive = true
+        secondRowFirstCell.widthAnchor.constraint(equalTo: self.fourthSplittedRow.widthAnchor, multiplier: 0.7).isActive = true
+        secondRowFirstCell.leadingAnchor.constraint(equalTo: self.fourthSplittedRow.leadingAnchor).isActive = true
         
         secondRowSecondCell.translatesAutoresizingMaskIntoConstraints = false
-        secondRowSecondCell.topAnchor.constraint(equalTo: self.thirdSplittedRow.topAnchor).isActive = true
+        secondRowSecondCell.topAnchor.constraint(equalTo: self.fourthSplittedRow.topAnchor).isActive = true
         secondRowSecondCell.heightAnchor.constraint(equalTo: self.secondRow.heightAnchor).isActive = true
-        secondRowSecondCell.widthAnchor.constraint(equalTo: self.thirdSplittedRow.widthAnchor, multiplier: 0.3).isActive = true
+        secondRowSecondCell.widthAnchor.constraint(equalTo: self.fourthSplittedRow.widthAnchor, multiplier: 0.3).isActive = true
         secondRowSecondCell.leadingAnchor.constraint(equalTo: self.secondRowFirstCell.trailingAnchor).isActive = true
         
         //MARK: Content
@@ -286,41 +319,60 @@ class EventView: UIView, ViewControllerModellableView {
         placeLabel.translatesAutoresizingMaskIntoConstraints = false
         placeLabel.topAnchor.constraint(equalTo: firstRow.topAnchor).isActive = true
         placeLabel.centerXAnchor.constraint(equalTo: self.firstRow.centerXAnchor).isActive = true
+        placeLabel.centerYAnchor.constraint(equalTo: self.firstEntireRow.centerYAnchor).isActive = true
         
         coordinatesLabel.translatesAutoresizingMaskIntoConstraints = false
-        coordinatesLabel.topAnchor.constraint(equalTo: secondSplittedRow.topAnchor).isActive = true
+        coordinatesLabel.topAnchor.constraint(equalTo: thirdSplittedRow.topAnchor).isActive = true
         coordinatesLabel.centerXAnchor.constraint(equalTo: self.firstRowFirstCell.centerXAnchor).isActive = true
-        coordinatesLabel.centerYAnchor.constraint(equalTo: self.secondSplittedRow.centerYAnchor).isActive = true
+        coordinatesLabel.centerYAnchor.constraint(equalTo: self.thirdSplittedRow.centerYAnchor).isActive = true
         
         coordinatesImage.translatesAutoresizingMaskIntoConstraints = false
         coordinatesImage.leadingAnchor.constraint(equalTo: self.firstRowFirstCell.leadingAnchor, constant: 20).isActive = true
-        coordinatesImage.centerYAnchor.constraint(equalTo: self.secondSplittedRow.centerYAnchor).isActive = true
+        coordinatesImage.centerYAnchor.constraint(equalTo: self.thirdSplittedRow.centerYAnchor).isActive = true
         
         magnitudeLabel.translatesAutoresizingMaskIntoConstraints = false
-        magnitudeLabel.topAnchor.constraint(equalTo: secondSplittedRow.topAnchor).isActive = true
+        magnitudeLabel.topAnchor.constraint(equalTo: thirdSplittedRow.topAnchor).isActive = true
         magnitudeLabel.centerXAnchor.constraint(equalTo: self.firstRowSecondCell.centerXAnchor).isActive = true
-        magnitudeLabel.centerYAnchor.constraint(equalTo: self.secondSplittedRow.centerYAnchor).isActive = true
+        magnitudeLabel.centerYAnchor.constraint(equalTo: self.thirdSplittedRow.centerYAnchor).isActive = true
         
         magnitudeImage.translatesAutoresizingMaskIntoConstraints = false
         magnitudeImage.leadingAnchor.constraint(equalTo: self.firstRowSecondCell.leadingAnchor, constant: 0).isActive = true
-        magnitudeImage.centerYAnchor.constraint(equalTo: self.secondSplittedRow.centerYAnchor).isActive = true
+        magnitudeImage.centerYAnchor.constraint(equalTo: self.thirdSplittedRow.centerYAnchor).isActive = true
         
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.topAnchor.constraint(equalTo: thirdSplittedRow.topAnchor).isActive = true
+        dateLabel.topAnchor.constraint(equalTo: fourthSplittedRow.topAnchor).isActive = true
         dateLabel.centerXAnchor.constraint(equalTo: self.secondRowFirstCell.centerXAnchor).isActive = true
-        dateLabel.centerYAnchor.constraint(equalTo: self.thirdSplittedRow.centerYAnchor).isActive = true
+        dateLabel.centerYAnchor.constraint(equalTo: self.fourthSplittedRow.centerYAnchor).isActive = true
         
         dateImage.translatesAutoresizingMaskIntoConstraints = false
         dateImage.leadingAnchor.constraint(equalTo: self.secondRowFirstCell.leadingAnchor, constant: 20).isActive = true
-        dateImage.centerYAnchor.constraint(equalTo: self.thirdSplittedRow.centerYAnchor).isActive = true
+        dateImage.centerYAnchor.constraint(equalTo: self.fourthSplittedRow.centerYAnchor).isActive = true
         
         depthLabel.translatesAutoresizingMaskIntoConstraints = false
-        depthLabel.topAnchor.constraint(equalTo: thirdSplittedRow.topAnchor).isActive = true
+        depthLabel.topAnchor.constraint(equalTo: fourthSplittedRow.topAnchor).isActive = true
         depthLabel.centerXAnchor.constraint(equalTo: self.secondRowSecondCell.centerXAnchor).isActive = true
-        depthLabel.centerYAnchor.constraint(equalTo: self.thirdSplittedRow.centerYAnchor).isActive = true
+        depthLabel.centerYAnchor.constraint(equalTo: self.fourthSplittedRow.centerYAnchor).isActive = true
         
         depthImage.translatesAutoresizingMaskIntoConstraints = false
         depthImage.leadingAnchor.constraint(equalTo: self.secondRowSecondCell.leadingAnchor, constant: 0).isActive = true
-        depthImage.centerYAnchor.constraint(equalTo: self.thirdSplittedRow.centerYAnchor).isActive = true
+        depthImage.centerYAnchor.constraint(equalTo: self.fourthSplittedRow.centerYAnchor).isActive = true
+        
+        
+        someView.translatesAutoresizingMaskIntoConstraints = false
+        someView.layer.cornerRadius = size/2
+        someView.backgroundColor = .systemBlue
+        someView.layer.borderColor = UIColor.systemBlue.cgColor
+        someView.layer.borderWidth = 1
+        
+        someView.topAnchor.constraint(equalTo: secondEntireRow.topAnchor).isActive = true
+        someView.leadingAnchor.constraint(equalTo: secondEntireRow.leadingAnchor, constant: 20).isActive = true
+        someView.heightAnchor.constraint(equalToConstant: size).isActive = true
+        someView.widthAnchor.constraint(equalToConstant: size).isActive = true
+        
+        magnitudoBigLabel.translatesAutoresizingMaskIntoConstraints = false
+        someView.addSubview(magnitudoBigLabel)
+        
+        magnitudoBigLabel.centerXAnchor.constraint(equalTo: someView.centerXAnchor).isActive = true
+        magnitudoBigLabel.centerYAnchor.constraint(equalTo: someView.centerYAnchor).isActive = true
     }
 }
