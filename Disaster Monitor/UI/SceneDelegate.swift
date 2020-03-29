@@ -21,8 +21,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         
-        
-        
         BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.disastermonitor.db_cleaning", using: nil) { (task) in
             self.handleDbCleaning(task: task as! BGProcessingTask)
         }
@@ -81,11 +79,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard now > (self.lastCleaned ?? Date() + oneWeek) else {return}*/
         
         let request = BGProcessingTaskRequest(identifier: "com.disastermonitor.db_cleaning")
-        
-        do{
+
+        do {
             try BGTaskScheduler.shared.submit(request)
-        }catch{
-            print("Could not schedule database cleaning \(error)")
+        } catch {
+            print("Could not schedule background database cleaning (try on a real device and not on the simulator!)")
         }
     }
     
@@ -96,7 +94,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         do {
             try BGTaskScheduler.shared.submit(request)
         } catch {
-            print(error)
+            print("Could not schedule background events refresh (try on a real device and not on the simulator!)")
         }
     }
     

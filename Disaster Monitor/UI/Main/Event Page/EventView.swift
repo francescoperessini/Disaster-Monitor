@@ -169,7 +169,7 @@ class EventView: UIView, ViewControllerModellableView {
         magnitudoBigLabel.layer.cornerRadius = magnitudoBigLabel.frame.width/2
         magnitudoBigLabel.textColor = UIColor.white
         magnitudoBigLabel.textAlignment = .center
-        magnitudoFeltLabel.numberOfLines = 2
+        magnitudoFeltLabel.numberOfLines = 0
     }
     
     private func mapStyle(){
@@ -246,7 +246,7 @@ class EventView: UIView, ViewControllerModellableView {
             
             magnitudeLabel.text = "\(String((model.event?.magnitudo)!)) \(model.event?.magType ?? "")"
             
-            depthLabel.text = String((model.event?.depth)!) + " km"
+            depthLabel.text = String(format:"%.2f km", (model.event?.depth)!)
             
             url = (model.event?.url)!
             
@@ -272,10 +272,9 @@ class EventView: UIView, ViewControllerModellableView {
         if felt != 0 {
             string?.append(contentsOf: "\nEarthquake felt by \(felt) user")
             if(felt != 0){
-                string?.append("s")
+                string?.append("s.")
             }
         }
-        
         magnitudoFeltLabel.text = string
     }
     
@@ -301,7 +300,6 @@ class EventView: UIView, ViewControllerModellableView {
     }
     
     //MARK: Layout
-    
     override func layoutSubviews() {
         super.layoutSubviews()
         
