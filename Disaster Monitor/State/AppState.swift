@@ -60,18 +60,19 @@ struct EventsStateUpdater: StateUpdater {
         let time = newValue["features"].arrayValue.map{$0["properties"]["time"].doubleValue}
         let depth = newValue["features"].arrayValue.map{$0["geometry"]["coordinates"][2].floatValue}
         let updated = newValue["features"].arrayValue.map{$0["properties"]["updated"].doubleValue}
+        let magType = newValue["features"].arrayValue.map{$0["properties"]["magType"].stringValue}
         let dataSource = "USGS"
         
         for i in 0...arrayNames.count - 1 {
             // Unseen events
             if !state.events.contains(where: {$0.id == id[i]}) {
-                state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i]))
+                state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i], magType: magType[i]))
             }
             // Seen events, with an update
             else if state.events.contains(where: {$0.id == id[i] && $0.updated != updated[i]}){
                 let toRemoveEvent = state.events.firstIndex{$0.id == id[i] && $0.updated != updated[i]}
                 state.events.remove(at: toRemoveEvent!)
-                state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i]))
+                state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i], magType: magType[i]))
             }
 
         }
@@ -89,6 +90,7 @@ struct EventsStateUpdaterINGV: StateUpdater {
         let id = newValue["features"].arrayValue.map{$0["properties"]["eventId"].stringValue}
         let time_str = newValue["features"].arrayValue.map{$0["properties"]["time"].stringValue}
         let depth = newValue["features"].arrayValue.map{$0["geometry"]["coordinates"][2].floatValue}
+        let magType = newValue["features"].arrayValue.map{$0["properties"]["magType"].stringValue}
         let dataSource = "INGV"
         var result_time: [Double] = []
         
@@ -103,7 +105,7 @@ struct EventsStateUpdaterINGV: StateUpdater {
 
         for i in 0...arrayNames.count - 1 {
             if !state.events.contains(where: {$0.id == id[i]}) {
-                state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: result_time[i], dataSource: dataSource, updated: 0))
+                state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: result_time[i], dataSource: dataSource, updated: 0, magType: magType[i]))
             }
         }
         state.events.sort(by: {$0.time > $1.time})
@@ -228,7 +230,7 @@ struct AddEventDebugMode: StateUpdater {
         // Creazione di un evento fittizio
         let tmp = Date()
         let time = tmp.timeIntervalSince1970 * 1000.0
-        let event = Event(id: "test_earthquake", name: "Test Earthquake", descr: "earthquake", magnitudo: "7.5", coordinates: "9.226937 45.478085", depth: 10.0, time: time, dataSource: "USGS", updated: time)
+        let event = Event(id: "test_earthquake", name: "Test Earthquake", descr: "earthquake", magnitudo: "7.5", coordinates: "9.226937 45.478085", depth: 10.0, time: time, dataSource: "USGS", updated: time, magType: "md")
         state.events.append(event)
         state.events.sort(by: {$0.time > $1.time})
     }

@@ -20,8 +20,10 @@ struct Event: Codable, Equatable {
     var daysAgo: Int = 0
     var dataSource: String
     var updated: Double
+    var magType: String
     
-    init(id: String, name: String, descr: String, magnitudo: String, coordinates: String, depth: Float, time: Double, dataSource: String, updated: Double) {
+    init(id: String, name: String, descr: String, magnitudo: String, coordinates: String, depth: Float, time: Double, dataSource: String,
+         updated: Double, magType: String) {
         self.id = id
         self.name = name
         self.description = descr
@@ -40,6 +42,7 @@ struct Event: Codable, Equatable {
         
         self.dataSource = dataSource
         self.updated = updated
+        self.magType = magType
     }
 }
 
