@@ -48,6 +48,7 @@ class EventView: UIView, ViewControllerModellableView {
     let size:CGFloat = 48
     let someView = UIView()
     var magnitudoBigLabel = UILabel()
+    var magnitudoFeltLabel = UILabel()
     
     let fontSmall = UIFont.systemFont(ofSize: 18)
     
@@ -90,10 +91,9 @@ class EventView: UIView, ViewControllerModellableView {
         setupMapView()
         
         self.secondEntireRow.addSubview(someView)
+        self.secondEntireRow.addSubview(magnitudoFeltLabel)
         
         someView.addSubview(magnitudoBigLabel)
-        
-        
     }
 
     private func setupMapView() {
@@ -133,6 +133,11 @@ class EventView: UIView, ViewControllerModellableView {
         depthLabelStyle()
         mapStyle()
         magnitudoBigLabelStyle()
+        magnitudoFeltLabelStyle()
+    }
+    
+    private func magnitudoFeltLabelStyle(){
+        magnitudoFeltLabel.font = fontSmall
     }
     
     private func magnitudoBigLabelStyle(){
@@ -142,8 +147,6 @@ class EventView: UIView, ViewControllerModellableView {
         magnitudoBigLabel.textColor = UIColor.white
         magnitudoBigLabel.textAlignment = .center
         //magnitudoBigLabel.font = UIFont.systemFont(ofSize: 14.0)
-
-        
     }
     
     private func mapStyle(){
@@ -210,11 +213,13 @@ class EventView: UIView, ViewControllerModellableView {
             let dms = coordinateToDMS(latitude: latitude, longitude: longitude)
             coordinatesLabel.text = dms.latitude + ", " + dms.longitude
             
-            magnitudeLabel.text = String((model.event?.magnitudo)!)
+            magnitudeLabel.text = "\(String((model.event?.magnitudo)!)) \(model.event?.magType ?? "")"
             
             depthLabel.text = String((model.event?.depth)!) + " km"
             
             updateMapView()
+            
+            magnitudoFeltLabel.text = "Lorem Ipsum"
         }
     }
     
@@ -374,5 +379,9 @@ class EventView: UIView, ViewControllerModellableView {
         
         magnitudoBigLabel.centerXAnchor.constraint(equalTo: someView.centerXAnchor).isActive = true
         magnitudoBigLabel.centerYAnchor.constraint(equalTo: someView.centerYAnchor).isActive = true
+        
+        magnitudoFeltLabel.translatesAutoresizingMaskIntoConstraints = false
+        magnitudoFeltLabel.leadingAnchor.constraint(equalTo: someView.trailingAnchor, constant: 20).isActive = true
+        magnitudoFeltLabel.centerYAnchor.constraint(equalTo: someView.centerYAnchor).isActive = true
     }
 }
