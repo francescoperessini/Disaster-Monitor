@@ -7,6 +7,7 @@
 //
 
 import Tempura
+import CoreLocation
 import GoogleMaps
 
 // MARK: - ViewModel
@@ -65,6 +66,9 @@ class EventView: UIView, ViewControllerModellableView {
     var coordinates: CLLocation?
     
     func setup() {
+        LocationService.sharedInstance.delegate = self
+        coordinates = LocationService.sharedInstance.currentLocation
+
         self.addSubview(firstRow)
         self.addSubview(secondRow)
         firstRow.addSubview(firstEntireRow)
@@ -100,11 +104,6 @@ class EventView: UIView, ViewControllerModellableView {
         self.secondEntireRow.addSubview(magnitudoFeltLabel)
         
         someView.addSubview(magnitudoBigLabel)
-        
-        let lat = LocationService.sharedInstance.currentLocation?.coordinate.latitude
-        let long  = LocationService.sharedInstance.currentLocation?.coordinate.longitude
-        
-        coordinates = CLLocation(latitude: lat!, longitude:long!)
     }
 
     private func setupMapView() {
@@ -229,13 +228,14 @@ class EventView: UIView, ViewControllerModellableView {
 
     func update(oldModel: EventViewModel?) {
         guard let model = self.model else { return }
-        if model.event != nil { //fullNameArr = split(fullName) {$0 == " "}
+        if model.event != nil { 
             magnitudoBigLabel.text = String((model.event?.magnitudo)!)
             
             if model.event?.name.contains("of") ?? false{
                 placeLabel.text = model.event?.name.components(separatedBy: "of")[1]
                 placeLabelSubtitle.text = model.event?.name
-            }else{
+            }
+            else {
                 placeLabel.text = model.event?.name
             }
             
@@ -249,9 +249,7 @@ class EventView: UIView, ViewControllerModellableView {
             longitude = (model.event?.coordinates[0])!
             let dms = coordinateToDMS(latitude: latitude, longitude: longitude)
             coordinatesLabel.text = dms.latitude + ", " + dms.longitude
-            
-            distanceLabel.text = "\(String((model.event?.magnitudo)!)) \(model.event?.magType ?? "")"
-            
+                        
             depthLabel.text = String(format:"%.2f km", (model.event?.depth)!)
             
             url = (model.event?.url)!
@@ -260,14 +258,15 @@ class EventView: UIView, ViewControllerModellableView {
             
             magnitudoFeltLabelUpdate(felt: model.event?.felt ?? 0, magnitudo: model.event?.magnitudo ?? 0)
             
-            let eventCoordinates = CLLocation(latitude: (model.event?.coordinates[1])!, longitude: (model.event?.coordinates[0])!)
-            
-            print(coordinates!.distance(from: eventCoordinates) / 1000)
-            let distance = coordinates!.distance(from: eventCoordinates) / 1000
-            
-            distanceLabel.text = String(format:"%.0f km", distance)
-            
-            //let distance = hardCodedCoordinates.distance(from: eventCoordinates) / 1000
+            if coordinates != nil {
+                let eventCoordinates = CLLocation(latitude: latitude, longitude: longitude)
+                let distance = coordinates!.distance(from: eventCoordinates) / 1000
+                
+                distanceLabel.text = String(format:"%.0f km", distance)
+            }
+            else {
+                distanceLabel.text = "n/a"
+            }
         }
     }
     
@@ -475,4 +474,17 @@ extension UITextView {
         let positiveTopOffset = max(0, heightOffset)
         contentOffset.y = -positiveTopOffset
     }
+}
+
+extension EventView: LocationServiceDelegate {
+    func tracingLocation(currentLocation: CLLocation) {
+        let lat = currentLocation.coordinate.latitude
+        let lon = currentLocation.coordinate.longitude
+        
+        coordinates = CLLocation(latitude: lat, longitude: lon)
+    }
+    
+    func tracingLocationDidFailWithError(error: NSError) {
+    }
+    
 }

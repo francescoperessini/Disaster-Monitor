@@ -216,8 +216,12 @@ class MapView: UIView, ViewControllerModellableView {
 extension MapView: LocationServiceDelegate, GMSAutocompleteResultsViewControllerDelegate {
     
     func tracingLocation(currentLocation: CLLocation) {
+        /*
         let lat = currentLocation.coordinate.latitude
         let lon = currentLocation.coordinate.longitude
+
+        print("latitude \(lat), longitude \(lon)")
+        */
     }
     
     func tracingLocationDidFailWithError(error: NSError) {
