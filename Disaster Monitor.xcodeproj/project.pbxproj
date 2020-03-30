@@ -60,6 +60,7 @@
 		C614C97A2411A86600DC772E /* light_map_style.json in Resources */ = {isa = PBXBuildFile; fileRef = C614C9792411A86600DC772E /* light_map_style.json */; };
 		C614C97C2411A88A00DC772E /* dark_map_style.json in Resources */ = {isa = PBXBuildFile; fileRef = C614C97B2411A88A00DC772E /* dark_map_style.json */; };
 		C677E59A2407CA540079344A /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C677E5992407CA540079344A /* SettingsSection.swift */; };
+		C6AB352D2432190D00190871 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AB352C2432190D00190871 /* LocationService.swift */; };
 		C6B0E86C24068AC9005CEE09 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0E86B24068AC9005CEE09 /* SettingsTableViewCell.swift */; };
 		C6B0E86E2406DCE4005CEE09 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0E86D2406DCE4005CEE09 /* MainTabBarController.swift */; };
 		C6C625082409AC5A00E994F3 /* MessageEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C625072409AC5A00E994F3 /* MessageEditorView.swift */; };
@@ -150,6 +151,7 @@
 		C614C9792411A86600DC772E /* light_map_style.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = light_map_style.json; sourceTree = "<group>"; };
 		C614C97B2411A88A00DC772E /* dark_map_style.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = dark_map_style.json; sourceTree = "<group>"; };
 		C677E5992407CA540079344A /* SettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsSection.swift; path = "Disaster Monitor/UI/Settings/Settings Page/SettingsSection.swift"; sourceTree = SOURCE_ROOT; };
+		C6AB352C2432190D00190871 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		C6B0E86B24068AC9005CEE09 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		C6B0E86D2406DCE4005CEE09 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainTabBarController.swift; path = "Disaster Monitor/UI/MainTabBarController.swift"; sourceTree = SOURCE_ROOT; };
 		C6C625072409AC5A00E994F3 /* MessageEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageEditorView.swift; sourceTree = "<group>"; };
@@ -306,6 +308,7 @@
 				C6B0E86D2406DCE4005CEE09 /* MainTabBarController.swift */,
 				7B92360B241794DE00A4EF22 /* PersistorInterceptor.swift */,
 				7B5038A923A8CD5700F18840 /* SceneDelegate.swift */,
+				C6AB352C2432190D00190871 /* LocationService.swift */,
 				7B44820F24252D2A000DDDAC /* Monitored Places */,
 				C635C0BB240DB9A200970769 /* Main */,
 				C635C0BD240DB9C100970769 /* Map */,
@@ -751,6 +754,7 @@
 				7B82217E23AB8BC6002DAA48 /* MapView.swift in Sources */,
 				7BE4173523A8D4130096F8EA /* DependenciesContainer.swift in Sources */,
 				7B44821324252D66000DDDAC /* MonitoredRegionViewController.swift in Sources */,
+				C6AB352D2432190D00190871 /* LocationService.swift in Sources */,
 				C60D1E52241BF3000054DF3B /* FilterSection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

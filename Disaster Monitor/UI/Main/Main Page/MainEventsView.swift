@@ -161,47 +161,95 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource, UISearchBa
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let section = MainEventsSection(rawValue: section) else { return 0 }
         
-        switch section {
-        case .Past24:
-            return past24Events.count
-        case .Past48:
-            return past48Events.count
-        case .Past72:
-            return past72Events.count
-        case .Past96:
-            return past96Events.count
-        case .PreviousDays:
-            return previousDaysEvents.count
+        if events.isEmpty {
+            setEmptyView(title: "", message: "")
+            return 0
+        }
+        else {
+            restore()
+            switch section {
+            case .Past24:
+                return past24Events.count
+            case .Past48:
+                return past48Events.count
+            case .Past72:
+                return past72Events.count
+            case .Past96:
+                return past96Events.count
+            case .PreviousDays:
+                return previousDaysEvents.count
+            }
         }
     }
     
+    func setEmptyView(title: String, message: String) {
+        let emptyView = UIView()
+        let titleLabel = UILabel()
+        let messageLabel = UILabel()
+        emptyView.backgroundColor = .systemGray6
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textColor = .label
+        titleLabel.font = UIFont.systemFont(ofSize: 18)
+        messageLabel.textColor = .systemGray
+        messageLabel.font = UIFont.systemFont(ofSize: 15)
+        emptyView.addSubview(titleLabel)
+        emptyView.addSubview(messageLabel)
+        titleLabel.centerYAnchor.constraint(equalTo: emptyView.centerYAnchor).isActive = true
+        titleLabel.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor).isActive = true
+        messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 15).isActive = true
+        messageLabel.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor).isActive = true
+        titleLabel.text = title
+        messageLabel.text = message
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center
+        
+        mainEventsTableView.backgroundView = emptyView
+        mainEventsTableView.separatorStyle = .none
+    }
+    
+    func restore() {
+        mainEventsTableView.backgroundView = nil
+        mainEventsTableView.separatorStyle = .singleLine
+    }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView()
-        view.backgroundColor = .systemGray6
+        if events.isEmpty {
+            return nil
+        }
+        else {
+            let view = UIView()
+            view.backgroundColor = .systemGray6
 
-        let clockImage = UIImage(systemName: "clock")
-        let clockImageView = UIImageView(image: clockImage!.withRenderingMode(.alwaysTemplate))
-        clockImageView.tintColor = .label
+            let clockImage = UIImage(systemName: "clock")
+            let clockImageView = UIImageView(image: clockImage!.withRenderingMode(.alwaysTemplate))
+            clockImageView.tintColor = .label
 
-        let title = UILabel()
-        title.font = UIFont.boldSystemFont(ofSize: 20)
-        title.textColor = .label
-        title.text = MainEventsSection(rawValue: section)?.description
-        
-        view.addSubview(title)
-        view.addSubview(clockImageView)
-        clockImageView.translatesAutoresizingMaskIntoConstraints = false
-        clockImageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
-        clockImageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 15).isActive = true
-        title.translatesAutoresizingMaskIntoConstraints = false
-        title.centerYAnchor.constraint(equalTo: clockImageView.safeAreaLayoutGuide.centerYAnchor).isActive = true
-        title.leftAnchor.constraint(equalTo: clockImageView.safeAreaLayoutGuide.leftAnchor, constant: 25).isActive = true
-        
-        return view
+            let title = UILabel()
+            title.font = UIFont.boldSystemFont(ofSize: 20)
+            title.textColor = .label
+            title.text = MainEventsSection(rawValue: section)?.description
+            
+            view.addSubview(title)
+            view.addSubview(clockImageView)
+            clockImageView.translatesAutoresizingMaskIntoConstraints = false
+            clockImageView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor).isActive = true
+            clockImageView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 15).isActive = true
+            title.translatesAutoresizingMaskIntoConstraints = false
+            title.centerYAnchor.constraint(equalTo: clockImageView.safeAreaLayoutGuide.centerYAnchor).isActive = true
+            title.leftAnchor.constraint(equalTo: clockImageView.safeAreaLayoutGuide.leftAnchor, constant: 25).isActive = true
+            
+            return view
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        if events.isEmpty {
+            return 0
+        }
+        else {
+            return 40
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

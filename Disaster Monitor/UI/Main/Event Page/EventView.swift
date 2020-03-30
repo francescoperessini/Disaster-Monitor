@@ -270,9 +270,12 @@ class EventView: UIView, ViewControllerModellableView {
             string = "Severe damage to most buildings."
         }
         if felt != 0 {
-            string?.append(contentsOf: "\nEarthquake felt by \(felt) user")
-            if(felt != 0){
-                string?.append("s.")
+            string?.append(contentsOf: "\nEarthquake reported by \(felt) ")
+            if felt == 1 {
+                string?.append(contentsOf: "user.")
+            }
+            else {
+                string?.append(contentsOf: "users.")
             }
         }
         magnitudoFeltLabel.text = string

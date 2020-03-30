@@ -6,8 +6,8 @@
 //  Copyright © 2019 Stefano Martina. All rights reserved.
 //
 
-import Tempura
 import CoreLocation
+import Tempura
 import GoogleMaps
 import GooglePlaces
 import GoogleMapsUtils
@@ -24,7 +24,6 @@ struct MapViewModel: ViewModelWithState {
 class MapView: UIView, ViewControllerModellableView {
    
     var events: [Event] = []
-    let locationManager = CLLocationManager()
     let mapView = GMSMapView()
     var heatmapLayer = GMUHeatmapTileLayer()
     let segmentedControl = UISegmentedControl(items: ["Normal", "Satellite", "Heatmap"])
@@ -34,20 +33,9 @@ class MapView: UIView, ViewControllerModellableView {
 
     // MARK: - Setup
     func setup() {
-        setupLocation()
         setupSearchBar()
         setupSegmentedControl()
-    }
-    
-    private func setupLocation() {
-        self.locationManager.requestWhenInUseAuthorization()
-        self.locationManager.requestAlwaysAuthorization()
-        
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.startUpdatingLocation()
-        }
+        LocationService.sharedInstance.delegate = self
     }
     
     private func setupSearchBar() {
@@ -225,16 +213,17 @@ class MapView: UIView, ViewControllerModellableView {
     
 }
 
-// MARK: - CLLocationManagerDelegate
-extension MapView: CLLocationManagerDelegate, GMSAutocompleteResultsViewControllerDelegate {
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        guard status == .authorizedWhenInUse else { return }
-        locationManager.startUpdatingLocation()
+extension MapView: LocationServiceDelegate, GMSAutocompleteResultsViewControllerDelegate {
+    
+    func tracingLocation(currentLocation: CLLocation) {
+        let lat = currentLocation.coordinate.latitude
+        let lon = currentLocation.coordinate.longitude
+        
+        print("latitude \(lat), longitude \(lon)")
     }
-
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        // Tell locationManager you’re no longer interested in updates
-        // locationManager.stopUpdatingLocation()
+    
+    func tracingLocationDidFailWithError(error: NSError) {
+        // print("tracing Location Error : \(error.description)")
     }
 
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didAutocompleteWith place: GMSPlace) {
