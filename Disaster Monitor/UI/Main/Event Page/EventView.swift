@@ -47,7 +47,7 @@ class EventView: UIView, ViewControllerModellableView {
     
     var dateLabel = UILabel()
     var coordinatesLabel = UILabel()
-    var magnitudeLabel = UILabel()
+    var distanceLabel = UILabel()
     var depthLabel = UILabel()
     
     let size:CGFloat = 48
@@ -59,9 +59,10 @@ class EventView: UIView, ViewControllerModellableView {
     
     var dateImage = UIImageView(image: UIImage(systemName: "clock")!.withRenderingMode(.alwaysTemplate))
     var coordinatesImage = UIImageView(image: UIImage(systemName: "mappin")!.withRenderingMode(.alwaysTemplate))
-    var magnitudeImage = UIImageView(image: UIImage(systemName: "waveform.path.ecg")!.withRenderingMode(.alwaysTemplate))
+    var magnitudeImage = UIImageView(image: UIImage(systemName: "location")!.withRenderingMode(.alwaysTemplate))
     var depthImage = UIImageView(image: UIImage(systemName: "arrow.down.circle")!.withRenderingMode(.alwaysTemplate))
-
+    
+    var coordinates: CLLocation?
     
     func setup() {
         self.addSubview(firstRow)
@@ -83,7 +84,7 @@ class EventView: UIView, ViewControllerModellableView {
         firstRowFirstCell.addSubview(coordinatesLabel)
         firstRowFirstCell.addSubview(coordinatesImage)
         
-        firstRowSecondCell.addSubview(magnitudeLabel)
+        firstRowSecondCell.addSubview(distanceLabel)
         firstRowSecondCell.addSubview(magnitudeImage)
         
         secondRowFirstCell.addSubview(dateLabel)
@@ -99,6 +100,11 @@ class EventView: UIView, ViewControllerModellableView {
         self.secondEntireRow.addSubview(magnitudoFeltLabel)
         
         someView.addSubview(magnitudoBigLabel)
+        
+        let lat = LocationService.sharedInstance.currentLocation?.coordinate.latitude
+        let long  = LocationService.sharedInstance.currentLocation?.coordinate.longitude
+        
+        coordinates = CLLocation(latitude: lat!, longitude:long!)
     }
 
     private func setupMapView() {
@@ -206,8 +212,8 @@ class EventView: UIView, ViewControllerModellableView {
     }
     
     private func magnitudeLabelStyle() {
-        magnitudeLabel.font = fontSmall
-        magnitudeLabel.textColor = .label
+        distanceLabel.font = fontSmall
+        distanceLabel.textColor = .label
     }
     
     private func depthImageStyle() {
@@ -244,7 +250,7 @@ class EventView: UIView, ViewControllerModellableView {
             let dms = coordinateToDMS(latitude: latitude, longitude: longitude)
             coordinatesLabel.text = dms.latitude + ", " + dms.longitude
             
-            magnitudeLabel.text = "\(String((model.event?.magnitudo)!)) \(model.event?.magType ?? "")"
+            distanceLabel.text = "\(String((model.event?.magnitudo)!)) \(model.event?.magType ?? "")"
             
             depthLabel.text = String(format:"%.2f km", (model.event?.depth)!)
             
@@ -253,6 +259,15 @@ class EventView: UIView, ViewControllerModellableView {
             updateMapView()
             
             magnitudoFeltLabelUpdate(felt: model.event?.felt ?? 0, magnitudo: model.event?.magnitudo ?? 0)
+            
+            let eventCoordinates = CLLocation(latitude: (model.event?.coordinates[1])!, longitude: (model.event?.coordinates[0])!)
+            
+            print(coordinates!.distance(from: eventCoordinates) / 1000)
+            let distance = coordinates!.distance(from: eventCoordinates) / 1000
+            
+            distanceLabel.text = String(format:"%.0f km", distance)
+            
+            //let distance = hardCodedCoordinates.distance(from: eventCoordinates) / 1000
         }
     }
     
@@ -398,10 +413,10 @@ class EventView: UIView, ViewControllerModellableView {
         coordinatesImage.leadingAnchor.constraint(equalTo: self.firstRowFirstCell.leadingAnchor, constant: 20).isActive = true
         coordinatesImage.centerYAnchor.constraint(equalTo: self.thirdSplittedRow.centerYAnchor).isActive = true
         
-        magnitudeLabel.translatesAutoresizingMaskIntoConstraints = false
-        magnitudeLabel.topAnchor.constraint(equalTo: thirdSplittedRow.topAnchor).isActive = true
-        magnitudeLabel.centerXAnchor.constraint(equalTo: self.firstRowSecondCell.centerXAnchor).isActive = true
-        magnitudeLabel.centerYAnchor.constraint(equalTo: self.thirdSplittedRow.centerYAnchor).isActive = true
+        distanceLabel.translatesAutoresizingMaskIntoConstraints = false
+        distanceLabel.topAnchor.constraint(equalTo: thirdSplittedRow.topAnchor).isActive = true
+        distanceLabel.centerXAnchor.constraint(equalTo: self.firstRowSecondCell.centerXAnchor).isActive = true
+        distanceLabel.centerYAnchor.constraint(equalTo: self.thirdSplittedRow.centerYAnchor).isActive = true
         
         magnitudeImage.translatesAutoresizingMaskIntoConstraints = false
         magnitudeImage.leadingAnchor.constraint(equalTo: self.firstRowSecondCell.leadingAnchor, constant: 0).isActive = true

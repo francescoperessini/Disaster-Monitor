@@ -218,8 +218,6 @@ extension MapView: LocationServiceDelegate, GMSAutocompleteResultsViewController
     func tracingLocation(currentLocation: CLLocation) {
         let lat = currentLocation.coordinate.latitude
         let lon = currentLocation.coordinate.longitude
-        
-        print("latitude \(lat), longitude \(lon)")
     }
     
     func tracingLocationDidFailWithError(error: NSError) {
