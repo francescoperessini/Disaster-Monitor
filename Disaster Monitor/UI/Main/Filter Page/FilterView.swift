@@ -157,7 +157,7 @@ extension FilterView: UITableViewDelegate, UITableViewDataSource {
         case .Period:
             return "Filter events by time period."
         case .Source:
-            return "Filter events by data source.\nINGV: Istituto Nazionale di Geofisica e Vulcanologia\nUSGS: United States Geological Survey"
+            return "Filter events by data source."
         }
     }
     

@@ -48,6 +48,7 @@ class SettingsView: UIView, ViewControllerModellableView {
     func setup() {
         self.addSubview(settingsTableView)
         configureSettingsTableView()
+        setTableFooterView()
     }
     
     func style() {
@@ -92,6 +93,28 @@ class SettingsView: UIView, ViewControllerModellableView {
        settingsTableView.dataSource = self
     }
     
+    private func setTableFooterView() {
+        let customView = UIView(frame: CGRect(x: 0, y: 0, width: settingsTableView.frame.width, height: 140))
+        var string: String
+
+        customView.backgroundColor = .clear
+        let titleLabel = UILabel()
+        titleLabel.numberOfLines = 0
+        titleLabel.textAlignment = .left
+        titleLabel.font = UIFont.systemFont(ofSize: 12)
+        titleLabel.textColor = .systemGray
+        string = "Data Sources\nINGV: Istituto Nazionale di Geofisica e Vulcanologia\nUSGS: United States Geological Survey\n\n"
+        string.append(contentsOf: "About Us\nWe are two CSE students @ PoliMi, Francesco and Stefano")
+        titleLabel.text = string
+        customView.addSubview(titleLabel)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.topAnchor.constraint(equalTo: customView.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+        titleLabel.centerYAnchor.constraint(equalTo: customView.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        titleLabel.centerXAnchor.constraint(equalTo: customView.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        titleLabel.bottomAnchor.constraint(equalTo: customView.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
+        settingsTableView.tableFooterView = customView
+    }
+    
 }
 
 extension SettingsView: UITableViewDelegate, UITableViewDataSource {
@@ -122,14 +145,12 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         switch section {
         case .Message:
             return MessageOption.allCases.count
-        case .Privacy:
-            return PrivacyOption.allCases.count
+        case .Notifications:
+            return NotificationsOption.allCases.count
         case .Styling:
             return StylingOption.allCases.count
         case .Debug:
             return DebugOption.allCases.count
-        default:
-            return 0
         }
     }
     
@@ -141,16 +162,12 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         guard let section = SettingsSection(rawValue: section) else { return "" }
         
         switch section {
-        case .AboutUs:
-            return "We are two CSE Students at Polimi, Francesco and Stefano"
         case .Message:
             return "Safe message is the message you can share in Map Page"
-        case .Privacy:
+        case .Notifications:
             return "Here you can turn on or off the notifications and setup yuor monitored places "
         case .Styling:
             return "Customize here your experience"
-        case .DataSource:
-            return "We are currently using INGV and USGS Api Endpoints"
         case .Debug:
             return "Activate here debug mode"
         }
@@ -164,10 +181,9 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         switch section {
         case .Message:
             let message = MessageOption(rawValue: indexPath.row)
-            // cell.textLabel?.text = message?.description
             cell.sectionType = message
-        case .Privacy:
-            let privacy = PrivacyOption(rawValue: indexPath.row)
+        case .Notifications:
+            let privacy = NotificationsOption(rawValue: indexPath.row)
             cell.sectionType = privacy
             if cell.sectionType!.containsNotificationSwitch {
                 cell.didTapNotificationSwitch = self.didTapNotificationSwitch
@@ -179,13 +195,6 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
                 cell.didTapStylingColor = self.didTapStylingColor
                 cell.setupColorCell(color: self.customColor!)
             }
-        case .AboutUs:
-            let aboutUs = AboutUsOption(rawValue: indexPath.row)
-            cell.sectionType = aboutUs
-            
-        case .DataSource:
-            let dataSource = DataSourceOption(rawValue: indexPath.row)
-            cell.sectionType = dataSource
         case .Debug:
             let debug = DebugOption(rawValue: indexPath.row)
             cell.sectionType = debug
@@ -205,13 +214,11 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
             if indexPath.row == 0 {
                 didTapEditMessageFunc()
             }
-        case .Privacy:
+        case .Notifications:
             if indexPath.row == 1 {
                 didTapEditMonitoredLocationsFunc()
             }
         case .Styling: break
-        case .AboutUs: break
-        case .DataSource: break
         case .Debug: break
         }
     }

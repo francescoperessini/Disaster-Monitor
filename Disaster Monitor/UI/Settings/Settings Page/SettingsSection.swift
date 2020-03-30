@@ -17,24 +17,18 @@ protocol SectionType: CustomStringConvertible {
 enum SettingsSection: Int, CaseIterable, CustomStringConvertible {
     
     case Message
-    case Privacy
+    case Notifications
     case Styling
     case Debug
-    case AboutUs
-    case DataSource
     
     var description: String {
         switch self {
         case .Message:
             return "Safe Message"
-        case .Privacy:
-            return "Notification customization"
+        case .Notifications:
+            return "Notification Options"
         case .Styling:
             return "Styling"
-        case .AboutUs:
-            return "About us"
-        case .DataSource:
-            return "Data Sources"
         case .Debug:
             return "Debug"
         }
@@ -60,11 +54,10 @@ enum MessageOption: Int, CaseIterable, SectionType {
     }
 }
 
-enum PrivacyOption: Int, CaseIterable, SectionType {
+enum NotificationsOption: Int, CaseIterable, SectionType {
     
     case enabled
     case places
-    
     
     var containsOpenSymbol: Bool{
         switch self {
@@ -120,30 +113,6 @@ enum StylingOption: Int, CaseIterable, SectionType {
             case .mapStyle: return "Map style"
         }
     }
-}
-
-enum AboutUsOption: Int, CaseIterable, SectionType {
-    
-    case info
-    
-    var containsSegmenteColor: Bool { return false }
-    var containsSegmentedMap: Bool { return false }
-    var containsDebugModeSwitch: Bool { return false }
-    var containsOpenSymbol: Bool { return false }
-    var containsNotificationSwitch: Bool { return false }
-    var description: String{ return "" }
-}
-
-enum DataSourceOption: Int, CaseIterable, SectionType {
-    
-    case info
-    
-    var containsSegmenteColor: Bool { return false }
-    var containsSegmentedMap: Bool { return false }
-    var containsDebugModeSwitch: Bool { return false }
-    var containsOpenSymbol: Bool { return false }
-    var containsNotificationSwitch: Bool { return false }
-    var description: String{ return "" }
 }
 
 enum DebugOption: Int, CaseIterable, SectionType {
