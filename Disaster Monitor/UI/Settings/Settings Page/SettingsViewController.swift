@@ -21,7 +21,7 @@ class SettingsViewController: ViewController<SettingsView> {
             self.present(vc, animated: true, completion: nil)
         }
         
-        rootView.didTapEditMonitoredLocations = {
+        rootView.didTapEditMonitoredLocations = { [unowned self] in
             let vc = MonitoredRegionViewController(store: self.store)
             self.navigationController?.pushViewController(vc, animated: true)
         }

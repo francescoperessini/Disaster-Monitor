@@ -32,9 +32,13 @@ class MonitoredRegionsView: UIView, ViewControllerModellableView {
         self.backgroundColor = .systemBackground
         self.addSubview(monitoredEventsTableView)
         configureMonitoredRegionTableView()
-        setMonitoredRegionViewDelegates()
     }
     
+    private func configureMonitoredRegionTableView() {
+        setMonitoredRegionViewDelegates()
+        monitoredEventsTableView.register(MonitoredRegionViewCell.self, forCellReuseIdentifier: Cells.monitoredRegionCell)
+    }
+
     func setMonitoredRegionViewDelegates() {
         monitoredEventsTableView.delegate = self
         monitoredEventsTableView.dataSource = self
@@ -77,11 +81,6 @@ class MonitoredRegionsView: UIView, ViewControllerModellableView {
         monitoredEventsTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
         monitoredEventsTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
-
-    private func configureMonitoredRegionTableView() {
-        monitoredEventsTableView.rowHeight = 65
-        monitoredEventsTableView.register(MonitoredRegionViewCell.self, forCellReuseIdentifier: Cells.monitoredRegionCell)
-    }
     
     @objc func didTapAddFunc(){
         didTapAdd?()
@@ -90,6 +89,7 @@ class MonitoredRegionsView: UIView, ViewControllerModellableView {
     @objc func didTapCloseFunc(){
         didTapClose?()
     }
+    
 }
 
 extension MonitoredRegionsView: UITableViewDelegate, UITableViewDataSource {
@@ -97,14 +97,14 @@ extension MonitoredRegionsView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let section = MonitoredRegionSection(rawValue: indexPath.section) else { return 0.0 }
         switch section {
-        case .MonitoredRegion: return 65
+        case .MonitoredRegion: return 60
         }
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let section = MonitoredRegionSection(rawValue: indexPath.section) else { return 0.0 }
         switch section {
-        case .MonitoredRegion: return 65
+        case .MonitoredRegion: return 60
         }
     }
     
@@ -137,7 +137,7 @@ extension MonitoredRegionsView: UITableViewDelegate, UITableViewDataSource {
         emptyView.addSubview(messageLabel)
         titleLabel.centerYAnchor.constraint(equalTo: emptyView.centerYAnchor).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor).isActive = true
-        messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 15).isActive = true
+        messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5).isActive = true
         messageLabel.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor).isActive = true
         titleLabel.text = title
         messageLabel.text = message

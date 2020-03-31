@@ -33,6 +33,9 @@ class MainEventsView: UIView, ViewControllerModellableView{
     var refreshControl = UIRefreshControl()
     var isSearching = true
     
+    var activityIndicatorView: UIActivityIndicatorView!
+    var firstLoading: Bool = true
+    
     var didTapFilter: (() -> ())?
     var didTapSearch: (() -> ())?
     var didTapEvent: ((String) -> ())?
@@ -40,6 +43,7 @@ class MainEventsView: UIView, ViewControllerModellableView{
     var color: Color?
     var searchController = UISearchController(searchResultsController: nil)
     var end: ((String) -> ())?
+    
     struct Cells {
         static let mainEventsTableViewCell = "mainCell"
     }
@@ -47,7 +51,39 @@ class MainEventsView: UIView, ViewControllerModellableView{
     func setup() {
         self.addSubview(mainEventsTableView)
         configureMainEventsTableView()
+        setLoadDataView()
         setupRefreshControl()
+    }
+    
+    private func setLoadDataView() {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .systemGray
+        label.font = UIFont.systemFont(ofSize: 18)
+        label.text = "Loading Events..."
+        
+        activityIndicatorView = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicatorView.startAnimating()
+        
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .center
+        stackView.spacing = 8.0
+        stackView.addArrangedSubview(label)
+        stackView.addArrangedSubview(activityIndicatorView)
+
+        let activityView = UIView()
+        activityView.backgroundColor = .systemGray6
+        activityView.addSubview(stackView)
+        
+        stackView.centerXAnchor.constraint(equalTo: activityView.centerXAnchor).isActive = true
+        stackView.centerYAnchor.constraint(equalTo: activityView.centerYAnchor).isActive = true
+        
+        mainEventsTableView.backgroundView = activityView
+        mainEventsTableView.separatorStyle = .none
     }
     
     func configureMainEventsTableView() {
@@ -71,8 +107,6 @@ class MainEventsView: UIView, ViewControllerModellableView{
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
-            //navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label, .font: UIFont(name: "Futura", size: 30)!] // cambia aspetto del titolo
-            //navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label, .font: UIFont(name: "Futura", size: 30)!] // cambia aspetto del titolo (con prefersLargeTitles = true)
             navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo
             navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo (con prefersLargeTitles = true)
             //navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
@@ -90,6 +124,9 @@ class MainEventsView: UIView, ViewControllerModellableView{
     func update(oldModel: MainViewModel?) {
         guard let model = self.model else { return }
         events = model.state.events
+        if !events.isEmpty && firstLoading {
+            restoreAfterFirstLoading()
+        }
         filteringValue = model.state.filteringValue
         filteringDay = model.state.segmentedDays
         dataSources = model.state.dataSources
@@ -162,7 +199,9 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource, UISearchBa
         guard let section = MainEventsSection(rawValue: section) else { return 0 }
         
         if events.isEmpty {
-            setEmptyView(title: "", message: "")
+            if !firstLoading {
+                setEmptyView(title: "No events found", message: "Try applying different filters")
+            }
             return 0
         }
         else {
@@ -197,11 +236,11 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource, UISearchBa
         emptyView.addSubview(messageLabel)
         titleLabel.centerYAnchor.constraint(equalTo: emptyView.centerYAnchor).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor).isActive = true
-        messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 15).isActive = true
+        messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5).isActive = true
         messageLabel.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor).isActive = true
         titleLabel.text = title
+        titleLabel.textAlignment = .center
         messageLabel.text = message
-        messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .center
         
         mainEventsTableView.backgroundView = emptyView
@@ -211,6 +250,12 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource, UISearchBa
     func restore() {
         mainEventsTableView.backgroundView = nil
         mainEventsTableView.separatorStyle = .singleLine
+    }
+    
+    func restoreAfterFirstLoading() {
+        firstLoading = false
+        activityIndicatorView.stopAnimating()
+        restore()
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

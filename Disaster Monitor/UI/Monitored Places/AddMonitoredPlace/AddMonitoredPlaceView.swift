@@ -39,21 +39,20 @@ class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
     func setup() {
         addMonitoredEventsTableView.isScrollEnabled = false
         addSubview(addMonitoredEventsTableView)
-        setupSearchBar()
         configureSettingsTableView()
-        
-    }
-    
-    func setAddMonitoredRegionViewDelegates() {
-        addMonitoredEventsTableView.delegate = self
-        addMonitoredEventsTableView.dataSource = self
+        setupSearchBar()
     }
     
     private func configureSettingsTableView() {
-           setAddMonitoredRegionViewDelegates()
-           addMonitoredEventsTableView.register(AddMonitoredRegionCell.self, forCellReuseIdentifier: Cells.addMonitoredRegionCell)
+        setAddMonitoredRegionViewDelegates()
+        addMonitoredEventsTableView.register(AddMonitoredRegionCell.self, forCellReuseIdentifier: Cells.addMonitoredRegionCell)
     }
-    
+
+    private func setAddMonitoredRegionViewDelegates() {
+        addMonitoredEventsTableView.delegate = self
+        addMonitoredEventsTableView.dataSource = self
+    }
+
     private func setupSearchBar() {
         resultsViewController = GMSAutocompleteResultsViewController()
         let filter = GMSAutocompleteFilter()
@@ -72,8 +71,6 @@ class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
         searchController?.hidesNavigationBarDuringPresentation = false
     }
     
-
-
     func style() {
         backgroundColor = .systemBackground
         navigationItem?.title = "Add a monitored region"
@@ -114,7 +111,7 @@ class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
 }
 
 // MARK: - CLLocationManagerDelegate
-extension AddMonitoredPlaceView: CLLocationManagerDelegate, GMSAutocompleteResultsViewControllerDelegate, GMSMapViewDelegate {
+extension AddMonitoredPlaceView: GMSAutocompleteResultsViewControllerDelegate, GMSMapViewDelegate {
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didAutocompleteWith place: GMSPlace) {
         searchController?.isActive = false
         let newLocation = GMSCameraPosition(target: place.coordinate, zoom: 12, bearing: 0, viewingAngle: 0)
@@ -146,15 +143,16 @@ extension AddMonitoredPlaceView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let option = AddMonitoredRegionOption(rawValue: indexPath.row) else { return 0.0 }
         switch option {
-            case .map: return 500
-            default: return 60
+            case .map: return 400
+            default: return 48
         }
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let section = AddMonitoredRegionSection(rawValue: indexPath.section) else { return 0.0 }
-        switch section {
-        case .MonitoredRegion: return 65
+        guard let option = AddMonitoredRegionOption(rawValue: indexPath.row) else { return 0.0 }
+        switch option {
+            case .map: return 400
+            default: return 48
         }
     }
     
@@ -168,14 +166,6 @@ extension AddMonitoredPlaceView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return AddMonitoredRegionSection(rawValue: section)?.description
-    }
-    
-    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        guard let section = AddMonitoredRegionSection(rawValue: section) else { return "" }
-        switch section {
-        case .MonitoredRegion:
-            return "Description"
-        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

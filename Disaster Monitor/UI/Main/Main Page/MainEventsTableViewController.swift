@@ -17,7 +17,7 @@ class MainEventsTableViewController: ViewController<MainEventsView> {
     }
     
     override func setupInteraction() {
-        rootView.didTapFilter = {
+        rootView.didTapFilter = { [unowned self] in
             let vc = UINavigationController(rootViewController: FilterViewController(store: self.store))
             self.present(vc, animated: true, completion: nil)
         }
