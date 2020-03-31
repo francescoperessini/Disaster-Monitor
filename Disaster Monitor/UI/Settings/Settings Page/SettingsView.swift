@@ -95,7 +95,6 @@ class SettingsView: UIView, ViewControllerModellableView {
     
     private func setTableFooterView() {
         let customView = UIView(frame: CGRect(x: 0, y: 0, width: settingsTableView.frame.width, height: 140))
-        var string: String
 
         customView.backgroundColor = .clear
         let titleLabel = UILabel()
@@ -103,14 +102,14 @@ class SettingsView: UIView, ViewControllerModellableView {
         titleLabel.textAlignment = .left
         titleLabel.font = UIFont.systemFont(ofSize: 12)
         titleLabel.textColor = .systemGray
-        string = "Data Sources\nINGV: Istituto Nazionale di Geofisica e Vulcanologia\nUSGS: United States Geological Survey\n\n"
-        string.append(contentsOf: "About Us\nWe are two CSE students @ PoliMi, Francesco and Stefano")
-        titleLabel.text = string
+        let dataSources = "Data Sources\nINGV: Istituto Nazionale di Geofisica e Vulcanologia\nUSGS: United States Geological Survey\n\n"
+        let aboutUs = "About Us\nWe are two CSE students @ PoliMi, Francesco and Stefano"
+        titleLabel.text = dataSources + aboutUs
         customView.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.topAnchor.constraint(equalTo: customView.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
         titleLabel.centerYAnchor.constraint(equalTo: customView.safeAreaLayoutGuide.centerYAnchor).isActive = true
-        titleLabel.centerXAnchor.constraint(equalTo: customView.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: customView.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
         titleLabel.bottomAnchor.constraint(equalTo: customView.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
         settingsTableView.tableFooterView = customView
     }

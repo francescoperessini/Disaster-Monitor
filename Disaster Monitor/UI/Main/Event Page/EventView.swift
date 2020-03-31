@@ -9,6 +9,7 @@
 import Tempura
 import CoreLocation
 import GoogleMaps
+import MarqueeLabel
 
 // MARK: - ViewModel
 struct EventViewModel: ViewModelWithLocalState {
@@ -43,8 +44,8 @@ class EventView: UIView, ViewControllerModellableView {
     var latitude: Double = 0.0
     var longitude: Double = 0.0
     
-    var placeLabel = UILabel()
-    var placeLabelSubtitle = UILabel()
+    var placeLabel = MarqueeLabel.init(frame: .zero, duration: 8.5, fadeLength: 10.0)
+    var placeLabelSubtitle = MarqueeLabel.init(frame: .zero, duration: 8.5, fadeLength: 10.0)
     
     var dateLabel = UILabel()
     var coordinatesLabel = UILabel()
@@ -182,9 +183,14 @@ class EventView: UIView, ViewControllerModellableView {
     }
     
     private func placeLabelStyle() {
+        placeLabel.trailingBuffer = 50
         placeLabel.textAlignment = .center
         placeLabel.font = UIFont.boldSystemFont(ofSize: 25)
         placeLabel.textColor = .label
+        
+        placeLabelSubtitle.trailingBuffer = 50
+        placeLabelSubtitle.textAlignment = .center
+        placeLabelSubtitle.font = UIFont.systemFont(ofSize: 16)
         placeLabelSubtitle.textColor = .systemGray
     }
     
@@ -394,15 +400,17 @@ class EventView: UIView, ViewControllerModellableView {
         
         placeLabel.translatesAutoresizingMaskIntoConstraints = false
         placeLabel.topAnchor.constraint(equalTo: firstRow.topAnchor).isActive = true
+        placeLabel.leadingAnchor.constraint(equalTo: self.firstRow.leadingAnchor, constant: 20).isActive = true
+        placeLabel.trailingAnchor.constraint(equalTo: self.firstRow.trailingAnchor, constant: -20).isActive = true
         placeLabel.centerXAnchor.constraint(equalTo: self.firstRow.centerXAnchor).isActive = true
         placeLabel.centerYAnchor.constraint(equalTo: self.firstEntireRow.centerYAnchor).isActive = true
         
         placeLabelSubtitle.translatesAutoresizingMaskIntoConstraints = false
-        placeLabelSubtitle.topAnchor.constraint(equalTo: placeLabel.bottomAnchor, constant: -25).isActive = true
+        placeLabelSubtitle.topAnchor.constraint(equalTo: placeLabel.bottomAnchor, constant: -20).isActive = true
+        placeLabelSubtitle.leadingAnchor.constraint(equalTo: self.firstRow.leadingAnchor, constant: 25).isActive = true
+        placeLabelSubtitle.trailingAnchor.constraint(equalTo: self.firstRow.trailingAnchor, constant: -25).isActive = true
         placeLabelSubtitle.centerXAnchor.constraint(equalTo: self.firstRow.centerXAnchor).isActive = true
-        /*placeLabelSubtitle.centerXAnchor.constraint(equalTo: self.firstRow.centerXAnchor).isActive = true
-        placeLabelSubtitle.centerYAnchor.constraint(equalTo: self.firstEntireRow.centerYAnchor).isActive = true*/
-        
+
         coordinatesLabel.translatesAutoresizingMaskIntoConstraints = false
         coordinatesLabel.topAnchor.constraint(equalTo: thirdSplittedRow.topAnchor).isActive = true
         coordinatesLabel.centerXAnchor.constraint(equalTo: self.firstRowFirstCell.centerXAnchor).isActive = true
