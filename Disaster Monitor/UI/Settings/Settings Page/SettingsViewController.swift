@@ -38,4 +38,5 @@ class SettingsViewController: ViewController<SettingsView> {
             self.dispatch(SetNotificationMode(value: value))
         }
     }
+    
 }

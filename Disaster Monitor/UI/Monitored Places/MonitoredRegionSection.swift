@@ -17,16 +17,3 @@ enum MonitoredRegionSection: Int, CaseIterable, CustomStringConvertible {
     }
     
 }
-
-enum MonitoredRegionOption: Int, CaseIterable {
-    
-    case MonitoredRegionValue
-
-    var description: String {
-        switch self {
-        case .MonitoredRegionValue:
-            return "Monitored Region Value"
-        }
-    }
-    
-}

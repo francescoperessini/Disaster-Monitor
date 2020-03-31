@@ -18,6 +18,7 @@ struct MonitoredRegionsViewModel: ViewModelWithState {
 
 // MARK: - View
 class MonitoredRegionsView: UIView, ViewControllerModellableView {
+    
     var didTapClose: (() -> ())?
     var didTapAdd: (() -> ())?
     var didRemoveElement: ((Int) -> ())?
@@ -29,7 +30,6 @@ class MonitoredRegionsView: UIView, ViewControllerModellableView {
     }
 
     func setup() {
-        self.backgroundColor = .systemBackground
         self.addSubview(monitoredEventsTableView)
         configureMonitoredRegionTableView()
     }
@@ -45,6 +45,7 @@ class MonitoredRegionsView: UIView, ViewControllerModellableView {
     }
 
     func style() {
+        backgroundColor = .systemBackground
         navigationItem?.title = "Monitored Regions"
         navigationItem?.largeTitleDisplayMode = .never
         navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapAddFunc))
@@ -82,11 +83,11 @@ class MonitoredRegionsView: UIView, ViewControllerModellableView {
         monitoredEventsTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     
-    @objc func didTapAddFunc(){
+    @objc func didTapAddFunc() {
         didTapAdd?()
     }
     
-    @objc func didTapCloseFunc(){
+    @objc func didTapCloseFunc() {
         didTapClose?()
     }
     

@@ -83,7 +83,7 @@ class SettingsView: UIView, ViewControllerModellableView {
     }
     
     func style() {
-        backgroundColor = .white
+        backgroundColor = .systemBackground
         navigationBar?.prefersLargeTitles = true
         navigationItem?.title = "Settings"
         if #available(iOS 13.0, *) {
@@ -119,7 +119,6 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let section = SettingsSection(rawValue: indexPath.section) else { return 0.0 }
-
         switch section {
         default: return 48
         }
@@ -127,7 +126,6 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let section = SettingsSection(rawValue: indexPath.section) else { return 0.0 }
-
         switch section {
         default: return 48
         }
@@ -206,19 +204,22 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let section = SettingsSection(rawValue: indexPath.section) else { return }
-        
         switch section {
         case .Message:
-            if indexPath.row == 0 {
-                didTapEditMessageFunc()
-            }
+            didTapEditMessageFunc()
         case .Notifications:
+            if indexPath.row == 0 {
+                break
+            }
             if indexPath.row == 1 {
                 didTapEditMonitoredLocationsFunc()
             }
-        case .Styling: break
-        case .Debug: break
+        case .Styling:
+            break
+        case .Debug:
+            break
         }
+        settingsTableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
     
 }

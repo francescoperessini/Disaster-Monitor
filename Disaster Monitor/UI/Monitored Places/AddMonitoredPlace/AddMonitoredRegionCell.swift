@@ -26,6 +26,7 @@ class AddMonitoredRegionCell: UITableViewCell {
             stepperControlRadiusLabel.isHidden = !sectionType.containsStepperRadius
         }
     }
+    
     lazy var nameTextField: UITextField = {
         let textField = UITextField()
         return textField
@@ -34,27 +35,27 @@ class AddMonitoredRegionCell: UITableViewCell {
     lazy var stepperControlRadius: UIStepper = {
         let switchControl = UIStepper()
         switchControl.autorepeat = false
-        switchControl.minimumValue = 0
-        switchControl.maximumValue = 1000
-        switchControl.stepValue = 100
-        switchControl.value = 300
+        switchControl.minimumValue = 0.0
+        switchControl.maximumValue = 10.0
+        switchControl.stepValue = 1.0
+        switchControl.value = 5.0
         switchControl.addTarget(self, action: #selector(handleTapRadius), for: .valueChanged)
         return switchControl
     }()
     
     lazy var stepperControlRadiusLabel: UILabel = {
         let label = UILabel()
-        label.text = "\(self.stepperControlRadius.value)"
+        label.text = "\(self.stepperControlRadius.value) km"
         return label
     }()
     
     lazy var stepperControlMagnitudo: UIStepper = {
         let switchControl = UIStepper()
         switchControl.autorepeat = false
-        switchControl.minimumValue = -1
-        switchControl.maximumValue = 9
+        switchControl.minimumValue = -1.0
+        switchControl.maximumValue = 10.0
         switchControl.stepValue = 0.5
-        switchControl.value = 3
+        switchControl.value = 3.0
         switchControl.addTarget(self, action: #selector(handleTapMagnitudo), for: .valueChanged)
         return switchControl
     }()
@@ -70,8 +71,6 @@ class AddMonitoredRegionCell: UITableViewCell {
         return mapView
     }()
     
-    
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         self.addSubview(stepperControlRadius)
@@ -81,7 +80,6 @@ class AddMonitoredRegionCell: UITableViewCell {
         self.addSubview(stepperControlMagnitudoLabel)
         self.addSubview(stepperControlRadiusLabel)
     }
-    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -94,42 +92,34 @@ class AddMonitoredRegionCell: UITableViewCell {
         mapView.heightAnchor.constraint(equalToConstant: 500).isActive = true
         mapView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         mapView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        
+
         stepperControlRadius.translatesAutoresizingMaskIntoConstraints = false
         stepperControlRadius.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
         stepperControlRadius.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -30).isActive = true
-        
-            stepperControlRadiusLabel.translatesAutoresizingMaskIntoConstraints = false
-            stepperControlRadiusLabel.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
-            stepperControlRadiusLabel.rightAnchor.constraint(equalTo: self.stepperControlRadius.leftAnchor, constant: -10).isActive = true
-        
+
+        stepperControlRadiusLabel.translatesAutoresizingMaskIntoConstraints = false
+        stepperControlRadiusLabel.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        stepperControlRadiusLabel.rightAnchor.constraint(equalTo: self.stepperControlRadius.leftAnchor, constant: -10).isActive = true
+
         stepperControlMagnitudo.translatesAutoresizingMaskIntoConstraints = false
         stepperControlMagnitudo.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
         stepperControlMagnitudo.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -30).isActive = true
-            
-            stepperControlMagnitudoLabel.translatesAutoresizingMaskIntoConstraints = false
-            stepperControlMagnitudoLabel.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
-            stepperControlMagnitudoLabel.rightAnchor.constraint(equalTo: self.stepperControlMagnitudo.leftAnchor, constant: -10).isActive = true
-        
+
+        stepperControlMagnitudoLabel.translatesAutoresizingMaskIntoConstraints = false
+        stepperControlMagnitudoLabel.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
+        stepperControlMagnitudoLabel.rightAnchor.constraint(equalTo: self.stepperControlMagnitudo.leftAnchor, constant: -10).isActive = true
+
         nameTextField.translatesAutoresizingMaskIntoConstraints = false
         nameTextField.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
         nameTextField.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -30).isActive = true
-        
-        /*stepperLabelMagnitudo.translatesAutoresizingMaskIntoConstraints = false
-        stepperLabelMagnitudo.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
-        stepperLabelMagnitudo.rightAnchor.constraint(equalTo: stepperControlMagnitudo.rightAnchor, constant: -130).isActive = true*/
-        
-        
     }
     
     @objc func handleTapMagnitudo(sender: UIStepper){
-        print(sender.value)
         self.stepperControlMagnitudoLabel.text = "\(sender.value)"
     }
     
     @objc func handleTapRadius(sender: UIStepper){
-        print(sender.value)
-        self.stepperControlRadiusLabel.text = "\(sender.value)"
+        self.stepperControlRadiusLabel.text = "\(sender.value) km"
     }
+    
 }
-

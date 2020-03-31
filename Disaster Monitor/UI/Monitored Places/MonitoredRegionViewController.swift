@@ -12,8 +12,9 @@ import Tempura
 class MonitoredRegionViewController: ViewController<MonitoredRegionsView> {
     
     override func viewDidLoad() {
-           super.viewDidLoad()
-       }
+        super.viewDidLoad()
+    }
+    
     override func setupInteraction() {
         rootView.didTapClose = {
             self.dismiss(animated: true, completion: nil)
@@ -29,4 +30,5 @@ class MonitoredRegionViewController: ViewController<MonitoredRegionsView> {
             self.present(vc, animated: true, completion: nil)
         }
     }
+    
 }

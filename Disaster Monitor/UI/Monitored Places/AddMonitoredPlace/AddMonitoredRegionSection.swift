@@ -11,8 +11,8 @@ protocol SectionTypeAddMonitored: CustomStringConvertible {
     var containsStepperMagnitudo: Bool { get }
     var containsStepperRadius: Bool { get }
     var containsMap: Bool { get }
-
 }
+
 enum AddMonitoredRegionSection: Int, CaseIterable, CustomStringConvertible{
     
     case MonitoredRegion
