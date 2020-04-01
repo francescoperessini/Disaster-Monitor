@@ -183,6 +183,8 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
             cell.sectionType = privacy
             if cell.sectionType!.containsNotificationSwitch {
                 cell.didTapNotificationSwitch = self.didTapNotificationSwitch
+            }else{
+                cell.accessoryType = .disclosureIndicator
             }
         case .Styling:
             let style = StylingOption(rawValue: indexPath.row)
