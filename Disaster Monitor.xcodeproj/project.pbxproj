@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3488026885E98AB18388285D /* libPods-Disaster Monitor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 47C89C4D857C7D74010269F4 /* libPods-Disaster Monitor.a */; };
+		7B07D6452434D9240088819D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7B07D6442434D9240088819D /* Launch Screen.storyboard */; };
 		7B1DF43723ABA5EB004C952A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1DF43523ABA5EB004C952A /* SettingsView.swift */; };
 		7B1DF43823ABA5EB004C952A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1DF43623ABA5EB004C952A /* SettingsViewController.swift */; };
 		7B44821124252D5B000DDDAC /* MonitoredRegionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B44821024252D5B000DDDAC /* MonitoredRegionsView.swift */; };
@@ -91,6 +92,7 @@
 		47C89C4D857C7D74010269F4 /* libPods-Disaster Monitor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Disaster Monitor.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		54118193D01D39A7F5A5DC90 /* Pods-Disaster MonitorTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disaster MonitorTests.debug.xcconfig"; path = "Target Support Files/Pods-Disaster MonitorTests/Pods-Disaster MonitorTests.debug.xcconfig"; sourceTree = "<group>"; };
 		61CCB0348A1EC0F4C5560FCE /* Pods-Disaster Monitor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disaster Monitor.release.xcconfig"; path = "Target Support Files/Pods-Disaster Monitor/Pods-Disaster Monitor.release.xcconfig"; sourceTree = "<group>"; };
+		7B07D6442434D9240088819D /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		7B1DF43523ABA5EB004C952A /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		7B1DF43623ABA5EB004C952A /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		7B44821024252D5B000DDDAC /* MonitoredRegionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitoredRegionsView.swift; sourceTree = "<group>"; };
@@ -236,6 +238,7 @@
 				7B5038AD23A8CD5800F18840 /* Assets.xcassets */,
 				7B5038B523A8CD5800F18840 /* Info.plist */,
 				7B5038AF23A8CD5800F18840 /* Preview Content */,
+				7B07D6442434D9240088819D /* Launch Screen.storyboard */,
 			);
 			path = "Disaster Monitor";
 			sourceTree = "<group>";
@@ -594,6 +597,7 @@
 				C614C97A2411A86600DC772E /* light_map_style.json in Resources */,
 				7B5038B123A8CD5800F18840 /* Preview Assets.xcassets in Resources */,
 				C614C97C2411A88A00DC772E /* dark_map_style.json in Resources */,
+				7B07D6452434D9240088819D /* Launch Screen.storyboard in Resources */,
 				7B5038AE23A8CD5800F18840 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
