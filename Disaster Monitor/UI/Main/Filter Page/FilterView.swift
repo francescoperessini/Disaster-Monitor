@@ -47,6 +47,7 @@ class FilterView: UIView, ViewControllerModellableView {
     func setup() {
         addSubview(filterTableView)
         configureFilterTableView()
+        self.backgroundColor = .systemGroupedBackground
     }
 
     func style() {

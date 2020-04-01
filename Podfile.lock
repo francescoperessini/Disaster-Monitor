@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (5.0.4)
+  - Alamofire (5.0.5)
   - DeepDiff (2.3.1)
   - Google-Maps-iOS-Utils (3.0.2):
     - Google-Maps-iOS-Utils/Clustering (= 3.0.2)
@@ -25,7 +25,7 @@ PODS:
   - GooglePlaces (3.8.0):
     - GoogleMaps/Base (= 3.8.0)
   - HydraAsync (1.2.1)
-  - Katana (3.1.0):
+  - Katana (3.1.1):
     - HydraAsync (~> 1.2)
   - MarqueeLabel (4.0.2)
   - PinLayout (1.8.13)
@@ -39,7 +39,7 @@ PODS:
   - PromiseKit/UIKit (6.13.1):
     - PromiseKit/CorePromise
   - SwiftyJSON (5.0.0)
-  - Tempura (4.3.0):
+  - Tempura (4.3.1):
     - Katana (< 4, >= 3.0)
   - WARangeSlider (1.1.1)
 
@@ -58,7 +58,7 @@ DEPENDENCIES:
   - WARangeSlider
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - Alamofire
     - DeepDiff
     - Google-Maps-iOS-Utils
@@ -66,29 +66,28 @@ SPEC REPOS:
     - GooglePlaces
     - HydraAsync
     - Katana
+    - MarqueeLabel
     - PinLayout
     - PromiseKit
     - SwiftyJSON
     - Tempura
     - WARangeSlider
-  trunk:
-    - MarqueeLabel
 
 SPEC CHECKSUMS:
-  Alamofire: 0fe5fd24b4298dc377a6550da7d5f1b30e286fcb
+  Alamofire: df2f8f826963b08b9a870791ad48e07a10090b2e
   DeepDiff: e5ae6c50d0321568e4508cec5930b9f10bb293fc
   Google-Maps-iOS-Utils: bfc24e492f3a88a2dffec1b6e0a5bd86fc49486f
   GoogleMaps: 7c8d66d70e4e8c300f43a7219d8fdaad7b325a9a
   GooglePlaces: d5f70c3e9e427964fdeca1301a665d276ccd8754
   HydraAsync: 8f2ab62d57e140b4ca587ae0f66e1eb04e8e6965
-  Katana: caa2adb661a386f9a993a15845841dc2c9b083aa
+  Katana: a9f2d63cc23ff9dc95ad557d7443717ef5b3201e
   MarqueeLabel: f762aa681ae201f66c1d511858b171f75d83013a
   PinLayout: e41a50260a76508b7a7fcee8955c76639adc69bc
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
-  Tempura: d38c2d982864d9dbca6b11a519e8b00024d04abd
+  Tempura: adc54766491f97980bcdb3dff82a92076ed825e2
   WARangeSlider: 54b3e0853b8d16c444fd539005901aecee86837d
 
 PODFILE CHECKSUM: 4fe49c2e6ac0d8a7aa576e51e5fbb002311c411d
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.7.5
