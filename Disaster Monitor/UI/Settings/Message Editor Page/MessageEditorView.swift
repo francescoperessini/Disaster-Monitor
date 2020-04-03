@@ -7,7 +7,6 @@
 //
 
 import Tempura
-import PinLayout
 
 // MARK: - ViewModel
 struct MessageEditorViewModel: ViewModelWithState {
@@ -21,127 +20,139 @@ struct MessageEditorViewModel: ViewModelWithState {
 class MessageEditorView: UIView, ViewControllerModellableView {
     
     var messageTextField = UITextField()
-    var currentMessage = UILabel()
-    var messageComment = UITextView()
-    var messageFromState: String?
-    
-    let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 45))
-    let usernameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 45))
-    
-    var didTapCancelButton: (() -> ())?
+    var bodyLabel = UILabel()
+        
     var didTapDoneButton: ((String) -> ())?
     
+    @objc func didTapDoneButtonFunc() {
+        didTapDoneButton?(messageTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines))
+    }
+        
     func setup() {
-        self.addSubview(messageTextField)
-        self.leftView.addSubview(usernameLabel)
-        self.addSubview(currentMessage)
-        self.addSubview(messageComment)
-        messageTextField.addTarget(self, action: #selector(unlockButton), for: .editingChanged)
+        addSubview(messageTextField)
+        setupMessageTextField()
+        addSubview(bodyLabel)
+        setupBodyLabel()
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        self.endEditing(true)
     }
     
     func style() {
-        backgroundColor = .systemBackground
-        navigationControllerStyle()
-        messageTextFieldStyle()
-        usernameLabelStyle()
-        self.messageComment.font = UIFont.systemFont(ofSize: 20)
-    }
-    
-    func update(oldModel: MessageEditorViewModel?) {
-        messageTextField.placeholder = model?.state.message
-        messageFromState = model?.state.message
-        
-        let string = String(format:"This message is the prepared message that you can send to your contacts whenever you are detected near an earthquake, now it is: %@", messageFromState ?? "No message set")
-        
-        let font = UIFont.systemFont(ofSize: 20)
-        let attributedString = NSMutableAttributedString(string: string, attributes: [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.systemGray])
-        let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: font.pointSize)]
-        let range = (string as NSString).range(of: messageFromState ?? "")
-        attributedString.addAttributes(boldFontAttribute, range: range)
-        
-        
-        
-        
-        self.messageComment.attributedText = attributedString
-    }
-    
-    override func layoutSubviews() {
-        messageTextField.translatesAutoresizingMaskIntoConstraints = false
-        messageTextField.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 50).isActive = true
-        messageTextField.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        messageTextField.widthAnchor.constraint(equalToConstant: self.bounds.width).isActive = true
-        messageTextField.heightAnchor.constraint(equalToConstant: 45).isActive = true
-        self.messageComment.pin.top(160).width(90%).left(5%).right(5%).sizeToFit(FitType.width)
-    }
-    
-    private func navigationControllerStyle() {
+        backgroundColor = .systemGroupedBackground
         navigationItem?.title = "Message Editor"
-        navigationItem?.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didTapCancelButtonFunc))
         navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapDoneButtonFunc))
         navigationItem?.rightBarButtonItem?.isEnabled = false
+        
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
             navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo
             navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo (con prefersLargeTitles = true)
-            navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
+            // navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
             navBarAppearance.backgroundColor = .secondarySystemBackground // cambia il colore dello sfondo della navigation bar
             // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
             navigationBar?.standardAppearance = navBarAppearance
             navigationBar?.scrollEdgeAppearance = navBarAppearance
         } else {
-            navigationBar?.tintColor = .systemBlue
+            // navigationBar?.tintColor = .systemBlue
             navigationBar?.barTintColor = .secondarySystemBackground
             // navigationBar?.isTranslucent = false
         }
     }
     
-    private func currentMessageStyle() {
-        currentMessage.font = UIFont.systemFont(ofSize: 15)
+    func update(oldModel: MessageEditorViewModel?) {
+        guard let model = self.model else { return }
+        let current = model.state.message
+        
+        messageTextField.placeholder = current
+        
+        let prepared = "This is the message that you can share on the Map Page to let your parents and friends know that you are safe!\n\n"
+        bodyLabel.text = prepared + "Current message:\n\(current)"
     }
     
-    private func messageTextFieldStyle() {
-        messageTextField.placeholder = "Enter your new message here..."
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        messageTextField.translatesAutoresizingMaskIntoConstraints = false
+        messageTextField.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 50).isActive = true
+        messageTextField.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        messageTextField.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        messageTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        messageTextField.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        
+        bodyLabel.translatesAutoresizingMaskIntoConstraints = false
+        bodyLabel.topAnchor.constraint(equalTo: messageTextField.safeAreaLayoutGuide.bottomAnchor, constant: 20).isActive = true
+        bodyLabel.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        bodyLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+        bodyLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
+    }
+    
+    private func setupMessageTextField() {
         messageTextField.textColor = .label
         messageTextField.font = UIFont.systemFont(ofSize: 18)
-        messageTextField.layer.borderWidth = 0.5
+        messageTextField.layer.borderWidth = 0.2
         messageTextField.layer.borderColor = UIColor.separator.cgColor
-        messageTextField.backgroundColor = .systemBackground
+        messageTextField.backgroundColor = .secondarySystemGroupedBackground
         messageTextField.autocorrectionType = UITextAutocorrectionType.yes
         messageTextField.keyboardType = UIKeyboardType.default
         messageTextField.returnKeyType = UIReturnKeyType.done
+        messageTextField.enablesReturnKeyAutomatically = true
         messageTextField.clearButtonMode = UITextField.ViewMode.whileEditing
-        messageTextField.delegate = self
-
-        messageTextField.leftView = leftView
+        messageTextField.leftView = setupLeftView()
         messageTextField.leftViewMode = .always
+        messageTextField.delegate = self
+    }
+
+    private func setupLeftView() -> UIView {
+        let leftView = UIView()
+        leftView.backgroundColor = .clear
+      
+        let tmp = UILabel()
+        tmp.text = "Message"
+        tmp.textColor = .label
+        tmp.font = UIFont.systemFont(ofSize: 18)
+        tmp.textAlignment = .center
+        
+        leftView.addSubview(tmp)
+        tmp.translatesAutoresizingMaskIntoConstraints = false
+        tmp.topAnchor.constraint(equalTo: leftView.safeAreaLayoutGuide.topAnchor, constant: 5).isActive = true
+        tmp.bottomAnchor.constraint(equalTo: leftView.safeAreaLayoutGuide.bottomAnchor, constant: -5).isActive = true
+        tmp.leadingAnchor.constraint(equalTo: leftView.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+        tmp.trailingAnchor.constraint(equalTo: leftView.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
+        
+        return leftView
     }
     
-    private func usernameLabelStyle() {
-        usernameLabel.text = "Message"
-        usernameLabel.textColor = .label
-        usernameLabel.font = UIFont.systemFont(ofSize: 18)
-        usernameLabel.textAlignment = .center
-    }
-    
-    @objc func didTapCancelButtonFunc() {
-        didTapCancelButton?()
-    }
-    
-    @objc func didTapDoneButtonFunc() {
-        if (self.messageTextField.text ?? "" != ""){
-            didTapDoneButton?(self.messageTextField.text ?? "")
-        }
-    }
-    
-    @objc func unlockButton(){
-        navigationItem?.rightBarButtonItem?.isEnabled = true
+    private func setupBodyLabel() {
+        bodyLabel.numberOfLines = 0
+        bodyLabel.textColor = .secondaryLabel
+        bodyLabel.font = UIFont.systemFont(ofSize: 15)
+        bodyLabel.textAlignment = .left
     }
     
 }
 
 extension MessageEditorView: UITextFieldDelegate {
 
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let text = (messageTextField.text! as NSString).replacingCharacters(in: range, with: string)
+        if text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            navigationItem?.rightBarButtonItem?.isEnabled = false
+        } else {
+            navigationItem?.rightBarButtonItem?.isEnabled = true
+        }
+        return true
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        navigationItem?.rightBarButtonItem?.isEnabled = false
+        return true
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         messageTextField.resignFirstResponder()
         return true
