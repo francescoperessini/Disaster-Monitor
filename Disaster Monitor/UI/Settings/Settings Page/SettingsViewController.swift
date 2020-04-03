@@ -30,13 +30,14 @@ class SettingsViewController: ViewController<SettingsView> {
             self.dispatch(UpdateCustomColor(color: color))
         }
         
-        rootView.didTapSwitch = { [unowned self] value in
-            self.dispatch(SetDebugMode(value: value))
-        }
-        
         rootView.didTapNotificationSwitch = { [unowned self] value in
             self.dispatch(SetNotificationMode(value: value))
         }
+        
+        rootView.didTapDebugSwitch = { [unowned self] value in
+            self.dispatch(SetDebugMode(value: value))
+        }
+        
     }
     
 }

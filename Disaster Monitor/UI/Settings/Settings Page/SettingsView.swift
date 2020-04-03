@@ -25,12 +25,15 @@ class SettingsView: UIView, ViewControllerModellableView {
     var didTapEditMessage: (() -> ())?
     var didTapEditMonitoredLocations: (() -> ())?
     
-    var didTapStylingColor: ((Color) -> ())?
-    var didTapSwitch: ((Bool) -> ())?
+    var isNotficiationEnabled: Bool?
     var didTapNotificationSwitch: ((Bool) -> ())?
     
     var customColor: Color?
+    var didTapStylingColor: ((Color) -> ())?
+    
     var debugMode: Bool?
+    var didTapDebugSwitch: ((Bool) -> ())?
+    
     
     @objc func didTapEditMessageFunc() {
         didTapEditMessage?()
@@ -106,6 +109,7 @@ class SettingsView: UIView, ViewControllerModellableView {
     }
 
     func update(oldModel: MainViewModel?) {
+        self.isNotficiationEnabled = model?.state.isNotficiationEnabled
         self.customColor = model?.state.customColor
         self.debugMode = model?.state.debugMode
     }
@@ -144,7 +148,7 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         case .Message:
             return MessageOption.allCases.count
         case .Notifications:
-            return NotificationsOption.allCases.count
+            return NotificationOption.allCases.count
         case .Styling:
             return StylingOption.allCases.count
         case .Debug:
@@ -181,10 +185,11 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
             let message = MessageOption(rawValue: indexPath.row)
             cell.sectionType = message
         case .Notifications:
-            let privacy = NotificationsOption(rawValue: indexPath.row)
+            let privacy = NotificationOption(rawValue: indexPath.row)
             cell.sectionType = privacy
             if cell.sectionType!.containsNotificationSwitch {
                 cell.didTapNotificationSwitch = self.didTapNotificationSwitch
+                cell.setupNotificationSwitch(value: self.isNotficiationEnabled!)
             }else{
                 cell.accessoryType = .disclosureIndicator
             }
@@ -199,7 +204,7 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
             let debug = DebugOption(rawValue: indexPath.row)
             cell.sectionType = debug
             if cell.sectionType!.containsDebugModeSwitch {
-                cell.didTapSwitch = self.didTapSwitch
+                cell.didTapDebugSwitch = self.didTapDebugSwitch
                 cell.setupDebugSwitch(value: self.debugMode!)
             }
         }

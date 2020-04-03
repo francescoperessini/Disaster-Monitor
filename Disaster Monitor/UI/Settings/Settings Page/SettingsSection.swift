@@ -7,11 +7,9 @@
 //
 
 protocol SectionType: CustomStringConvertible {
-    var containsSegmenteColor: Bool { get }
-    var containsSegmentedMap: Bool { get }
-    var containsDebugModeSwitch: Bool { get }
-    var containsOpenSymbol: Bool { get }
     var containsNotificationSwitch: Bool { get }
+    var containsSegmenteColor: Bool { get }
+    var containsDebugModeSwitch: Bool { get }
 }
 
 enum SettingsSection: Int, CaseIterable, CustomStringConvertible {
@@ -40,11 +38,9 @@ enum MessageOption: Int, CaseIterable, SectionType {
     
     case editMessage
     
-    var containsSegmenteColor: Bool { return false }
-    var containsSegmentedMap: Bool { return false }
-    var containsDebugModeSwitch: Bool { return false }
-    var containsOpenSymbol: Bool { return false }
     var containsNotificationSwitch: Bool { return false }
+    var containsSegmenteColor: Bool { return false }
+    var containsDebugModeSwitch: Bool { return false }
     
     var description: String {
         switch self {
@@ -54,33 +50,24 @@ enum MessageOption: Int, CaseIterable, SectionType {
     }
 }
 
-enum NotificationsOption: Int, CaseIterable, SectionType {
+enum NotificationOption: Int, CaseIterable, SectionType {
     
     case enabled
     case places
     
-    var containsOpenSymbol: Bool{
-        switch self {
-        case .places: return true
-            default: return false
-        }
-    }
-    
-    var containsNotificationSwitch: Bool{
+    var containsNotificationSwitch: Bool {
         switch self {
         case .enabled: return true
-            default: return false
+        case .places: return false
         }
     }
-    
     var containsSegmenteColor: Bool { return false }
-    var containsSegmentedMap: Bool { return false }
     var containsDebugModeSwitch: Bool { return false }
         
     var description: String {
         switch self {
-            case .enabled: return "Notification enabling"
-            case .places: return "Monitored places"
+        case .enabled: return "Enable Notifications"
+        case .places: return "Monitored Places"
         }
     }
 }
@@ -89,24 +76,13 @@ enum StylingOption: Int, CaseIterable, SectionType {
     
     case color
     
-    var containsOpenSymbol: Bool { return false }
     var containsNotificationSwitch: Bool { return false }
-    
-    var containsSegmenteColor: Bool {
-        switch self {
-            case .color: return true
-        }
-    }
-    var containsSegmentedMap: Bool {
-        switch self {
-            case .color: return false
-        }
-    }
+    var containsSegmenteColor: Bool { return true }
     var containsDebugModeSwitch: Bool { return false }
     
     var description: String {
         switch self {
-            case .color: return "Main color"
+        case .color: return "Main Tint Color"
         }
     }
 }
@@ -115,16 +91,13 @@ enum DebugOption: Int, CaseIterable, SectionType {
     
     case DebugMode
     
-    var containsSegmenteColor: Bool { return false }
-    var containsSegmentedMap: Bool { return false }
-    var containsDebugModeSwitch: Bool { return true }
-    var containsOpenSymbol: Bool { return false }
     var containsNotificationSwitch: Bool { return false }
+    var containsSegmenteColor: Bool { return false }
+    var containsDebugModeSwitch: Bool { return true }
     
     var description: String {
         switch self {
         case .DebugMode: return "Debug Mode"
         }
     }
-    
 }
