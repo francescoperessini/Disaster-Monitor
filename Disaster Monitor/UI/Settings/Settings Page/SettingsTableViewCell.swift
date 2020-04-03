@@ -29,7 +29,7 @@ class SettingsTableViewCell: UITableViewCell {
             
             notificationSwitch.isHidden = !sectionType.containsNotificationSwitch
             
-            segmentedColors.isHidden = !sectionType.containsSegmenteColor
+            segmentedColors.isHidden = !sectionType.containsSegmentedColor
                         
             debugSwitch.isHidden = !sectionType.containsDebugModeSwitch
         }
@@ -43,7 +43,7 @@ class SettingsTableViewCell: UITableViewCell {
     
     lazy var segmentedColors: UISegmentedControl = {
         let colorSegmented = UISegmentedControl(items: ["Blue", "Green", "Red"])
-        colorSegmented.addTarget(self, action: #selector(handleTapStylingColor), for: .valueChanged)
+        colorSegmented.addTarget(self, action: #selector(indexChanged(_:)), for: .valueChanged)
         return colorSegmented
     }()
     
@@ -92,25 +92,23 @@ class SettingsTableViewCell: UITableViewCell {
     }
     
     // MARK: - Styling
-    
-    
-    
-    
-    
-    
-    func setupColorCell(color: Color) {
-        self.segmentedColors.selectedSegmentIndex = ["Blue", "Green", "Red"].firstIndex(of: color.getColorName()) ?? 0
-    }
-    
     var didTapStylingColor: ((Color) -> ())?
     
-    @objc func handleTapStylingColor(sender: UISegmentedControl) {
-        let selectedColor = sender.titleForSegment(at: sender.selectedSegmentIndex)!
-        switch selectedColor {
-            case "Red": didTapStylingColor?(Color(name: colors.red))
-            case "Green": didTapStylingColor?(Color(name: colors.green))
-            default: didTapStylingColor?(Color(name: colors.blue))
+    @objc func indexChanged(_ sender: UISegmentedControl) {
+        switch sender.titleForSegment(at: sender.selectedSegmentIndex)! {
+        case "Blue":
+            didTapStylingColor?(Color(name: colors.blue))
+        case "Green":
+            didTapStylingColor?(Color(name: colors.green))
+        case "Red":
+            didTapStylingColor?(Color(name: colors.red))
+        default:
+            break
         }
     }
-
+    
+    func setupColorCell(color: Color) {
+        segmentedColors.selectedSegmentIndex = ["Blue", "Green", "Red"].firstIndex(of: color.getColorName())!
+    }
+        
 }

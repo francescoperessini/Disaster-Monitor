@@ -6,9 +6,7 @@
 //  Copyright © 2019 Stefano Martina. All rights reserved.
 //
 
-import Katana
 import Tempura
-import PinLayout
 
 // MARK: - ViewModel
 struct SettingsViewModel: ViewModelWithState {
@@ -22,11 +20,21 @@ struct SettingsViewModel: ViewModelWithState {
 class SettingsView: UIView, ViewControllerModellableView {
 
     var settingsTableView = UITableView(frame: CGRect.zero, style: .grouped)
+    
     var didTapEditMessage: (() -> ())?
-    var didTapEditMonitoredLocations: (() -> ())?
+    
+    @objc func didTapEditMessageFunc() {
+        didTapEditMessage?()
+    }
     
     var isNotficiationEnabled: Bool?
     var didTapNotificationSwitch: ((Bool) -> ())?
+    
+    var didTapMonitoredPlaces: (() -> ())?
+    
+    @objc func didTapMonitoredPlacesFunc() {
+        didTapMonitoredPlaces?()
+    }
     
     var customColor: Color?
     var didTapStylingColor: ((Color) -> ())?
@@ -34,21 +42,12 @@ class SettingsView: UIView, ViewControllerModellableView {
     var debugMode: Bool?
     var didTapDebugSwitch: ((Bool) -> ())?
     
-    
-    @objc func didTapEditMessageFunc() {
-        didTapEditMessage?()
-    }
-    
-    @objc func didTapEditMonitoredLocationsFunc() {
-        didTapEditMonitoredLocations?()
-    }
-    
     struct Cells {
         static let settingsTableViewCell = "settingsCell"
     }
     
     func setup() {
-        self.addSubview(settingsTableView)
+        addSubview(settingsTableView)
         configureSettingsTableView()
         setTableFooterView()
     }
@@ -108,15 +107,21 @@ class SettingsView: UIView, ViewControllerModellableView {
         }
     }
 
-    func update(oldModel: MainViewModel?) {
-        self.isNotficiationEnabled = model?.state.isNotficiationEnabled
-        self.customColor = model?.state.customColor
-        self.debugMode = model?.state.debugMode
+    func update(oldModel: SettingsViewModel?) {
+        guard let model = self.model else { return }
+
+        isNotficiationEnabled = model.state.isNotficiationEnabled
+        customColor = model.state.customColor
+        debugMode = model.state.debugMode
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        settingsTableView.pin.top().left().right().bottom()
+        settingsTableView.translatesAutoresizingMaskIntoConstraints = false
+        settingsTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        settingsTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        settingsTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
+        settingsTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     
 }
@@ -143,7 +148,6 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let section = SettingsSection(rawValue: section) else { return 0 }
-        
         switch section {
         case .Message:
             return MessageOption.allCases.count
@@ -162,22 +166,20 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         guard let section = SettingsSection(rawValue: section) else { return "" }
-        
         switch section {
         case .Message:
-            return "Safe message is the message you can share in Map Page"
+            return "Edit the Safe Message shareable from the Map Page"
         case .Notifications:
-            return "Here you can turn on or off the notifications and setup yuor monitored places "
+            return "Manage notifications permission and set up your Monitored Places"
         case .Styling:
-            return "Customize here your experience"
+            return "Customize your experience"
         case .Debug:
-            return "Activate here debug mode"
+            return "Activate debug mode"
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = settingsTableView.dequeueReusableCell(withIdentifier: Cells.settingsTableViewCell, for: indexPath) as! SettingsTableViewCell
-        
         guard let section = SettingsSection(rawValue: indexPath.section) else { return UITableViewCell() }
         
         switch section {
@@ -185,27 +187,31 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
             let message = MessageOption(rawValue: indexPath.row)
             cell.sectionType = message
         case .Notifications:
-            let privacy = NotificationOption(rawValue: indexPath.row)
-            cell.sectionType = privacy
+            let notifications = NotificationOption(rawValue: indexPath.row)
+            cell.sectionType = notifications
             if cell.sectionType!.containsNotificationSwitch {
+                cell.selectionStyle = .none
                 cell.didTapNotificationSwitch = self.didTapNotificationSwitch
-                cell.setupNotificationSwitch(value: self.isNotficiationEnabled!)
-            }else{
+                cell.setupNotificationSwitch(value: isNotficiationEnabled ?? false)
+            }
+            else {
                 cell.accessoryType = .disclosureIndicator
             }
         case .Styling:
             let style = StylingOption(rawValue: indexPath.row)
             cell.sectionType = style
-            if cell.sectionType!.containsSegmenteColor {
+            if cell.sectionType!.containsSegmentedColor {
+                cell.selectionStyle = .none
                 cell.didTapStylingColor = self.didTapStylingColor
-                cell.setupColorCell(color: self.customColor!)
+                cell.setupColorCell(color: customColor ?? Color(name: colors.blue))
             }
         case .Debug:
             let debug = DebugOption(rawValue: indexPath.row)
             cell.sectionType = debug
             if cell.sectionType!.containsDebugModeSwitch {
+                cell.selectionStyle = .none
                 cell.didTapDebugSwitch = self.didTapDebugSwitch
-                cell.setupDebugSwitch(value: self.debugMode!)
+                cell.setupDebugSwitch(value: debugMode ?? false)
             }
         }
         return cell
@@ -221,7 +227,7 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
                 break
             }
             if indexPath.row == 1 {
-                didTapEditMonitoredLocationsFunc()
+                didTapMonitoredPlacesFunc()
             }
         case .Styling:
             break

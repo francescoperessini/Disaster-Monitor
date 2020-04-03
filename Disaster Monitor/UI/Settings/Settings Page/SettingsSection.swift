@@ -8,7 +8,7 @@
 
 protocol SectionType: CustomStringConvertible {
     var containsNotificationSwitch: Bool { get }
-    var containsSegmenteColor: Bool { get }
+    var containsSegmentedColor: Bool { get }
     var containsDebugModeSwitch: Bool { get }
 }
 
@@ -39,7 +39,7 @@ enum MessageOption: Int, CaseIterable, SectionType {
     case editMessage
     
     var containsNotificationSwitch: Bool { return false }
-    var containsSegmenteColor: Bool { return false }
+    var containsSegmentedColor: Bool { return false }
     var containsDebugModeSwitch: Bool { return false }
     
     var description: String {
@@ -61,7 +61,7 @@ enum NotificationOption: Int, CaseIterable, SectionType {
         case .places: return false
         }
     }
-    var containsSegmenteColor: Bool { return false }
+    var containsSegmentedColor: Bool { return false }
     var containsDebugModeSwitch: Bool { return false }
         
     var description: String {
@@ -77,7 +77,7 @@ enum StylingOption: Int, CaseIterable, SectionType {
     case color
     
     var containsNotificationSwitch: Bool { return false }
-    var containsSegmenteColor: Bool { return true }
+    var containsSegmentedColor: Bool { return true }
     var containsDebugModeSwitch: Bool { return false }
     
     var description: String {
@@ -92,7 +92,7 @@ enum DebugOption: Int, CaseIterable, SectionType {
     case DebugMode
     
     var containsNotificationSwitch: Bool { return false }
-    var containsSegmenteColor: Bool { return false }
+    var containsSegmentedColor: Bool { return false }
     var containsDebugModeSwitch: Bool { return true }
     
     var description: String {

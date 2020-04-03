@@ -48,6 +48,19 @@ class FilterView: UIView, ViewControllerModellableView {
         addSubview(filterTableView)
         configureFilterTableView()
     }
+    
+    private func configureFilterTableView() {
+        setFilterTableViewDelegates()
+        filterTableView.backgroundColor = .systemGroupedBackground
+        filterTableView.separatorColor = .separator
+        filterTableView.isScrollEnabled = false
+        filterTableView.register(FilterTableViewCell.self, forCellReuseIdentifier: Cells.filterTableViewCell)
+    }
+
+    private func setFilterTableViewDelegates() {
+        filterTableView.delegate = self
+        filterTableView.dataSource = self
+    }
 
     func style() {
         backgroundColor = .systemGroupedBackground
@@ -88,26 +101,12 @@ class FilterView: UIView, ViewControllerModellableView {
         filterTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
 
-    private func configureFilterTableView() {
-        setFilterTableViewDelegates()
-        filterTableView.backgroundColor = .systemGroupedBackground
-        filterTableView.separatorColor = .separator
-        filterTableView.isScrollEnabled = false
-        filterTableView.register(FilterTableViewCell.self, forCellReuseIdentifier: Cells.filterTableViewCell)
-    }
-
-    private func setFilterTableViewDelegates() {
-        filterTableView.delegate = self
-        filterTableView.dataSource = self
-    }
-
 }
 
 extension FilterView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let section = FilterSection(rawValue: indexPath.section) else { return 0.0 }
-
         switch section {
         case .Magnitude:
             return 80
@@ -120,7 +119,6 @@ extension FilterView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let section = FilterSection(rawValue: indexPath.section) else { return 0.0 }
-
         switch section {
         case .Magnitude:
             return 80
@@ -137,7 +135,6 @@ extension FilterView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let section = FilterSection(rawValue: section) else { return 0 }
-        
         switch section {
         case .Magnitude:
             return MagnitudeOption.allCases.count
@@ -154,14 +151,13 @@ extension FilterView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         guard let section = FilterSection(rawValue: section) else { return "" }
-        
         switch section {
         case .Magnitude:
-            return "Filter events by magnitude.\nEarthquake magnitude is a measure of the size of an earthquake at its source."
+            return "Filter events by magnitude\nEarthquake magnitude is a measure of the size of an earthquake at its source"
         case .Period:
-            return "Filter events by time period."
+            return "Filter events by time period"
         case .Source:
-            return "Filter events by data source."
+            return "Filter events by data source"
         }
     }
     

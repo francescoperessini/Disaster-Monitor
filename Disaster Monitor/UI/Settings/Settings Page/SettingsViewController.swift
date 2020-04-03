@@ -21,23 +21,22 @@ class SettingsViewController: ViewController<SettingsView> {
             self.present(vc, animated: true, completion: nil)
         }
         
-        rootView.didTapEditMonitoredLocations = { [unowned self] in
+        rootView.didTapMonitoredPlaces = { [unowned self] in
             let vc = MonitoredRegionViewController(store: self.store)
             self.navigationController?.pushViewController(vc, animated: true)
-        }
-        
-        rootView.didTapStylingColor = { [unowned self] color in
-            self.dispatch(UpdateCustomColor(color: color))
         }
         
         rootView.didTapNotificationSwitch = { [unowned self] value in
             self.dispatch(SetNotificationMode(value: value))
         }
         
+        rootView.didTapStylingColor = { [unowned self] color in
+            self.dispatch(UpdateCustomColor(color: color))
+        }
+        
         rootView.didTapDebugSwitch = { [unowned self] value in
             self.dispatch(SetDebugMode(value: value))
         }
-        
     }
     
 }
