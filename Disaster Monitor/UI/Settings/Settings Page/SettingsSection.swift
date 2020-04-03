@@ -88,7 +88,6 @@ enum NotificationsOption: Int, CaseIterable, SectionType {
 enum StylingOption: Int, CaseIterable, SectionType {
     
     case color
-    case mapStyle
     
     var containsOpenSymbol: Bool { return false }
     var containsNotificationSwitch: Bool { return false }
@@ -96,13 +95,11 @@ enum StylingOption: Int, CaseIterable, SectionType {
     var containsSegmenteColor: Bool {
         switch self {
             case .color: return true
-            case .mapStyle: return false
         }
     }
     var containsSegmentedMap: Bool {
         switch self {
             case .color: return false
-            case .mapStyle: return true
         }
     }
     var containsDebugModeSwitch: Bool { return false }
@@ -110,7 +107,6 @@ enum StylingOption: Int, CaseIterable, SectionType {
     var description: String {
         switch self {
             case .color: return "Main color"
-            case .mapStyle: return "Map style"
         }
     }
 }

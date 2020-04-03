@@ -17,9 +17,7 @@ class SettingsTableViewCell: UITableViewCell {
             textLabel?.text = sectionType.description
             
             segmentedColors.isHidden = !sectionType.containsSegmenteColor
-            
-            segmentedMap.isHidden = !sectionType.containsSegmentedMap
-            
+                        
             debugSwitch.isHidden = !sectionType.containsDebugModeSwitch
             
             openImageView.isHidden = !sectionType.containsOpenSymbol
@@ -35,15 +33,10 @@ class SettingsTableViewCell: UITableViewCell {
     }()
     
     lazy var segmentedColors: UISegmentedControl = {
-        let colorSegmented = UISegmentedControl(items: ["BLUE", "GREEN", "RED"])
+        let colorSegmented = UISegmentedControl(items: ["Blue", "Green", "Red"])
         colorSegmented.addTarget(self, action: #selector(handleTapStylingColor), for: .valueChanged)
 
         return colorSegmented
-    }()
-    
-    lazy var segmentedMap: UISegmentedControl = {
-        let mapSegmented = UISegmentedControl(items: ["Standard", "Silver", "Retro", "Dark"])
-        return mapSegmented
     }()
     
     lazy var debugSwitch: UISwitch = {
@@ -66,10 +59,6 @@ class SettingsTableViewCell: UITableViewCell {
         segmentedColors.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
         segmentedColors.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -20).isActive = true
         
-        segmentedMap.translatesAutoresizingMaskIntoConstraints = false
-        segmentedMap.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
-        segmentedMap.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -20).isActive = true
-        
         debugSwitch.translatesAutoresizingMaskIntoConstraints = false
         debugSwitch.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
         debugSwitch.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: -20).isActive = true
@@ -88,9 +77,7 @@ class SettingsTableViewCell: UITableViewCell {
 
         
         self.addSubview(segmentedColors)
-        
-        self.addSubview(segmentedMap)
-        
+                
         self.addSubview(debugSwitch)
         
         self.addSubview(openImageView)
@@ -104,7 +91,7 @@ class SettingsTableViewCell: UITableViewCell {
     
     // MARK: - StateInitializer
     func setupColorCell(color: Color) {
-        self.segmentedColors.selectedSegmentIndex = ["BLUE", "GREEN", "RED"].firstIndex(of: color.getColorName()) ?? 0
+        self.segmentedColors.selectedSegmentIndex = ["Blue", "Green", "Red"].firstIndex(of: color.getColorName()) ?? 0
     }
     
     func setupDebugSwitch(value: Bool) {
@@ -117,8 +104,8 @@ class SettingsTableViewCell: UITableViewCell {
     @objc func handleTapStylingColor(sender: UISegmentedControl) {
         let selectedColor = sender.titleForSegment(at: sender.selectedSegmentIndex)!
         switch selectedColor {
-            case "RED": didTapStylingColor?(Color(name: colors.red))
-            case "GREEN": didTapStylingColor?(Color(name: colors.green))
+            case "Red": didTapStylingColor?(Color(name: colors.red))
+            case "Green": didTapStylingColor?(Color(name: colors.green))
             default: didTapStylingColor?(Color(name: colors.blue))
         }
     }

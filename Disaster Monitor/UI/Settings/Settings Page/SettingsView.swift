@@ -6,7 +6,6 @@
 //  Copyright © 2019 Stefano Martina. All rights reserved.
 //
 
-import Foundation
 import Katana
 import Tempura
 import PinLayout
@@ -53,6 +52,8 @@ class SettingsView: UIView, ViewControllerModellableView {
     
     private func configureSettingsTableView() {
         setSettingsTableViewDelegates()
+        settingsTableView.backgroundColor = .systemGroupedBackground
+        settingsTableView.separatorColor = .separator
         settingsTableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: Cells.settingsTableViewCell)
     }
 
@@ -69,7 +70,7 @@ class SettingsView: UIView, ViewControllerModellableView {
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .left
         titleLabel.font = UIFont.systemFont(ofSize: 12)
-        titleLabel.textColor = .systemGray
+        titleLabel.textColor = .secondaryLabel
         let dataSources = "Data Sources\nINGV: Istituto Nazionale di Geofisica e Vulcanologia\nUSGS: United States Geological Survey\n\n"
         let aboutUs = "About Us\nWe are two CSE students @ PoliMi, Francesco and Stefano"
         titleLabel.text = dataSources + aboutUs
@@ -83,22 +84,23 @@ class SettingsView: UIView, ViewControllerModellableView {
     }
     
     func style() {
-        backgroundColor = .systemBackground
+        backgroundColor = .systemGroupedBackground
         navigationBar?.prefersLargeTitles = true
         navigationItem?.title = "Settings"
+        
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
             navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo
             navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo (con prefersLargeTitles = true)
-            navigationBar?.tintColor = .black // tintColor changes the color of the UIBarButtonItem
-            navBarAppearance.backgroundColor = .systemGray6 // cambia il colore dello sfondo della navigation bar
+            // navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
+            navBarAppearance.backgroundColor = .secondarySystemBackground // cambia il colore dello sfondo della navigation bar
             // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
             navigationBar?.standardAppearance = navBarAppearance
             navigationBar?.scrollEdgeAppearance = navBarAppearance
         } else {
-            navigationBar?.tintColor = .black
-            navigationBar?.barTintColor = .systemGray6
+            // navigationBar?.tintColor = .systemBlue
+            navigationBar?.barTintColor = .secondarySystemBackground
             // navigationBar?.isTranslucent = false
         }
     }

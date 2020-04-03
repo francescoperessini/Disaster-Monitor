@@ -39,12 +39,12 @@ struct Color: Codable {
         default:                return UIColor.systemBlue
         }
     }
-    
+
     func getColorName() -> String {
         switch self.name {
-        case colors.green:      return "GREEN"
-        case colors.red:        return "RED"
-        default:                return "BLUE"
+        case colors.green:      return "Green"
+        case colors.red:        return "Red"
+        default:                return "Blue"
         }
     }
 }
