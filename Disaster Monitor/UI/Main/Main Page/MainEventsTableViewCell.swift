@@ -108,8 +108,7 @@ class MainEventsTableViewCell: UITableViewCell {
         dataSourceLabel.text = event.dataSource
 
         if event.magnitudo > 3 {
-            // magnitudoLabel.textColor = color.getColor()
-            magnitudoLabel.textColor = .secondaryLabel
+            magnitudoLabel.textColor = color.getColor()
         }
         else {
             magnitudoLabel.textColor = .secondaryLabel

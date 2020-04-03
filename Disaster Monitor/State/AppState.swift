@@ -16,7 +16,7 @@ struct AppState: State, Codable {
     var message: String = "Message to be shared\nSent from Disaster Monitor App"
     var displayEvent: Event?
     var segmentedDays: Int = 7
-    var customColor: Color = Color(name: colors.red)
+    var customColor: Color = Color(name: .blue)
     var dataSources: [String: Bool] = ["INGV": true, "USGS": true]
     var regions: [Region] = []
     var debugMode: Bool = false
@@ -72,7 +72,7 @@ struct EventsStateUpdater: StateUpdater {
             }
             // Seen events, with an update
             else if state.events.contains(where: {$0.id == id[i] && $0.updated != updated[i]}){
-                let toRemoveEvent = state.events.firstIndex{$0.id == id[i] && $0.updated != updated[i]}
+                let toRemoveEvent = state.events.firstIndex{$0.id == id[i]}
                 state.events.remove(at: toRemoveEvent!)
                 state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i], magType: magType[i], url: url[i], felt: felt[i]))
             }
@@ -119,15 +119,6 @@ struct EventsStateUpdaterINGV: StateUpdater {
 
 struct UpdateDaysAgo: StateUpdater {
     func updateState(_ state: inout AppState) {
-        /*
-        if !state.events.isEmpty {
-            let date = Date()
-            for i in 0...state.events.count - 1 {
-                let tmp = Calendar.current.dateComponents([.day], from: state.events[i].date, to: date).day!
-                state.events[i].daysAgo = tmp
-            }
-        }
-        */
         if !state.events.isEmpty {
             let date = Date()
             state.events.forEach{state.events[state.events.firstIndex(of: $0)!].daysAgo = Calendar.current.dateComponents([.day], from: $0.date, to: date).day!}
