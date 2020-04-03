@@ -52,7 +52,7 @@ class EventView: UIView, ViewControllerModellableView {
     var distanceLabel = UILabel()
     var depthLabel = UILabel()
     
-    let size:CGFloat = 48
+    let size:CGFloat = 55
     let someView = UIView()
     var magnitudoBigLabel = UILabel()
     var magnitudoFeltLabel = UILabel()
@@ -117,22 +117,26 @@ class EventView: UIView, ViewControllerModellableView {
     
     //MARK: Styling
     func style() {
-        backgroundColor = .systemGray6
+        backgroundColor = .systemBackground
         navigationItem?.largeTitleDisplayMode = .never
         navigationItem?.rightBarButtonItems = [UIBarButtonItem(image: UIImage(systemName: "safari"), style: .plain, target: self, action: #selector(didTapSafariFunc)), UIBarButtonItem(barButtonSystemItem: .action, target: self, action: nil)]
+        
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
             navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo
             navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo (con prefersLargeTitles = true)
-            navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
-            navBarAppearance.backgroundColor = .systemGray6 // cambia il colore dello sfondo della navigation bar
+            // navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
+            navBarAppearance.backgroundColor = .secondarySystemBackground // cambia il colore dello sfondo della navigation bar
+            // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
             navigationBar?.standardAppearance = navBarAppearance
             navigationBar?.scrollEdgeAppearance = navBarAppearance
         } else {
-            navigationBar?.tintColor = .systemBlue
-            navigationBar?.barTintColor = .systemGray6
+            // navigationBar?.tintColor = .systemBlue
+            navigationBar?.barTintColor = .secondarySystemBackground
+            // navigationBar?.isTranslucent = false
         }
+        
         placeLabelStyle()
         dateImageStyle()
         dateLabelStyle()
@@ -155,7 +159,7 @@ class EventView: UIView, ViewControllerModellableView {
         pulseAnimation.repeatCount = .greatestFiniteMagnitude
         
         self.someView.layer.backgroundColor = UIColor.clear.cgColor
-        self.someView.layer.shadowColor = UIColor.black.cgColor
+        self.someView.layer.shadowColor = UIColor.systemBlue.cgColor
         self.someView.layer.shadowOffset = CGSize(width: 0, height: 1.0)
 
         self.someView.layer.add(pulseAnimation, forKey: pulseAnimation.keyPath)
@@ -173,7 +177,7 @@ class EventView: UIView, ViewControllerModellableView {
     private func magnitudoLabelStyle(){
         magnitudoBigLabel.font = UIFont.boldSystemFont(ofSize: 20)
         magnitudoBigLabel.layer.cornerRadius = magnitudoBigLabel.frame.width/2
-        magnitudoBigLabel.textColor = UIColor.white
+        magnitudoBigLabel.textColor = .white
         magnitudoBigLabel.textAlignment = .center
         magnitudoFeltLabel.numberOfLines = 0
     }
@@ -191,7 +195,7 @@ class EventView: UIView, ViewControllerModellableView {
         placeLabelSubtitle.trailingBuffer = 50
         placeLabelSubtitle.textAlignment = .center
         placeLabelSubtitle.font = UIFont.systemFont(ofSize: 16)
-        placeLabelSubtitle.textColor = .systemGray
+        placeLabelSubtitle.textColor = .secondaryLabel
     }
     
     private func dateImageStyle() {

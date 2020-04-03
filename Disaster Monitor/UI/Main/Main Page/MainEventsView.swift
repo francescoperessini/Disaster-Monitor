@@ -58,7 +58,7 @@ class MainEventsView: UIView, ViewControllerModellableView{
     private func setLoadDataView() {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .systemGray
+        label.textColor = .secondaryLabel
         label.font = UIFont.systemFont(ofSize: 18)
         label.text = "Loading Events..."
         
@@ -76,7 +76,7 @@ class MainEventsView: UIView, ViewControllerModellableView{
         stackView.addArrangedSubview(activityIndicatorView)
 
         let activityView = UIView()
-        activityView.backgroundColor = .systemGray6
+        activityView.backgroundColor = .systemBackground
         activityView.addSubview(stackView)
         
         stackView.centerXAnchor.constraint(equalTo: activityView.centerXAnchor).isActive = true
@@ -88,6 +88,7 @@ class MainEventsView: UIView, ViewControllerModellableView{
     
     func configureMainEventsTableView() {
         setMainEventsTableViewDelegates()
+        mainEventsTableView.separatorColor = .separator
         mainEventsTableView.rowHeight = 65
         mainEventsTableView.register(MainEventsTableViewCell.self, forCellReuseIdentifier: Cells.mainEventsTableViewCell)
     }
@@ -109,14 +110,14 @@ class MainEventsView: UIView, ViewControllerModellableView{
             navBarAppearance.configureWithOpaqueBackground()
             navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo
             navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo (con prefersLargeTitles = true)
-            //navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
-            navBarAppearance.backgroundColor = .systemGray6 // cambia il colore dello sfondo della navigation bar
-            // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi􀊫
+            // navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
+            navBarAppearance.backgroundColor = .secondarySystemBackground // cambia il colore dello sfondo della navigation bar
+            // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
             navigationBar?.standardAppearance = navBarAppearance
             navigationBar?.scrollEdgeAppearance = navBarAppearance
         } else {
-            navigationBar?.tintColor = .systemBlue
-            navigationBar?.barTintColor = .systemGray6
+            // navigationBar?.tintColor = .systemBlue
+            navigationBar?.barTintColor = .secondarySystemBackground
             // navigationBar?.isTranslucent = false
         }
     }
@@ -142,8 +143,9 @@ class MainEventsView: UIView, ViewControllerModellableView{
         past72Events = events.filter{$0.daysAgo == 2}
         past96Events = events.filter{$0.daysAgo == 3}
         previousDaysEvents = events.filter{$0.daysAgo >= 4}
+        
         color = model.state.customColor
-        navigationBar?.tintColor = model.state.customColor.getColor()
+        // navigationBar?.tintColor = model.state.customColor.getColor()
         
         DispatchQueue.main.async {
             self.mainEventsTableView.reloadData()
@@ -225,12 +227,12 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource, UISearchBa
         let emptyView = UIView()
         let titleLabel = UILabel()
         let messageLabel = UILabel()
-        emptyView.backgroundColor = .systemGray6
+        emptyView.backgroundColor = .systemBackground
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .label
         titleLabel.font = UIFont.systemFont(ofSize: 18)
-        messageLabel.textColor = .systemGray
+        messageLabel.textColor = .secondaryLabel
         messageLabel.font = UIFont.systemFont(ofSize: 15)
         emptyView.addSubview(titleLabel)
         emptyView.addSubview(messageLabel)
@@ -264,7 +266,7 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource, UISearchBa
         }
         else {
             let view = UIView()
-            view.backgroundColor = .systemGray6
+            view.backgroundColor = .secondarySystemBackground
 
             let clockImage = UIImage(systemName: "clock")
             let clockImageView = UIImageView(image: clockImage!.withRenderingMode(.alwaysTemplate))

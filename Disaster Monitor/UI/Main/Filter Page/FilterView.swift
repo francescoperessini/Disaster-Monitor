@@ -47,25 +47,26 @@ class FilterView: UIView, ViewControllerModellableView {
     func setup() {
         addSubview(filterTableView)
         configureFilterTableView()
-        self.backgroundColor = .systemGroupedBackground
     }
 
     func style() {
+        backgroundColor = .systemGroupedBackground
         navigationItem?.title = "Filters"
         navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapCloseFunc))
+        
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
             navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo
             navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo (con prefersLargeTitles = true)
-            navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
-            navBarAppearance.backgroundColor = .systemGray6 // cambia il colore dello sfondo della navigation bar
+            // navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
+            navBarAppearance.backgroundColor = .secondarySystemBackground // cambia il colore dello sfondo della navigation bar
             // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
             navigationBar?.standardAppearance = navBarAppearance
             navigationBar?.scrollEdgeAppearance = navBarAppearance
         } else {
-            navigationBar?.tintColor = .systemBlue
-            navigationBar?.barTintColor = .systemGray6
+            // navigationBar?.tintColor = .systemBlue
+            navigationBar?.barTintColor = .secondarySystemBackground
             // navigationBar?.isTranslucent = false
         }
     }
@@ -89,6 +90,8 @@ class FilterView: UIView, ViewControllerModellableView {
 
     private func configureFilterTableView() {
         setFilterTableViewDelegates()
+        filterTableView.backgroundColor = .systemGroupedBackground
+        filterTableView.separatorColor = .separator
         filterTableView.isScrollEnabled = false
         filterTableView.register(FilterTableViewCell.self, forCellReuseIdentifier: Cells.filterTableViewCell)
     }

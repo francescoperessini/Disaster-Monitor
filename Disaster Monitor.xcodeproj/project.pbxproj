@@ -438,8 +438,8 @@
 			children = (
 				7B6E62682409629D0047D7AE /* MainEventsView.swift */,
 				7B6E626E2409674D0047D7AE /* MainEventsTableViewController.swift */,
-				7B6E626C240964AB0047D7AE /* MainEventsSection.swift */,
 				7B6E627424098B5F0047D7AE /* MainEventsTableViewCell.swift */,
+				7B6E626C240964AB0047D7AE /* MainEventsSection.swift */,
 			);
 			path = "Main Page";
 			sourceTree = "<group>";

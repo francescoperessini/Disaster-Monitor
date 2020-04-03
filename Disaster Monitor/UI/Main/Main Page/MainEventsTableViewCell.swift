@@ -65,22 +65,22 @@ class MainEventsTableViewCell: UITableViewCell {
     
     private func timeLabelStyle() {
         timeLabel.font = UIFont.systemFont(ofSize: 15)
-        timeLabel.textColor = .systemGray
+        timeLabel.textColor = .secondaryLabel
     }
     
     private func separatorStyle() {
         separatorLabel1.font = UIFont.systemFont(ofSize: 15)
         separatorLabel1.text = "•"
-        separatorLabel1.textColor = .systemGray
+        separatorLabel1.textColor = .secondaryLabel
         
         separatorLabel2.font = UIFont.systemFont(ofSize: 15)
         separatorLabel2.text = "•"
-        separatorLabel2.textColor = .systemGray
+        separatorLabel2.textColor = .secondaryLabel
     }
     
     private func seismicTypeLabelStyle() {
         seismicTypeLabel.font = UIFont.systemFont(ofSize: 15)
-        seismicTypeLabel.textColor = .systemGray
+        seismicTypeLabel.textColor = .secondaryLabel
     }
     
     private func magnitudoLabelStyle() {
@@ -89,7 +89,7 @@ class MainEventsTableViewCell: UITableViewCell {
     
     private func dataSourceLabelStyle() {
         dataSourceLabel.font = UIFont.systemFont(ofSize: 15)
-        dataSourceLabel.textColor = .systemGray
+        dataSourceLabel.textColor = .secondaryLabel
     }
     
     func setupCell(event: Event, color: Color) {
@@ -108,10 +108,11 @@ class MainEventsTableViewCell: UITableViewCell {
         dataSourceLabel.text = event.dataSource
 
         if event.magnitudo > 3 {
-            magnitudoLabel.textColor = color.getColor()
+            // magnitudoLabel.textColor = color.getColor()
+            magnitudoLabel.textColor = .secondaryLabel
         }
         else {
-            magnitudoLabel.textColor = .systemGray
+            magnitudoLabel.textColor = .secondaryLabel
         }
     }
     

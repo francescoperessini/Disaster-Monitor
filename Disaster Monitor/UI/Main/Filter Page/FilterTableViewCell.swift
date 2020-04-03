@@ -58,7 +58,7 @@ class FilterTableViewCell: UITableViewCell {
     
     lazy var magnitudeSliderValueLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .systemGray
+        label.textColor = .secondaryLabel
         return label
     }()
     
@@ -98,7 +98,7 @@ class FilterTableViewCell: UITableViewCell {
     
     lazy var timePeriodSegmentedControlValueLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .systemGray
+        label.textColor = .secondaryLabel
         return label
     }()
     
