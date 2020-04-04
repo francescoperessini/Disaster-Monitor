@@ -55,7 +55,7 @@ class MonitoredRegionViewCell: UITableViewCell {
     }
     
     func setupCell(place: Region) {
-        self.nameLabel.text = "\(place.name) • Magnitude: \(place.magnitude) • Distance: \(place.radius) km"
+        self.nameLabel.text = "\(place.name) • Magnitude: \(place.magnitude) • Distance: \(place.distance) km"
         self.coordinatesLabel.text = String(format:"Latitude: %.4f • Longitudine: %.4f", place.latitude, place.longitudine)
     }
     

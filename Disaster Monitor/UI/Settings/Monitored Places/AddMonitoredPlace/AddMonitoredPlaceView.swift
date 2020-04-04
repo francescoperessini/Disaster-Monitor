@@ -20,24 +20,38 @@ struct AddMonitoredPlaceViewModel: ViewModelWithState {
 
 // MARK: - View
 class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
-
-    var searchController: UISearchController?
-    var resultsViewController: GMSAutocompleteResultsViewController?
-    var didTapClose: (()  -> ())?
-    var didTapApply: ((String, [Double], Float, Double)  -> ())?
-    var addMonitoredEventsTableView = UITableView(frame: CGRect.zero, style: .grouped)
-    var coordinatesToSend: CLLocationCoordinate2D?
-    var mapView: GMSMapView?
-    var searchString: String?
     
-    var cellMagnitudo: AddMonitoredRegionCell?
-    var cellRadius: AddMonitoredRegionCell?
+    var addMonitoredEventsTableView = UITableView(frame: CGRect.zero, style: .grouped)
+    
+    var mapView = GMSMapView()
+    var resultsViewController: GMSAutocompleteResultsViewController?
+    var searchController: UISearchController?
+    
+    var magnitudeCell: AddMonitoredRegionCell?
+    var distanceCell: AddMonitoredRegionCell?
+    
+    var coordinatesToBeSent: CLLocationCoordinate2D?
+    
+    var didTapClose: (()  -> ())?
+    
+    @objc func didTapCloseFunc(){
+        didTapClose?()
+    }
+    
+    var didTapApply: ((String, [Double], Float, Double)  -> ())?
+    
+    @objc func didTapApplyFunc() {
+        let magnitude = Float(magnitudeCell!.stepperControlMagnitude.value)
+        let distance = distanceCell!.stepperControlDistance.value
+        
+        didTapApply?("ciao", [Double(coordinatesToBeSent!.latitude), Double(coordinatesToBeSent!.longitude)], magnitude, distance)
+    }
     
     struct Cells {
         static let addMonitoredRegionCell = "AddMonitoredRegionCell"
     }
+    
     func setup() {
-        addMonitoredEventsTableView.isScrollEnabled = false
         addSubview(addMonitoredEventsTableView)
         configureSettingsTableView()
         setupSearchBar()
@@ -45,96 +59,93 @@ class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
     
     private func configureSettingsTableView() {
         setAddMonitoredRegionViewDelegates()
+        addMonitoredEventsTableView.backgroundColor = .systemGroupedBackground
+        addMonitoredEventsTableView.separatorColor = .separator
         addMonitoredEventsTableView.register(AddMonitoredRegionCell.self, forCellReuseIdentifier: Cells.addMonitoredRegionCell)
     }
-
+    
     private func setAddMonitoredRegionViewDelegates() {
         addMonitoredEventsTableView.delegate = self
         addMonitoredEventsTableView.dataSource = self
     }
-
+    
     private func setupSearchBar() {
         resultsViewController = GMSAutocompleteResultsViewController()
         let filter = GMSAutocompleteFilter()
         filter.type = .city
         resultsViewController?.autocompleteFilter = filter
         resultsViewController?.delegate = self
-
+        
         searchController = UISearchController(searchResultsController: resultsViewController)
         searchController?.searchResultsUpdater = resultsViewController
-
+        
         // Put the search bar in the navigation bar.
         searchController?.searchBar.sizeToFit()
         navigationItem?.searchController = searchController
-
+        
         // Prevent the navigation bar from being hidden when searching
         searchController?.hidesNavigationBarDuringPresentation = false
     }
     
     func style() {
-        backgroundColor = .systemBackground
-        navigationItem?.title = "Add a monitored region"
+        backgroundColor = .systemGroupedBackground
+        navigationItem?.title = "Add Monitored Place"
         navigationItem?.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapCloseFunc))
         navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapApplyFunc))
         navigationItem?.rightBarButtonItem?.isEnabled = false
+        
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
-            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label]
-            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label]
-            navigationBar?.tintColor = .systemBlue
-            navBarAppearance.backgroundColor = .systemGray6
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo (con prefersLargeTitles = true)
+            // navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
+            navBarAppearance.backgroundColor = .secondarySystemBackground // cambia il colore dello sfondo della navigation bar
+            // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
             navigationBar?.standardAppearance = navBarAppearance
             navigationBar?.scrollEdgeAppearance = navBarAppearance
         } else {
-            navigationBar?.tintColor = .systemBlue
-            navigationBar?.barTintColor = .systemGray6
+            // navigationBar?.tintColor = .systemBlue
+            navigationBar?.barTintColor = .secondarySystemBackground
+            // navigationBar?.isTranslucent = false
         }
     }
-    @objc func didTapCloseFunc(){
-        didTapClose?()
-    }
-    @objc func didTapApplyFunc(){
-        let r = Float((cellMagnitudo?.stepperControlMagnitude.value)!)
-        let m = cellRadius!.stepperControlDistance.value
-        didTapApply?(searchString ?? "Unknown place", [Double(coordinatesToSend!.latitude), Double(coordinatesToSend!.longitude)],r ,m )
-    }
+    
     func update(oldModel: AddMonitoredPlaceViewModel?) {
-
     }
-
+    
     override func layoutSubviews() {
         super.layoutSubviews()
-        addMonitoredEventsTableView.pin.top().left().right().bottom()
+        addMonitoredEventsTableView.translatesAutoresizingMaskIntoConstraints = false
+        addMonitoredEventsTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        addMonitoredEventsTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        addMonitoredEventsTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
+        addMonitoredEventsTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     
 }
 
 extension AddMonitoredPlaceView: GMSAutocompleteResultsViewControllerDelegate, GMSMapViewDelegate {
+    
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didAutocompleteWith place: GMSPlace) {
         searchController?.isActive = false
+        
         let newLocation = GMSCameraPosition(target: place.coordinate, zoom: 12, bearing: 0, viewingAngle: 0)
-        mapView?.animate(to: newLocation)
-        searchString = place.name
+        mapView.animate(to: newLocation)
     }
-
+    
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didFailAutocompleteWithError error: Error) {
         print("Error: ", error.localizedDescription)
     }
     
     func mapView(_ mapView: GMSMapView, didLongPressAt coordinate: CLLocationCoordinate2D) {
         mapView.clear()
-        coordinatesToSend = coordinate
         let marker = GMSMarker(position: coordinate)
-        marker.title = "Hello World"
         marker.map = mapView
         
-        let circleCenter = CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        let circ = GMSCircle(position: circleCenter, radius: 1000)
-        circ.map = mapView
-        
-        navigationItem?.rightBarButtonItem?.isEnabled = true
+        coordinatesToBeSent = coordinate
     }
+    
 }
 
 extension AddMonitoredPlaceView: UITableViewDelegate, UITableViewDataSource {
@@ -142,16 +153,16 @@ extension AddMonitoredPlaceView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let option = AddMonitoredPlaceOption(rawValue: indexPath.row) else { return 0.0 }
         switch option {
-            case .map: return 400
-            default: return 48
+        case .map: return 380
+        default: return 48
         }
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let option = AddMonitoredPlaceOption(rawValue: indexPath.row) else { return 0.0 }
         switch option {
-            case .map: return 400
-            default: return 48
+        case .map: return 380
+        default: return 48
         }
     }
     
@@ -167,25 +178,30 @@ extension AddMonitoredPlaceView: UITableViewDelegate, UITableViewDataSource {
         return AddMonitoredRegionSection(rawValue: section)?.description
     }
     
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return "Tap and hold on the map to drop a pin"
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = addMonitoredEventsTableView.dequeueReusableCell(withIdentifier: Cells.addMonitoredRegionCell, for: indexPath) as! AddMonitoredRegionCell
-
-        let type = AddMonitoredPlaceOption(rawValue: indexPath.row)
-        cell.sectionType = type
+        guard let section = AddMonitoredRegionSection(rawValue: indexPath.section) else { return UITableViewCell() }
         
-        /*guard let bool = type?.containsMap else{return cell}
-        if bool{
-            mapView = cell.mapView
-            cell.mapView.delegate = self
-        }*/
-        
-        if type?.containsMap ?? false {
-            mapView = cell.mapView
-            cell.mapView.delegate = self
-        } else if type?.containsStepperMagnitude ?? false {
-            cellMagnitudo = cell
-        } else if type?.containsStepperDistance ?? false {
-            cellRadius = cell
+        switch section {
+        case .MonitoredPlace:
+            let type = AddMonitoredPlaceOption(rawValue: indexPath.row)
+            cell.sectionType = type
+            if cell.sectionType!.containsNameTextField {
+            }
+            else if cell.sectionType!.containsStepperMagnitude {
+                magnitudeCell = cell
+            }
+            else if cell.sectionType!.containsStepperDistance {
+                distanceCell = cell
+            }
+            else {
+                mapView = cell.mapView
+                cell.mapView.delegate = self
+            }
         }
         return cell
     }

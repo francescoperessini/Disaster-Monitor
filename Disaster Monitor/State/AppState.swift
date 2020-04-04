@@ -215,10 +215,10 @@ struct AddMonitoredPlace: StateUpdater {
     var name: String
     var coordinate: [Double]
     var magnitude: Float
-    var radius: Double
+    var distance: Double
     
     func updateState(_ state: inout AppState) {
-        state.regions.append(Region(name: name, latitude: coordinate[0], longitudine: coordinate[1], radius: radius, magnitude: magnitude))
+        state.regions.append(Region(name: name, latitude: coordinate[0], longitudine: coordinate[1], distance: distance, magnitude: magnitude))
     }
 }
 

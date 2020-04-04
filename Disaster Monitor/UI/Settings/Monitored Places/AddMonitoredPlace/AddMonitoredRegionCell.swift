@@ -54,7 +54,6 @@ class AddMonitoredRegionCell: UITableViewCell {
         textField.returnKeyType = UIReturnKeyType.done
         textField.enablesReturnKeyAutomatically = true
         textField.clearButtonMode = UITextField.ViewMode.whileEditing
-        //textField.delegate = self
         return textField
     }()
     
