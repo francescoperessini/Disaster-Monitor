@@ -16,7 +16,7 @@ class MessageEditorViewController: ViewController<MessageEditorView> {
     }
     
     override func setupInteraction() {
-        rootView.didTapCancelButton = {
+        rootView.didTapCloseButton = {
             self.dismiss(animated: true, completion: nil)
         }
         

@@ -31,6 +31,10 @@ class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
     var distanceCell: AddMonitoredRegionCell?
     
     var coordinatesToBeSent: CLLocationCoordinate2D?
+    var didDropAPin: Bool = false
+    
+    var name: String?
+    var didEnterName: Bool = false
     
     var didTapClose: (()  -> ())?
     
@@ -44,7 +48,7 @@ class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
         let magnitude = Float(magnitudeCell!.stepperControlMagnitude.value)
         let distance = distanceCell!.stepperControlDistance.value
         
-        didTapApply?("ciao", [Double(coordinatesToBeSent!.latitude), Double(coordinatesToBeSent!.longitude)], magnitude, distance)
+        didTapApply?(name!, [Double(coordinatesToBeSent!.latitude), Double(coordinatesToBeSent!.longitude)], magnitude, distance)
     }
     
     struct Cells {
@@ -55,6 +59,13 @@ class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
         addSubview(addMonitoredEventsTableView)
         configureSettingsTableView()
         setupSearchBar()
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        self.endEditing(true)
     }
     
     private func configureSettingsTableView() {
@@ -125,6 +136,36 @@ class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
     
 }
 
+extension AddMonitoredPlaceView: UITextFieldDelegate {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let text = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+        if text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            didEnterName = false
+            navigationItem?.rightBarButtonItem?.isEnabled = false
+        } else {
+            didEnterName = true
+            name = text.trimmingCharacters(in: .whitespacesAndNewlines)
+            if didDropAPin {
+                navigationItem?.rightBarButtonItem?.isEnabled = true
+            }
+        }
+        return true
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        didEnterName = false
+        navigationItem?.rightBarButtonItem?.isEnabled = false
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+}
+
 extension AddMonitoredPlaceView: GMSAutocompleteResultsViewControllerDelegate, GMSMapViewDelegate {
     
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didAutocompleteWith place: GMSPlace) {
@@ -144,6 +185,10 @@ extension AddMonitoredPlaceView: GMSAutocompleteResultsViewControllerDelegate, G
         marker.map = mapView
         
         coordinatesToBeSent = coordinate
+        didDropAPin = true
+        if didEnterName {
+            navigationItem?.rightBarButtonItem?.isEnabled = true
+        }
     }
     
 }
@@ -191,6 +236,7 @@ extension AddMonitoredPlaceView: UITableViewDelegate, UITableViewDataSource {
             let type = AddMonitoredPlaceOption(rawValue: indexPath.row)
             cell.sectionType = type
             if cell.sectionType!.containsNameTextField {
+                cell.nameTextField.delegate = self
             }
             else if cell.sectionType!.containsStepperMagnitude {
                 magnitudeCell = cell

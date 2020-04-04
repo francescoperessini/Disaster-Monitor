@@ -24,10 +24,10 @@ class MessageEditorView: UIView, ViewControllerModellableView {
     
     var currentMessage: String = ""
     
-    var didTapCancelButton: (() -> ())?
+    var didTapCloseButton: (() -> ())?
     
-    @objc func didTapCancelButtonFunc() {
-        didTapCancelButton?()
+    @objc func didTapCloseButtonFunc() {
+        didTapCloseButton?()
     }
         
     var didTapDoneButton: ((String) -> ())?
@@ -53,7 +53,7 @@ class MessageEditorView: UIView, ViewControllerModellableView {
     func style() {
         backgroundColor = .systemGroupedBackground
         navigationItem?.title = "Message Editor"
-        navigationItem?.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didTapCancelButtonFunc))
+        navigationItem?.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapCloseButtonFunc))
         navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapDoneButtonFunc))
         navigationItem?.rightBarButtonItem?.isEnabled = false
         
