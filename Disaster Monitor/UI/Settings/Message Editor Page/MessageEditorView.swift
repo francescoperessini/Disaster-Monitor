@@ -23,6 +23,12 @@ class MessageEditorView: UIView, ViewControllerModellableView {
     var bodyLabel = UILabel()
     
     var currentMessage: String = ""
+    
+    var didTapCancelButton: (() -> ())?
+    
+    @objc func didTapCancelButtonFunc() {
+        didTapCancelButton?()
+    }
         
     var didTapDoneButton: ((String) -> ())?
     
@@ -47,6 +53,7 @@ class MessageEditorView: UIView, ViewControllerModellableView {
     func style() {
         backgroundColor = .systemGroupedBackground
         navigationItem?.title = "Message Editor"
+        navigationItem?.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didTapCancelButtonFunc))
         navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapDoneButtonFunc))
         navigationItem?.rightBarButtonItem?.isEnabled = false
         
@@ -90,8 +97,8 @@ class MessageEditorView: UIView, ViewControllerModellableView {
         bodyLabel.translatesAutoresizingMaskIntoConstraints = false
         bodyLabel.topAnchor.constraint(equalTo: messageTextView.safeAreaLayoutGuide.bottomAnchor, constant: 20).isActive = true
         bodyLabel.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        bodyLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 5).isActive = true
-        bodyLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -5).isActive = true
+        bodyLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
+        bodyLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -15).isActive = true
     }
     
     private func setupMessageTextField() {
@@ -99,6 +106,7 @@ class MessageEditorView: UIView, ViewControllerModellableView {
         messageTextView.isScrollEnabled = false
         messageTextView.textContainer.maximumNumberOfLines = 7
         messageTextView.textContainer.lineBreakMode = .byTruncatingTail
+        messageTextView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         messageTextView.textAlignment = .left
         messageTextView.font = UIFont.systemFont(ofSize: 18)
         messageTextView.layer.borderWidth = 0.2

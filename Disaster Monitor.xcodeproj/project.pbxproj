@@ -312,7 +312,6 @@
 				7B92360B241794DE00A4EF22 /* PersistorInterceptor.swift */,
 				7B5038A923A8CD5700F18840 /* SceneDelegate.swift */,
 				C6AB352C2432190D00190871 /* LocationService.swift */,
-				7B44820F24252D2A000DDDAC /* Monitored Places */,
 				C635C0BB240DB9A200970769 /* Main */,
 				C635C0BD240DB9C100970769 /* Map */,
 				C614C9782411A72E00DC772E /* Map Style */,
@@ -400,6 +399,7 @@
 			children = (
 				C635C0C1240DBA4800970769 /* Settings Page */,
 				C635C0BF240DBA2D00970769 /* Message Editor Page */,
+				7B44820F24252D2A000DDDAC /* Monitored Places */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
