@@ -19,17 +19,19 @@ struct MessageEditorViewModel: ViewModelWithState {
 // MARK: - View
 class MessageEditorView: UIView, ViewControllerModellableView {
     
-    var messageTextField = UITextField()
+    var messageTextView = UITextView()
     var bodyLabel = UILabel()
+    
+    var currentMessage: String = ""
         
     var didTapDoneButton: ((String) -> ())?
     
     @objc func didTapDoneButtonFunc() {
-        didTapDoneButton?(messageTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines))
+        didTapDoneButton?(messageTextView.text!.trimmingCharacters(in: .whitespacesAndNewlines))
     }
         
     func setup() {
-        addSubview(messageTextField)
+        addSubview(messageTextView)
         setupMessageTextField()
         addSubview(bodyLabel)
         setupBodyLabel()
@@ -67,44 +69,44 @@ class MessageEditorView: UIView, ViewControllerModellableView {
     
     func update(oldModel: MessageEditorViewModel?) {
         guard let model = self.model else { return }
-        let current = model.state.message
-        
-        messageTextField.placeholder = current
+        currentMessage = model.state.message
+
+        if messageTextView.text.isEmpty {
+            messageTextView.text = currentMessage
+        }
         
         let prepared = "This is the message that you can share on the Map Page to let your parents and friends know that you are safe!\n\n"
-        bodyLabel.text = prepared + "Current message:\n\(current)"
+        bodyLabel.text = prepared + "Current message:\n\(currentMessage)"
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        messageTextField.translatesAutoresizingMaskIntoConstraints = false
-        messageTextField.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 50).isActive = true
-        messageTextField.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        messageTextField.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        messageTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        messageTextField.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        messageTextView.translatesAutoresizingMaskIntoConstraints = false
+        messageTextView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 50).isActive = true
+        messageTextView.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        messageTextView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        messageTextView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
         
         bodyLabel.translatesAutoresizingMaskIntoConstraints = false
-        bodyLabel.topAnchor.constraint(equalTo: messageTextField.safeAreaLayoutGuide.bottomAnchor, constant: 20).isActive = true
+        bodyLabel.topAnchor.constraint(equalTo: messageTextView.safeAreaLayoutGuide.bottomAnchor, constant: 20).isActive = true
         bodyLabel.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        bodyLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
-        bodyLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
+        bodyLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 5).isActive = true
+        bodyLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -5).isActive = true
     }
     
     private func setupMessageTextField() {
-        messageTextField.textColor = .label
-        messageTextField.font = UIFont.systemFont(ofSize: 18)
-        messageTextField.layer.borderWidth = 0.2
-        messageTextField.layer.borderColor = UIColor.separator.cgColor
-        messageTextField.backgroundColor = .secondarySystemGroupedBackground
-        messageTextField.autocorrectionType = UITextAutocorrectionType.yes
-        messageTextField.keyboardType = UIKeyboardType.default
-        messageTextField.returnKeyType = UIReturnKeyType.done
-        messageTextField.enablesReturnKeyAutomatically = true
-        messageTextField.clearButtonMode = UITextField.ViewMode.whileEditing
-        messageTextField.leftView = setupLeftView()
-        messageTextField.leftViewMode = .always
-        messageTextField.delegate = self
+        messageTextView.isSelectable = true
+        messageTextView.isScrollEnabled = false
+        messageTextView.textContainer.maximumNumberOfLines = 7
+        messageTextView.textContainer.lineBreakMode = .byTruncatingTail
+        messageTextView.textAlignment = .left
+        messageTextView.font = UIFont.systemFont(ofSize: 18)
+        messageTextView.layer.borderWidth = 0.2
+        messageTextView.layer.borderColor = UIColor.separator.cgColor
+        messageTextView.backgroundColor = .secondarySystemGroupedBackground
+        messageTextView.autocorrectionType = UITextAutocorrectionType.default
+        messageTextView.keyboardType = UIKeyboardType.default
+        messageTextView.delegate = self
     }
 
     private func setupLeftView() -> UIView {
@@ -136,26 +138,36 @@ class MessageEditorView: UIView, ViewControllerModellableView {
     
 }
 
-extension MessageEditorView: UITextFieldDelegate {
-
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let text = (messageTextField.text! as NSString).replacingCharacters(in: range, with: string)
-        if text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+extension MessageEditorView: UITextViewDelegate {
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let textMessage = (messageTextView.text! as NSString).replacingCharacters(in: range, with: text)
+        if textMessage.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             navigationItem?.rightBarButtonItem?.isEnabled = false
         } else {
             navigationItem?.rightBarButtonItem?.isEnabled = true
         }
-        return true
+        let existingLines = textView.text.components(separatedBy: CharacterSet.newlines)
+        let newLines = text.components(separatedBy: CharacterSet.newlines)
+        let linesAfterChange = existingLines.count + newLines.count - 1
+
+        return linesAfterChange <= textView.textContainer.maximumNumberOfLines
     }
     
-    func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        navigationItem?.rightBarButtonItem?.isEnabled = false
-        return true
+    /*
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if messageTextView.textColor == .tertiaryLabel {
+            messageTextView.text = nil
+            messageTextView.textColor = .label
+        }
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        messageTextField.resignFirstResponder()
-        return true
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if messageTextView.text.isEmpty {
+            messageTextView.text = currentMessage
+            messageTextView.textColor = .tertiaryLabel
+        }
     }
+    */
     
 }
