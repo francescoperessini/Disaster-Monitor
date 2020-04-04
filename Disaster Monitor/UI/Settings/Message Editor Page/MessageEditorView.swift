@@ -116,26 +116,6 @@ class MessageEditorView: UIView, ViewControllerModellableView {
         messageTextView.keyboardType = UIKeyboardType.default
         messageTextView.delegate = self
     }
-
-    private func setupLeftView() -> UIView {
-        let leftView = UIView()
-        leftView.backgroundColor = .clear
-      
-        let tmp = UILabel()
-        tmp.text = "Message"
-        tmp.textColor = .label
-        tmp.font = UIFont.systemFont(ofSize: 18)
-        tmp.textAlignment = .center
-        
-        leftView.addSubview(tmp)
-        tmp.translatesAutoresizingMaskIntoConstraints = false
-        tmp.topAnchor.constraint(equalTo: leftView.safeAreaLayoutGuide.topAnchor, constant: 5).isActive = true
-        tmp.bottomAnchor.constraint(equalTo: leftView.safeAreaLayoutGuide.bottomAnchor, constant: -5).isActive = true
-        tmp.leadingAnchor.constraint(equalTo: leftView.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
-        tmp.trailingAnchor.constraint(equalTo: leftView.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
-        
-        return leftView
-    }
     
     private func setupBodyLabel() {
         bodyLabel.numberOfLines = 0

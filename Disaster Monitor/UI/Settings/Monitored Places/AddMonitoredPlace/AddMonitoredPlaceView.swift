@@ -95,8 +95,8 @@ class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
         didTapClose?()
     }
     @objc func didTapApplyFunc(){
-        let r = Float((cellMagnitudo?.stepperControlMagnitudo.value)!)
-        let m = cellRadius!.stepperControlRadius.value
+        let r = Float((cellMagnitudo?.stepperControlMagnitude.value)!)
+        let m = cellRadius!.stepperControlDistance.value
         didTapApply?(searchString ?? "Unknown place", [Double(coordinatesToSend!.latitude), Double(coordinatesToSend!.longitude)],r ,m )
     }
     func update(oldModel: AddMonitoredPlaceViewModel?) {
@@ -110,7 +110,6 @@ class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
     
 }
 
-// MARK: - CLLocationManagerDelegate
 extension AddMonitoredPlaceView: GMSAutocompleteResultsViewControllerDelegate, GMSMapViewDelegate {
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didAutocompleteWith place: GMSPlace) {
         searchController?.isActive = false
