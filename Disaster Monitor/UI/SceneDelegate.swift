@@ -31,12 +31,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let interceptor = PersistorInterceptor.interceptor()
         store = Store<AppState, DependenciesContainer>(interceptors: [interceptor])
-                
+        
         store.dispatch(InitAppState())
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let tabBarController = MainTabBarController(store: store)
-
+        
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
@@ -74,12 +74,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scheduleDatabaseCleaningIfNeeded(){
         /*let now = Date()
-        let oneWeek = TimeInterval(7 * 24 * 60 * 60)
-        
-        guard now > (self.lastCleaned ?? Date() + oneWeek) else {return}*/
+         let oneWeek = TimeInterval(7 * 24 * 60 * 60)
+         
+         guard now > (self.lastCleaned ?? Date() + oneWeek) else {return}*/
         
         let request = BGProcessingTaskRequest(identifier: "com.disastermonitor.db_cleaning")
-
+        
         do {
             try BGTaskScheduler.shared.submit(request)
         } catch {
@@ -110,7 +110,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         queue.addOperation {
             if self.store.state.debugMode {
                 print("Debug mode activated")
-                self.store.dispatch(AddEventDebugMode()).then{
+                self.store.dispatch(GetEvents()).then {
                     // Via Ronchi, 39-31, 20134 Milano MI
                     let hardCodedCoordinates = CLLocation(latitude: 45.489031, longitude: 9.236980)
                     
@@ -129,7 +129,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                             content.sound = UNNotificationSound.default
                             
                             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-
+                            
                             let notificationRequest: UNNotificationRequest = UNNotificationRequest(identifier: "test", content: content, trigger: trigger)
                             
                             center.add(notificationRequest, withCompletionHandler: { (error) in
@@ -151,7 +151,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         let op = queue.operations.first!
-
+        
         op.completionBlock = {
             task.setTaskCompleted(success: !op.isCancelled)
         }
@@ -170,7 +170,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         let op = queue.operations.first!
-
+        
         op.completionBlock = {
             task.setTaskCompleted(success: !op.isCancelled)
         }

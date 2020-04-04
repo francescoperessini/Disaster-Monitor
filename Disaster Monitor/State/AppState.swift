@@ -39,7 +39,7 @@ struct Color: Codable {
         default:                return UIColor.systemBlue
         }
     }
-
+    
     func getColorName() -> String {
         switch self.name {
         case colors.green:      return "Green"
@@ -70,7 +70,7 @@ struct EventsStateUpdater: StateUpdater {
             if !state.events.contains(where: {$0.id == id[i]}) {
                 state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i], magType: magType[i], url: url[i], felt: felt[i]))
             }
-            // Seen events, with an update
+                // Seen events, with an update
             else if state.events.contains(where: {$0.id == id[i] && $0.updated != updated[i]}){
                 let toRemoveEvent = state.events.firstIndex{$0.id == id[i]}
                 state.events.remove(at: toRemoveEvent!)
@@ -106,7 +106,7 @@ struct EventsStateUpdaterINGV: StateUpdater {
             guard let appo = dateFormatter.date(from: time) else { return }
             result_time.append(appo.timeIntervalSince1970 * 1000.0)
         }
-
+        
         for i in 0...arrayNames.count - 1 {
             if !state.events.contains(where: {$0.id == id[i]}) {
                 let url = url_tmp + id[i] + "?timezone=UTC"
@@ -201,6 +201,19 @@ struct SetDebugMode: StateUpdater {
     var value: Bool
     func updateState(_ state: inout AppState) {
         state.debugMode = value
+        if value {
+            // Creazione evento fittizio
+            let tmp = Date()
+            let time = tmp.timeIntervalSince1970 * 1000.0
+            let event = Event(id: "test_earthquake", name: "Test Earthquake", descr: "earthquake", magnitudo: "7.5", coordinates: "9.226937 45.478085", depth: 10.0, time: time, dataSource: "USGS", updated: time, magType: "ML", url: "https://www.polimi.it", felt: 0)
+            state.events.append(event)
+            state.events.sort(by: {$0.time > $1.time})
+        }
+        else {
+            // Cancellazione evento fittizio
+            let toRemoveEvent = state.events.firstIndex{$0.id == "test_earthquake"}
+            state.events.remove(at: toRemoveEvent!)
+        }
     }
 }
 
@@ -219,17 +232,6 @@ struct AddMonitoredPlace: StateUpdater {
     
     func updateState(_ state: inout AppState) {
         state.regions.append(Region(name: name, latitude: coordinate[0], longitudine: coordinate[1], distance: distance, magnitude: magnitude))
-    }
-}
-
-struct AddEventDebugMode: StateUpdater {
-    func updateState(_ state: inout AppState) {
-        // Creazione di un evento fittizio
-        let tmp = Date()
-        let time = tmp.timeIntervalSince1970 * 1000.0
-        let event = Event(id: "test_earthquake", name: "Test Earthquake", descr: "earthquake", magnitudo: "7.5", coordinates: "9.226937 45.478085", depth: 10.0, time: time, dataSource: "USGS", updated: time, magType: "ML", url: "https://www.polimi.it", felt: 0)
-        state.events.append(event)
-        state.events.sort(by: {$0.time > $1.time})
     }
 }
 
@@ -252,9 +254,9 @@ struct GetEvents: SideEffect {
         let fullFormattedDateArr = formattedDate.split(separator: " ")
         let date = String(fullFormattedDateArr[0])
         let time = String(fullFormattedDateArr[1])
-                        
+        
         context.dispatch(UpdateDaysAgo())
-
+        
         context.dependencies.ApiManager
             .getEventsUSGS(date: date, time: time)
             .then {
