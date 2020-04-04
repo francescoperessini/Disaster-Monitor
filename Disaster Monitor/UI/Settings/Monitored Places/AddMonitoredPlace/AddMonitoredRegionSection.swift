@@ -8,60 +8,64 @@
 
 protocol SectionTypeAddMonitored: CustomStringConvertible {
     var containsNameTextField: Bool { get }
-    var containsStepperMagnitudo: Bool { get }
-    var containsStepperRadius: Bool { get }
+    var containsStepperMagnitude: Bool { get }
+    var containsStepperDistance: Bool { get }
     var containsMap: Bool { get }
 }
 
 enum AddMonitoredRegionSection: Int, CaseIterable, CustomStringConvertible{
-    
-    case MonitoredRegion
-    
+
+    case MonitoredPlace
+
     var description: String {
         switch self {
-            case .MonitoredRegion: return "Monitored Regions"
+        case .MonitoredPlace: return "Monitored Place"
         }
     }
+    
 }
 
-enum AddMonitoredRegionOption: Int, CaseIterable, SectionTypeAddMonitored {
+enum AddMonitoredPlaceOption: Int, CaseIterable, SectionTypeAddMonitored {
+    
     case name
-    case magnitudoThreshold
-    case radius
+    case magnitudeThreshold
+    case distance
     case map
     
-    var description: String {
-        switch self {
-        case .name: return "Monitored place's name"
-            case .magnitudoThreshold: return "Magnitudo Threshold"
-            case .radius: return "Radius"
-            case .map: return "map"
-        }
-    }
-    
-    var containsNameTextField: Bool{
+    var containsNameTextField: Bool {
         switch self {
         case .name: return true
         default: return false
         }
     }
     
-    var containsStepperMagnitudo: Bool{
+    var containsStepperMagnitude: Bool {
         switch self {
-            case .magnitudoThreshold:   return true
-            default:    return false
+        case .magnitudeThreshold: return true
+        default: return false
         }
     }
-    var containsStepperRadius: Bool{
+    
+    var containsStepperDistance: Bool {
         switch self {
-            case .radius:   return true
-            default:    return false
+        case .distance: return true
+        default: return false
         }
     }
-    var containsMap: Bool{
+    
+    var containsMap: Bool {
         switch self {
-            case .map:   return true
-            default:    return false
+        case .map: return true
+        default: return false
+        }
+    }
+    
+    var description: String {
+        switch self {
+        case .name: return "Place's name"
+        case .magnitudeThreshold: return "Magnitude Threshold"
+        case .distance: return "Max Distance"
+        case .map: return "Map"
         }
     }
     

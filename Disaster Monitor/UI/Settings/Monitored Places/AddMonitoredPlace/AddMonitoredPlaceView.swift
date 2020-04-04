@@ -141,7 +141,7 @@ extension AddMonitoredPlaceView: GMSAutocompleteResultsViewControllerDelegate, G
 extension AddMonitoredPlaceView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let option = AddMonitoredRegionOption(rawValue: indexPath.row) else { return 0.0 }
+        guard let option = AddMonitoredPlaceOption(rawValue: indexPath.row) else { return 0.0 }
         switch option {
             case .map: return 400
             default: return 48
@@ -149,7 +149,7 @@ extension AddMonitoredPlaceView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let option = AddMonitoredRegionOption(rawValue: indexPath.row) else { return 0.0 }
+        guard let option = AddMonitoredPlaceOption(rawValue: indexPath.row) else { return 0.0 }
         switch option {
             case .map: return 400
             default: return 48
@@ -161,7 +161,7 @@ extension AddMonitoredPlaceView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return AddMonitoredRegionOption.allCases.count
+        return AddMonitoredPlaceOption.allCases.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -171,7 +171,7 @@ extension AddMonitoredPlaceView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = addMonitoredEventsTableView.dequeueReusableCell(withIdentifier: Cells.addMonitoredRegionCell, for: indexPath) as! AddMonitoredRegionCell
 
-        let type = AddMonitoredRegionOption(rawValue: indexPath.row)
+        let type = AddMonitoredPlaceOption(rawValue: indexPath.row)
         cell.sectionType = type
         
         /*guard let bool = type?.containsMap else{return cell}
@@ -183,9 +183,9 @@ extension AddMonitoredPlaceView: UITableViewDelegate, UITableViewDataSource {
         if type?.containsMap ?? false {
             mapView = cell.mapView
             cell.mapView.delegate = self
-        } else if type?.containsStepperMagnitudo ?? false {
+        } else if type?.containsStepperMagnitude ?? false {
             cellMagnitudo = cell
-        } else if type?.containsStepperRadius ?? false {
+        } else if type?.containsStepperDistance ?? false {
             cellRadius = cell
         }
         return cell

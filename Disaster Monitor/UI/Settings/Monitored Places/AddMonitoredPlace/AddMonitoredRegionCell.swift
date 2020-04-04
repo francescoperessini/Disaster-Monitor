@@ -18,12 +18,12 @@ class AddMonitoredRegionCell: UITableViewCell {
             guard let sectionType = sectionType else { return }
             textLabel?.text = sectionType.description
             
-            stepperControlRadius.isHidden = !sectionType.containsStepperRadius
-            stepperControlMagnitudo.isHidden = !sectionType.containsStepperMagnitudo
+            stepperControlRadius.isHidden = !sectionType.containsStepperDistance
+            stepperControlMagnitudo.isHidden = !sectionType.containsStepperMagnitude
             mapView.isHidden = !sectionType.containsMap
             nameTextField.isHidden = !sectionType.containsNameTextField
-            stepperControlMagnitudoLabel.isHidden = !sectionType.containsStepperMagnitudo
-            stepperControlRadiusLabel.isHidden = !sectionType.containsStepperRadius
+            stepperControlMagnitudoLabel.isHidden = !sectionType.containsStepperMagnitude
+            stepperControlRadiusLabel.isHidden = !sectionType.containsStepperDistance
         }
     }
     

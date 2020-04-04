@@ -19,76 +19,81 @@ struct MonitoredRegionsViewModel: ViewModelWithState {
 // MARK: - View
 class MonitoredRegionsView: UIView, ViewControllerModellableView {
     
-    var didTapClose: (() -> ())?
+    var monitoredPlacesTableView = UITableView(frame: CGRect.zero, style: .grouped)
+    var monitoredPlaces: [Region] = []
+    
     var didTapAdd: (() -> ())?
-    var didRemoveElement: ((Int) -> ())?
-    
-    var monitoredEventsTableView = UITableView(frame: CGRect.zero, style: .grouped)
-    var monitoredRegion: [Region] = []
-    struct Cells {
-        static let monitoredRegionCell = "monitoredRegionCell"
-    }
-
-    func setup() {
-        self.addSubview(monitoredEventsTableView)
-        configureMonitoredRegionTableView()
-    }
-    
-    private func configureMonitoredRegionTableView() {
-        setMonitoredRegionViewDelegates()
-        monitoredEventsTableView.register(MonitoredRegionViewCell.self, forCellReuseIdentifier: Cells.monitoredRegionCell)
-    }
-
-    func setMonitoredRegionViewDelegates() {
-        monitoredEventsTableView.delegate = self
-        monitoredEventsTableView.dataSource = self
-    }
-
-    func style() {
-        backgroundColor = .systemBackground
-        navigationItem?.title = "Monitored Regions"
-        navigationItem?.largeTitleDisplayMode = .never
-        navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapAddFunc))
-        if #available(iOS 13.0, *) {
-            let navBarAppearance = UINavigationBarAppearance()
-            navBarAppearance.configureWithOpaqueBackground()
-            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo
-            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo (con prefersLargeTitles = true)
-            navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
-            navBarAppearance.backgroundColor = .systemGray6 // cambia il colore dello sfondo della navigation bar
-            // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
-            navigationBar?.standardAppearance = navBarAppearance
-            navigationBar?.scrollEdgeAppearance = navBarAppearance
-        } else {
-            navigationBar?.tintColor = .systemBlue
-            navigationBar?.barTintColor = .systemGray6
-            // navigationBar?.isTranslucent = false
-        }
-    }
-
-    func update(oldModel: MonitoredRegionsViewModel?) {
-        guard let model = self.model else { return }
-        monitoredRegion = model.state.regions
-        DispatchQueue.main.async {
-            self.monitoredEventsTableView.reloadData()
-        }
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        monitoredEventsTableView.translatesAutoresizingMaskIntoConstraints = false
-        monitoredEventsTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        monitoredEventsTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        monitoredEventsTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
-        monitoredEventsTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
-    }
     
     @objc func didTapAddFunc() {
         didTapAdd?()
     }
     
-    @objc func didTapCloseFunc() {
-        didTapClose?()
+    var didRemoveElement: ((Int) -> ())?
+    
+    @objc func didRemoveElementFunc(index: Int) {
+        didRemoveElement?(index)
+    }
+    
+    struct Cells {
+        static let monitoredPlacesCell = "monitoredPlacesCell"
+    }
+    
+    func setup() {
+        addSubview(monitoredPlacesTableView)
+        configureMonitoredPlacesTableView()
+    }
+    
+    private func configureMonitoredPlacesTableView() {
+        setMonitoredPlacesTableViewDelegates()
+        monitoredPlacesTableView.backgroundColor = .systemGroupedBackground
+        monitoredPlacesTableView.separatorColor = .separator
+        monitoredPlacesTableView.register(MonitoredRegionViewCell.self, forCellReuseIdentifier: Cells.monitoredPlacesCell)
+    }
+    
+    private func setMonitoredPlacesTableViewDelegates() {
+        monitoredPlacesTableView.delegate = self
+        monitoredPlacesTableView.dataSource = self
+    }
+    
+    func style() {
+        backgroundColor = .systemGroupedBackground
+        navigationItem?.title = "Monitored Places"
+        navigationItem?.largeTitleDisplayMode = .never
+        navigationItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapAddFunc))
+        
+        if #available(iOS 13.0, *) {
+            let navBarAppearance = UINavigationBarAppearance()
+            navBarAppearance.configureWithOpaqueBackground()
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label] // cambia aspetto del titolo (con prefersLargeTitles = true)
+            // navigationBar?.tintColor = .systemBlue // tintColor changes the color of the UIBarButtonItem
+            navBarAppearance.backgroundColor = .secondarySystemBackground // cambia il colore dello sfondo della navigation bar
+            // navigationBar?.isTranslucent = false // da provare la differenza tra true/false solo con colori vivi
+            navigationBar?.standardAppearance = navBarAppearance
+            navigationBar?.scrollEdgeAppearance = navBarAppearance
+        } else {
+            // navigationBar?.tintColor = .systemBlue
+            navigationBar?.barTintColor = .secondarySystemBackground
+            // navigationBar?.isTranslucent = false
+        }
+    }
+    
+    func update(oldModel: MonitoredRegionsViewModel?) {
+        guard let model = self.model else { return }
+        
+        monitoredPlaces = model.state.regions
+        DispatchQueue.main.async {
+            self.monitoredPlacesTableView.reloadData()
+        }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        monitoredPlacesTableView.translatesAutoresizingMaskIntoConstraints = false
+        monitoredPlacesTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        monitoredPlacesTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        monitoredPlacesTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
+        monitoredPlacesTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     
 }
@@ -98,14 +103,14 @@ extension MonitoredRegionsView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let section = MonitoredRegionSection(rawValue: indexPath.section) else { return 0.0 }
         switch section {
-        case .MonitoredRegion: return 60
+        default: return 60
         }
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let section = MonitoredRegionSection(rawValue: indexPath.section) else { return 0.0 }
         switch section {
-        case .MonitoredRegion: return 60
+        default: return 60
         }
     }
     
@@ -114,25 +119,26 @@ extension MonitoredRegionsView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.monitoredRegion.isEmpty {
+        if monitoredPlaces.isEmpty {
             setEmptyView(title: "You don't have any monitored region", message: "You can add one by pressing '+'")
             return 0
         }
         else {
             restore()
-            return self.monitoredRegion.count
+            return monitoredPlaces.count
         }
     }
     
-    func setEmptyView(title: String, message: String) {
+    private func setEmptyView(title: String, message: String) {
         let emptyView = UIView()
         let titleLabel = UILabel()
         let messageLabel = UILabel()
+        emptyView.backgroundColor = .systemGroupedBackground
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .label
         titleLabel.font = UIFont.systemFont(ofSize: 18)
-        messageLabel.textColor = .systemGray
+        messageLabel.textColor = .secondaryLabel
         messageLabel.font = UIFont.systemFont(ofSize: 15)
         emptyView.addSubview(titleLabel)
         emptyView.addSubview(messageLabel)
@@ -141,21 +147,21 @@ extension MonitoredRegionsView: UITableViewDelegate, UITableViewDataSource {
         messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5).isActive = true
         messageLabel.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor).isActive = true
         titleLabel.text = title
+        titleLabel.textAlignment = .center
         messageLabel.text = message
-        messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .center
         
-        monitoredEventsTableView.backgroundView = emptyView
-        monitoredEventsTableView.separatorStyle = .none
+        monitoredPlacesTableView.backgroundView = emptyView
+        monitoredPlacesTableView.separatorStyle = .none
     }
     
-    func restore() {
-        monitoredEventsTableView.backgroundView = nil
-        monitoredEventsTableView.separatorStyle = .singleLine
+    private func restore() {
+        monitoredPlacesTableView.backgroundView = nil
+        monitoredPlacesTableView.separatorStyle = .singleLine
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if self.monitoredRegion.isEmpty {
+        if monitoredPlaces.isEmpty {
             return nil
         }
         else {
@@ -164,16 +170,17 @@ extension MonitoredRegionsView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = monitoredEventsTableView.dequeueReusableCell(withIdentifier: Cells.monitoredRegionCell, for: indexPath) as! MonitoredRegionViewCell
-        cell.setupCell(region: monitoredRegion[indexPath.row])
+        let cell = monitoredPlacesTableView.dequeueReusableCell(withIdentifier: Cells.monitoredPlacesCell, for: indexPath) as! MonitoredRegionViewCell
+        cell.setupCell(place: monitoredPlaces[indexPath.row])
         return cell
     }
     
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == UITableViewCell.EditingStyle.delete {
-            self.monitoredRegion.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
-            didRemoveElement?(indexPath.row)
+        if editingStyle == .delete {
+            monitoredPlaces.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            didRemoveElementFunc(index: indexPath.row)
         }
     }
     

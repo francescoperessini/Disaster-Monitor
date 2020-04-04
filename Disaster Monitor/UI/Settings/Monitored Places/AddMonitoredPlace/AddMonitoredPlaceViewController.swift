@@ -12,16 +12,18 @@ import Tempura
 class AddMonitoredPlaceViewController: ViewController<AddMonitoredPlaceView> {
     
     override func viewDidLoad() {
-           super.viewDidLoad()
-       }
+        super.viewDidLoad()
+    }
+    
     override func setupInteraction() {
         rootView.didTapClose = { [unowned self] in
             self.dismiss(animated: true, completion: nil)
         }
-        
+
         rootView.didTapApply = { [unowned self] name, coordinate, magnitude, radius in
             self.dispatch(AddMonitoredPlace(name: name, coordinate: coordinate, magnitude: magnitude, radius: radius))
             self.dismiss(animated: true, completion: nil)
         }
     }
+    
 }

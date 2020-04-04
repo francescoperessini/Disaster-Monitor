@@ -8,11 +8,11 @@
 
 enum MonitoredRegionSection: Int, CaseIterable, CustomStringConvertible {
     
-    case MonitoredRegion
+    case MonitoredPlaces
     
     var description: String {
         switch self {
-            case .MonitoredRegion: return "Monitored Regions"
+            case .MonitoredPlaces: return "Monitored Places"
         }
     }
     
