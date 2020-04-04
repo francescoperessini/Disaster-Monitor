@@ -60,6 +60,7 @@
 		C60D1E52241BF3000054DF3B /* FilterSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60D1E51241BF3000054DF3B /* FilterSection.swift */; };
 		C614C97A2411A86600DC772E /* light_map_style.json in Resources */ = {isa = PBXBuildFile; fileRef = C614C9792411A86600DC772E /* light_map_style.json */; };
 		C614C97C2411A88A00DC772E /* dark_map_style.json in Resources */ = {isa = PBXBuildFile; fileRef = C614C97B2411A88A00DC772E /* dark_map_style.json */; };
+		C669A8F7243907E200ADFD2E /* LocalNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C669A8F6243907E200ADFD2E /* LocalNotificationManager.swift */; };
 		C677E59A2407CA540079344A /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C677E5992407CA540079344A /* SettingsSection.swift */; };
 		C6AB352D2432190D00190871 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6AB352C2432190D00190871 /* LocationService.swift */; };
 		C6B0E86C24068AC9005CEE09 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B0E86B24068AC9005CEE09 /* SettingsTableViewCell.swift */; };
@@ -152,6 +153,7 @@
 		C60D1E51241BF3000054DF3B /* FilterSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSection.swift; sourceTree = "<group>"; };
 		C614C9792411A86600DC772E /* light_map_style.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = light_map_style.json; sourceTree = "<group>"; };
 		C614C97B2411A88A00DC772E /* dark_map_style.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = dark_map_style.json; sourceTree = "<group>"; };
+		C669A8F6243907E200ADFD2E /* LocalNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotificationManager.swift; sourceTree = "<group>"; };
 		C677E5992407CA540079344A /* SettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsSection.swift; path = "Disaster Monitor/UI/Settings/Settings Page/SettingsSection.swift"; sourceTree = SOURCE_ROOT; };
 		C6AB352C2432190D00190871 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		C6B0E86B24068AC9005CEE09 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
@@ -311,6 +313,7 @@
 				C6B0E86D2406DCE4005CEE09 /* MainTabBarController.swift */,
 				7B92360B241794DE00A4EF22 /* PersistorInterceptor.swift */,
 				7B5038A923A8CD5700F18840 /* SceneDelegate.swift */,
+				C669A8F6243907E200ADFD2E /* LocalNotificationManager.swift */,
 				C6AB352C2432190D00190871 /* LocationService.swift */,
 				C635C0BB240DB9A200970769 /* Main */,
 				C635C0BD240DB9C100970769 /* Map */,
@@ -751,6 +754,7 @@
 				7B564A2F23A9306D00DD178C /* ConfigurableCell.swift in Sources */,
 				7B78A4BA242697FC00903791 /* AddMonitoredRegionCell.swift in Sources */,
 				7B564A2623A9300300DD178C /* String+Random.swift in Sources */,
+				C669A8F7243907E200ADFD2E /* LocalNotificationManager.swift in Sources */,
 				7B69AD6D2405827300E040B9 /* FilterViewController.swift in Sources */,
 				7B564A1C23A92B7100DD178C /* ListView.swift in Sources */,
 				7BE4174123A8D56D0096F8EA /* AppNavigation.swift in Sources */,

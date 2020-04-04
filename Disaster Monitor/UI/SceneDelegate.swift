@@ -111,37 +111,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             if self.store.state.debugMode {
                 print("Debug mode activated")
                 self.store.dispatch(GetEvents()).then {
-                    // Via Ronchi, 39-31, 20134 Milano MI
-                    let hardCodedCoordinates = CLLocation(latitude: 45.489031, longitude: 9.236980)
-                    
-                    for event in self.store.state.events {
-                        let eventCoordinates = CLLocation(latitude: event.coordinates[1], longitude: event.coordinates[0])
-                        
-                        // Distanza in km
-                        let distance = hardCodedCoordinates.distance(from: eventCoordinates) / 1000
-                        
-                        if distance <= 5.0 {
-                            let center = UNUserNotificationCenter.current()
-                            
-                            let content = UNMutableNotificationContent()
-                            content.title = "Seismic event detected"
-                            content.body = "Seismic event detected near..."
-                            content.sound = UNNotificationSound.default
-                            
-                            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-                            
-                            let notificationRequest: UNNotificationRequest = UNNotificationRequest(identifier: "test", content: content, trigger: trigger)
-                            
-                            center.add(notificationRequest, withCompletionHandler: { (error) in
-                                if let error = error {
-                                    print(error)
-                                }
-                                else {
-                                    print("Notification added")
-                                }
-                            })
-                        }
-                    }
+                    print("TODO")
                 }
             }
             else {
