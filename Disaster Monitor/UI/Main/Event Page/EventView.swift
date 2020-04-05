@@ -24,7 +24,7 @@ struct EventViewModel: ViewModelWithLocalState {
 class EventView: UIView, ViewControllerModellableView {
     
     var didTapSafari: ((String) -> ())?
-    var didTapShare: ((UIButton) -> ())?
+    var didTapShare: ((UIBarButtonItem) -> ())?
     var url: String = ""
         
     var firstRow: UIView = UIView()
@@ -178,7 +178,7 @@ class EventView: UIView, ViewControllerModellableView {
         didTapSafari?(url)
     }
     
-    @objc func didTapShareFunc(sender: UIButton){
+    @objc func didTapShareFunc(sender: UIBarButtonItem){
         didTapShare?(sender)
     }
     

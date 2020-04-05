@@ -29,11 +29,34 @@ class EventViewController: ViewControllerWithLocalState<EventView>, SFSafariView
             let activityViewController : UIActivityViewController = UIActivityViewController(
                 activityItems: [firstActivityItem, secondActivityItem], applicationActivities: nil)
 
-            activityViewController.popoverPresentationController?.sourceView = (sender)
-
+            activityViewController.popoverPresentationController?.sourceView = self.navigationController?.view
+            
             activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
+            
+            // Anything you want to exclude
+            activityViewController.excludedActivityTypes = [
+                UIActivity.ActivityType.postToWeibo,
+                UIActivity.ActivityType.print,
+                UIActivity.ActivityType.assignToContact,
+                UIActivity.ActivityType.saveToCameraRoll,
+                UIActivity.ActivityType.addToReadingList,
+                UIActivity.ActivityType.postToFlickr,
+                UIActivity.ActivityType.postToVimeo,
+                UIActivity.ActivityType.postToTencentWeibo
+            ]
+            
+            //check ipad
+            if (UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad) {
+                    activityViewController.popoverPresentationController?.sourceView = self.view
+            }
 
             self.present(activityViewController, animated: true, completion: nil)
+            
+            // This line remove the arrow of the popover to show in iPad
+            activityViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.any
+            activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
+
+            
         }
     }
     
