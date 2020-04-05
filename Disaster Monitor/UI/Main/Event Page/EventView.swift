@@ -31,6 +31,7 @@ class EventView: UIView, ViewControllerModellableView {
     
     var firstEntireRow: UIView = UIView()
     var secondEntireRow: UIView = UIView()
+    var thirdEntireRow: UIView = UIView()
     var thirdSplittedRow: UIView = UIView()
     var fourthSplittedRow: UIView = UIView()
     
@@ -74,6 +75,7 @@ class EventView: UIView, ViewControllerModellableView {
         self.addSubview(secondRow)
         firstRow.addSubview(firstEntireRow)
         firstRow.addSubview(secondEntireRow)
+        firstRow.addSubview(thirdEntireRow)
         firstRow.addSubview(thirdSplittedRow)
         firstRow.addSubview(fourthSplittedRow)
         
@@ -83,8 +85,8 @@ class EventView: UIView, ViewControllerModellableView {
         fourthSplittedRow.addSubview(secondRowFirstCell)
         fourthSplittedRow.addSubview(secondRowSecondCell)
         
-        firstRow.addSubview(placeLabel)
-        firstRow.addSubview(placeLabelSubtitle)
+        firstEntireRow.addSubview(placeLabel)
+        secondEntireRow.addSubview(placeLabelSubtitle)
         
         firstRowFirstCell.addSubview(coordinatesLabel)
         firstRowFirstCell.addSubview(coordinatesImage)
@@ -101,8 +103,8 @@ class EventView: UIView, ViewControllerModellableView {
         secondRow.addSubview(mapView)
         setupMapView()
         
-        self.secondEntireRow.addSubview(someView)
-        self.secondEntireRow.addSubview(magnitudoFeltLabel)
+        self.thirdEntireRow.addSubview(someView)
+        self.thirdEntireRow.addSubview(magnitudoFeltLabel)
         
         someView.addSubview(magnitudoBigLabel)
     }
@@ -163,6 +165,7 @@ class EventView: UIView, ViewControllerModellableView {
         self.someView.layer.shadowOffset = CGSize(width: 0, height: 1.0)
 
         self.someView.layer.add(pulseAnimation, forKey: pulseAnimation.keyPath)
+
         
     }
     
@@ -251,7 +254,7 @@ class EventView: UIView, ViewControllerModellableView {
             
             let formatter = DateFormatter()
             formatter.timeZone = TimeZone(identifier: "UTC")
-            formatter.dateFormat = "dd/MM/yy, HH:mm:ss"
+            formatter.dateFormat = "dd/MM/yy, HH:mm"
             let formattedDate = formatter.string(from: model.event!.date)
             dateLabel.text = formattedDate + " UTC"
             
@@ -346,18 +349,24 @@ class EventView: UIView, ViewControllerModellableView {
         
         firstEntireRow.translatesAutoresizingMaskIntoConstraints = false
         firstEntireRow.topAnchor.constraint(equalTo: self.firstRow.topAnchor).isActive = true
-        firstEntireRow.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor, multiplier: 0.3).isActive = true
+        firstEntireRow.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor, multiplier: 0.15).isActive = true
         firstEntireRow.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
         firstEntireRow.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
         
         secondEntireRow.translatesAutoresizingMaskIntoConstraints = false
         secondEntireRow.topAnchor.constraint(equalTo: self.firstEntireRow.bottomAnchor).isActive = true
-        secondEntireRow.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor, multiplier: 0.3).isActive = true
+        secondEntireRow.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor, multiplier: 0.1).isActive = true
         secondEntireRow.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
         secondEntireRow.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
         
+        thirdEntireRow.translatesAutoresizingMaskIntoConstraints = false
+        thirdEntireRow.topAnchor.constraint(equalTo: self.firstEntireRow.bottomAnchor).isActive = true
+        thirdEntireRow.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor, multiplier: 0.35).isActive = true
+        thirdEntireRow.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        thirdEntireRow.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        
         thirdSplittedRow.translatesAutoresizingMaskIntoConstraints = false
-        thirdSplittedRow.topAnchor.constraint(equalTo: self.secondEntireRow.bottomAnchor).isActive = true
+        thirdSplittedRow.topAnchor.constraint(equalTo: self.thirdEntireRow.bottomAnchor).isActive = true
         thirdSplittedRow.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor, multiplier: 0.2).isActive = true
         thirdSplittedRow.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
         thirdSplittedRow.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
@@ -373,25 +382,25 @@ class EventView: UIView, ViewControllerModellableView {
         firstRowFirstCell.translatesAutoresizingMaskIntoConstraints = false
         firstRowFirstCell.topAnchor.constraint(equalTo: self.thirdSplittedRow.topAnchor).isActive = true
         firstRowFirstCell.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor).isActive = true
-        firstRowFirstCell.widthAnchor.constraint(equalTo: self.thirdSplittedRow.widthAnchor, multiplier: 0.7).isActive = true
+        firstRowFirstCell.widthAnchor.constraint(equalTo: self.thirdSplittedRow.widthAnchor, multiplier: 0.65).isActive = true
         firstRowFirstCell.leadingAnchor.constraint(equalTo: self.thirdSplittedRow.leadingAnchor).isActive = true
         
         firstRowSecondCell.translatesAutoresizingMaskIntoConstraints = false
         firstRowSecondCell.topAnchor.constraint(equalTo: self.thirdSplittedRow.topAnchor).isActive = true
         firstRowSecondCell.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor).isActive = true
-        firstRowSecondCell.widthAnchor.constraint(equalTo: self.thirdSplittedRow.widthAnchor, multiplier: 0.3).isActive = true
+        firstRowSecondCell.widthAnchor.constraint(equalTo: self.thirdSplittedRow.widthAnchor, multiplier: 0.35).isActive = true
         firstRowSecondCell.leadingAnchor.constraint(equalTo: self.firstRowFirstCell.trailingAnchor).isActive = true
         
         secondRowFirstCell.translatesAutoresizingMaskIntoConstraints = false
         secondRowFirstCell.topAnchor.constraint(equalTo: self.fourthSplittedRow.topAnchor).isActive = true
         secondRowFirstCell.heightAnchor.constraint(equalTo: self.secondRow.heightAnchor).isActive = true
-        secondRowFirstCell.widthAnchor.constraint(equalTo: self.fourthSplittedRow.widthAnchor, multiplier: 0.7).isActive = true
+        secondRowFirstCell.widthAnchor.constraint(equalTo: self.fourthSplittedRow.widthAnchor, multiplier: 0.65).isActive = true
         secondRowFirstCell.leadingAnchor.constraint(equalTo: self.fourthSplittedRow.leadingAnchor).isActive = true
         
         secondRowSecondCell.translatesAutoresizingMaskIntoConstraints = false
         secondRowSecondCell.topAnchor.constraint(equalTo: self.fourthSplittedRow.topAnchor).isActive = true
         secondRowSecondCell.heightAnchor.constraint(equalTo: self.secondRow.heightAnchor).isActive = true
-        secondRowSecondCell.widthAnchor.constraint(equalTo: self.fourthSplittedRow.widthAnchor, multiplier: 0.3).isActive = true
+        secondRowSecondCell.widthAnchor.constraint(equalTo: self.fourthSplittedRow.widthAnchor, multiplier: 0.35).isActive = true
         secondRowSecondCell.leadingAnchor.constraint(equalTo: self.secondRowFirstCell.trailingAnchor).isActive = true
         
         //MARK: Content
@@ -403,22 +412,23 @@ class EventView: UIView, ViewControllerModellableView {
         mapView.trailingAnchor.constraint(equalTo: secondRow.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
         
         placeLabel.translatesAutoresizingMaskIntoConstraints = false
-        placeLabel.topAnchor.constraint(equalTo: firstRow.topAnchor).isActive = true
+        placeLabel.bottomAnchor.constraint(equalTo: firstEntireRow.bottomAnchor).isActive = true
         placeLabel.leadingAnchor.constraint(equalTo: self.firstRow.leadingAnchor, constant: 20).isActive = true
         placeLabel.trailingAnchor.constraint(equalTo: self.firstRow.trailingAnchor, constant: -20).isActive = true
         placeLabel.centerXAnchor.constraint(equalTo: self.firstRow.centerXAnchor).isActive = true
-        placeLabel.centerYAnchor.constraint(equalTo: self.firstEntireRow.centerYAnchor).isActive = true
+        //placeLabel.centerYAnchor.constraint(equalTo: self.firstEntireRow.centerYAnchor).isActive = true
         
         placeLabelSubtitle.translatesAutoresizingMaskIntoConstraints = false
-        placeLabelSubtitle.topAnchor.constraint(equalTo: placeLabel.bottomAnchor, constant: -20).isActive = true
-        placeLabelSubtitle.leadingAnchor.constraint(equalTo: self.firstRow.leadingAnchor, constant: 25).isActive = true
-        placeLabelSubtitle.trailingAnchor.constraint(equalTo: self.firstRow.trailingAnchor, constant: -25).isActive = true
+        placeLabelSubtitle.bottomAnchor.constraint(equalTo: secondEntireRow.bottomAnchor).isActive = true
+        //placeLabelSubtitle.leadingAnchor.constraint(equalTo: self.firstRow.leadingAnchor, constant: 25).isActive = true
+        //placeLabelSubtitle.trailingAnchor.constraint(equalTo: self.firstRow.trailingAnchor, constant: -25).isActive = true
         placeLabelSubtitle.centerXAnchor.constraint(equalTo: self.firstRow.centerXAnchor).isActive = true
 
         coordinatesLabel.translatesAutoresizingMaskIntoConstraints = false
         coordinatesLabel.topAnchor.constraint(equalTo: thirdSplittedRow.topAnchor).isActive = true
-        coordinatesLabel.centerXAnchor.constraint(equalTo: self.firstRowFirstCell.centerXAnchor).isActive = true
+        //coordinatesLabel.centerXAnchor.constraint(equalTo: self.firstRowFirstCell.centerXAnchor).isActive = true
         coordinatesLabel.centerYAnchor.constraint(equalTo: self.thirdSplittedRow.centerYAnchor).isActive = true
+        coordinatesLabel.leadingAnchor.constraint(equalTo: coordinatesImage.trailingAnchor, constant: 20).isActive = true
         
         coordinatesImage.translatesAutoresizingMaskIntoConstraints = false
         coordinatesImage.leadingAnchor.constraint(equalTo: self.firstRowFirstCell.leadingAnchor, constant: 20).isActive = true
@@ -426,8 +436,9 @@ class EventView: UIView, ViewControllerModellableView {
         
         distanceLabel.translatesAutoresizingMaskIntoConstraints = false
         distanceLabel.topAnchor.constraint(equalTo: thirdSplittedRow.topAnchor).isActive = true
-        distanceLabel.centerXAnchor.constraint(equalTo: self.firstRowSecondCell.centerXAnchor).isActive = true
+        //distanceLabel.centerXAnchor.constraint(equalTo: self.firstRowSecondCell.centerXAnchor).isActive = true
         distanceLabel.centerYAnchor.constraint(equalTo: self.thirdSplittedRow.centerYAnchor).isActive = true
+        distanceLabel.leadingAnchor.constraint(equalTo: magnitudeImage.trailingAnchor, constant: 20).isActive = true
         
         magnitudeImage.translatesAutoresizingMaskIntoConstraints = false
         magnitudeImage.leadingAnchor.constraint(equalTo: self.firstRowSecondCell.leadingAnchor, constant: 0).isActive = true
@@ -435,8 +446,9 @@ class EventView: UIView, ViewControllerModellableView {
         
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.topAnchor.constraint(equalTo: fourthSplittedRow.topAnchor).isActive = true
-        dateLabel.centerXAnchor.constraint(equalTo: self.secondRowFirstCell.centerXAnchor).isActive = true
+        //dateLabel.centerXAnchor.constraint(equalTo: self.secondRowFirstCell.centerXAnchor).isActive = true
         dateLabel.centerYAnchor.constraint(equalTo: self.fourthSplittedRow.centerYAnchor).isActive = true
+        dateLabel.leadingAnchor.constraint(equalTo: dateImage.trailingAnchor, constant: 20).isActive = true
         
         dateImage.translatesAutoresizingMaskIntoConstraints = false
         dateImage.leadingAnchor.constraint(equalTo: self.secondRowFirstCell.leadingAnchor, constant: 20).isActive = true
@@ -444,8 +456,10 @@ class EventView: UIView, ViewControllerModellableView {
         
         depthLabel.translatesAutoresizingMaskIntoConstraints = false
         depthLabel.topAnchor.constraint(equalTo: fourthSplittedRow.topAnchor).isActive = true
-        depthLabel.centerXAnchor.constraint(equalTo: self.secondRowSecondCell.centerXAnchor).isActive = true
+        //depthLabel.centerXAnchor.constraint(equalTo: self.secondRowSecondCell.centerXAnchor).isActive = true
         depthLabel.centerYAnchor.constraint(equalTo: self.fourthSplittedRow.centerYAnchor).isActive = true
+        depthLabel.leadingAnchor.constraint(equalTo: depthImage.trailingAnchor, constant: 20).isActive = true
+
         
         depthImage.translatesAutoresizingMaskIntoConstraints = false
         depthImage.leadingAnchor.constraint(equalTo: self.secondRowSecondCell.leadingAnchor, constant: 0).isActive = true
@@ -458,8 +472,8 @@ class EventView: UIView, ViewControllerModellableView {
         someView.layer.borderColor = UIColor.systemBlue.cgColor
         someView.layer.borderWidth = 1
         
-        someView.topAnchor.constraint(equalTo: secondEntireRow.topAnchor, constant: 20).isActive = true
-        someView.leadingAnchor.constraint(equalTo: secondEntireRow.leadingAnchor, constant: 20).isActive = true
+        someView.topAnchor.constraint(equalTo: thirdEntireRow.topAnchor, constant: 20).isActive = true
+        someView.leadingAnchor.constraint(equalTo: thirdEntireRow.leadingAnchor, constant: 20).isActive = true
         someView.heightAnchor.constraint(equalToConstant: size).isActive = true
         someView.widthAnchor.constraint(equalToConstant: size).isActive = true
         
@@ -472,8 +486,8 @@ class EventView: UIView, ViewControllerModellableView {
         magnitudoFeltLabel.translatesAutoresizingMaskIntoConstraints = false
         magnitudoFeltLabel.leadingAnchor.constraint(equalTo: someView.trailingAnchor, constant: 20).isActive = true
         magnitudoFeltLabel.centerYAnchor.constraint(equalTo: someView.centerYAnchor).isActive = true
-        magnitudoFeltLabel.widthAnchor.constraint(equalTo: secondEntireRow.widthAnchor, multiplier: 0.7).isActive = true
-        magnitudoFeltLabel.heightAnchor.constraint(equalTo: secondEntireRow.heightAnchor).isActive = true
+        magnitudoFeltLabel.widthAnchor.constraint(equalTo: thirdEntireRow.widthAnchor, multiplier: 0.7).isActive = true
+        magnitudoFeltLabel.heightAnchor.constraint(equalTo: thirdEntireRow.heightAnchor).isActive = true
     }
 }
 
