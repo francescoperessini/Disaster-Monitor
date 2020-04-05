@@ -24,6 +24,7 @@ struct EventViewModel: ViewModelWithLocalState {
 class EventView: UIView, ViewControllerModellableView {
     
     var didTapSafari: ((String) -> ())?
+    var didTapShare: ((UIButton) -> ())?
     var url: String = ""
         
     var firstRow: UIView = UIView()
@@ -121,7 +122,7 @@ class EventView: UIView, ViewControllerModellableView {
     func style() {
         backgroundColor = .systemBackground
         navigationItem?.largeTitleDisplayMode = .never
-        navigationItem?.rightBarButtonItems = [UIBarButtonItem(image: UIImage(systemName: "safari"), style: .plain, target: self, action: #selector(didTapSafariFunc)), UIBarButtonItem(barButtonSystemItem: .action, target: self, action: nil)]
+        navigationItem?.rightBarButtonItems = [UIBarButtonItem(image: UIImage(systemName: "safari"), style: .plain, target: self, action: #selector(didTapSafariFunc)), UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapShareFunc))]
         
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
@@ -175,6 +176,10 @@ class EventView: UIView, ViewControllerModellableView {
     
     @objc func didTapSafariFunc() {
         didTapSafari?(url)
+    }
+    
+    @objc func didTapShareFunc(sender: UIButton){
+        didTapShare?(sender)
     }
     
     private func magnitudoLabelStyle(){

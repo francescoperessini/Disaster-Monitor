@@ -21,6 +21,20 @@ class EventViewController: ViewControllerWithLocalState<EventView>, SFSafariView
             self.present(safariVC, animated: true, completion: nil)
             safariVC.delegate = self
         }
+        
+        rootView.didTapShare = { [unowned self] sender in
+            let firstActivityItem = "Look at this: \(self.viewModel!.event!.name) with magnitude \(String(describing: self.viewModel!.event!.magnitudo)) \(self.viewModel!.event!.magType)"
+            let secondActivityItem = self.viewModel!.event!.url
+
+            let activityViewController : UIActivityViewController = UIActivityViewController(
+                activityItems: [firstActivityItem, secondActivityItem], applicationActivities: nil)
+
+            activityViewController.popoverPresentationController?.sourceView = (sender)
+
+            activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
+
+            self.present(activityViewController, animated: true, completion: nil)
+        }
     }
     
     func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
