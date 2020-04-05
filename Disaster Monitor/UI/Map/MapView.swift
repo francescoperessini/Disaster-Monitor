@@ -84,6 +84,8 @@ class MapView: UIView, ViewControllerModellableView {
             // navigationBar?.isTranslucent = false
         }
         mapViewStyle()
+        
+        resultsViewController?.tableCellBackgroundColor = .systemBackground
     }
     
     func update(oldModel: MapViewModel?) {
@@ -231,6 +233,7 @@ extension MapView: LocationServiceDelegate, GMSAutocompleteResultsViewController
 
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didAutocompleteWith place: GMSPlace) {
         searchController?.isActive = false
+        resultsController.tableCellBackgroundColor = .red
                 
         let newLocation = GMSCameraPosition(target: place.coordinate, zoom: 12, bearing: 0, viewingAngle: 0)
         mapView.animate(to: newLocation)
