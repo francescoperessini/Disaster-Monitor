@@ -120,6 +120,7 @@ class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
             navigationBar?.barTintColor = .secondarySystemBackground
             // navigationBar?.isTranslucent = false
         }
+        resultsViewController?.tableCellBackgroundColor = .systemBackground
     }
     
     func update(oldModel: AddMonitoredPlaceViewModel?) {
