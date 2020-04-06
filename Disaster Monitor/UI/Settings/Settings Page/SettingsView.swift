@@ -113,6 +113,8 @@ class SettingsView: UIView, ViewControllerModellableView {
         isNotficiationEnabled = model.state.isNotficiationEnabled
         customColor = model.state.customColor
         debugMode = model.state.debugMode
+        
+        navigationBar?.tintColor = model.state.customColor.getColor()
     }
     
     override func layoutSubviews() {

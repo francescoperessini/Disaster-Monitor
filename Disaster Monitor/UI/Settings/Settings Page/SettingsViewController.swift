@@ -35,10 +35,21 @@ class SettingsViewController: ViewController<SettingsView> {
         }
         
         rootView.didTapDebugSwitch = { [unowned self] value in
-            self.dispatch(SetDebugMode(value: value)).then {
-                if value {
+            self.dispatch(SetDebugMode(value: value))
+            if value {
+                self.dispatch(AddDebugEvent(name: "Test Earthquake Foreground")).then {
                     DispatchQueue.main.async {
                         let alert = UIAlertController(title: "Debug mode activated", message: "Fictitious event added!", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+                        let viewController = UIApplication.shared.windows.filter{$0.isKeyWindow}.first?.rootViewController
+                        viewController?.present(alert, animated: true, completion: nil)
+                    }
+                }
+            }
+            else {
+                self.dispatch(RemoveDebugEvents()).then {
+                    DispatchQueue.main.async {
+                        let alert = UIAlertController(title: "Debug mode deactivated", message: "Fictitious events removed", preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "OK", style: .cancel))
                         let viewController = UIApplication.shared.windows.filter{$0.isKeyWindow}.first?.rootViewController
                         viewController?.present(alert, animated: true, completion: nil)

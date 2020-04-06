@@ -145,7 +145,7 @@ class MainEventsView: UIView, ViewControllerModellableView{
         previousDaysEvents = events.filter{$0.daysAgo >= 4}
         
         color = model.state.customColor
-        // navigationBar?.tintColor = model.state.customColor.getColor()
+        navigationBar?.tintColor = model.state.customColor.getColor()
         
         DispatchQueue.main.async {
             self.mainEventsTableView.reloadData()

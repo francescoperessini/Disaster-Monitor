@@ -125,6 +125,9 @@ class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
     }
     
     func update(oldModel: AddMonitoredPlaceViewModel?) {
+        guard let model = self.model else { return }
+
+        navigationBar?.tintColor = model.state.customColor.getColor()
     }
     
     override func layoutSubviews() {

@@ -14,9 +14,11 @@ import MarqueeLabel
 // MARK: - ViewModel
 struct EventViewModel: ViewModelWithLocalState {
     var event: Event?
+    var color: Color?
     
     init?(state: AppState?, localState: EventControllerLocalState) {
         self.event = state?.events.first(where:{$0.id == localState.id})
+        self.color = state?.customColor
     }
 }
 
@@ -26,7 +28,7 @@ class EventView: UIView, ViewControllerModellableView {
     var didTapSafari: ((String) -> ())?
     var didTapShare: ((UIBarButtonItem) -> ())?
     var url: String = ""
-        
+    
     var firstRow: UIView = UIView()
     var secondRow: UIView = UIView()
     
@@ -71,7 +73,7 @@ class EventView: UIView, ViewControllerModellableView {
     func setup() {
         LocationService.sharedInstance.delegate = self
         coordinates = LocationService.sharedInstance.currentLocation
-
+        
         self.addSubview(firstRow)
         self.addSubview(secondRow)
         firstRow.addSubview(firstEntireRow)
@@ -109,7 +111,7 @@ class EventView: UIView, ViewControllerModellableView {
         
         someView.addSubview(magnitudoBigLabel)
     }
-
+    
     private func setupMapView() {
         // compassButton displays only when map is NOT in the north direction
         mapView.settings.compassButton = true
@@ -156,17 +158,16 @@ class EventView: UIView, ViewControllerModellableView {
         let pulseAnimation = CABasicAnimation(keyPath: "shadowOpacity")
         pulseAnimation.duration = 0.5
         pulseAnimation.fromValue = 0
-        pulseAnimation.toValue = 0.7
+        pulseAnimation.toValue = 1.0
         pulseAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         pulseAnimation.autoreverses = true
         pulseAnimation.repeatCount = .greatestFiniteMagnitude
         
         self.someView.layer.backgroundColor = UIColor.clear.cgColor
-        self.someView.layer.shadowColor = UIColor.systemBlue.cgColor
         self.someView.layer.shadowOffset = CGSize(width: 0, height: 1.0)
-
+        
         self.someView.layer.add(pulseAnimation, forKey: pulseAnimation.keyPath)
-
+        
         
     }
     
@@ -243,13 +244,20 @@ class EventView: UIView, ViewControllerModellableView {
     }
     
     //MARK: Update
-
+    
     func update(oldModel: EventViewModel?) {
         guard let model = self.model else { return }
+        if model.color != nil {
+            navigationBar?.tintColor = model.color!.getColor()
+            someView.backgroundColor = model.color!.getColor()
+            someView.layer.borderColor = model.color!.getColor().cgColor
+            someView.layer.shadowColor = model.color!.getColor().cgColor
+        }
+        
         if model.event != nil { 
             magnitudoBigLabel.text = String((model.event?.magnitudo)!)
             
-            if model.event?.name.contains("of") ?? false{
+            if model.event?.name.contains("of") ?? false {
                 placeLabel.text = model.event?.name.components(separatedBy: "of")[1]
                 placeLabelSubtitle.text = model.event?.name
             }
@@ -267,7 +275,7 @@ class EventView: UIView, ViewControllerModellableView {
             longitude = (model.event?.coordinates[0])!
             let dms = coordinateToDMS(latitude: latitude, longitude: longitude)
             coordinatesLabel.text = dms.latitude + ", " + dms.longitude
-                        
+            
             depthLabel.text = String(format:"%.2f km", (model.event?.depth)!)
             
             url = (model.event?.url)!
@@ -326,10 +334,10 @@ class EventView: UIView, ViewControllerModellableView {
     private func coordinateToDMS(latitude: Double, longitude: Double) -> (latitude: String, longitude: String) {
         let latDegrees = abs(Int(latitude))
         let latMinutes = abs(Int((latitude * 3600).truncatingRemainder(dividingBy: 3600) / 60))
-
+        
         let lonDegrees = abs(Int(longitude))
         let lonMinutes = abs(Int((longitude * 3600).truncatingRemainder(dividingBy: 3600) / 60))
-    
+        
         return (String(format:"%d° %d' %@", latDegrees, latMinutes, latitude >= 0 ? "N" : "S"),
                 String(format:"%d° %d' %@", lonDegrees, lonMinutes, longitude >= 0 ? "E" : "W"))
     }
@@ -428,7 +436,7 @@ class EventView: UIView, ViewControllerModellableView {
         //placeLabelSubtitle.leadingAnchor.constraint(equalTo: self.firstRow.leadingAnchor, constant: 25).isActive = true
         //placeLabelSubtitle.trailingAnchor.constraint(equalTo: self.firstRow.trailingAnchor, constant: -25).isActive = true
         placeLabelSubtitle.centerXAnchor.constraint(equalTo: self.firstRow.centerXAnchor).isActive = true
-
+        
         coordinatesLabel.translatesAutoresizingMaskIntoConstraints = false
         coordinatesLabel.topAnchor.constraint(equalTo: thirdSplittedRow.topAnchor).isActive = true
         //coordinatesLabel.centerXAnchor.constraint(equalTo: self.firstRowFirstCell.centerXAnchor).isActive = true
@@ -464,7 +472,7 @@ class EventView: UIView, ViewControllerModellableView {
         //depthLabel.centerXAnchor.constraint(equalTo: self.secondRowSecondCell.centerXAnchor).isActive = true
         depthLabel.centerYAnchor.constraint(equalTo: self.fourthSplittedRow.centerYAnchor).isActive = true
         depthLabel.leadingAnchor.constraint(equalTo: depthImage.trailingAnchor, constant: 20).isActive = true
-
+        
         
         depthImage.translatesAutoresizingMaskIntoConstraints = false
         depthImage.leadingAnchor.constraint(equalTo: self.secondRowSecondCell.leadingAnchor, constant: 0).isActive = true
@@ -473,8 +481,6 @@ class EventView: UIView, ViewControllerModellableView {
         
         someView.translatesAutoresizingMaskIntoConstraints = false
         someView.layer.cornerRadius = size/2
-        someView.backgroundColor = .systemBlue
-        someView.layer.borderColor = UIColor.systemBlue.cgColor
         someView.layer.borderWidth = 1
         
         someView.topAnchor.constraint(equalTo: thirdEntireRow.topAnchor, constant: 20).isActive = true

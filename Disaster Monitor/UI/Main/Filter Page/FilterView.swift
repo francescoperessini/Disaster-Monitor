@@ -90,6 +90,8 @@ class FilterView: UIView, ViewControllerModellableView {
         sliderValue = model.state.filteringValue
         segmentedControlValue = String(model.state.segmentedDays)
         switchValues = model.state.dataSources
+        
+        navigationBar?.tintColor = model.state.customColor.getColor()
     }
 
     override func layoutSubviews() {

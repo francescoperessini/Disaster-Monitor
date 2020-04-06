@@ -98,6 +98,8 @@ class MapView: UIView, ViewControllerModellableView {
         else {
             setupHeatmap()
         }
+        
+        navigationBar?.tintColor = model.state.customColor.getColor()
     }
 
     override func layoutSubviews() {

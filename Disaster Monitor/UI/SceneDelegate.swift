@@ -110,9 +110,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         queue.addOperation {
             if self.store.state.debugMode {
                 print("Debug mode activated")
-                self.store.dispatch(GetEvents()).then {
-                    print("TODO")
-                }
+                self.store.dispatch(AddDebugEvent(name: "Test Earthquake Background"))
             }
             else {
                 print("Debug mode not activated")

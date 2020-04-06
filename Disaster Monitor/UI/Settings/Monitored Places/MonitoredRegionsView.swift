@@ -85,6 +85,8 @@ class MonitoredRegionsView: UIView, ViewControllerModellableView {
         DispatchQueue.main.async {
             self.monitoredPlacesTableView.reloadData()
         }
+        
+        navigationBar?.tintColor = model.state.customColor.getColor()
     }
     
     override func layoutSubviews() {

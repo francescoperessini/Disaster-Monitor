@@ -84,6 +84,8 @@ class MessageEditorView: UIView, ViewControllerModellableView {
         
         let prepared = "This is the message that you can share on the Map Page to let your parents and friends know that you are safe!\n\n"
         bodyLabel.text = prepared + "Current message:\n\(currentMessage)"
+        
+        navigationBar?.tintColor = model.state.customColor.getColor()
     }
     
     override func layoutSubviews() {
