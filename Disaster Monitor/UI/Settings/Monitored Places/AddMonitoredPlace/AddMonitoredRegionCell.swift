@@ -82,10 +82,10 @@ class AddMonitoredRegionCell: UITableViewCell {
     lazy var stepperControlDistance: UIStepper = {
         let stepper = UIStepper()
         stepper.autorepeat = false
-        stepper.minimumValue = 0.0
+        stepper.minimumValue = 0.5
         stepper.maximumValue = 10.0
-        stepper.stepValue = 1.0
-        stepper.value = 0.0
+        stepper.stepValue = 0.5
+        stepper.value = 0.5
         stepper.addTarget(self, action: #selector(handleTapStepperControlDistance), for: .valueChanged)
         return stepper
     }()
