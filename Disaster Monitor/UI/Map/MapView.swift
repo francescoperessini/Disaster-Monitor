@@ -22,7 +22,7 @@ struct MapViewModel: ViewModelWithState {
 
 // MARK: - View
 class MapView: UIView, ViewControllerModellableView {
-   
+    
     var events: [Event] = []
     let mapView = GMSMapView()
     var heatmapLayer = GMUHeatmapTileLayer()
@@ -30,7 +30,7 @@ class MapView: UIView, ViewControllerModellableView {
     var resultsViewController: GMSAutocompleteResultsViewController?
     var searchController: UISearchController?
     var didTapActionButton: (() -> ())?
-
+    
     // MARK: - Setup
     func setup() {
         setupSearchBar()
@@ -44,14 +44,14 @@ class MapView: UIView, ViewControllerModellableView {
         filter.type = .city
         resultsViewController?.autocompleteFilter = filter
         resultsViewController?.delegate = self
-
+        
         searchController = UISearchController(searchResultsController: resultsViewController)
         searchController?.searchResultsUpdater = resultsViewController
-
+        
         // Put the search bar in the navigation bar.
         searchController?.searchBar.sizeToFit()
         navigationItem?.searchController = searchController
-
+        
         // Prevent the navigation bar from being hidden when searching
         searchController?.hidesNavigationBarDuringPresentation = false
     }
@@ -61,7 +61,7 @@ class MapView: UIView, ViewControllerModellableView {
         segmentedControl.addTarget(self, action: #selector(indexChanged(_:)), for: .valueChanged)
         segmentedControl.backgroundColor = .systemBackground
     }
-
+    
     func style() {
         backgroundColor = .systemBackground
         navigationBar?.prefersLargeTitles = false
@@ -92,6 +92,13 @@ class MapView: UIView, ViewControllerModellableView {
     func update(oldModel: MapViewModel?) {
         guard let model = model else { return }
         events = model.state.events
+        
+        if traitCollection.userInterfaceStyle == .light {
+            mapStyleByURL(mapStyleString: "light_map_style")
+        } else {
+            mapStyleByURL(mapStyleString: "dark_map_style")
+        }
+        
         if segmentedControl.selectedSegmentIndex == 0 || segmentedControl.selectedSegmentIndex == 1 {
             setupMarkers()
         }
@@ -101,7 +108,7 @@ class MapView: UIView, ViewControllerModellableView {
         
         navigationBar?.tintColor = model.state.customColor.getColor()
     }
-
+    
     override func layoutSubviews() {
         addSubview(mapView)
         mapView.addSubview(segmentedControl)
@@ -131,7 +138,7 @@ class MapView: UIView, ViewControllerModellableView {
         mapView.settings.zoomGestures = true
         mapView.settings.tiltGestures = true
     }
-
+    
     private func setupMarkers() {
         mapView.clear()
         heatmapLayer.map = nil
@@ -199,21 +206,25 @@ class MapView: UIView, ViewControllerModellableView {
             mapStyleString = "light_map_style"
         }
         
-        do {
-          // Set the map style by passing the URL of the local file.
-          if let styleURL = Bundle.main.url(forResource: mapStyleString, withExtension: "json") {
-            mapView.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
-          } else {
-            NSLog("Unable to find style.json")
-          }
-        } catch {
-          NSLog("One or more of the map styles failed to load. \(error)")
-        }
+        mapStyleByURL(mapStyleString: mapStyleString)
         if segmentedControl.selectedSegmentIndex == 0 || segmentedControl.selectedSegmentIndex == 1 {
             setupMarkers()
         }
         else {
             setupHeatmap()
+        }
+    }
+    
+    private func mapStyleByURL(mapStyleString: String) {
+        do {
+            // Set the map style by passing the URL of the local file.
+            if let styleURL = Bundle.main.url(forResource: mapStyleString, withExtension: "json") {
+                mapView.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
+            } else {
+                NSLog("Unable to find style.json")
+            }
+        } catch {
+            NSLog("One or more of the map styles failed to load. \(error)")
         }
     }
     
@@ -223,24 +234,24 @@ extension MapView: LocationServiceDelegate, GMSAutocompleteResultsViewController
     
     func tracingLocation(currentLocation: CLLocation) {
         /*
-        let lat = currentLocation.coordinate.latitude
-        let lon = currentLocation.coordinate.longitude
-
-        print("latitude \(lat), longitude \(lon)")
-        */
+         let lat = currentLocation.coordinate.latitude
+         let lon = currentLocation.coordinate.longitude
+         
+         print("latitude \(lat), longitude \(lon)")
+         */
     }
     
     func tracingLocationDidFailWithError(error: NSError) {
         // print("tracing Location Error : \(error.description)")
     }
-
+    
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didAutocompleteWith place: GMSPlace) {
         searchController?.isActive = false
-                
+        
         let newLocation = GMSCameraPosition(target: place.coordinate, zoom: 12, bearing: 0, viewingAngle: 0)
         mapView.animate(to: newLocation)
     }
-
+    
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController, didFailAutocompleteWithError error: Error) {
         print("Error: ", error.localizedDescription)
     }

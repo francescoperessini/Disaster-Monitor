@@ -165,10 +165,7 @@ class EventView: UIView, ViewControllerModellableView {
         
         self.someView.layer.backgroundColor = UIColor.clear.cgColor
         self.someView.layer.shadowOffset = CGSize(width: 0, height: 1.0)
-        
         self.someView.layer.add(pulseAnimation, forKey: pulseAnimation.keyPath)
-        
-        
     }
     
     private func magnitudoFeltLabelStyle(){
@@ -247,6 +244,13 @@ class EventView: UIView, ViewControllerModellableView {
     
     func update(oldModel: EventViewModel?) {
         guard let model = self.model else { return }
+        
+        if traitCollection.userInterfaceStyle == .light {
+            mapStyleByURL(mapStyleString: "light_map_style")
+        } else {
+            mapStyleByURL(mapStyleString: "dark_map_style")
+        }
+        
         if model.color != nil {
             navigationBar?.tintColor = model.color!.getColor()
             someView.backgroundColor = model.color!.getColor()
@@ -340,6 +344,34 @@ class EventView: UIView, ViewControllerModellableView {
         
         return (String(format:"%d° %d' %@", latDegrees, latMinutes, latitude >= 0 ? "N" : "S"),
                 String(format:"%d° %d' %@", lonDegrees, lonMinutes, longitude >= 0 ? "E" : "W"))
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        let mapStyleString: String
+        
+        switch traitCollection.userInterfaceStyle {
+        case .light, .unspecified:
+            mapStyleString = "light_map_style"
+        case .dark:
+            mapStyleString = "dark_map_style"
+        default:
+            mapStyleString = "light_map_style"
+        }
+        
+        mapStyleByURL(mapStyleString: mapStyleString)
+    }
+    
+    private func mapStyleByURL(mapStyleString: String) {
+        do {
+            // Set the map style by passing the URL of the local file.
+            if let styleURL = Bundle.main.url(forResource: mapStyleString, withExtension: "json") {
+                mapView.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
+            } else {
+                NSLog("Unable to find style.json")
+            }
+        } catch {
+            NSLog("One or more of the map styles failed to load. \(error)")
+        }
     }
     
     //MARK: Layout
@@ -501,7 +533,6 @@ class EventView: UIView, ViewControllerModellableView {
         magnitudoFeltLabel.heightAnchor.constraint(equalTo: thirdEntireRow.heightAnchor).isActive = true
     }
 }
-
 
 extension UITextView {
     func centerContentVertically() {

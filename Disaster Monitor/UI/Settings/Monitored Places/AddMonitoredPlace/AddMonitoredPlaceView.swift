@@ -126,7 +126,7 @@ class AddMonitoredPlaceView: UIView, ViewControllerModellableView {
     
     func update(oldModel: AddMonitoredPlaceViewModel?) {
         guard let model = self.model else { return }
-
+        
         navigationBar?.tintColor = model.state.customColor.getColor()
     }
     
@@ -250,6 +250,11 @@ extension AddMonitoredPlaceView: UITableViewDelegate, UITableViewDataSource {
                 distanceCell = cell
             }
             else {
+                if traitCollection.userInterfaceStyle == .light {
+                    cell.mapStyleByURL(mapStyleString: "light_map_style")
+                } else {
+                    cell.mapStyleByURL(mapStyleString: "dark_map_style")
+                }
                 mapView = cell.mapView
                 cell.mapView.delegate = self
             }

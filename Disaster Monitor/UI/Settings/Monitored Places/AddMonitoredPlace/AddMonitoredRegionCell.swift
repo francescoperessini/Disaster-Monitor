@@ -106,6 +106,34 @@ class AddMonitoredRegionCell: UITableViewCell {
         return mapView
     }()
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        let mapStyleString: String
+        
+        switch traitCollection.userInterfaceStyle {
+        case .light, .unspecified:
+            mapStyleString = "light_map_style"
+        case .dark:
+            mapStyleString = "dark_map_style"
+        default:
+            mapStyleString = "light_map_style"
+        }
+        
+        mapStyleByURL(mapStyleString: mapStyleString)
+    }
+    
+    func mapStyleByURL(mapStyleString: String) {
+        do {
+            // Set the map style by passing the URL of the local file.
+            if let styleURL = Bundle.main.url(forResource: mapStyleString, withExtension: "json") {
+                mapView.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
+            } else {
+                NSLog("Unable to find style.json")
+            }
+        } catch {
+            NSLog("One or more of the map styles failed to load. \(error)")
+        }
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         
@@ -129,7 +157,7 @@ class AddMonitoredRegionCell: UITableViewCell {
         stepperControlDistanceLabel.translatesAutoresizingMaskIntoConstraints = false
         stepperControlDistanceLabel.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
         stepperControlDistanceLabel.trailingAnchor.constraint(equalTo: stepperControlDistance.leadingAnchor, constant: -5).isActive = true
-
+        
         mapView.translatesAutoresizingMaskIntoConstraints = false
         mapView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
         mapView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
