@@ -208,8 +208,9 @@ struct SetDebugMode: StateUpdater {
             let event = Event(id: "test_earthquake", name: "Test Earthquake", descr: "earthquake", magnitudo: "7.5", coordinates: "9.226937 45.478085", depth: 10.0, time: time, dataSource: "USGS", updated: time, magType: "ML", url: "https://www.polimi.it", felt: 0)
             state.events.append(event)
             state.events.sort(by: {$0.time > $1.time})
-            let manager = LocalNotificationsManager()
-            manager.scheduleEventNotification(events: state.events, places: state.regions)
+            if state.isNotficiationEnabled {
+                LocalNotificationsManager.scheduleEventNotification(events: state.events, places: state.regions)
+            }
         }
         else {
             // Cancellazione evento fittizio
@@ -259,14 +260,12 @@ struct GetEvents: SideEffect {
         
         context.dispatch(UpdateDaysAgo())
         
-        context.dependencies.ApiManager
-            .getEventsUSGS(date: date, time: time)
+        APIManager.getEventsUSGS(date: date, time: time)
             .then {
                 newValue in
                 context.dispatch(EventsStateUpdater(newValue: newValue))
         }
-        context.dependencies.ApiManager
-            .getEventsINGV(date: date, time: time)
+        APIManager.getEventsINGV(date: date, time: time)
             .then {
                 newValue in
                 context.dispatch(EventsStateUpdaterINGV(newValue: newValue))

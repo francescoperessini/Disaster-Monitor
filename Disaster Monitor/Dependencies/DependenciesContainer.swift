@@ -1,4 +1,3 @@
-import Foundation
 import Katana
 import Tempura
 import Hydra
@@ -9,12 +8,11 @@ final class DependenciesContainer: NavigationProvider {
     let promisableDispatch: PromisableStoreDispatch
     var getAppState: () -> AppState
     var navigator: Navigator = Navigator()
-    let ApiManager = APIManager()
     
     var getState: () -> State {
         return self.getAppState
     }
-
+    
     init(dispatch: @escaping PromisableStoreDispatch, getAppState: @escaping () -> AppState) {
         self.promisableDispatch = dispatch
         self.getAppState = getAppState
@@ -34,7 +32,7 @@ final class DependenciesContainer: NavigationProvider {
 final class APIManager {
     
     // Get last week events from USGS data source
-    func getEventsUSGS(date: String, time: String) -> Promise<JSON> {
+    static func getEventsUSGS(date: String, time: String) -> Promise<JSON> {
         return Promise<JSON>(in: .background) { resolve, reject, status in
             AF.request("https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + date + "T" + time).responseJSON { response in
                 if let data = response.data {
@@ -47,7 +45,7 @@ final class APIManager {
     }
     
     // Get last week events from INGV data source
-    func getEventsINGV(date: String, time: String) -> Promise<JSON> {
+    static func getEventsINGV(date: String, time: String) -> Promise<JSON> {
         return Promise<JSON>(in: .background) { resolve, reject, status in
             AF.request("https://webservices.ingv.it/fdsnws/event/1/query?format=geojson&starttime=" + date + "T" + time).responseJSON { response in
                 if let data = response.data {

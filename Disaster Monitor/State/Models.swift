@@ -35,7 +35,7 @@ struct Event: Codable, Equatable {
         self.coordinates = [coord1, coord2]
         self.depth = depth
         self.time = time
-
+        
         let date = Date(timeIntervalSince1970: time / 1000)
         self.date = date
         
@@ -56,6 +56,7 @@ struct Region: Codable {
     var longitudine: Double
     var distance: Double
     var magnitude: Float
+    var dateAdded: Date
     
     init(name: String, latitude: Double, longitudine: Double, distance: Double, magnitude: Float) {
         self.name = name
@@ -63,5 +64,6 @@ struct Region: Codable {
         self.longitudine = longitudine
         self.distance = distance
         self.magnitude = magnitude
+        self.dateAdded = Date()
     }
 }
