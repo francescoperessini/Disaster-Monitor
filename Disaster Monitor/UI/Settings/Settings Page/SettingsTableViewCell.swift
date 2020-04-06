@@ -12,7 +12,7 @@ class SettingsTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
+        
         addSubview(notificationSwitch)
         addSubview(segmentedColors)
         addSubview(debugSwitch)
@@ -30,7 +30,7 @@ class SettingsTableViewCell: UITableViewCell {
             notificationSwitch.isHidden = !sectionType.containsNotificationSwitch
             
             segmentedColors.isHidden = !sectionType.containsSegmentedColor
-                        
+            
             debugSwitch.isHidden = !sectionType.containsDebugModeSwitch
         }
     }
@@ -71,7 +71,7 @@ class SettingsTableViewCell: UITableViewCell {
     
     // MARK: - Notification
     var didTapNotificationSwitch: ((Bool) -> ())?
-
+    
     @objc func didTapNotificationSwitchFunc(sender: UISwitch) {
         didTapNotificationSwitch?(sender.isOn)
     }
@@ -110,5 +110,5 @@ class SettingsTableViewCell: UITableViewCell {
     func setupColorCell(color: Color) {
         segmentedColors.selectedSegmentIndex = ["Blue", "Green", "Red"].firstIndex(of: color.getColorName())!
     }
-        
+    
 }

@@ -63,7 +63,7 @@ enum NotificationOption: Int, CaseIterable, SectionType {
     }
     var containsSegmentedColor: Bool { return false }
     var containsDebugModeSwitch: Bool { return false }
-        
+    
     var description: String {
         switch self {
         case .enabled: return "Enable Notifications"

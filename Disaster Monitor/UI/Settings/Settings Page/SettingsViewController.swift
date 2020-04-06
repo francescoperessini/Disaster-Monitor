@@ -14,7 +14,7 @@ class SettingsViewController: ViewController<SettingsView> {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-   
+    
     override func setupInteraction() {
         rootView.didTapEditMessage = {
             let vc = UINavigationController(rootViewController: MessageEditorViewController(store: self.store))
@@ -35,7 +35,16 @@ class SettingsViewController: ViewController<SettingsView> {
         }
         
         rootView.didTapDebugSwitch = { [unowned self] value in
-            self.dispatch(SetDebugMode(value: value))
+            self.dispatch(SetDebugMode(value: value)).then {
+                if value {
+                    DispatchQueue.main.async {
+                        let alert = UIAlertController(title: "Debug mode activated", message: "Fictitious event added!", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+                        let viewController = UIApplication.shared.windows.filter{$0.isKeyWindow}.first?.rootViewController
+                        viewController?.present(alert, animated: true, completion: nil)
+                    }
+                }
+            }
         }
     }
     

@@ -18,7 +18,7 @@ struct SettingsViewModel: ViewModelWithState {
 
 // MARK: - View
 class SettingsView: UIView, ViewControllerModellableView {
-
+    
     var settingsTableView = UITableView(frame: CGRect.zero, style: .grouped)
     
     var didTapEditMessage: (() -> ())?
@@ -58,7 +58,7 @@ class SettingsView: UIView, ViewControllerModellableView {
         settingsTableView.separatorColor = .separator
         settingsTableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: Cells.settingsTableViewCell)
     }
-
+    
     private func setSettingsTableViewDelegates() {
         settingsTableView.delegate = self
         settingsTableView.dataSource = self
@@ -66,7 +66,7 @@ class SettingsView: UIView, ViewControllerModellableView {
     
     private func setTableFooterView() {
         let customView = UIView(frame: CGRect(x: 0, y: 0, width: settingsTableView.frame.width, height: 140))
-
+        
         customView.backgroundColor = .clear
         let titleLabel = UILabel()
         titleLabel.numberOfLines = 0
@@ -106,15 +106,15 @@ class SettingsView: UIView, ViewControllerModellableView {
             // navigationBar?.isTranslucent = false
         }
     }
-
+    
     func update(oldModel: SettingsViewModel?) {
         guard let model = self.model else { return }
-
+        
         isNotficiationEnabled = model.state.isNotficiationEnabled
         customColor = model.state.customColor
         debugMode = model.state.debugMode
     }
-
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         settingsTableView.translatesAutoresizingMaskIntoConstraints = false
