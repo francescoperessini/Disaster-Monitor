@@ -274,7 +274,7 @@ struct GetEvents: SideEffect {
         }
         APIManager.getEventsINGV(date: date, time: time)
             .then { newValue in
-                context.dispatch(EventsStateUpdater(newValue: newValue))
+                context.dispatch(EventsStateUpdaterINGV(newValue: newValue))
         }
         .catch { error in
             print(error.localizedDescription)
