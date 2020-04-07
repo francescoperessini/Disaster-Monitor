@@ -35,10 +35,12 @@ final class APIManager {
     static func getEventsUSGS(date: String, time: String) -> Promise<JSON> {
         return Promise<JSON>(in: .background) { resolve, reject, status in
             AF.request("https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + date + "T" + time).responseJSON { response in
-                if let data = response.data {
-                    if let json = try? JSON(data: data) {
-                        resolve(json)
-                    }
+                switch response.result {
+                case .success(let data):
+                    let json = JSON(data)
+                    resolve(json)
+                case .failure(let error):
+                    reject(error)
                 }
             }
         }
@@ -48,12 +50,15 @@ final class APIManager {
     static func getEventsINGV(date: String, time: String) -> Promise<JSON> {
         return Promise<JSON>(in: .background) { resolve, reject, status in
             AF.request("https://webservices.ingv.it/fdsnws/event/1/query?format=geojson&starttime=" + date + "T" + time).responseJSON { response in
-                if let data = response.data {
-                    if let json = try? JSON(data: data) {
-                        resolve(json)
-                    }
+                switch response.result {
+                case .success(let data):
+                    let json = JSON(data)
+                    resolve(json)
+                case .failure(let error):
+                    reject(error)
                 }
             }
         }
     }
+    
 }

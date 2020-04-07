@@ -70,7 +70,7 @@ struct EventsStateUpdater: StateUpdater {
             if !state.events.contains(where: {$0.id == id[i]}) {
                 state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i], magType: magType[i], url: url[i], felt: felt[i]))
             }
-            // Seen events, with an update
+                // Seen events, with an update
             else if state.events.contains(where: {$0.id == id[i] && $0.updated != updated[i]}) {
                 let toRemoveEvent = state.events.firstIndex{$0.id == id[i]}
                 state.events.remove(at: toRemoveEvent!)
@@ -266,14 +266,18 @@ struct GetEvents: SideEffect {
         context.dispatch(UpdateDaysAgo())
         
         APIManager.getEventsUSGS(date: date, time: time)
-            .then {
-                newValue in
+            .then { newValue in
                 context.dispatch(EventsStateUpdater(newValue: newValue))
         }
+        .catch { error in
+            print(error.localizedDescription)
+        }
         APIManager.getEventsINGV(date: date, time: time)
-            .then {
-                newValue in
-                context.dispatch(EventsStateUpdaterINGV(newValue: newValue))
+            .then { newValue in
+                context.dispatch(EventsStateUpdater(newValue: newValue))
+        }
+        .catch { error in
+            print(error.localizedDescription)
         }
     }
 }
