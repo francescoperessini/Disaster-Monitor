@@ -17,12 +17,13 @@ struct Event: Codable, Equatable {
     var depth: Float
     var time: Double
     var date: Date
-    var daysAgo: Int = 0
+    var daysAgo: Int
     var dataSource: String
     var updated: Double
     var magType: String
     var url: String
     var felt: Int
+    var hasBeenNotified: Bool
     
     init(id: String, name: String, descr: String, magnitudo: String, coordinates: String, depth: Float, time: Double, dataSource: String,
          updated: Double, magType: String, url: String, felt: Int) {
@@ -47,6 +48,7 @@ struct Event: Codable, Equatable {
         self.magType = magType.uppercased()
         self.url = url
         self.felt = felt
+        self.hasBeenNotified = false
     }
 }
 

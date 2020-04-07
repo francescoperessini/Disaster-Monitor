@@ -37,7 +37,7 @@ class SettingsViewController: ViewController<SettingsView> {
         rootView.didTapDebugSwitch = { [unowned self] value in
             self.dispatch(SetDebugMode(value: value))
             if value {
-                self.dispatch(AddDebugEvent(name: "Test Earthquake Foreground"))
+                self.dispatch(AddDebugEvent(id: "test_foreground", name: "Test Earthquake Foreground"))
             }
             else {
                 self.dispatch(RemoveDebugEvents())

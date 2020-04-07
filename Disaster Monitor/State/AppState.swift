@@ -205,12 +205,13 @@ struct SetDebugMode: StateUpdater {
 }
 
 struct AddDebugEvent: StateUpdater {
+    var id: String
     var name: String
     func updateState(_ state: inout AppState) {
         // Creazione evento fittizio
         let tmp = Date()
         let time = tmp.timeIntervalSince1970 * 1000.0
-        let event = Event(id: "test_earthquake", name: name, descr: "earthquake", magnitudo: "7.5", coordinates: "9.226937 45.478085", depth: 10.0, time: time, dataSource: "USGS", updated: time, magType: "ML", url: "https://www.polimi.it", felt: 0)
+        let event = Event(id: id, name: name, descr: "earthquake", magnitudo: "7.5", coordinates: "9.226937 45.478085", depth: 10.0, time: time, dataSource: "USGS", updated: time, magType: "ML", url: "https://www.polimi.it", felt: 0)
         state.events.append(event)
         state.events.sort(by: {$0.time > $1.time})
         if state.isNotficiationEnabled {
@@ -221,7 +222,43 @@ struct AddDebugEvent: StateUpdater {
 
 struct RemoveDebugEvents: StateUpdater {
     func updateState(_ state: inout AppState) {
-        state.events.removeAll(where: {$0.id == "test_earthquake"})
+        state.events.removeAll(where: {$0.id == "test_foreground" || $0.id == "test_background"})
+    }
+}
+
+struct ScheduleEventsNotifications: StateUpdater {
+    func updateState(_ state: inout AppState) {
+        var notifiedEvents = [Event]()
+        
+        if state.isNotficiationEnabled {
+            notifiedEvents = LocalNotificationsManager.scheduleEventNotification(events: state.events, places: state.regions)
+        }
+        
+        for notifiedEvent in notifiedEvents {
+            print(notifiedEvent.name)
+            for event in state.events {
+                if event.id == notifiedEvent.id {
+                    print("\(event.name) hasBeenNotified == \(event.hasBeenNotified)")
+                }
+            }
+        }
+        
+        for notifiedEvent in notifiedEvents {
+            for i in 0...state.events.count - 1 {
+                if state.events[i].id == notifiedEvent.id {
+                    state.events[i].hasBeenNotified = true
+                }
+            }
+        }
+        
+        for notifiedEvent in notifiedEvents {
+            print(notifiedEvent.name)
+            for event in state.events {
+                if event.id == notifiedEvent.id {
+                    print("\(event.name) hasBeenNotified == \(event.hasBeenNotified)")
+                }
+            }
+        }
     }
 }
 
@@ -245,9 +282,10 @@ struct RemoveMonitoredPlace: StateUpdater {
 
 struct DeleteOlder: StateUpdater {
     func updateState(_ state: inout AppState) {
-        print("Before: state.events.count\(state.events.count)")
-        state.events.removeAll(where:{ $0.daysAgo > 2 })
-        print("After: state.events.count\(state.events.count)")
+        let daysAfter = 7
+        print("[Before DB cleaning] Events older than \(daysAfter) days: \(state.events.filter{$0.daysAgo > daysAfter})")
+        state.events.removeAll(where: {$0.daysAgo > daysAfter})
+        print("[After DB cleaning] Events older than \(daysAfter) days: \(state.events.filter{$0.daysAgo > daysAfter})")
     }
 }
 

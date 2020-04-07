@@ -11,16 +11,19 @@ import UserNotifications
 
 final class LocalNotificationsManager {
     
-    static func scheduleEventNotification(events: [Event], places: [Region]) {
+    @discardableResult
+    static func scheduleEventNotification(events: [Event], places: [Region]) -> [Event] {
+        
+        var notifiedEvents = [Event]()
         
         if places.isEmpty {
-            return
+            return notifiedEvents
         }
         
         for place in places {
             let placeCoordinates = CLLocation(latitude: place.latitude, longitude: place.longitudine)
             for event in events {
-                if event.date < place.dateAdded {
+                if event.date < place.dateAdded || notifiedEvents.contains(event) || event.hasBeenNotified == true {
                     continue
                 }
                 else {
@@ -30,6 +33,9 @@ final class LocalNotificationsManager {
                     let distance = placeCoordinates.distance(from: eventCoordinates) / 1000
                     
                     if distance <= place.distance && event.magnitudo >= place.magnitude {
+                        // Sicuramente non il posto giusto dove fare questo append
+                        notifiedEvents.append(event)
+                        
                         let center = UNUserNotificationCenter.current()
                         
                         let content = UNMutableNotificationContent()
@@ -39,20 +45,22 @@ final class LocalNotificationsManager {
                         
                         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
                         
-                        let notificationRequest: UNNotificationRequest = UNNotificationRequest(identifier: "test", content: content, trigger: trigger)
+                        let notificationRequest: UNNotificationRequest = UNNotificationRequest(identifier: event.id, content: content, trigger: trigger)
                         
                         center.add(notificationRequest, withCompletionHandler: { (error) in
                             if let error = error {
                                 print(error)
                             }
                             else {
-                                print("Notification added")
+                                print("[Async] Notification added (ID: \(notificationRequest.identifier))")
                             }
                         })
                     }
                 }
             }
         }
+        print("Number of notifications scheduled: \(notifiedEvents.count)")
+        return notifiedEvents
     }
     
 }
