@@ -25,16 +25,20 @@ class MapView: UIView, ViewControllerModellableView {
     
     var events: [Event] = []
     let mapView = GMSMapView()
-    var heatmapLayer = GMUHeatmapTileLayer()
+    var color: Color?
+    var heatmapLayer: GMUHeatmapTileLayer!
     let segmentedControl = UISegmentedControl(items: ["Normal", "Satellite", "Heatmap"])
     var resultsViewController: GMSAutocompleteResultsViewController?
     var searchController: UISearchController?
+    var clusterManager: GMUClusterManager!
     var didTapActionButton: (() -> ())?
     
     // MARK: - Setup
     func setup() {
         setupSearchBar()
         setupSegmentedControl()
+        setupMarkerClustering()
+        setupHeatmap()
         LocationService.sharedInstance.delegate = self
     }
     
@@ -60,6 +64,20 @@ class MapView: UIView, ViewControllerModellableView {
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.addTarget(self, action: #selector(indexChanged(_:)), for: .valueChanged)
         segmentedControl.backgroundColor = .systemBackground
+    }
+    
+    private func setupMarkerClustering() {
+        let iconGenerator = GMUDefaultClusterIconGenerator()
+        let algorithm = GMUNonHierarchicalDistanceBasedAlgorithm()
+        let renderer = GMUDefaultClusterRenderer(mapView: mapView, clusterIconGenerator: iconGenerator)
+        renderer.delegate = self
+        clusterManager = GMUClusterManager(map: mapView, algorithm: algorithm, renderer: renderer)
+        clusterManager.setDelegate(self, mapDelegate: self)
+    }
+    
+    private func setupHeatmap() {
+        heatmapLayer = GMUHeatmapTileLayer()
+        heatmapLayer.radius = 200
     }
     
     func style() {
@@ -103,9 +121,10 @@ class MapView: UIView, ViewControllerModellableView {
             setupMarkers()
         }
         else {
-            setupHeatmap()
+            updateHeatmap()
         }
         
+        color = model.state.customColor
         navigationBar?.tintColor = model.state.customColor.getColor()
     }
     
@@ -140,34 +159,37 @@ class MapView: UIView, ViewControllerModellableView {
     }
     
     private func setupMarkers() {
-        mapView.clear()
+        clusterManager.clearItems()
         heatmapLayer.map = nil
         if !events.isEmpty {
+            var index = 0
             for event in events {
-                let longitude = event.coordinates[0]
                 let latitude = event.coordinates[1]
+                let longitude = event.coordinates[0]
                 let position = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-                let marker = GMSMarker(position: position)
-                marker.title = event.name
-                marker.snippet = "Magnitudo: \(String(event.magnitudo))"
-                marker.appearAnimation = GMSMarkerAnimation.pop
-                marker.map = mapView
+                generatePOIItems(name: String(format: "%d", index), position: position, title: event.name, snippet: "Magnitudo: \(String(event.magnitudo))")
+                index += 1
             }
         }
+        clusterManager.cluster()
     }
     
-    private func setupHeatmap() {
-        mapView.clear()
+    private func generatePOIItems(name: String, position: CLLocationCoordinate2D, title: String, snippet: String) {
+        let item = POIItem(name: name, position: position, title: title, snippet: snippet)
+        clusterManager.add(item)
+    }
+    
+    private func updateHeatmap() {
+        clusterManager.clearItems()
         mapView.animate(toZoom: 0)
         var list = [GMUWeightedLatLng]()
         if !events.isEmpty {
             for event in events {
-                let lon = event.coordinates[0]
-                let lat = event.coordinates[1]
-                let coords = GMUWeightedLatLng(coordinate: CLLocationCoordinate2DMake(lat , lon), intensity: 1.0)
+                let latitude = event.coordinates[1]
+                let longitude = event.coordinates[0]
+                let coords = GMUWeightedLatLng(coordinate: CLLocationCoordinate2DMake(latitude , longitude), intensity: 1.0)
                 list.append(coords)
             }
-            heatmapLayer.radius = 50
             heatmapLayer.weightedData = list
             heatmapLayer.clearTileCache()
             heatmapLayer.map = mapView
@@ -187,7 +209,7 @@ class MapView: UIView, ViewControllerModellableView {
             setupMarkers()
             mapView.mapType = GMSMapViewType.satellite
         case 2:
-            setupHeatmap()
+            updateHeatmap()
             mapView.mapType = GMSMapViewType.terrain
         default:
             break
@@ -211,7 +233,7 @@ class MapView: UIView, ViewControllerModellableView {
             setupMarkers()
         }
         else {
-            setupHeatmap()
+            updateHeatmap()
         }
     }
     
@@ -230,7 +252,7 @@ class MapView: UIView, ViewControllerModellableView {
     
 }
 
-extension MapView: LocationServiceDelegate, GMSAutocompleteResultsViewControllerDelegate {
+extension MapView: LocationServiceDelegate, GMSAutocompleteResultsViewControllerDelegate, GMSMapViewDelegate, GMUClusterManagerDelegate, GMUClusterRendererDelegate {
     
     func tracingLocation(currentLocation: CLLocation) {
         /*
@@ -256,4 +278,35 @@ extension MapView: LocationServiceDelegate, GMSAutocompleteResultsViewController
         print("Error: ", error.localizedDescription)
     }
     
+    func renderer(_ renderer: GMUClusterRenderer, willRenderMarker marker: GMSMarker) {
+        if let POIItem = marker.userData as? POIItem {
+            marker.title = POIItem.title
+            marker.snippet = POIItem.snippet
+            marker.icon = GMSMarker.markerImage(with: color?.getColor())
+            marker.appearAnimation = GMSMarkerAnimation.pop
+        }
+    }
+    
+    func clusterManager(_ clusterManager: GMUClusterManager, didTap cluster: GMUCluster) -> Bool {
+        let newCamera = GMSCameraPosition.camera(withTarget: cluster.position, zoom: mapView.camera.zoom + 1)
+        let update = GMSCameraUpdate.setCamera(newCamera)
+        mapView.moveCamera(update)
+        return true
+    }
+    
+}
+
+/// Point of Interest Item which implements the GMUClusterItem protocol.
+class POIItem: NSObject, GMUClusterItem {
+    var name: String
+    var position: CLLocationCoordinate2D
+    var title: String
+    var snippet: String
+    
+    init(name: String, position: CLLocationCoordinate2D, title: String, snippet: String) {
+        self.name = name
+        self.position = position
+        self.title = title
+        self.snippet = snippet
+    }
 }

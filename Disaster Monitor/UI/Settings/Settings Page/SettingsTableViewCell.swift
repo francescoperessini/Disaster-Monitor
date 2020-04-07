@@ -97,10 +97,13 @@ class SettingsTableViewCell: UITableViewCell {
     @objc func indexChanged(_ sender: UISegmentedControl) {
         switch sender.titleForSegment(at: sender.selectedSegmentIndex)! {
         case "Blue":
+            segmentedColors.selectedSegmentTintColor = .systemBlue
             didTapStylingColor?(Color(name: colors.blue))
         case "Green":
+            segmentedColors.selectedSegmentTintColor = .systemGreen
             didTapStylingColor?(Color(name: colors.green))
         case "Red":
+            segmentedColors.selectedSegmentTintColor = .systemRed
             didTapStylingColor?(Color(name: colors.red))
         default:
             break
@@ -109,6 +112,7 @@ class SettingsTableViewCell: UITableViewCell {
     
     func setupColorCell(color: Color) {
         segmentedColors.selectedSegmentIndex = ["Blue", "Green", "Red"].firstIndex(of: color.getColorName())!
+        segmentedColors.selectedSegmentTintColor = color.getColor()
     }
     
 }
