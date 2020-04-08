@@ -64,8 +64,12 @@ struct EventsStateUpdater: StateUpdater {
         let url = newValue["features"].arrayValue.map{$0["properties"]["url"].stringValue}
         let felt = newValue["features"].arrayValue.map{$0["properties"]["felt"].intValue}
         let dataSource = "USGS"
-        
+        print("[USGS] JSON decoded")
+
         for i in 0...arrayNames.count - 1 {
+            if i % 200 == 0 {
+                print("[USGS] Processed events: \(i)")
+            }
             // Unseen events
             if !state.events.contains(where: {$0.id == id[i]}) {
                 state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i], magType: magType[i], url: url[i], felt: felt[i]))
@@ -95,6 +99,7 @@ struct EventsStateUpdaterINGV: StateUpdater {
         let url_tmp = "http://terremoti.ingv.it/event/"
         let felt = 0
         let dataSource = "INGV"
+        print("[INGV] JSON decoded")
         
         var result_time: [Double] = []
         
@@ -108,6 +113,9 @@ struct EventsStateUpdaterINGV: StateUpdater {
         }
         
         for i in 0...arrayNames.count - 1 {
+            if i % 200 == 0 {
+                print("[INGV] Processed events: \(i)")
+            }
             if !state.events.contains(where: {$0.id == id[i]}) {
                 let url = url_tmp + id[i] + "?timezone=UTC"
                 state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: result_time[i], dataSource: dataSource, updated: 0, magType: magType[i], url: url, felt: felt))
