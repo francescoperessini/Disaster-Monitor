@@ -405,7 +405,7 @@ class EventView: UIView, ViewControllerModellableView {
         secondEntireRow.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
         
         thirdEntireRow.translatesAutoresizingMaskIntoConstraints = false
-        thirdEntireRow.topAnchor.constraint(equalTo: self.firstEntireRow.bottomAnchor).isActive = true
+        thirdEntireRow.topAnchor.constraint(equalTo: self.secondEntireRow.bottomAnchor).isActive = true
         thirdEntireRow.heightAnchor.constraint(equalTo: self.firstRow.heightAnchor, multiplier: 0.35).isActive = true
         thirdEntireRow.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
         thirdEntireRow.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
@@ -464,7 +464,7 @@ class EventView: UIView, ViewControllerModellableView {
         //placeLabel.centerYAnchor.constraint(equalTo: self.firstEntireRow.centerYAnchor).isActive = true
         
         placeLabelSubtitle.translatesAutoresizingMaskIntoConstraints = false
-        placeLabelSubtitle.bottomAnchor.constraint(equalTo: secondEntireRow.bottomAnchor).isActive = true
+        placeLabelSubtitle.topAnchor.constraint(equalTo: secondEntireRow.topAnchor).isActive = true
         //placeLabelSubtitle.leadingAnchor.constraint(equalTo: self.firstRow.leadingAnchor, constant: 25).isActive = true
         //placeLabelSubtitle.trailingAnchor.constraint(equalTo: self.firstRow.trailingAnchor, constant: -25).isActive = true
         placeLabelSubtitle.centerXAnchor.constraint(equalTo: self.firstRow.centerXAnchor).isActive = true
@@ -531,6 +531,9 @@ class EventView: UIView, ViewControllerModellableView {
         magnitudoFeltLabel.centerYAnchor.constraint(equalTo: someView.centerYAnchor).isActive = true
         magnitudoFeltLabel.widthAnchor.constraint(equalTo: thirdEntireRow.widthAnchor, multiplier: 0.7).isActive = true
         magnitudoFeltLabel.heightAnchor.constraint(equalTo: thirdEntireRow.heightAnchor).isActive = true
+        
+        //magnitudoFeltLabel.backgroundColor = .brown
+        
     }
 }
 

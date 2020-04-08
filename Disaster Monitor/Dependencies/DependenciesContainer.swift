@@ -33,7 +33,7 @@ final class APIManager {
     
     // Get last week events from USGS data source
     static func getEventsUSGS(date: String, time: String) -> Promise<JSON> {
-        return Promise<JSON>(in: .background) { resolve, reject, status in
+        return Promise<JSON>(in: .utility) { resolve, reject, status in
             AF.request("https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=" + date + "T" + time).responseJSON { response in
                 switch response.result {
                 case .success(let data):
@@ -48,7 +48,7 @@ final class APIManager {
     
     // Get last week events from INGV data source
     static func getEventsINGV(date: String, time: String) -> Promise<JSON> {
-        return Promise<JSON>(in: .background) { resolve, reject, status in
+        return Promise<JSON>(in: .utility) { resolve, reject, status in
             AF.request("https://webservices.ingv.it/fdsnws/event/1/query?format=geojson&starttime=" + date + "T" + time).responseJSON { response in
                 switch response.result {
                 case .success(let data):
