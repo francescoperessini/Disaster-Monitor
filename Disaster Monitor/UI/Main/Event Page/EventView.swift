@@ -465,8 +465,8 @@ class EventView: UIView, ViewControllerModellableView {
         
         placeLabelSubtitle.translatesAutoresizingMaskIntoConstraints = false
         placeLabelSubtitle.topAnchor.constraint(equalTo: secondEntireRow.topAnchor).isActive = true
-        //placeLabelSubtitle.leadingAnchor.constraint(equalTo: self.firstRow.leadingAnchor, constant: 25).isActive = true
-        //placeLabelSubtitle.trailingAnchor.constraint(equalTo: self.firstRow.trailingAnchor, constant: -25).isActive = true
+        placeLabelSubtitle.leadingAnchor.constraint(equalTo: self.firstRow.leadingAnchor, constant: 25).isActive = true
+        placeLabelSubtitle.trailingAnchor.constraint(equalTo: self.firstRow.trailingAnchor, constant: -25).isActive = true
         placeLabelSubtitle.centerXAnchor.constraint(equalTo: self.firstRow.centerXAnchor).isActive = true
         
         coordinatesLabel.translatesAutoresizingMaskIntoConstraints = false
