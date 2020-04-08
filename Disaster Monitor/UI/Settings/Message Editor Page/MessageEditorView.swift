@@ -29,13 +29,13 @@ class MessageEditorView: UIView, ViewControllerModellableView {
     @objc func didTapCloseButtonFunc() {
         didTapCloseButton?()
     }
-        
+    
     var didTapDoneButton: ((String) -> ())?
     
     @objc func didTapDoneButtonFunc() {
         didTapDoneButton?(messageTextView.text!.trimmingCharacters(in: .whitespacesAndNewlines))
     }
-        
+    
     func setup() {
         addSubview(messageTextView)
         setupMessageTextField()
@@ -77,7 +77,7 @@ class MessageEditorView: UIView, ViewControllerModellableView {
     func update(oldModel: MessageEditorViewModel?) {
         guard let model = self.model else { return }
         currentMessage = model.state.message
-
+        
         if messageTextView.text.isEmpty {
             messageTextView.text = currentMessage
         }
@@ -140,24 +140,24 @@ extension MessageEditorView: UITextViewDelegate {
         let existingLines = textView.text.components(separatedBy: CharacterSet.newlines)
         let newLines = text.components(separatedBy: CharacterSet.newlines)
         let linesAfterChange = existingLines.count + newLines.count - 1
-
+        
         return linesAfterChange <= textView.textContainer.maximumNumberOfLines
     }
     
     /*
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if messageTextView.textColor == .tertiaryLabel {
-            messageTextView.text = nil
-            messageTextView.textColor = .label
-        }
-    }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if messageTextView.text.isEmpty {
-            messageTextView.text = currentMessage
-            messageTextView.textColor = .tertiaryLabel
-        }
-    }
-    */
+     func textViewDidBeginEditing(_ textView: UITextView) {
+     if messageTextView.textColor == .tertiaryLabel {
+     messageTextView.text = nil
+     messageTextView.textColor = .label
+     }
+     }
+     
+     func textViewDidEndEditing(_ textView: UITextView) {
+     if messageTextView.text.isEmpty {
+     messageTextView.text = currentMessage
+     messageTextView.textColor = .tertiaryLabel
+     }
+     }
+     */
     
 }

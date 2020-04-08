@@ -9,7 +9,7 @@
 import Tempura
 
 class FilterTableViewCell: UITableViewCell {
-        
+    
     var filterSectionType: FilterSectionType? {
         didSet {
             guard let filterSectionType = filterSectionType else { return }
@@ -20,7 +20,7 @@ class FilterTableViewCell: UITableViewCell {
             
             magnitudoSlider.isHidden = !filterSectionType.containsMagnitudeSlider
             magnitudeSliderValueLabel.isHidden = !filterSectionType.containsMagnitudeSliderValueLabel
-           
+            
             timePeriodSegmentedControl.isHidden = !filterSectionType.containsTimePeriodSegmentedControl
             timePeriodSegmentedControlValueLabel.isHidden = !filterSectionType.containsTimePeriodSegmentedControlValueLabel
             
@@ -39,7 +39,7 @@ class FilterTableViewCell: UITableViewCell {
         let label = UILabel()
         return label
     }()
-
+    
     // MARK: - Magnitude Section
     func setupMagnitudeSection(value: Float) {
         magnitudoSlider.setValue(value, animated: true)
@@ -63,7 +63,7 @@ class FilterTableViewCell: UITableViewCell {
     }()
     
     var didSlide: ((Float) -> ())?
-        
+    
     @objc func didSlideFuncLabel(sender: UISlider) {
         setSliderValue(value: sender.value)
     }
@@ -185,44 +185,44 @@ class FilterTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-                
+        
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
         descriptionLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
-
+        
         magnitudeSliderValueLabel.translatesAutoresizingMaskIntoConstraints = false
         magnitudeSliderValueLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
         magnitudeSliderValueLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -15).isActive = true
-
+        
         timePeriodSegmentedControlValueLabel.translatesAutoresizingMaskIntoConstraints = false
         timePeriodSegmentedControlValueLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
         timePeriodSegmentedControlValueLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -15).isActive = true
-
+        
         magnitudoSlider.translatesAutoresizingMaskIntoConstraints = false
         magnitudoSlider.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
         magnitudoSlider.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
         magnitudoSlider.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -15).isActive = true
-
+        
         timePeriodSegmentedControl.translatesAutoresizingMaskIntoConstraints = false
         timePeriodSegmentedControl.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
         timePeriodSegmentedControl.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
         timePeriodSegmentedControl.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -15).isActive = true
-
+        
         INGVdescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         INGVdescriptionLabel.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
         INGVdescriptionLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
-
+        
         INGVSwitch.translatesAutoresizingMaskIntoConstraints = false
         INGVSwitch.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
         INGVSwitch.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -15).isActive = true
-
+        
         USGSdescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         USGSdescriptionLabel.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
         USGSdescriptionLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
-
+        
         USGSSwitch.translatesAutoresizingMaskIntoConstraints = false
         USGSSwitch.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor).isActive = true
         USGSSwitch.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -15).isActive = true
     }
-
+    
 }

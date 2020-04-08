@@ -14,7 +14,6 @@ class MainEventsTableViewController: ViewController<MainEventsView> {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.dispatch(GetEvents())
-        self.dispatch(ScheduleEventsNotifications())
     }
     
     override func setupInteraction() {
@@ -30,7 +29,6 @@ class MainEventsTableViewController: ViewController<MainEventsView> {
         
         rootView.didPullRefreshControl = {
             self.dispatch(GetEvents())
-            self.dispatch(ScheduleEventsNotifications())
         }
         
         rootView.didTapSearch = { [unowned self] in

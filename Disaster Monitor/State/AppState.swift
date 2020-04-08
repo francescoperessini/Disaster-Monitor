@@ -14,7 +14,6 @@ struct AppState: State, Codable {
     var events: [Event] = []
     var filteringValue: Float = -1.0
     var message: String = "Message to be shared\nSent from Disaster Monitor App"
-    var displayEvent: Event?
     var segmentedDays: Int = 7
     var customColor: Color = Color(name: .blue)
     var dataSources: [String: Bool] = ["INGV": true, "USGS": true]
@@ -65,9 +64,9 @@ struct EventsStateUpdater: StateUpdater {
         let felt = newValue["features"].arrayValue.map{$0["properties"]["felt"].intValue}
         let dataSource = "USGS"
         print("[USGS] JSON decoded")
-
+        
         for i in 0...arrayNames.count - 1 {
-            if i % 200 == 0 {
+            if i % 500 == 0 && i != 0 {
                 print("[USGS] Processed events: \(i)")
             }
             // Unseen events
@@ -82,6 +81,7 @@ struct EventsStateUpdater: StateUpdater {
             }
         }
         state.events.sort(by: {$0.time > $1.time})
+        print("[USGS] StateUpdater executed")
     }
 }
 
@@ -113,7 +113,7 @@ struct EventsStateUpdaterINGV: StateUpdater {
         }
         
         for i in 0...arrayNames.count - 1 {
-            if i % 200 == 0 {
+            if i % 100 == 0 && i != 0 {
                 print("[INGV] Processed events: \(i)")
             }
             if !state.events.contains(where: {$0.id == id[i]}) {
@@ -122,6 +122,7 @@ struct EventsStateUpdaterINGV: StateUpdater {
             }
         }
         state.events.sort(by: {$0.time > $1.time})
+        print("[INGV] StateUpdater executed")
     }
 }
 
@@ -179,15 +180,16 @@ struct SetMessage: StateUpdater {
 struct InitState: StateUpdater {
     var InState: AppState
     func updateState(_ state: inout AppState) {
+        print("Entered in InitState StateUpdater")
         state.events = InState.events
         state.filteringValue = InState.filteringValue
         state.message = InState.message
-        state.displayEvent = InState.displayEvent
         state.segmentedDays = InState.segmentedDays
         state.customColor = InState.customColor
         state.regions = InState.regions
         state.isNotficiationEnabled = InState.isNotficiationEnabled
         state.debugMode = InState.debugMode
+        print("Exited InitState StateUpdater")
     }
 }
 
@@ -244,6 +246,7 @@ struct RemoveDebugEvents: StateUpdater {
 
 struct ScheduleEventsNotifications: StateUpdater {
     func updateState(_ state: inout AppState) {
+        print("Entered in ScheduleEventsNotifications StateUpdater")
         var notifiedEvents = [Event]()
         
         if state.isNotficiationEnabled {
@@ -275,6 +278,7 @@ struct ScheduleEventsNotifications: StateUpdater {
                 }
             }
         }
+        print("Exited ScheduleEventsNotifications StateUpdater")
     }
 }
 
@@ -283,7 +287,6 @@ struct AddMonitoredPlace: StateUpdater {
     var coordinate: [Double]
     var magnitude: Float
     var distance: Double
-    
     func updateState(_ state: inout AppState) {
         state.regions.append(Region(name: name, latitude: coordinate[0], longitudine: coordinate[1], distance: distance, magnitude: magnitude))
     }
@@ -333,6 +336,9 @@ struct GetEvents: SideEffect {
         .catch { error in
             print(error.localizedDescription)
         }
+        
+        context.dispatch(ScheduleEventsNotifications())
+        
     }
 }
 

@@ -14,9 +14,9 @@ protocol SectionTypeAddMonitored: CustomStringConvertible {
 }
 
 enum AddMonitoredRegionSection: Int, CaseIterable, CustomStringConvertible{
-
+    
     case MonitoredPlace
-
+    
     var description: String {
         switch self {
         case .MonitoredPlace: return "Monitored Place"

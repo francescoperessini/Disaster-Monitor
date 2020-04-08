@@ -12,15 +12,15 @@ import Tempura
 class FilterViewController: ViewController<FilterView> {
     
     override func viewDidLoad() {
-           super.viewDidLoad()
-       }
+        super.viewDidLoad()
+    }
     
     override func setupInteraction() {
-
+        
         rootView.didTapClose = {
             self.dismiss(animated: true, completion: nil)
         }
-    
+        
         rootView.didSlide = { [unowned self] v in
             self.dispatch(SetThreshold(value: v))
         }

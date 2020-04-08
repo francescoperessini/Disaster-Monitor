@@ -106,7 +106,7 @@ class MainEventsTableViewCell: UITableViewCell {
         magnitudoLabel.text = String(event.magnitudo)
         
         dataSourceLabel.text = event.dataSource
-
+        
         if event.magnitudo > 3 {
             magnitudoLabel.textColor = color.getColor()
         }
@@ -126,7 +126,7 @@ class MainEventsTableViewCell: UITableViewCell {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -11).isActive = true
         stackView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
-                
+        
         magnitudoLabel.translatesAutoresizingMaskIntoConstraints = false
         magnitudoLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 7).isActive = true
         magnitudoLabel.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -7).isActive = true

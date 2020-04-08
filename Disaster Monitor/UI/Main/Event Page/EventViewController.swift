@@ -25,10 +25,10 @@ class EventViewController: ViewControllerWithLocalState<EventView>, SFSafariView
         rootView.didTapShare = { [unowned self] sender in
             let firstActivityItem = "Look at this: \(self.viewModel!.event!.name) with magnitude \(String(describing: self.viewModel!.event!.magnitudo)) \(self.viewModel!.event!.magType)"
             let secondActivityItem = self.viewModel!.event!.url
-
+            
             let activityViewController : UIActivityViewController = UIActivityViewController(
                 activityItems: [firstActivityItem, secondActivityItem], applicationActivities: nil)
-
+            
             activityViewController.popoverPresentationController?.sourceView = self.navigationController?.view
             
             activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
@@ -47,16 +47,14 @@ class EventViewController: ViewControllerWithLocalState<EventView>, SFSafariView
             
             //check ipad
             if (UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad) {
-                    activityViewController.popoverPresentationController?.sourceView = self.view
+                activityViewController.popoverPresentationController?.sourceView = self.view
             }
-
+            
             self.present(activityViewController, animated: true, completion: nil)
             
             // This line remove the arrow of the popover to show in iPad
             activityViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.any
             activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
-
-            
         }
     }
     

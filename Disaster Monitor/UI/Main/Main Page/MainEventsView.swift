@@ -74,7 +74,7 @@ class MainEventsView: UIView, ViewControllerModellableView{
         stackView.spacing = 8.0
         stackView.addArrangedSubview(label)
         stackView.addArrangedSubview(activityIndicatorView)
-
+        
         let activityView = UIView()
         activityView.backgroundColor = .systemBackground
         activityView.addSubview(stackView)
@@ -97,7 +97,7 @@ class MainEventsView: UIView, ViewControllerModellableView{
         mainEventsTableView.delegate = self
         mainEventsTableView.dataSource = self
     }
-
+    
     func style() {
         backgroundColor = .systemBackground
         navigationBar?.prefersLargeTitles = true
@@ -121,7 +121,7 @@ class MainEventsView: UIView, ViewControllerModellableView{
             // navigationBar?.isTranslucent = false
         }
     }
-
+    
     func update(oldModel: MainViewModel?) {
         guard let model = self.model else { return }
         events = model.state.events
@@ -154,7 +154,7 @@ class MainEventsView: UIView, ViewControllerModellableView{
             self.refreshControl.endRefreshing()
         }
     }
-
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         mainEventsTableView.pin.top().left().right().bottom()
@@ -168,7 +168,7 @@ class MainEventsView: UIView, ViewControllerModellableView{
     @objc func didTapFilterFunc() {
         didTapFilter?()
     }
-       
+    
     @objc func didTapEventFunc(id: String) {
         didTapEvent?(id)
     }
@@ -180,11 +180,11 @@ class MainEventsView: UIView, ViewControllerModellableView{
     @objc func didTapSearchFunc() {
         // Create the search controller and specify that it should present its results in this same view
         searchController = UISearchController(searchResultsController: nil)
-
+        
         // Set any properties (in this case, don't hide the nav bar and don't show the emoji keyboard option)
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.keyboardType = UIKeyboardType.asciiCapable
-
+        
         // Make this class the delegate and present the search
         self.searchController.searchBar.delegate = self
         didTapSearch?()
@@ -267,11 +267,11 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource, UISearchBa
         else {
             let view = UIView()
             view.backgroundColor = .secondarySystemBackground
-
+            
             let clockImage = UIImage(systemName: "clock")
             let clockImageView = UIImageView(image: clockImage!.withRenderingMode(.alwaysTemplate))
             clockImageView.tintColor = .label
-
+            
             let title = UILabel()
             title.font = UIFont.boldSystemFont(ofSize: 20)
             title.textColor = .label
@@ -304,11 +304,11 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource, UISearchBa
         let event: Event?
         
         switch indexPath.section {
-            case 0: event = past24Events[indexPath.row]
-            case 1: event = past48Events[indexPath.row]
-            case 2: event = past72Events[indexPath.row]
-            case 3: event = past96Events[indexPath.row]
-            default: event = previousDaysEvents[indexPath.row]
+        case 0: event = past24Events[indexPath.row]
+        case 1: event = past48Events[indexPath.row]
+        case 2: event = past72Events[indexPath.row]
+        case 3: event = past96Events[indexPath.row]
+        default: event = previousDaysEvents[indexPath.row]
         }
         
         cell.setupCell(event: event!, color: color!)

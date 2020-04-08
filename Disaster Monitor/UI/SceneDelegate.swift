@@ -115,7 +115,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             else {
                 print("Debug mode not activated")
                 self.store.dispatch(GetEvents())
-                self.store.dispatch(ScheduleEventsNotifications())
             }
         }
         
@@ -126,7 +125,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
     
-    func handleDbCleaning(task: BGProcessingTask){
+    func handleDbCleaning(task: BGProcessingTask) {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         
@@ -144,4 +143,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             task.setTaskCompleted(success: !op.isCancelled)
         }
     }
+    
 }

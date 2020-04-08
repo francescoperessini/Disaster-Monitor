@@ -22,14 +22,14 @@ class LocationService: NSObject, CLLocationManagerDelegate {
         }
         return Static.instance
     }
-
+    
     var locationManager: CLLocationManager?
     var currentLocation: CLLocation?
     var delegate: LocationServiceDelegate?
-
+    
     override init() {
         super.init()
-
+        
         self.locationManager = CLLocationManager()
         guard let locationManager = self.locationManager else {
             return
@@ -59,7 +59,7 @@ class LocationService: NSObject, CLLocationManagerDelegate {
     
     // CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-
+        
         guard let location = locations.last else {
             return
         }
@@ -72,14 +72,14 @@ class LocationService: NSObject, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-             
-           // do on error
+        
+        // do on error
         updateLocationDidFailWithError(error: error as NSError)
     }
     
     // Private function
     private func updateLocation(currentLocation: CLLocation){
-
+        
         guard let delegate = self.delegate else {
             return
         }

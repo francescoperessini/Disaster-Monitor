@@ -9,7 +9,7 @@
 import Katana
 
 class MainTabBarController: UITabBarController {
-
+    
     var store: PartialStore<AppState>!
     
     convenience init(store: PartialStore<AppState>){

@@ -20,7 +20,7 @@ struct FilterViewModel: ViewModelWithState {
 class FilterView: UIView, ViewControllerModellableView {
     
     var filterTableView = UITableView(frame: CGRect.zero, style: .grouped)
-
+    
     var didTapClose: (() -> ())?
     
     @objc func didTapCloseFunc() {
@@ -43,7 +43,7 @@ class FilterView: UIView, ViewControllerModellableView {
     struct Cells {
         static let filterTableViewCell = "filterCell"
     }
-
+    
     func setup() {
         addSubview(filterTableView)
         configureFilterTableView()
@@ -56,12 +56,12 @@ class FilterView: UIView, ViewControllerModellableView {
         filterTableView.isScrollEnabled = false
         filterTableView.register(FilterTableViewCell.self, forCellReuseIdentifier: Cells.filterTableViewCell)
     }
-
+    
     private func setFilterTableViewDelegates() {
         filterTableView.delegate = self
         filterTableView.dataSource = self
     }
-
+    
     func style() {
         backgroundColor = .systemGroupedBackground
         navigationItem?.title = "Filters"
@@ -83,7 +83,7 @@ class FilterView: UIView, ViewControllerModellableView {
             // navigationBar?.isTranslucent = false
         }
     }
-
+    
     func update(oldModel: FilterViewModel?) {
         guard let model = self.model else { return }
         
@@ -93,7 +93,7 @@ class FilterView: UIView, ViewControllerModellableView {
         
         navigationBar?.tintColor = model.state.customColor.getColor()
     }
-
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         filterTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -102,7 +102,7 @@ class FilterView: UIView, ViewControllerModellableView {
         filterTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
         filterTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
-
+    
 }
 
 extension FilterView: UITableViewDelegate, UITableViewDataSource {
