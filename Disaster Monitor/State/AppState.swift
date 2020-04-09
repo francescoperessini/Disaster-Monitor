@@ -132,6 +132,7 @@ struct EventsStateUpdaterINGV: StateUpdater {
 
 struct UpdateDaysAgo: StateUpdater {
     func updateState(_ state: inout AppState) {
+        print("[For debug purpose] Printing customColor: \(state.customColor)")
         print("Entered in UpdateDaysAgo StateUpdater")
         if !state.events.isEmpty {
             let date = Date()
@@ -196,6 +197,7 @@ struct InitState: StateUpdater {
         state.customColor = InState.customColor
         state.debugMode = InState.debugMode
         print("Exited InitState StateUpdater")
+        print("[For debug purpose] Printing customColor: \(state.customColor)")
     }
 }
 
@@ -307,10 +309,14 @@ struct RemoveMonitoredPlace: StateUpdater {
 
 struct DeleteOlder: StateUpdater {
     func updateState(_ state: inout AppState) {
+        if !state.events.isEmpty {
+            let date = Date()
+            state.events.forEach{state.events[state.events.firstIndex(of: $0)!].daysAgo = Calendar.current.dateComponents([.day], from: $0.date, to: date).day!}
+        }
         let daysAfter = 7
-        print("[Before DB cleaning] Events older than \(daysAfter) days: \(state.events.filter{$0.daysAgo > daysAfter})")
-        state.events.removeAll(where: {$0.daysAgo > daysAfter})
-        print("[After DB cleaning] Events older than \(daysAfter) days: \(state.events.filter{$0.daysAgo > daysAfter})")
+        print("[Before DB cleaning] Events older than \(daysAfter) days: \(state.events.filter{$0.daysAgo >= daysAfter}.count)")
+        state.events.removeAll(where: {$0.daysAgo >= daysAfter})
+        print("[After DB cleaning] Events older than \(daysAfter) days: \(state.events.filter{$0.daysAgo >= daysAfter}.count)")
     }
 }
 
