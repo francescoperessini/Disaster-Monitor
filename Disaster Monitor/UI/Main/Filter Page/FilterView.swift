@@ -173,25 +173,25 @@ extension FilterView: UITableViewDelegate, UITableViewDataSource {
             cell.filterSectionType = magnitude
             if cell.filterSectionType!.containsMagnitudeSlider {
                 cell.didSlide = self.didSlide
-                cell.setupMagnitudeSection(value: sliderValue ?? 0.0)
+                cell.setupMagnitudeSection(value: sliderValue!)
             }
         case .Period:
             let period = PeriodOption(rawValue: indexPath.row)
             cell.filterSectionType = period
             if cell.filterSectionType!.containsTimePeriodSegmentedControl {
                 cell.didTapSegmented = self.didTapSegmented
-                cell.setupTimePeriodSection(period: segmentedControlValue ?? "")
+                cell.setupTimePeriodSection(period: segmentedControlValue!)
             }
         case .Source:
             let source = SourceOption(rawValue: indexPath.row)
             cell.filterSectionType = source
             if cell.filterSectionType!.containsINGVSwitch {
                 cell.didTapSwitchINGV = self.didTapSwitchINGV
-                cell.setupINGVSwitch(value: switchValues!["INGV"] ?? true)
+                cell.setupINGVSwitch(value: switchValues!["INGV"]!)
             }
             if cell.filterSectionType!.containsUSGSSwitch {
                 cell.didTapSwitchUSGS = self.didTapSwitchUSGS
-                cell.setupUSGSSwitch(value: switchValues!["USGS"] ?? true)
+                cell.setupUSGSSwitch(value: switchValues!["USGS"]!)
             }
         }
         return cell

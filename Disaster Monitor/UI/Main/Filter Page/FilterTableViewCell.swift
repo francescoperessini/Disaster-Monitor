@@ -37,6 +37,7 @@ class FilterTableViewCell: UITableViewCell {
     // MARK: - Description Label
     lazy var descriptionLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .label
         return label
     }()
     
@@ -85,13 +86,13 @@ class FilterTableViewCell: UITableViewCell {
     
     // MARK: - Time Period Section
     func setupTimePeriodSection(period: String) {
-        timePeriodSegmentedControl.selectedSegmentIndex = ["1", "3", "5", "7"].firstIndex(of: period) ?? 0
+        let index = ["1", "3", "5", "7"].firstIndex(of: period) ?? 3
+        timePeriodSegmentedControl.selectedSegmentIndex = index
         setPeriod(period: period)
     }
     
     lazy var timePeriodSegmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(items: ["1", "3", "5", "7"])
-        segmentedControl.selectedSegmentIndex = 0
         segmentedControl.addTarget(self, action: #selector(didTapSegmentedControlFunc), for: .valueChanged)
         return segmentedControl
     }()
@@ -105,9 +106,9 @@ class FilterTableViewCell: UITableViewCell {
     var didTapSegmented: ((Int) -> ())?
     
     @objc func didTapSegmentedControlFunc(sender: UISegmentedControl) {
-        let period = timePeriodSegmentedControl.titleForSegment(at: timePeriodSegmentedControl.selectedSegmentIndex)
-        setPeriod(period: period!)
-        didTapSegmented?(Int(sender.titleForSegment(at: sender.selectedSegmentIndex) ?? "") ?? 0)
+        let period = timePeriodSegmentedControl.titleForSegment(at: timePeriodSegmentedControl.selectedSegmentIndex)!
+        setPeriod(period: period)
+        didTapSegmented?(Int(period)!)
     }
     
     private func setPeriod(period: String) {
@@ -134,20 +135,22 @@ class FilterTableViewCell: UITableViewCell {
         return switch1
     }()
     
+    lazy var USGSSwitch: UISwitch = {
+        let switch2 = UISwitch()
+        switch2.addTarget(self, action: #selector(didTapSwitchUSGSFunc), for: .valueChanged)
+        return switch2
+    }()
+    
     lazy var INGVdescriptionLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .label
         return label
     }()
     
     lazy var USGSdescriptionLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .label
         return label
-    }()
-    
-    lazy var USGSSwitch: UISwitch = {
-        let switch2 = UISwitch()
-        switch2.addTarget(self, action: #selector(didTapSwitchUSGSFunc), for: .valueChanged)
-        return switch2
     }()
     
     var didTapSwitchINGV: ((Bool) -> ())?
