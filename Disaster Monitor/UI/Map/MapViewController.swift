@@ -16,10 +16,31 @@ class MapViewController: ViewController<MapView> {
     }
     
     override func setupInteraction() {
-        rootView.didTapActionButton = {
-            let activityController = UIActivityViewController(activityItems: [self.state.message], applicationActivities: nil)
-            activityController.excludedActivityTypes = [UIActivity.ActivityType.airDrop, UIActivity.ActivityType.addToReadingList]
-            self.present(activityController, animated: true, completion: nil)
+        rootView.didTapActionButton = { [unowned self] sender in
+            let activityViewController = UIActivityViewController(activityItems: [self.state.message], applicationActivities: nil)
+            
+            // Anything you want to exclude
+            activityViewController.excludedActivityTypes = [
+                UIActivity.ActivityType.addToReadingList,
+                UIActivity.ActivityType.assignToContact,
+                UIActivity.ActivityType.mail,
+                UIActivity.ActivityType.markupAsPDF,
+                UIActivity.ActivityType.openInIBooks,
+                UIActivity.ActivityType.postToFlickr,
+                UIActivity.ActivityType.postToVimeo,
+                UIActivity.ActivityType.print,
+                UIActivity.ActivityType.saveToCameraRoll
+            ]
+            
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                activityViewController.modalPresentationStyle = .popover
+                activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
+                activityViewController.popoverPresentationController?.barButtonItem = sender
+                self.present(activityViewController, animated: true, completion: nil)
+            }
+            else {
+                self.present(activityViewController, animated: true, completion: nil)
+            }
         }
     }
     

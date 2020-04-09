@@ -10,6 +10,7 @@ import Tempura
 import SafariServices
 
 class EventViewController: ViewControllerWithLocalState<EventView>, SFSafariViewControllerDelegate {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -22,45 +23,41 @@ class EventViewController: ViewControllerWithLocalState<EventView>, SFSafariView
             safariVC.delegate = self
         }
         
-        rootView.didTapShare = { [unowned self] sender in
-            let firstActivityItem = "Look at this: \(self.viewModel!.event!.name) with magnitude \(String(describing: self.viewModel!.event!.magnitudo)) \(self.viewModel!.event!.magType)"
-            let secondActivityItem = self.viewModel!.event!.url
+        rootView.didTapShare = { [unowned self] (sender, url) in
+            let activityItem = "Look at this: \(self.viewModel!.event!.name) with magnitude \(String(describing: self.viewModel!.event!.magnitudo)) \(self.viewModel!.event!.magType)\n\(url)"
             
             let activityViewController : UIActivityViewController = UIActivityViewController(
-                activityItems: [firstActivityItem, secondActivityItem], applicationActivities: nil)
-            
-            activityViewController.popoverPresentationController?.sourceView = self.navigationController?.view
-            
-            activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
+                activityItems: [activityItem], applicationActivities: nil)
             
             // Anything you want to exclude
             activityViewController.excludedActivityTypes = [
-                UIActivity.ActivityType.postToWeibo,
-                UIActivity.ActivityType.print,
-                UIActivity.ActivityType.assignToContact,
-                UIActivity.ActivityType.saveToCameraRoll,
                 UIActivity.ActivityType.addToReadingList,
+                UIActivity.ActivityType.assignToContact,
+                UIActivity.ActivityType.mail,
+                UIActivity.ActivityType.markupAsPDF,
+                UIActivity.ActivityType.openInIBooks,
                 UIActivity.ActivityType.postToFlickr,
                 UIActivity.ActivityType.postToVimeo,
-                UIActivity.ActivityType.postToTencentWeibo
+                UIActivity.ActivityType.print,
+                UIActivity.ActivityType.saveToCameraRoll
             ]
             
-            //check ipad
-            if (UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad) {
-                activityViewController.popoverPresentationController?.sourceView = self.view
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                activityViewController.modalPresentationStyle = .popover
+                activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
+                activityViewController.popoverPresentationController?.barButtonItem = sender
+                self.present(activityViewController, animated: true, completion: nil)
             }
-            
-            self.present(activityViewController, animated: true, completion: nil)
-            
-            // This line remove the arrow of the popover to show in iPad
-            activityViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.any
-            activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
+            else {
+                self.present(activityViewController, animated: true, completion: nil)
+            }
         }
     }
     
     func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
         controller.dismiss(animated: true, completion: nil)
     }
+    
 }
 
 struct EventControllerLocalState: LocalState {

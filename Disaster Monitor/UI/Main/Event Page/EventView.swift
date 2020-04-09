@@ -26,7 +26,7 @@ struct EventViewModel: ViewModelWithLocalState {
 class EventView: UIView, ViewControllerModellableView {
     
     var didTapSafari: ((String) -> ())?
-    var didTapShare: ((UIBarButtonItem) -> ())?
+    var didTapShare: ((UIBarButtonItem, String) -> ())?
     var url: String = ""
     
     var firstRow: UIView = UIView()
@@ -177,7 +177,7 @@ class EventView: UIView, ViewControllerModellableView {
     }
     
     @objc func didTapShareFunc(sender: UIBarButtonItem){
-        didTapShare?(sender)
+        didTapShare?(sender, url)
     }
     
     private func magnitudoLabelStyle(){
@@ -331,7 +331,6 @@ class EventView: UIView, ViewControllerModellableView {
         mapView.animate(to: location)
         let marker = GMSMarker()
         marker.position = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        //marker.appearAnimation = GMSMarkerAnimation.pop
         marker.map = mapView
     }
     
@@ -461,7 +460,6 @@ class EventView: UIView, ViewControllerModellableView {
         placeLabel.leadingAnchor.constraint(equalTo: self.firstRow.leadingAnchor, constant: 20).isActive = true
         placeLabel.trailingAnchor.constraint(equalTo: self.firstRow.trailingAnchor, constant: -20).isActive = true
         placeLabel.centerXAnchor.constraint(equalTo: self.firstRow.centerXAnchor).isActive = true
-        //placeLabel.centerYAnchor.constraint(equalTo: self.firstEntireRow.centerYAnchor).isActive = true
         
         placeLabelSubtitle.translatesAutoresizingMaskIntoConstraints = false
         placeLabelSubtitle.topAnchor.constraint(equalTo: secondEntireRow.topAnchor).isActive = true
@@ -471,7 +469,6 @@ class EventView: UIView, ViewControllerModellableView {
         
         coordinatesLabel.translatesAutoresizingMaskIntoConstraints = false
         coordinatesLabel.topAnchor.constraint(equalTo: thirdSplittedRow.topAnchor).isActive = true
-        //coordinatesLabel.centerXAnchor.constraint(equalTo: self.firstRowFirstCell.centerXAnchor).isActive = true
         coordinatesLabel.centerYAnchor.constraint(equalTo: self.thirdSplittedRow.centerYAnchor).isActive = true
         coordinatesLabel.leadingAnchor.constraint(equalTo: coordinatesImage.trailingAnchor, constant: 20).isActive = true
         
@@ -481,7 +478,6 @@ class EventView: UIView, ViewControllerModellableView {
         
         distanceLabel.translatesAutoresizingMaskIntoConstraints = false
         distanceLabel.topAnchor.constraint(equalTo: thirdSplittedRow.topAnchor).isActive = true
-        //distanceLabel.centerXAnchor.constraint(equalTo: self.firstRowSecondCell.centerXAnchor).isActive = true
         distanceLabel.centerYAnchor.constraint(equalTo: self.thirdSplittedRow.centerYAnchor).isActive = true
         distanceLabel.leadingAnchor.constraint(equalTo: magnitudeImage.trailingAnchor, constant: 20).isActive = true
         
@@ -491,7 +487,6 @@ class EventView: UIView, ViewControllerModellableView {
         
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.topAnchor.constraint(equalTo: fourthSplittedRow.topAnchor).isActive = true
-        //dateLabel.centerXAnchor.constraint(equalTo: self.secondRowFirstCell.centerXAnchor).isActive = true
         dateLabel.centerYAnchor.constraint(equalTo: self.fourthSplittedRow.centerYAnchor).isActive = true
         dateLabel.leadingAnchor.constraint(equalTo: dateImage.trailingAnchor, constant: 20).isActive = true
         
@@ -501,7 +496,6 @@ class EventView: UIView, ViewControllerModellableView {
         
         depthLabel.translatesAutoresizingMaskIntoConstraints = false
         depthLabel.topAnchor.constraint(equalTo: fourthSplittedRow.topAnchor).isActive = true
-        //depthLabel.centerXAnchor.constraint(equalTo: self.secondRowSecondCell.centerXAnchor).isActive = true
         depthLabel.centerYAnchor.constraint(equalTo: self.fourthSplittedRow.centerYAnchor).isActive = true
         depthLabel.leadingAnchor.constraint(equalTo: depthImage.trailingAnchor, constant: 20).isActive = true
         
@@ -531,9 +525,6 @@ class EventView: UIView, ViewControllerModellableView {
         magnitudoFeltLabel.centerYAnchor.constraint(equalTo: someView.centerYAnchor).isActive = true
         magnitudoFeltLabel.widthAnchor.constraint(equalTo: thirdEntireRow.widthAnchor, multiplier: 0.7).isActive = true
         magnitudoFeltLabel.heightAnchor.constraint(equalTo: thirdEntireRow.heightAnchor).isActive = true
-        
-        //magnitudoFeltLabel.backgroundColor = .brown
-        
     }
 }
 

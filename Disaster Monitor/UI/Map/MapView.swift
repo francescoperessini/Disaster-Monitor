@@ -31,7 +31,7 @@ class MapView: UIView, ViewControllerModellableView {
     var resultsViewController: GMSAutocompleteResultsViewController?
     var searchController: UISearchController?
     var clusterManager: GMUClusterManager!
-    var didTapActionButton: (() -> ())?
+    var didTapActionButton: ((UIBarButtonItem) -> ())?
     
     // MARK: - Setup
     func setup() {
@@ -196,8 +196,8 @@ class MapView: UIView, ViewControllerModellableView {
         }
     }
     
-    @objc func didTapActionButtonFunc() {
-        didTapActionButton?()
+    @objc func didTapActionButtonFunc(sender: UIBarButtonItem){
+        didTapActionButton?(sender)
     }
     
     @objc func indexChanged(_ sender: UISegmentedControl) {
@@ -283,7 +283,6 @@ extension MapView: LocationServiceDelegate, GMSAutocompleteResultsViewController
             marker.title = POIItem.title
             marker.snippet = POIItem.snippet
             marker.icon = GMSMarker.markerImage(with: color?.getColor())
-            marker.appearAnimation = GMSMarkerAnimation.pop
         }
     }
     
