@@ -49,7 +49,6 @@
 		7B82218023AB8C9B002DAA48 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B82217F23AB8C9B002DAA48 /* MapViewController.swift */; };
 		7B92360C241794DE00A4EF22 /* PersistorInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B92360B241794DE00A4EF22 /* PersistorInterceptor.swift */; };
 		7B9D000F23ABF3DC00B9FACB /* Zip4Sequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9D000E23ABF3DC00B9FACB /* Zip4Sequence.swift */; };
-		7BE4173323A8D3AD0096F8EA /* ItemActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE4173223A8D3AD0096F8EA /* ItemActions.swift */; };
 		7BE4173523A8D4130096F8EA /* DependenciesContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE4173423A8D4130096F8EA /* DependenciesContainer.swift */; };
 		7BE4173723A8D42F0096F8EA /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE4173623A8D42F0096F8EA /* Models.swift */; };
 		7BE4173923A8D4390096F8EA /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BE4173823A8D4390096F8EA /* AppState.swift */; };
@@ -140,7 +139,6 @@
 		7B82217F23AB8C9B002DAA48 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		7B92360B241794DE00A4EF22 /* PersistorInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistorInterceptor.swift; sourceTree = "<group>"; };
 		7B9D000E23ABF3DC00B9FACB /* Zip4Sequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zip4Sequence.swift; sourceTree = "<group>"; };
-		7BE4173223A8D3AD0096F8EA /* ItemActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemActions.swift; sourceTree = "<group>"; };
 		7BE4173423A8D4130096F8EA /* DependenciesContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependenciesContainer.swift; sourceTree = "<group>"; };
 		7BE4173623A8D42F0096F8EA /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		7BE4173823A8D4390096F8EA /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
@@ -231,7 +229,6 @@
 			isa = PBXGroup;
 			children = (
 				7B564A1F23A92FBB00DD178C /* Utilities */,
-				7BE4173123A8D3900096F8EA /* Actions */,
 				7BE4173023A8D3720096F8EA /* Application */,
 				7BE4172D23A8D33C0096F8EA /* Dependencies */,
 				7BE4172C23A8D3210096F8EA /* Navigation */,
@@ -355,14 +352,6 @@
 				7B5038A723A8CD5700F18840 /* AppDelegate.swift */,
 			);
 			path = Application;
-			sourceTree = "<group>";
-		};
-		7BE4173123A8D3900096F8EA /* Actions */ = {
-			isa = PBXGroup;
-			children = (
-				7BE4173223A8D3AD0096F8EA /* ItemActions.swift */,
-			);
-			path = Actions;
 			sourceTree = "<group>";
 		};
 		942463ABA6BF08AA0CDC8FBC /* Pods */ = {
@@ -723,7 +712,6 @@
 				7B564A2823A9301800DD178C /* UIControl+TargetActionable.swift in Sources */,
 				7B44821124252D5B000DDDAC /* MonitoredRegionsView.swift in Sources */,
 				C6B0E86C24068AC9005CEE09 /* SettingsTableViewCell.swift in Sources */,
-				7BE4173323A8D3AD0096F8EA /* ItemActions.swift in Sources */,
 				7B6E627524098B5F0047D7AE /* MainEventsTableViewCell.swift in Sources */,
 				7B564A2323A92FEB00DD178C /* String+Height.swift in Sources */,
 				7BE4173B23A8D49C0096F8EA /* MainView.swift in Sources */,

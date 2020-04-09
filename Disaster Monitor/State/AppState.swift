@@ -65,6 +65,7 @@ struct EventsStateUpdaterUSGS: StateUpdater {
         let dataSource = "USGS"
         print("[USGS] JSON decoded")
         
+        let start = CFAbsoluteTimeGetCurrent()
         for i in 0...arrayNames.count - 1 {
             if i % 500 == 0 && i != 0 {
                 print("[USGS] Processed events: \(i)")
@@ -75,11 +76,14 @@ struct EventsStateUpdaterUSGS: StateUpdater {
             }
                 // Seen events, with an update
             else if state.events.contains(where: {$0.id == id[i] && $0.updated != updated[i]}) {
-                let toRemoveEvent = state.events.firstIndex{$0.id == id[i]}
-                state.events.remove(at: toRemoveEvent!)
+                /*let toRemoveEvent = state.events.firstIndex{$0.id == id[i]}
+                 state.events.remove(at: toRemoveEvent!)*/
+                state.events.removeAll(where: {$0.id == id[i]})
                 state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i], magType: magType[i], url: url[i], felt: felt[i]))
             }
         }
+        let diff = CFAbsoluteTimeGetCurrent() - start
+        print("[USGS] for loop took: \(diff) seconds")
         state.events.sort(by: {$0.time > $1.time})
         print("[USGS] StateUpdater executed")
     }
