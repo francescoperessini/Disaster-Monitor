@@ -20,28 +20,25 @@ struct MainEventsViewModel: ViewModelWithState {
 class MainEventsView: UIView, ViewControllerModellableView{
     
     var mainEventsTableView = UITableView()
-    var events: [Event] = []
-    var past24Events: [Event] = []
-    var past48Events: [Event] = []
-    var past72Events: [Event] = []
-    var past96Events: [Event] = []
-    var previousDaysEvents: [Event] = []
+    var events = [Event]()
+    var past24Events = [Event]()
+    var past48Events = [Event]()
+    var past72Events = [Event]()
+    var past96Events = [Event]()
+    var previousDaysEvents = [Event]()
     
-    var magnitudeFilteringValue: Float = 0
-    var displayedDays: Int = 0
-    var dataSources: [String: Bool] = [:]
-    var refreshControl = UIRefreshControl()
+    var color: Color?
+    
+    var searchController = UISearchController(searchResultsController: nil)
     var isSearching = true
-    
+    var refreshControl = UIRefreshControl()
     var activityIndicatorView: UIActivityIndicatorView!
     var firstLoading: Bool = true
     
-    var didTapFilter: (() -> ())?
     var didTapSearch: (() -> ())?
-    var didTapEvent: ((String) -> ())?
+    var didTapFilter: (() -> ())?
     var didPullRefreshControl: (() -> ())?
-    var color: Color?
-    var searchController = UISearchController(searchResultsController: nil)
+    var didTapEvent: ((String) -> ())?
     var end: ((String) -> ())?
     
     struct Cells {
@@ -49,10 +46,22 @@ class MainEventsView: UIView, ViewControllerModellableView{
     }
     
     func setup() {
-        self.addSubview(mainEventsTableView)
+        addSubview(mainEventsTableView)
         configureMainEventsTableView()
         setLoadDataView()
         setupRefreshControl()
+    }
+    
+    private func configureMainEventsTableView() {
+        setMainEventsTableViewDelegates()
+        mainEventsTableView.separatorColor = .separator
+        mainEventsTableView.rowHeight = 65
+        mainEventsTableView.register(MainEventsTableViewCell.self, forCellReuseIdentifier: Cells.mainEventsTableViewCell)
+    }
+    
+    private func setMainEventsTableViewDelegates() {
+        mainEventsTableView.delegate = self
+        mainEventsTableView.dataSource = self
     }
     
     private func setLoadDataView() {
@@ -86,16 +95,9 @@ class MainEventsView: UIView, ViewControllerModellableView{
         mainEventsTableView.separatorStyle = .none
     }
     
-    func configureMainEventsTableView() {
-        setMainEventsTableViewDelegates()
-        mainEventsTableView.separatorColor = .separator
-        mainEventsTableView.rowHeight = 65
-        mainEventsTableView.register(MainEventsTableViewCell.self, forCellReuseIdentifier: Cells.mainEventsTableViewCell)
-    }
-    
-    func setMainEventsTableViewDelegates() {
-        mainEventsTableView.delegate = self
-        mainEventsTableView.dataSource = self
+    private func setupRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(didPullRefreshControlFunc), for: .valueChanged)
+        mainEventsTableView.refreshControl = refreshControl
     }
     
     func style() {
@@ -128,13 +130,10 @@ class MainEventsView: UIView, ViewControllerModellableView{
         if !events.isEmpty && firstLoading {
             restoreAfterFirstLoading()
         }
-        magnitudeFilteringValue = model.state.magnitudeFilteringValue
-        displayedDays = model.state.displayedDays
-        dataSources = model.state.dataSources
-        dataSources = dataSources.filter{$0.value == true}
+        let dataSources = model.state.dataSources.filter{$0.value == true}
         let tmp = dataSources.keys
         let str = model.state.searchedString
-        events = events.filter{$0.magnitudo >= self.magnitudeFilteringValue && $0.daysAgo < self.displayedDays && tmp.contains($0.dataSource)}
+        events = events.filter{$0.magnitudo >= model.state.magnitudeFilteringValue && $0.daysAgo < model.state.displayedDays && tmp.contains($0.dataSource)}
         if str != "" {
             events = events.filter{$0.name.lowercased().contains(str.lowercased())}
         }
@@ -157,24 +156,11 @@ class MainEventsView: UIView, ViewControllerModellableView{
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        mainEventsTableView.pin.top().left().right().bottom()
-    }
-    
-    private func setupRefreshControl() {
-        refreshControl.addTarget(self, action: #selector(didPullRefreshControlFunc), for: .valueChanged)
-        mainEventsTableView.refreshControl = refreshControl
-    }
-    
-    @objc func didTapFilterFunc() {
-        didTapFilter?()
-    }
-    
-    @objc func didTapEventFunc(id: String) {
-        didTapEvent?(id)
-    }
-    
-    @objc func didPullRefreshControlFunc() {
-        didPullRefreshControl?()
+        mainEventsTableView.translatesAutoresizingMaskIntoConstraints = false
+        mainEventsTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        mainEventsTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        mainEventsTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
+        mainEventsTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     
     @objc func didTapSearchFunc() {
@@ -189,6 +175,19 @@ class MainEventsView: UIView, ViewControllerModellableView{
         self.searchController.searchBar.delegate = self
         didTapSearch?()
     }
+    
+    @objc func didTapFilterFunc() {
+        didTapFilter?()
+    }
+    
+    @objc func didPullRefreshControlFunc() {
+        didPullRefreshControl?()
+    }
+    
+    @objc func didTapEventFunc(id: String) {
+        didTapEvent?(id)
+    }
+    
 }
 
 extension MainEventsView: UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
@@ -223,7 +222,7 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource, UISearchBa
         }
     }
     
-    func setEmptyView(title: String, message: String) {
+    private func setEmptyView(title: String, message: String) {
         let emptyView = UIView()
         let titleLabel = UILabel()
         let messageLabel = UILabel()
@@ -249,12 +248,12 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource, UISearchBa
         mainEventsTableView.separatorStyle = .none
     }
     
-    func restore() {
+    private func restore() {
         mainEventsTableView.backgroundView = nil
         mainEventsTableView.separatorStyle = .singleLine
     }
     
-    func restoreAfterFirstLoading() {
+    private func restoreAfterFirstLoading() {
         firstLoading = false
         activityIndicatorView.stopAnimating()
         restore()
@@ -332,13 +331,14 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource, UISearchBa
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchBar.text == nil || searchBar.text == ""{
+        if searchBar.text == nil || searchBar.text == "" {
             isSearching = false
             self.endEditing(true)
             end?("")
-        }else{
+        } else {
             isSearching = true
             end?(searchBar.text!)
         }
     }
+    
 }

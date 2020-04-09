@@ -8,7 +8,7 @@
 
 import Katana
 
-class MainTabBarController: UITabBarController {
+final class MainTabBarController: UITabBarController {
     
     var store: PartialStore<AppState>!
     
