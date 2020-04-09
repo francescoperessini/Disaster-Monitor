@@ -87,8 +87,8 @@ class FilterView: UIView, ViewControllerModellableView {
     func update(oldModel: FilterViewModel?) {
         guard let model = self.model else { return }
         
-        sliderValue = model.state.filteringValue
-        segmentedControlValue = String(model.state.segmentedDays)
+        sliderValue = model.state.magnitudeFilteringValue
+        segmentedControlValue = String(model.state.displayedDays)
         switchValues = model.state.dataSources
         
         navigationBar?.tintColor = model.state.customColor.getColor()

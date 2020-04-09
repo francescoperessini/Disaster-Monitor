@@ -27,8 +27,8 @@ class MainEventsView: UIView, ViewControllerModellableView{
     var past96Events: [Event] = []
     var previousDaysEvents: [Event] = []
     
-    var filteringValue: Float = 0
-    var filteringDay: Int = 0
+    var magnitudeFilteringValue: Float = 0
+    var displayedDays: Int = 0
     var dataSources: [String: Bool] = [:]
     var refreshControl = UIRefreshControl()
     var isSearching = true
@@ -128,13 +128,13 @@ class MainEventsView: UIView, ViewControllerModellableView{
         if !events.isEmpty && firstLoading {
             restoreAfterFirstLoading()
         }
-        filteringValue = model.state.filteringValue
-        filteringDay = model.state.segmentedDays
+        magnitudeFilteringValue = model.state.magnitudeFilteringValue
+        displayedDays = model.state.displayedDays
         dataSources = model.state.dataSources
         dataSources = dataSources.filter{$0.value == true}
         let tmp = dataSources.keys
-        let str = model.state.searchString
-        events = events.filter{$0.magnitudo >= self.filteringValue && $0.daysAgo < self.filteringDay && tmp.contains($0.dataSource)}
+        let str = model.state.searchedString
+        events = events.filter{$0.magnitudo >= self.magnitudeFilteringValue && $0.daysAgo < self.displayedDays && tmp.contains($0.dataSource)}
         if str != "" {
             events = events.filter{$0.name.lowercased().contains(str.lowercased())}
         }

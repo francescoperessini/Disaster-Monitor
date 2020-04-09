@@ -11,16 +11,16 @@ import Hydra
 import SwiftyJSON
 
 struct AppState: State, Codable {
-    var events: [Event] = []
-    var filteringValue: Float = -1.0
-    var message: String = "Message to be shared\nSent from Disaster Monitor App"
-    var segmentedDays: Int = 7
-    var customColor: Color = Color(name: .blue)
+    var events = [Event]()
+    var magnitudeFilteringValue: Float = -1.0
+    var displayedDays: Int = 7
     var dataSources: [String: Bool] = ["INGV": true, "USGS": true]
-    var regions: [Region] = []
+    var searchedString: String = ""
+    var message: String = "Message to be shared\nSent from Disaster Monitor App"
     var isNotficiationEnabled: Bool = false
+    var regions = [Region]()
+    var customColor: Color = Color(name: .blue)
     var debugMode: Bool = false
-    var searchString: String = ""
 }
 
 enum colors: Int, Codable {
@@ -48,7 +48,7 @@ struct Color: Codable {
     }
 }
 
-struct EventsStateUpdater: StateUpdater {
+struct EventsStateUpdaterUSGS: StateUpdater {
     let newValue: JSON
     func updateState(_ state: inout AppState) {
         let arrayNames = newValue["features"].arrayValue.map{$0["properties"]["place"].stringValue}
@@ -128,31 +128,33 @@ struct EventsStateUpdaterINGV: StateUpdater {
 
 struct UpdateDaysAgo: StateUpdater {
     func updateState(_ state: inout AppState) {
+        print("Entered in UpdateDaysAgo StateUpdater")
         if !state.events.isEmpty {
             let date = Date()
             state.events.forEach{state.events[state.events.firstIndex(of: $0)!].daysAgo = Calendar.current.dateComponents([.day], from: $0.date, to: date).day!}
         }
+        print("Exited UpdateDaysAgo StateUpdater")
     }
 }
 
 struct SearchEvent: StateUpdater {
     var text: String
     func updateState(_ state: inout AppState) {
-        state.searchString = text
+        state.searchedString = text
     }
 }
 
 struct SetThreshold: StateUpdater {
     var value: Float
     func updateState(_ state: inout AppState) {
-        state.filteringValue = value
+        state.magnitudeFilteringValue = value
     }
 }
 
 struct SetSegmented: StateUpdater {
     var value: Int
     func updateState(_ state: inout AppState) {
-        state.segmentedDays = value
+        state.displayedDays = value
     }
 }
 
@@ -182,12 +184,12 @@ struct InitState: StateUpdater {
     func updateState(_ state: inout AppState) {
         print("Entered in InitState StateUpdater")
         state.events = InState.events
-        state.filteringValue = InState.filteringValue
+        state.magnitudeFilteringValue = InState.magnitudeFilteringValue
+        state.displayedDays = InState.displayedDays
         state.message = InState.message
-        state.segmentedDays = InState.segmentedDays
-        state.customColor = InState.customColor
-        state.regions = InState.regions
         state.isNotficiationEnabled = InState.isNotficiationEnabled
+        state.regions = InState.regions
+        state.customColor = InState.customColor
         state.debugMode = InState.debugMode
         print("Exited InitState StateUpdater")
     }
@@ -324,7 +326,7 @@ struct GetEvents: SideEffect {
         
         APIManager.getEventsUSGS(date: date, time: time)
             .then { newValue in
-                context.dispatch(EventsStateUpdater(newValue: newValue))
+                context.dispatch(EventsStateUpdaterUSGS(newValue: newValue))
         }
         .catch { error in
             print(error.localizedDescription)
