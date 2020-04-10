@@ -48,97 +48,17 @@ struct Color: Codable {
     }
 }
 
-struct EventsStateUpdaterUSGS: StateUpdater {
-    let newValue: JSON
-    func updateState(_ state: inout AppState) {
-        let arrayNames = newValue["features"].arrayValue.map{$0["properties"]["place"].stringValue}
-        let description = newValue["features"].arrayValue.map{$0["properties"]["type"].stringValue}
-        let magnitudo = newValue["features"].arrayValue.map{$0["properties"]["mag"].stringValue}
-        let coord = newValue["features"].arrayValue.map{"\($0["geometry"]["coordinates"][0].stringValue) \($0["geometry"]["coordinates"][1].stringValue)"}
-        let id = newValue["features"].arrayValue.map{$0["id"].stringValue}
-        let time = newValue["features"].arrayValue.map{$0["properties"]["time"].doubleValue}
-        let depth = newValue["features"].arrayValue.map{$0["geometry"]["coordinates"][2].floatValue}
-        let updated = newValue["features"].arrayValue.map{$0["properties"]["updated"].doubleValue}
-        let magType = newValue["features"].arrayValue.map{$0["properties"]["magType"].stringValue}
-        let url = newValue["features"].arrayValue.map{$0["properties"]["url"].stringValue}
-        let felt = newValue["features"].arrayValue.map{$0["properties"]["felt"].intValue}
-        let dataSource = "USGS"
-        print("[USGS] JSON decoded")
-        
-        let start = CFAbsoluteTimeGetCurrent()
-        for i in 0...arrayNames.count - 1 {
-            if i % 500 == 0 && i != 0 {
-                print("[USGS] Processed events: \(i)")
-            }
-            // Unseen events
-            if !state.events.contains(where: {$0.id == id[i]}) {
-                state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i], magType: magType[i], url: url[i], felt: felt[i]))
-            }
-                // Seen events, with an update
-            else if state.events.contains(where: {$0.id == id[i] && $0.updated != updated[i]}) {
-                /*let toRemoveEvent = state.events.firstIndex{$0.id == id[i]}
-                 state.events.remove(at: toRemoveEvent!)*/
-                state.events.removeAll(where: {$0.id == id[i]})
-                state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i], magType: magType[i], url: url[i], felt: felt[i]))
-            }
-        }
-        let diff = CFAbsoluteTimeGetCurrent() - start
-        print("[USGS] for loop took: \(diff) seconds")
-        state.events.sort(by: {$0.time > $1.time})
-        print("[USGS] StateUpdater executed")
-    }
-}
-
-struct EventsStateUpdaterINGV: StateUpdater {
-    let newValue: JSON
-    func updateState(_ state: inout AppState) {
-        let arrayNames = newValue["features"].arrayValue.map{$0["properties"]["place"].stringValue}
-        let description = newValue["features"].arrayValue.map{$0["properties"]["type"].stringValue}
-        let magnitudo = newValue["features"].arrayValue.map{$0["properties"]["mag"].stringValue}
-        let coord = newValue["features"].arrayValue.map{"\($0["geometry"]["coordinates"][0].stringValue) \($0["geometry"]["coordinates"][1].stringValue)"}
-        let id = newValue["features"].arrayValue.map{$0["properties"]["eventId"].stringValue}
-        let time_str = newValue["features"].arrayValue.map{$0["properties"]["time"].stringValue}
-        let depth = newValue["features"].arrayValue.map{$0["geometry"]["coordinates"][2].floatValue}
-        let magType = newValue["features"].arrayValue.map{$0["properties"]["magType"].stringValue}
-        let url_tmp = "http://terremoti.ingv.it/event/"
-        let felt = 0
-        let dataSource = "INGV"
-        print("[INGV] JSON decoded")
-        
-        var result_time: [Double] = []
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
-        dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        
-        for time in time_str {
-            guard let appo = dateFormatter.date(from: time) else { return }
-            result_time.append(appo.timeIntervalSince1970 * 1000.0)
-        }
-        
-        for i in 0...arrayNames.count - 1 {
-            if i % 100 == 0 && i != 0 {
-                print("[INGV] Processed events: \(i)")
-            }
-            if !state.events.contains(where: {$0.id == id[i]}) {
-                let url = url_tmp + id[i] + "?timezone=UTC"
-                state.events.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: result_time[i], dataSource: dataSource, updated: 0, magType: magType[i], url: url, felt: felt))
-            }
-        }
-        state.events.sort(by: {$0.time > $1.time})
-        print("[INGV] StateUpdater executed")
-    }
-}
-
 struct UpdateDaysAgo: StateUpdater {
     func updateState(_ state: inout AppState) {
         print("[For debug purpose] Printing customColor: \(state.customColor)")
         print("Entered in UpdateDaysAgo StateUpdater")
+        print(Date())
         if !state.events.isEmpty {
             let date = Date()
             state.events.forEach{state.events[state.events.firstIndex(of: $0)!].daysAgo = Calendar.current.dateComponents([.day], from: $0.date, to: date).day!}
         }
         print("Exited UpdateDaysAgo StateUpdater")
+        print(Date())
     }
 }
 
@@ -320,6 +240,26 @@ struct DeleteOlder: StateUpdater {
     }
 }
 
+
+struct EventsStateUpdater: StateUpdater {
+    let newValue: [Event]
+    func updateState(_ state: inout AppState) {
+        print("STARTED" )
+        let start = CFAbsoluteTimeGetCurrent()
+        for event in newValue{
+            if(state.events.contains(event)){
+                state.events.removeAll(where: { $0.id == event.id })
+                state.events.append(event)
+            }else{
+                state.events.append(event)
+            }
+        }
+        let diff = CFAbsoluteTimeGetCurrent() - start
+        print("Took: \(diff) seconds")
+        print("ENDED" )
+    }
+}
+
 struct GetEvents: SideEffect {
     func sideEffect(_ context: SideEffectContext<AppState, DependenciesContainer>) throws {
         
@@ -334,24 +274,85 @@ struct GetEvents: SideEffect {
         
         context.dispatch(UpdateDaysAgo())
         
-        APIManager.getEventsUSGS(date: date, time: time)
-            .then { newValue in
-                context.dispatch(EventsStateUpdaterUSGS(newValue: newValue))
-        }
-        .catch { error in
-            print(error.localizedDescription)
-        }
-        APIManager.getEventsINGV(date: date, time: time)
-            .then { newValue in
-                context.dispatch(EventsStateUpdaterINGV(newValue: newValue))
-        }
-        .catch { error in
-            print(error.localizedDescription)
-        }
         
-        context.dispatch(ScheduleEventsNotifications())
-        
+        let p1 = APIManager.getEventsUSGS(date: date, time: time)
+        let p2 = APIManager.getEventsINGV(date: date, time: time)
+        let stateEvents = context.getState().events
+                
+        all(p1, p2).then(in: .background) { r in
+            let usgsData = preprareDataUSGS(newValue: r[0], stateEvents: stateEvents)
+            let ingvData = preprareDataINGV(newValue: r[1], stateEvents: stateEvents)
+            
+            context.dispatch(EventsStateUpdater(newValue: usgsData + ingvData))
+            
+            let res = try await(context.dispatch(EventsStateUpdater(newValue: [])))
+            
+        }
     }
+}
+
+private func preprareDataINGV(newValue: JSON, stateEvents: [Event]) -> [Event]{
+    var returnEvents = [Event]()
+    
+    let arrayNames = newValue["features"].arrayValue.map{$0["properties"]["place"].stringValue}
+    let description = newValue["features"].arrayValue.map{$0["properties"]["type"].stringValue}
+    let magnitudo = newValue["features"].arrayValue.map{$0["properties"]["mag"].stringValue}
+    let coord = newValue["features"].arrayValue.map{"\($0["geometry"]["coordinates"][0].stringValue) \($0["geometry"]["coordinates"][1].stringValue)"}
+    let id = newValue["features"].arrayValue.map{$0["properties"]["eventId"].stringValue}
+    let time_str = newValue["features"].arrayValue.map{$0["properties"]["time"].stringValue}
+    let depth = newValue["features"].arrayValue.map{$0["geometry"]["coordinates"][2].floatValue}
+    let magType = newValue["features"].arrayValue.map{$0["properties"]["magType"].stringValue}
+    let url_tmp = "http://terremoti.ingv.it/event/"
+    let felt = 0
+    let dataSource = "INGV"
+    print("[INGV] JSON decoded")
+    
+    var result_time: [Double] = []
+    
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+    dateFormatter.timeZone = TimeZone(identifier: "UTC")
+    
+    for time in time_str {
+        guard let appo = dateFormatter.date(from: time) else { return [] }
+        result_time.append(appo.timeIntervalSince1970 * 1000.0)
+    }
+    
+    for i in 0...arrayNames.count - 1 {
+        let url = url_tmp + id[i] + "?timezone=UTC"
+        if !stateEvents.contains(where: {$0.id == id[i]}) {
+            returnEvents.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: result_time[i], dataSource: dataSource, updated: 0, magType: magType[i], url: url, felt: felt))
+        }
+    }
+    
+    return returnEvents
+}
+
+private func preprareDataUSGS(newValue: JSON, stateEvents: [Event]) -> [Event]{
+    var returnEvents = [Event]()
+    let arrayNames = newValue["features"].arrayValue.map{$0["properties"]["place"].stringValue}
+    let description = newValue["features"].arrayValue.map{$0["properties"]["type"].stringValue}
+    let magnitudo = newValue["features"].arrayValue.map{$0["properties"]["mag"].stringValue}
+    let coord = newValue["features"].arrayValue.map{"\($0["geometry"]["coordinates"][0].stringValue) \($0["geometry"]["coordinates"][1].stringValue)"}
+    let id = newValue["features"].arrayValue.map{$0["id"].stringValue}
+    let time = newValue["features"].arrayValue.map{$0["properties"]["time"].doubleValue}
+    let depth = newValue["features"].arrayValue.map{$0["geometry"]["coordinates"][2].floatValue}
+    let updated = newValue["features"].arrayValue.map{$0["properties"]["updated"].doubleValue}
+    let magType = newValue["features"].arrayValue.map{$0["properties"]["magType"].stringValue}
+    let url = newValue["features"].arrayValue.map{$0["properties"]["url"].stringValue}
+    let felt = newValue["features"].arrayValue.map{$0["properties"]["felt"].intValue}
+    let dataSource = "USGS"
+    
+    print("[USGS] JSON decoded")
+    
+    for i in 0...arrayNames.count - 1 {
+        // Unseen events
+        if !stateEvents.contains(where: {$0.id == id[i]}) || stateEvents.contains(where: {$0.id == id[i] && $0.updated != updated[i]}) {
+            returnEvents.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i], magType: magType[i], url: url[i], felt: felt[i]))
+        }
+    }
+    // New events or updated events
+    return returnEvents
 }
 
 struct InitAppState: SideEffect {
