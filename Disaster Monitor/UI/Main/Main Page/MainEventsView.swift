@@ -96,8 +96,8 @@ class MainEventsView: UIView, ViewControllerModellableView{
     }
     
     private func setupRefreshControl() {
-        refreshControl.addTarget(self, action: #selector(didPullRefreshControlFunc), for: .valueChanged)
         mainEventsTableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(didPullRefreshControlFunc), for: .valueChanged)
     }
     
     func style() {
@@ -156,11 +156,7 @@ class MainEventsView: UIView, ViewControllerModellableView{
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        mainEventsTableView.translatesAutoresizingMaskIntoConstraints = false
-        mainEventsTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        mainEventsTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        mainEventsTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
-        mainEventsTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        mainEventsTableView.pin.top().left().right().bottom()
     }
     
     @objc func didTapSearchFunc() {

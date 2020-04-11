@@ -17,6 +17,7 @@ final class LocalNotificationsManager {
         var notifiedEvents = [Event]()
         
         if places.isEmpty {
+            print("[LocalNotificationsManager] No monitored places found! Returning...")
             return notifiedEvents
         }
         
@@ -52,14 +53,14 @@ final class LocalNotificationsManager {
                                 print(error)
                             }
                             else {
-                                print("[Async] Notification added (ID: \(notificationRequest.identifier))")
+                                print("[LocalNotificationsManager, Async] Notification added (ID: \(notificationRequest.identifier))")
                             }
                         })
                     }
                 }
             }
         }
-        print("Number of notifications scheduled: \(notifiedEvents.count)")
+        print("[LocalNotificationsManager] Number of notifications scheduled: \(notifiedEvents.count)")
         return notifiedEvents
     }
     

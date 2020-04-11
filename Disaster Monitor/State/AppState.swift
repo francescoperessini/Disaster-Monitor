@@ -50,15 +50,12 @@ struct Color: Codable {
 
 struct UpdateDaysAgo: StateUpdater {
     func updateState(_ state: inout AppState) {
-        print("[For debug purpose] Printing customColor: \(state.customColor)")
-        print("Entered in UpdateDaysAgo StateUpdater")
-        print(Date())
+        print("\(Date()) Entered in UpdateDaysAgo StateUpdater")
         if !state.events.isEmpty {
             let date = Date()
             state.events.forEach{state.events[state.events.firstIndex(of: $0)!].daysAgo = Calendar.current.dateComponents([.day], from: $0.date, to: date).day!}
         }
-        print("Exited UpdateDaysAgo StateUpdater")
-        print(Date())
+        print("\(Date()) Exited UpdateDaysAgo StateUpdater")
     }
 }
 
@@ -107,7 +104,7 @@ struct SetMessage: StateUpdater {
 struct InitState: StateUpdater {
     var InState: AppState
     func updateState(_ state: inout AppState) {
-        print("Entered in InitState StateUpdater")
+        print("\(Date()) Entered in InitState StateUpdater")
         state.events = InState.events
         state.magnitudeFilteringValue = InState.magnitudeFilteringValue
         state.displayedDays = InState.displayedDays
@@ -116,8 +113,7 @@ struct InitState: StateUpdater {
         state.regions = InState.regions
         state.customColor = InState.customColor
         state.debugMode = InState.debugMode
-        print("Exited InitState StateUpdater")
-        print("[For debug purpose] Printing customColor: \(state.customColor)")
+        print("\(Date()) Exited InitState StateUpdater")
     }
 }
 
@@ -174,7 +170,7 @@ struct RemoveDebugEvents: StateUpdater {
 
 struct ScheduleEventsNotifications: StateUpdater {
     func updateState(_ state: inout AppState) {
-        print("Entered in ScheduleEventsNotifications StateUpdater")
+        print("\(Date()) Entered in ScheduleEventsNotifications StateUpdater")
         var notifiedEvents = [Event]()
         
         if state.isNotficiationEnabled {
@@ -206,7 +202,7 @@ struct ScheduleEventsNotifications: StateUpdater {
                 }
             }
         }
-        print("Exited ScheduleEventsNotifications StateUpdater")
+        print("\(Date()) Exited ScheduleEventsNotifications StateUpdater")
     }
 }
 
@@ -240,29 +236,30 @@ struct DeleteOlder: StateUpdater {
     }
 }
 
-
 struct EventsStateUpdater: StateUpdater {
     let newValue: [Event]
     func updateState(_ state: inout AppState) {
-        print("STARTED" )
+        print("\(Date()) Entered EventsStateUpdater StateUpdater")
         let start = CFAbsoluteTimeGetCurrent()
-        for event in newValue{
-            if(state.events.contains(event)){
-                state.events.removeAll(where: { $0.id == event.id })
+        for event in newValue {
+            if (state.events.contains(event)) {
+                state.events.removeAll(where: {$0.id == event.id})
                 state.events.append(event)
-            }else{
+            } else {
                 state.events.append(event)
             }
         }
         let diff = CFAbsoluteTimeGetCurrent() - start
-        print("Took: \(diff) seconds")
-        print("ENDED" )
+        print(String(format: "\(Date()) [EventsStateUpdater] Loop took %.2f seconds", diff))
+        
+        // Serve fare il sorting?
+        state.events.sort(by: {$0.time > $1.time})
+        print("\(Date()) Exited EventsStateUpdater StateUpdater")
     }
 }
 
 struct GetEvents: SideEffect {
     func sideEffect(_ context: SideEffectContext<AppState, DependenciesContainer>) throws {
-        
         let weekAgo = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: Date())!
         let formatter = DateFormatter()
         formatter.timeZone = TimeZone(identifier: "UTC")
@@ -272,63 +269,29 @@ struct GetEvents: SideEffect {
         let date = String(fullFormattedDateArr[0])
         let time = String(fullFormattedDateArr[1])
         
-        context.dispatch(UpdateDaysAgo())
-        
+        try await(context.dispatch(UpdateDaysAgo()))
         
         let p1 = APIManager.getEventsUSGS(date: date, time: time)
         let p2 = APIManager.getEventsINGV(date: date, time: time)
         let stateEvents = context.getState().events
-                
-        all(p1, p2).then(in: .background) { r in
+        
+        try await(all(p1, p2).then(in: .utility) { r in
+            // I due preprareData vengono fatti in contemporanea?
             let usgsData = preprareDataUSGS(newValue: r[0], stateEvents: stateEvents)
             let ingvData = preprareDataINGV(newValue: r[1], stateEvents: stateEvents)
             
             context.dispatch(EventsStateUpdater(newValue: usgsData + ingvData))
-            
-            let res = try await(context.dispatch(EventsStateUpdater(newValue: [])))
-            
         }
+        .catch { error in
+            print(error.localizedDescription)
+        })
+        
+        context.dispatch(ScheduleEventsNotifications())
+        
     }
 }
 
-private func preprareDataINGV(newValue: JSON, stateEvents: [Event]) -> [Event]{
-    var returnEvents = [Event]()
-    
-    let arrayNames = newValue["features"].arrayValue.map{$0["properties"]["place"].stringValue}
-    let description = newValue["features"].arrayValue.map{$0["properties"]["type"].stringValue}
-    let magnitudo = newValue["features"].arrayValue.map{$0["properties"]["mag"].stringValue}
-    let coord = newValue["features"].arrayValue.map{"\($0["geometry"]["coordinates"][0].stringValue) \($0["geometry"]["coordinates"][1].stringValue)"}
-    let id = newValue["features"].arrayValue.map{$0["properties"]["eventId"].stringValue}
-    let time_str = newValue["features"].arrayValue.map{$0["properties"]["time"].stringValue}
-    let depth = newValue["features"].arrayValue.map{$0["geometry"]["coordinates"][2].floatValue}
-    let magType = newValue["features"].arrayValue.map{$0["properties"]["magType"].stringValue}
-    let url_tmp = "http://terremoti.ingv.it/event/"
-    let felt = 0
-    let dataSource = "INGV"
-    print("[INGV] JSON decoded")
-    
-    var result_time: [Double] = []
-    
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
-    dateFormatter.timeZone = TimeZone(identifier: "UTC")
-    
-    for time in time_str {
-        guard let appo = dateFormatter.date(from: time) else { return [] }
-        result_time.append(appo.timeIntervalSince1970 * 1000.0)
-    }
-    
-    for i in 0...arrayNames.count - 1 {
-        let url = url_tmp + id[i] + "?timezone=UTC"
-        if !stateEvents.contains(where: {$0.id == id[i]}) {
-            returnEvents.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: result_time[i], dataSource: dataSource, updated: 0, magType: magType[i], url: url, felt: felt))
-        }
-    }
-    
-    return returnEvents
-}
-
-private func preprareDataUSGS(newValue: JSON, stateEvents: [Event]) -> [Event]{
+private func preprareDataUSGS(newValue: JSON, stateEvents: [Event]) -> [Event] {
     var returnEvents = [Event]()
     let arrayNames = newValue["features"].arrayValue.map{$0["properties"]["place"].stringValue}
     let description = newValue["features"].arrayValue.map{$0["properties"]["type"].stringValue}
@@ -343,12 +306,50 @@ private func preprareDataUSGS(newValue: JSON, stateEvents: [Event]) -> [Event]{
     let felt = newValue["features"].arrayValue.map{$0["properties"]["felt"].intValue}
     let dataSource = "USGS"
     
-    print("[USGS] JSON decoded")
+    print("\(Date()) [USGS] JSON decoded")
     
     for i in 0...arrayNames.count - 1 {
         // Unseen events
         if !stateEvents.contains(where: {$0.id == id[i]}) || stateEvents.contains(where: {$0.id == id[i] && $0.updated != updated[i]}) {
             returnEvents.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i], magType: magType[i], url: url[i], felt: felt[i]))
+        }
+    }
+    // New events or updated events
+    return returnEvents
+}
+
+private func preprareDataINGV(newValue: JSON, stateEvents: [Event]) -> [Event] {
+    var returnEvents = [Event]()
+    let arrayNames = newValue["features"].arrayValue.map{$0["properties"]["place"].stringValue}
+    let description = newValue["features"].arrayValue.map{$0["properties"]["type"].stringValue}
+    let magnitudo = newValue["features"].arrayValue.map{$0["properties"]["mag"].stringValue}
+    let coord = newValue["features"].arrayValue.map{"\($0["geometry"]["coordinates"][0].stringValue) \($0["geometry"]["coordinates"][1].stringValue)"}
+    let id = newValue["features"].arrayValue.map{$0["properties"]["eventId"].stringValue}
+    let time_str = newValue["features"].arrayValue.map{$0["properties"]["time"].stringValue}
+    let depth = newValue["features"].arrayValue.map{$0["geometry"]["coordinates"][2].floatValue}
+    let magType = newValue["features"].arrayValue.map{$0["properties"]["magType"].stringValue}
+    let url_tmp = "http://terremoti.ingv.it/event/"
+    let felt = 0
+    let dataSource = "INGV"
+    
+    print("\(Date()) [INGV] JSON decoded")
+    
+    var result_time: [Double] = []
+    
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+    dateFormatter.timeZone = TimeZone(identifier: "UTC")
+    
+    for time in time_str {
+        guard let tmp = dateFormatter.date(from: time) else { return [] }
+        result_time.append(tmp.timeIntervalSince1970 * 1000.0)
+    }
+    
+    for i in 0...arrayNames.count - 1 {
+        // Unseen events
+        if !stateEvents.contains(where: {$0.id == id[i]}) {
+            let url = url_tmp + id[i] + "?timezone=UTC"
+            returnEvents.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: result_time[i], dataSource: dataSource, updated: 0, magType: magType[i], url: url, felt: felt))
         }
     }
     // New events or updated events
@@ -369,7 +370,7 @@ struct InitAppState: SideEffect {
                 context.dispatch(InitState(InState: state))
             }
             catch {
-                print(error)
+                print(error.localizedDescription)
             }
         }
     }
