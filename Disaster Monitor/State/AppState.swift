@@ -17,7 +17,7 @@ struct AppState: State, Codable {
     var dataSources: [String: Bool] = ["INGV": true, "USGS": true]
     var searchedString: String = ""
     var message: String = "Message to be shared\nSent from Disaster Monitor App"
-    var isNotficiationEnabled: Bool = false
+    var isNotficiationEnabled: Bool = true
     var regions = [Region]()
     var customColor: Color = Color(name: .blue)
     var debugMode: Bool = false
@@ -108,6 +108,7 @@ struct InitState: StateUpdater {
         state.events = InState.events
         state.magnitudeFilteringValue = InState.magnitudeFilteringValue
         state.displayedDays = InState.displayedDays
+        state.searchedString = InState.searchedString
         state.message = InState.message
         state.isNotficiationEnabled = InState.isNotficiationEnabled
         state.regions = InState.regions
@@ -276,7 +277,6 @@ struct GetEvents: SideEffect {
         let stateEvents = context.getState().events
         
         try await(all(p1, p2).then(in: .utility) { r in
-            // I due preprareData vengono fatti in contemporanea?
             let usgsData = preprareDataUSGS(newValue: r[0], stateEvents: stateEvents)
             let ingvData = preprareDataINGV(newValue: r[1], stateEvents: stateEvents)
             

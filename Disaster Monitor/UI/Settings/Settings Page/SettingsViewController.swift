@@ -31,6 +31,7 @@ class SettingsViewController: ViewController<SettingsView> {
         }
         
         rootView.didTapStylingColor = { [unowned self] color in
+            self.tabBarController?.tabBar.tintColor = color.getColor()
             self.dispatch(UpdateCustomColor(color: color))
         }
         

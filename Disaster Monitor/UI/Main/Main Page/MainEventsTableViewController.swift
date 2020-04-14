@@ -31,8 +31,12 @@ class MainEventsTableViewController: ViewController<MainEventsView> {
             self.dispatch(GetEvents())
         }
         
-        rootView.didTapSearch = { [unowned self] in
-            self.present(self.rootView.searchController, animated: true, completion: nil)
+        rootView.didTapSearch = { [unowned self] controller in
+            self.present(controller, animated: true, completion: nil)
+        }
+        
+        rootView.endSearching = { controller in
+            controller.dismiss(animated: true, completion: nil)
         }
         
         rootView.end = { [unowned self] text in

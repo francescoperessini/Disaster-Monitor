@@ -28,14 +28,15 @@ class MainEventsView: UIView, ViewControllerModellableView{
     var previousDaysEvents = [Event]()
     
     var color: Color?
+    var searchedString: String!
     
     var searchController = UISearchController(searchResultsController: nil)
-    var isSearching = true
     var refreshControl = UIRefreshControl()
     var activityIndicatorView: UIActivityIndicatorView!
     var firstLoading: Bool = true
     
-    var didTapSearch: (() -> ())?
+    var didTapSearch: ((UISearchController) -> ())?
+    var endSearching: ((UISearchController) -> ())?
     var didTapFilter: (() -> ())?
     var didPullRefreshControl: (() -> ())?
     var didTapEvent: ((String) -> ())?
@@ -132,10 +133,10 @@ class MainEventsView: UIView, ViewControllerModellableView{
         }
         let dataSources = model.state.dataSources.filter{$0.value == true}
         let tmp = dataSources.keys
-        let str = model.state.searchedString
+        searchedString = model.state.searchedString
         events = events.filter{$0.magnitudo >= model.state.magnitudeFilteringValue && $0.daysAgo < model.state.displayedDays && tmp.contains($0.dataSource)}
-        if str != "" {
-            events = events.filter{$0.name.lowercased().contains(str.lowercased())}
+        if searchedString != "" {
+            events = events.filter{$0.name.lowercased().contains(searchedString.lowercased())}
         }
         past24Events = events.filter{$0.daysAgo == 0}
         past48Events = events.filter{$0.daysAgo == 1}
@@ -145,6 +146,7 @@ class MainEventsView: UIView, ViewControllerModellableView{
         
         color = model.state.customColor
         navigationBar?.tintColor = model.state.customColor.getColor()
+        searchController.searchBar.tintColor = color?.getColor()
         
         DispatchQueue.main.async {
             self.mainEventsTableView.reloadData()
@@ -160,16 +162,14 @@ class MainEventsView: UIView, ViewControllerModellableView{
     }
     
     @objc func didTapSearchFunc() {
-        // Create the search controller and specify that it should present its results in this same view
-        searchController = UISearchController(searchResultsController: nil)
-        
         // Set any properties (in this case, don't hide the nav bar and don't show the emoji keyboard option)
         searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.text = searchedString
         searchController.searchBar.keyboardType = UIKeyboardType.asciiCapable
         
         // Make this class the delegate and present the search
-        self.searchController.searchBar.delegate = self
-        didTapSearch?()
+        searchController.searchBar.delegate = self
+        didTapSearch?(searchController)
     }
     
     @objc func didTapFilterFunc() {
@@ -186,7 +186,7 @@ class MainEventsView: UIView, ViewControllerModellableView{
     
 }
 
-extension MainEventsView: UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+extension MainEventsView: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return MainEventsSection.allCases.count
@@ -197,7 +197,7 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource, UISearchBa
         
         if events.isEmpty {
             if !firstLoading {
-                setEmptyView(title: "No events found", message: "Try applying different filters")
+                setEmptyView(title: "No events found", message: "Try applying different filters or searching for a different location")
             }
             return 0
         }
@@ -222,6 +222,7 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource, UISearchBa
         let emptyView = UIView()
         let titleLabel = UILabel()
         let messageLabel = UILabel()
+        messageLabel.numberOfLines = 0
         emptyView.backgroundColor = .systemBackground
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -234,6 +235,8 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource, UISearchBa
         titleLabel.centerYAnchor.constraint(equalTo: emptyView.centerYAnchor).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor).isActive = true
         messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5).isActive = true
+        messageLabel.leadingAnchor.constraint(equalTo: emptyView.leadingAnchor, constant: 5).isActive = true
+        messageLabel.trailingAnchor.constraint(equalTo: emptyView.trailingAnchor, constant: -5).isActive = true
         messageLabel.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor).isActive = true
         titleLabel.text = title
         titleLabel.textAlignment = .center
@@ -326,15 +329,16 @@ extension MainEventsView: UITableViewDelegate, UITableViewDataSource, UISearchBa
         }
     }
     
+}
+
+extension MainEventsView: UISearchBarDelegate {
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchBar.text == nil || searchBar.text == "" {
-            isSearching = false
-            self.endEditing(true)
-            end?("")
-        } else {
-            isSearching = true
-            end?(searchBar.text!)
-        }
+        end?(searchText)
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        endSearching?(searchController)
     }
     
 }
