@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Event: Codable, Equatable {
+struct Event: Codable, Equatable, Hashable {
     var id: String
     var name: String
     var description: String

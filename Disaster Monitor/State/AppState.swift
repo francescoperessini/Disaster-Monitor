@@ -50,11 +50,14 @@ struct Color: Codable {
 
 struct UpdateDaysAgo: StateUpdater {
     func updateState(_ state: inout AppState) {
+        let start = CFAbsoluteTimeGetCurrent()
         print("\(Date()) Entered in UpdateDaysAgo StateUpdater")
         if !state.events.isEmpty {
             let date = Date()
             state.events.forEach{state.events[state.events.firstIndex(of: $0)!].daysAgo = Calendar.current.dateComponents([.day], from: $0.date, to: date).day!}
         }
+        let diff = CFAbsoluteTimeGetCurrent() - start
+        print(String(format: "\(Date()) [UpdateDaysAgo] Loop took %.2f seconds", diff))
         print("\(Date()) Exited UpdateDaysAgo StateUpdater")
     }
 }
@@ -98,23 +101,6 @@ struct SetMessage: StateUpdater {
     var newMessage: String
     func updateState(_ state: inout AppState) {
         state.message = newMessage
-    }
-}
-
-struct InitState: StateUpdater {
-    var InState: AppState
-    func updateState(_ state: inout AppState) {
-        print("\(Date()) Entered in InitState StateUpdater")
-        state.events = InState.events
-        state.magnitudeFilteringValue = InState.magnitudeFilteringValue
-        state.displayedDays = InState.displayedDays
-        state.searchedString = InState.searchedString
-        state.message = InState.message
-        state.isNotficiationEnabled = InState.isNotficiationEnabled
-        state.regions = InState.regions
-        state.customColor = InState.customColor
-        state.debugMode = InState.debugMode
-        print("\(Date()) Exited InitState StateUpdater")
     }
 }
 
@@ -242,19 +228,22 @@ struct EventsStateUpdater: StateUpdater {
     func updateState(_ state: inout AppState) {
         print("\(Date()) Entered EventsStateUpdater StateUpdater")
         let start = CFAbsoluteTimeGetCurrent()
-        for event in newValue {
-            if (state.events.contains(event)) {
-                state.events.removeAll(where: {$0.id == event.id})
-                state.events.append(event)
-            } else {
-                state.events.append(event)
+        var setNewValue = Set(newValue)
+        
+        for event in state.events {
+            if !setNewValue.contains(event){
+                setNewValue.insert(event)
+            }else{
+                setNewValue.remove(event)
+                setNewValue.insert(event)
             }
         }
         let diff = CFAbsoluteTimeGetCurrent() - start
         print(String(format: "\(Date()) [EventsStateUpdater] Loop took %.2f seconds", diff))
         
         // Serve fare il sorting?
-        state.events.sort(by: {$0.time > $1.time})
+        state.events = Array(setNewValue).sorted(by: {$0.time > $1.time})
+        
         print("\(Date()) Exited EventsStateUpdater StateUpdater")
     }
 }
@@ -270,7 +259,7 @@ struct GetEvents: SideEffect {
         let date = String(fullFormattedDateArr[0])
         let time = String(fullFormattedDateArr[1])
         
-        try await(context.dispatch(UpdateDaysAgo()))
+        //try await(context.dispatch(UpdateDaysAgo()))
         
         let p1 = APIManager.getEventsUSGS(date: date, time: time)
         let p2 = APIManager.getEventsINGV(date: date, time: time)
@@ -314,7 +303,6 @@ private func preprareDataUSGS(newValue: JSON, stateEvents: [Event]) -> [Event] {
             returnEvents.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i], magType: magType[i], url: url[i], felt: felt[i]))
         }
     }
-    // New events or updated events
     return returnEvents
 }
 
@@ -354,24 +342,4 @@ private func preprareDataINGV(newValue: JSON, stateEvents: [Event]) -> [Event] {
     }
     // New events or updated events
     return returnEvents
-}
-
-struct InitAppState: SideEffect {
-    func sideEffect(_ context: SideEffectContext<AppState, DependenciesContainer>) throws {
-        let file = "file.json"
-        if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first{
-            let fileURL = dir.appendingPathComponent(file)
-            let decoder: JSONDecoder = JSONDecoder.init()
-            
-            //reading
-            do {
-                let data = try Data.init(contentsOf: URL(resolvingAliasFileAt: fileURL))
-                let state: AppState = try decoder.decode(AppState.self, from: data)
-                context.dispatch(InitState(InState: state))
-            }
-            catch {
-                print(error.localizedDescription)
-            }
-        }
-    }
 }

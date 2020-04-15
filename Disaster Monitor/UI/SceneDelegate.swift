@@ -30,9 +30,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         let interceptor = PersistorInterceptor.interceptor()
-        store = Store<AppState, DependenciesContainer>(interceptors: [interceptor])
-        
-        store.dispatch(InitAppState())
+        store = Store<AppState, DependenciesContainer>(interceptors: [interceptor], stateInitializer: {
+            print("Entered in Init AppState")
+            let file = "file.json"
+            var appState = AppState()
+            if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first{
+                let fileURL = dir.appendingPathComponent(file)
+                let decoder: JSONDecoder = JSONDecoder.init()
+                
+                //reading
+                do {
+                    let data = try Data.init(contentsOf: URL(resolvingAliasFileAt: fileURL))
+                    appState = try decoder.decode(AppState.self, from: data)
+                }
+                catch {
+                    print(error.localizedDescription)
+                }
+            }
+            print("Exited Init AppState")
+            return appState
+        })
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let tabBarController = MainTabBarController(store: store)
