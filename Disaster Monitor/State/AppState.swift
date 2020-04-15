@@ -48,20 +48,6 @@ struct Color: Codable {
     }
 }
 
-struct UpdateDaysAgo: StateUpdater {
-    func updateState(_ state: inout AppState) {
-        let start = CFAbsoluteTimeGetCurrent()
-        print("\(Date()) Entered in UpdateDaysAgo StateUpdater")
-        if !state.events.isEmpty {
-            let date = Date()
-            state.events.forEach{state.events[state.events.firstIndex(of: $0)!].daysAgo = Calendar.current.dateComponents([.day], from: $0.date, to: date).day!}
-        }
-        let diff = CFAbsoluteTimeGetCurrent() - start
-        print(String(format: "\(Date()) [UpdateDaysAgo] Loop took %.2f seconds", diff))
-        print("\(Date()) Exited UpdateDaysAgo StateUpdater")
-    }
-}
-
 struct SearchEvent: StateUpdater {
     var text: String
     func updateState(_ state: inout AppState) {
@@ -229,11 +215,11 @@ struct EventsStateUpdater: StateUpdater {
         print("\(Date()) Entered EventsStateUpdater StateUpdater")
         let start = CFAbsoluteTimeGetCurrent()
         var setNewValue = Set(newValue)
-        
         for event in state.events {
-            if !setNewValue.contains(event){
+            if !setNewValue.contains(event) {
                 setNewValue.insert(event)
-            }else{
+            }
+            else {
                 setNewValue.remove(event)
                 setNewValue.insert(event)
             }
@@ -241,10 +227,23 @@ struct EventsStateUpdater: StateUpdater {
         let diff = CFAbsoluteTimeGetCurrent() - start
         print(String(format: "\(Date()) [EventsStateUpdater] Loop took %.2f seconds", diff))
         
-        // Serve fare il sorting?
-        state.events = Array(setNewValue).sorted(by: {$0.time > $1.time})
-        
+        state.events = Array(setNewValue)
+        state.events.sort(by: {$0.time > $1.time})
         print("\(Date()) Exited EventsStateUpdater StateUpdater")
+    }
+}
+
+struct UpdateDaysAgo: StateUpdater {
+    func updateState(_ state: inout AppState) {
+        print("\(Date()) Entered UpdateDaysAgo StateUpdater")
+        let start = CFAbsoluteTimeGetCurrent()
+        if !state.events.isEmpty {
+            let date = Date()
+            state.events.forEach{state.events[state.events.firstIndex(of: $0)!].daysAgo = Calendar.current.dateComponents([.day], from: $0.date, to: date).day!}
+        }
+        let diff = CFAbsoluteTimeGetCurrent() - start
+        print(String(format: "\(Date()) [UpdateDaysAgo] Loop took %.2f seconds", diff))
+        print("\(Date()) Exited UpdateDaysAgo StateUpdater")
     }
 }
 
@@ -259,7 +258,7 @@ struct GetEvents: SideEffect {
         let date = String(fullFormattedDateArr[0])
         let time = String(fullFormattedDateArr[1])
         
-        //try await(context.dispatch(UpdateDaysAgo()))
+        try await(context.dispatch(UpdateDaysAgo()))
         
         let p1 = APIManager.getEventsUSGS(date: date, time: time)
         let p2 = APIManager.getEventsINGV(date: date, time: time)
@@ -303,6 +302,7 @@ private func preprareDataUSGS(newValue: JSON, stateEvents: [Event]) -> [Event] {
             returnEvents.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i], magType: magType[i], url: url[i], felt: felt[i]))
         }
     }
+    // New events or updated events
     return returnEvents
 }
 
