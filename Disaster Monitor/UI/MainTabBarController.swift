@@ -16,7 +16,7 @@ final class MainTabBarController: UITabBarController {
         self.init()
         self.store = store
         setupTabBar()
-        //style()
+        style()
     }
     
     override func viewDidLoad() {
@@ -40,9 +40,11 @@ final class MainTabBarController: UITabBarController {
     }
     
     private func style() {
-        tabBar.barTintColor = #colorLiteral(red: 0.1684733033, green: 0.1724286675, blue: 0.1807242036, alpha: 1)
-        tabBar.tintColor = #colorLiteral(red: 1, green: 0.7333333333, blue: 0.2156862745, alpha: 1)
-        tabBar.isTranslucent = false
+        //tabBar.barTintColor = #colorLiteral(red: 0.1684733033, green: 0.1724286675, blue: 0.1807242036, alpha: 1)
+        //tabBar.tintColor = #colorLiteral(red: 1, green: 0.7333333333, blue: 0.2156862745, alpha: 1)
+        //tabBar.isTranslucent = false
+        tabBar.tintColor = .systemGray
+        tabBar.unselectedItemTintColor = .systemGray3
     }
     
 }
