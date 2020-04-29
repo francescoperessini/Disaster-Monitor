@@ -31,14 +31,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let interceptor = PersistorInterceptor.interceptor()
         store = Store<AppState, DependenciesContainer>(interceptors: [interceptor], stateInitializer: {
-            print("Entered in Init AppState")
+            print("\(Date()) Entered stateInitializer")
             let file = "file.json"
             var appState = AppState()
-            if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first{
+            if let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
                 let fileURL = dir.appendingPathComponent(file)
                 let decoder: JSONDecoder = JSONDecoder.init()
                 
-                //reading
+                // reading
                 do {
                     let data = try Data.init(contentsOf: URL(resolvingAliasFileAt: fileURL))
                     appState = try decoder.decode(AppState.self, from: data)
@@ -47,7 +47,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     print(error.localizedDescription)
                 }
             }
-            print("Exited Init AppState")
+            print("\(Date()) Exited stateInitializer")
             return appState
         })
         
