@@ -37,7 +37,7 @@ class Disaster_MonitorTests: XCTestCase {
 
 }
 
-class ScreenTests: XCTestCase{
+class StateUpdaterTests: XCTestCase{
     
     var events = [Event(id: "111", name: "Test Event", descr: "Test Event", magnitudo: "4", coordinates: "0 0", depth: 2, time: 1588153322902, dataSource: "INGV", updated: 2342343, magType: "ml", url: "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson", felt: 0)]
     
