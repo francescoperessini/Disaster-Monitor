@@ -465,6 +465,16 @@ THE SOFTWARE.
 		</dict>
 		<dict>
 			<key>FooterText</key>
+			<string>Copyright 2018 BendingSpoons</string>
+			<key>License</key>
+			<string>No License</string>
+			<key>Title</key>
+			<string>TempuraTesting</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
 			<string>The MIT License (MIT)
 
 Copyright (c) 2014 William Archimede

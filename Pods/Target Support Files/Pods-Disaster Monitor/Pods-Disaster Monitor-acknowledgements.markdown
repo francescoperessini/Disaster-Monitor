@@ -380,6 +380,10 @@ THE SOFTWARE.
 
 Copyright 2018 BendingSpoons
 
+## TempuraTesting
+
+Copyright 2018 BendingSpoons
+
 ## WARangeSlider
 
 The MIT License (MIT)

@@ -16,6 +16,7 @@ target 'Disaster Monitor' do
   pod "WARangeSlider",:modular_headers => true
   pod 'MarqueeLabel',:modular_headers => true
   pod 'Google-Maps-iOS-Utils',:modular_headers => true
+  pod 'TempuraTesting'
   # Pods for Disaster Monitor
 
   target 'Disaster MonitorTests' do

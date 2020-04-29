@@ -8,11 +8,15 @@
 
 import XCTest
 @testable import Disaster_Monitor
+import Tempura
+import TempuraTesting
+import Katana
 
 class Disaster_MonitorTests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        
     }
 
     override func tearDown() {
@@ -31,4 +35,31 @@ class Disaster_MonitorTests: XCTestCase {
         }
     }
 
+}
+
+class ScreenTests: XCTestCase{
+    
+    var events = [Event(id: "111", name: "Test Event", descr: "Test Event", magnitudo: "4", coordinates: "0 0", depth: 2, time: 1588153322902, dataSource: "INGV", updated: 2342343, magType: "ml", url: "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson", felt: 0)]
+    
+    var updatedEvents = [Event(id: "111", name: "Test Event", descr: "Test Event", magnitudo: "5", coordinates: "0 0", depth: 2, time: 1588153322902, dataSource: "INGV", updated: 2442343, magType: "ml", url: "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson", felt: 0)]
+    
+    var fakeStore = Store<AppState, DependenciesContainer>()
+    
+    override func setUp() {
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+
+    }
+    
+    func testAddEvent(){
+        fakeStore.dispatch(EventsStateUpdater(newValue: events)).then {
+            XCTAssertTrue(self.fakeStore.state.events.contains(self.events[0]))
+            XCTAssertTrue(self.fakeStore.state.events[0].magnitudo == 4)
+        }
+    }
+    
+    func testUpdateEvent(){
+        fakeStore.dispatch(EventsStateUpdater(newValue: updatedEvents)).then {
+            XCTAssertTrue(self.fakeStore.state.events[0].magnitudo == 5)
+        }
+    }
 }

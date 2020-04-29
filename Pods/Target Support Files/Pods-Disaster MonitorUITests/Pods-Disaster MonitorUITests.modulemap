@@ -1,4 +1,4 @@
-framework module Pods_Disaster_MonitorUITests {
+module Pods_Disaster_MonitorUITests {
   umbrella header "Pods-Disaster MonitorUITests-umbrella.h"
 
   export *
