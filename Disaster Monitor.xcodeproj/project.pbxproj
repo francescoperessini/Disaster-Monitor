@@ -67,7 +67,6 @@
 		C6C625082409AC5A00E994F3 /* MessageEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C625072409AC5A00E994F3 /* MessageEditorView.swift */; };
 		C6E81A722409BB6C00CCD23D /* MessageEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E81A712409BB6C00CCD23D /* MessageEditorViewController.swift */; };
 		E674372375BB0DC638CC4320 /* libPods-Disaster MonitorTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1449F870BDF9D5C11F4DF78F /* libPods-Disaster MonitorTests.a */; };
-		E8589A2EE78C9E542CC9B46D /* libPods-Disaster MonitorUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C8C1077ADF8EA725BF670DCC /* libPods-Disaster MonitorUITests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -146,7 +145,6 @@
 		7BE4173C23A8D4AC0096F8EA /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		7BE4174023A8D56D0096F8EA /* AppNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigation.swift; sourceTree = "<group>"; };
 		9F6A4890087B0E1A7288AB18 /* Pods-Disaster Monitor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disaster Monitor.debug.xcconfig"; path = "Target Support Files/Pods-Disaster Monitor/Pods-Disaster Monitor.debug.xcconfig"; sourceTree = "<group>"; };
-		BB502D60C134875ED664D9A7 /* Pods-Disaster MonitorUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disaster MonitorUITests.debug.xcconfig"; path = "Target Support Files/Pods-Disaster MonitorUITests/Pods-Disaster MonitorUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		C60D1E4F241BE2D40054DF3B /* FilterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTableViewCell.swift; sourceTree = "<group>"; };
 		C60D1E51241BF3000054DF3B /* FilterSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSection.swift; sourceTree = "<group>"; };
 		C614C9792411A86600DC772E /* light_map_style.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = light_map_style.json; sourceTree = "<group>"; };
@@ -158,8 +156,6 @@
 		C6B0E86D2406DCE4005CEE09 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainTabBarController.swift; path = "Disaster Monitor/UI/MainTabBarController.swift"; sourceTree = SOURCE_ROOT; };
 		C6C625072409AC5A00E994F3 /* MessageEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageEditorView.swift; sourceTree = "<group>"; };
 		C6E81A712409BB6C00CCD23D /* MessageEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageEditorViewController.swift; sourceTree = "<group>"; };
-		C8C1077ADF8EA725BF670DCC /* libPods-Disaster MonitorUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Disaster MonitorUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FBCAFCBF2355DF0E58CD357C /* Pods-Disaster MonitorUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disaster MonitorUITests.release.xcconfig"; path = "Target Support Files/Pods-Disaster MonitorUITests/Pods-Disaster MonitorUITests.release.xcconfig"; sourceTree = "<group>"; };
 		FEB387251A3CBA28F0E8A64A /* Pods-Disaster MonitorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Disaster MonitorTests.release.xcconfig"; path = "Target Support Files/Pods-Disaster MonitorTests/Pods-Disaster MonitorTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -184,7 +180,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E8589A2EE78C9E542CC9B46D /* libPods-Disaster MonitorUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,8 +356,6 @@
 				61CCB0348A1EC0F4C5560FCE /* Pods-Disaster Monitor.release.xcconfig */,
 				54118193D01D39A7F5A5DC90 /* Pods-Disaster MonitorTests.debug.xcconfig */,
 				FEB387251A3CBA28F0E8A64A /* Pods-Disaster MonitorTests.release.xcconfig */,
-				BB502D60C134875ED664D9A7 /* Pods-Disaster MonitorUITests.debug.xcconfig */,
-				FBCAFCBF2355DF0E58CD357C /* Pods-Disaster MonitorUITests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -473,7 +466,6 @@
 			children = (
 				47C89C4D857C7D74010269F4 /* libPods-Disaster Monitor.a */,
 				1449F870BDF9D5C11F4DF78F /* libPods-Disaster MonitorTests.a */,
-				C8C1077ADF8EA725BF670DCC /* libPods-Disaster MonitorUITests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -523,7 +515,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7B5038D423A8CD5800F18840 /* Build configuration list for PBXNativeTarget "Disaster MonitorUITests" */;
 			buildPhases = (
-				FA3D2B7689B4EBBDFE3338FA /* [CP] Check Pods Manifest.lock */,
 				7B5038C123A8CD5800F18840 /* Sources */,
 				7B5038C223A8CD5800F18840 /* Frameworks */,
 				7B5038C323A8CD5800F18840 /* Resources */,
@@ -670,28 +661,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Disaster Monitor/Pods-Disaster Monitor-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FA3D2B7689B4EBBDFE3338FA /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Disaster MonitorUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -947,7 +916,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 54118193D01D39A7F5A5DC90 /* Pods-Disaster MonitorTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Disaster MonitorTests/Info.plist";
@@ -969,7 +937,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FEB387251A3CBA28F0E8A64A /* Pods-Disaster MonitorTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Disaster MonitorTests/Info.plist";
@@ -989,9 +956,7 @@
 		};
 		7B5038D523A8CD5800F18840 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BB502D60C134875ED664D9A7 /* Pods-Disaster MonitorUITests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Disaster MonitorUITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1009,9 +974,7 @@
 		};
 		7B5038D623A8CD5800F18840 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FBCAFCBF2355DF0E58CD357C /* Pods-Disaster MonitorUITests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Disaster MonitorUITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (

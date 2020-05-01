@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:mapstogpx20200307_102923.gpx">
-   </FileRef>
-   <FileRef
       location = "group:Disaster Monitor.xcodeproj">
    </FileRef>
    <FileRef

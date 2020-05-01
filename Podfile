@@ -17,15 +17,11 @@ target 'Disaster Monitor' do
   pod 'MarqueeLabel',:modular_headers => true
   pod 'Google-Maps-iOS-Utils',:modular_headers => true
   pod 'TempuraTesting'
-  # Pods for Disaster Monitor
-
+  
   target 'Disaster MonitorTests' do
     inherit! :search_paths
-    # Pods for testing
-  end
-
-  target 'Disaster MonitorUITests' do
-    inherit! :search_paths
-    # Pods for testing
+    
+    pod 'Quick', '~> 1.3'
+    pod 'Nimble', '~> 7.3'
   end
 end

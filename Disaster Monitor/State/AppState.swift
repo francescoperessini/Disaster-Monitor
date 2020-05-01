@@ -216,11 +216,7 @@ struct EventsStateUpdater: StateUpdater {
         let start = CFAbsoluteTimeGetCurrent()
         var setNewValue = Set(newValue)
         for event in state.events {
-            if !setNewValue.contains(event) {
-                setNewValue.insert(event)
-            }
-            else {
-                setNewValue.remove(event)
+            if !setNewValue.contains(where: {$0.id == event.id}) {
                 setNewValue.insert(event)
             }
         }
@@ -297,12 +293,11 @@ private func preprareDataUSGS(newValue: JSON, stateEvents: [Event]) -> [Event] {
     print("\(Date()) [USGS] JSON decoded")
     
     for i in 0...arrayNames.count - 1 {
-        // Unseen events
         if !stateEvents.contains(where: {$0.id == id[i]}) || stateEvents.contains(where: {$0.id == id[i] && $0.updated != updated[i]}) {
             returnEvents.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: time[i], dataSource: dataSource, updated: updated[i], magType: magType[i], url: url[i], felt: felt[i]))
         }
     }
-    // New events or updated events
+    // New or updated events
     return returnEvents
 }
 
@@ -334,12 +329,11 @@ private func preprareDataINGV(newValue: JSON, stateEvents: [Event]) -> [Event] {
     }
     
     for i in 0...arrayNames.count - 1 {
-        // Unseen events
         if !stateEvents.contains(where: {$0.id == id[i]}) {
             let url = url_tmp + id[i] + "?timezone=UTC"
             returnEvents.append(Event(id: id[i], name: arrayNames[i], descr: description[i], magnitudo: magnitudo[i], coordinates: coord[i], depth: depth[i], time: result_time[i], dataSource: dataSource, updated: 0, magType: magType[i], url: url, felt: felt))
         }
     }
-    // New events or updated events
+    // New events
     return returnEvents
 }
