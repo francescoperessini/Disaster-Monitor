@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1130"
+   LastUpgradeVersion = "1140"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -17,6 +17,20 @@
                BlueprintIdentifier = "7B5038A323A8CD5700F18840"
                BuildableName = "Disaster Monitor.app"
                BlueprintName = "Disaster Monitor"
+               ReferencedContainer = "container:Disaster Monitor.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "7B5038B923A8CD5800F18840"
+               BuildableName = "Disaster MonitorTests.xctest"
+               BlueprintName = "Disaster MonitorTests"
                ReferencedContainer = "container:Disaster Monitor.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
