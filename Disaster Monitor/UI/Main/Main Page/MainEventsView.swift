@@ -7,6 +7,7 @@
 //
 
 import Tempura
+import PinLayout
 
 // MARK: - ViewModel
 struct MainEventsViewModel: ViewModelWithState {
@@ -17,7 +18,7 @@ struct MainEventsViewModel: ViewModelWithState {
 }
 
 // MARK: - View
-class MainEventsView: UIView, ViewControllerModellableView{
+class MainEventsView: UIView, ViewControllerModellableView {
     
     var mainEventsTableView = UITableView()
     var events = [Event]()
@@ -125,7 +126,7 @@ class MainEventsView: UIView, ViewControllerModellableView{
         }
     }
     
-    func update(oldModel: MainViewModel?) {
+    func update(oldModel: MainEventsViewModel?) {
         guard let model = self.model else { return }
         events = model.state.events
         if !events.isEmpty && firstLoading {
