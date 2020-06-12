@@ -299,8 +299,8 @@ extension MapView: LocationServiceDelegate, GMSAutocompleteResultsViewController
 class POIItem: NSObject, GMUClusterItem {
     var name: String
     var position: CLLocationCoordinate2D
-    var title: String
-    var snippet: String
+    var title: String?
+    var snippet: String?
     
     init(name: String, position: CLLocationCoordinate2D, title: String, snippet: String) {
         self.name = name

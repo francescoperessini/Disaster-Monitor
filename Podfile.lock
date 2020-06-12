@@ -1,31 +1,31 @@
 PODS:
-  - Alamofire (5.1.0)
+  - Alamofire (5.2.1)
   - DeepDiff (2.3.1)
-  - Google-Maps-iOS-Utils (3.1.1):
-    - Google-Maps-iOS-Utils/Clustering (= 3.1.1)
-    - Google-Maps-iOS-Utils/Geometry (= 3.1.1)
-    - Google-Maps-iOS-Utils/Heatmap (= 3.1.1)
-    - Google-Maps-iOS-Utils/QuadTree (= 3.1.1)
+  - Google-Maps-iOS-Utils (3.1.4):
+    - Google-Maps-iOS-Utils/Clustering (= 3.1.4)
+    - Google-Maps-iOS-Utils/Geometry (= 3.1.4)
+    - Google-Maps-iOS-Utils/Heatmap (= 3.1.4)
+    - Google-Maps-iOS-Utils/QuadTree (= 3.1.4)
     - GoogleMaps
-  - Google-Maps-iOS-Utils/Clustering (3.1.1):
+  - Google-Maps-iOS-Utils/Clustering (3.1.4):
     - Google-Maps-iOS-Utils/QuadTree
     - GoogleMaps
-  - Google-Maps-iOS-Utils/Geometry (3.1.1):
+  - Google-Maps-iOS-Utils/Geometry (3.1.4):
     - GoogleMaps
-  - Google-Maps-iOS-Utils/Heatmap (3.1.1):
+  - Google-Maps-iOS-Utils/Heatmap (3.1.4):
     - Google-Maps-iOS-Utils/QuadTree
     - GoogleMaps
-  - Google-Maps-iOS-Utils/QuadTree (3.1.1):
+  - Google-Maps-iOS-Utils/QuadTree (3.1.4):
     - GoogleMaps
-  - GoogleMaps (3.8.0):
-    - GoogleMaps/Maps (= 3.8.0)
-  - GoogleMaps/Base (3.8.0)
-  - GoogleMaps/Maps (3.8.0):
+  - GoogleMaps (3.9.0):
+    - GoogleMaps/Maps (= 3.9.0)
+  - GoogleMaps/Base (3.9.0)
+  - GoogleMaps/Maps (3.9.0):
     - GoogleMaps/Base
-  - GooglePlaces (3.8.0):
-    - GoogleMaps/Base (= 3.8.0)
+  - GooglePlaces (3.9.0):
+    - GoogleMaps/Base (= 3.9.0)
   - HydraAsync (1.2.1)
-  - Katana (3.1.1):
+  - Katana (3.2.0):
     - HydraAsync (~> 1.2)
   - MarqueeLabel (4.0.2)
   - Nimble (7.3.4)
@@ -41,9 +41,9 @@ PODS:
     - PromiseKit/CorePromise
   - Quick (1.3.4)
   - SwiftyJSON (5.0.0)
-  - Tempura (4.3.1):
+  - Tempura (4.4.0):
     - Katana (< 4, >= 3.0)
-  - TempuraTesting (4.3.0):
+  - TempuraTesting (5.0.1):
     - Tempura (< 5.0, >= 4.0)
   - WARangeSlider (1.1.1)
 
@@ -84,21 +84,21 @@ SPEC REPOS:
     - WARangeSlider
 
 SPEC CHECKSUMS:
-  Alamofire: 9d5c5f602928e512395b30950c5984eca840093c
+  Alamofire: e911732990610fe89af59ac0077f923d72dc3dfd
   DeepDiff: e5ae6c50d0321568e4508cec5930b9f10bb293fc
-  Google-Maps-iOS-Utils: f5d6ea55799d2ef47c113e1351b48e21cddd593c
-  GoogleMaps: 7c8d66d70e4e8c300f43a7219d8fdaad7b325a9a
-  GooglePlaces: d5f70c3e9e427964fdeca1301a665d276ccd8754
+  Google-Maps-iOS-Utils: 1e51ca272b4f4befdf3577bf46f58c22ef22062c
+  GoogleMaps: 4b5346bddfe6911bb89155d43c903020170523ac
+  GooglePlaces: 1634d019549b969d40fe0ccb0b9513055adebe01
   HydraAsync: 8f2ab62d57e140b4ca587ae0f66e1eb04e8e6965
-  Katana: a9f2d63cc23ff9dc95ad557d7443717ef5b3201e
+  Katana: 1859c1fca08547e8644e58cbe292619c8c9512da
   MarqueeLabel: f762aa681ae201f66c1d511858b171f75d83013a
   Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
   PinLayout: e41a50260a76508b7a7fcee8955c76639adc69bc
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
   Quick: f4f7f063c524394c73ed93ac70983c609805d481
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
-  Tempura: adc54766491f97980bcdb3dff82a92076ed825e2
-  TempuraTesting: 302a6f14ec6bb8d69d30bc7708dad1c062d6730a
+  Tempura: 9c448606f6fd20c60ab2e56a7614eeb1db6bc2a0
+  TempuraTesting: 3d7aaac89c7c6cbbdc4805780961ea88807b1492
   WARangeSlider: 54b3e0853b8d16c444fd539005901aecee86837d
 
 PODFILE CHECKSUM: 9171885d81f62b0471295fda032c96f3ca67daa1
