@@ -16,3 +16,9 @@
 ##### Francesco Peressini 
 - GitHub: [francescoperessini](https://github.com/francescoperessini)
 - Email: francesco.peressini@mail.polimi.it
+
+## BackgroundTasks ##
+
+TASK_IDENTIFIERS: *"com.disastermonitor.refresh"*, *"com.disastermonitor.db_cleaning"*
+
+For more information on how to debug BackgroundTasks, please refer to the [official documentation](https://developer.apple.com/documentation/backgroundtasks/starting_and_terminating_tasks_during_development).
